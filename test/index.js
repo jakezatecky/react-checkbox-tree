@@ -60,4 +60,4 @@ const nodes = [
 ];
 const checked = ['level-2-1-1', 'level-2-1-2', 'level-2-2', 'level-3'];
 
-ReactDOM.render(<Tree nodes={nodes} checked={checked} />, document.getElementById('mount'));
+ReactDOM.render(<Tree name="level_tree" nodes={nodes} checked={checked} />, document.getElementById('mount'));

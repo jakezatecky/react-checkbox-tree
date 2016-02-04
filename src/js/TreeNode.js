@@ -2,6 +2,7 @@ import React from 'react';
 
 class TreeNode extends React.Component {
 	static propTypes = {
+		name: React.PropTypes.string,
 		value: React.PropTypes.string,
 		title: React.PropTypes.string,
 		children: React.PropTypes.node,
@@ -57,6 +58,20 @@ class TreeNode extends React.Component {
 		return <i className="fa fa-file-o" />;
 	}
 
+	getHiddenInput() {
+		if (this.props.name === undefined) {
+			return null;
+		}
+
+		const name = `${this.props.name}[]`;
+
+		if (this.props.checked === 1) {
+			return <input name={name} value={this.props.value} type="hidden" />;
+		}
+
+		return null;
+	}
+
 	getChildren() {
 		if (this.state.collapsed) {
 			return null;
@@ -101,6 +116,7 @@ class TreeNode extends React.Component {
 							{this.getNodeIcon()}
 						</span>
 						{this.props.title}
+						{this.getHiddenInput()}
 					</label>
 				</span>
 				{this.getChildren()}

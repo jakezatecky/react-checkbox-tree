@@ -4,6 +4,7 @@ import TreeNode from './TreeNode.js';
 
 class Tree extends React.Component {
 	static propTypes = {
+		name: React.PropTypes.string,
 		nodes: React.PropTypes.array,
 		checked: React.PropTypes.array,
 	};
@@ -40,6 +41,7 @@ class Tree extends React.Component {
 			return (
 				<TreeNode
 					key={index}
+					name={this.props.name}
 					value={node.value}
 					title={node.title}
 					checked={checked}
