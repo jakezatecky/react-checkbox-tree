@@ -7,7 +7,6 @@ const nodes = [
 	{
 		value: 'level-1',
 		title: 'Level 1',
-		collapsed: true,
 		children: [
 			{
 				value: 'level-1-1',
@@ -26,24 +25,20 @@ const nodes = [
 					{
 						value: 'level-2-1-1',
 						title: 'Level 2-1-1',
-						checked: true,
 					},
 					{
 						value: 'level-2-1-2',
 						title: 'Level 2-1-2',
-						checked: true,
 					},
 				],
 			},
 			{
 				value: 'level-2-2',
 				title: 'Level 2-2',
-				checked: false,
 			},
 			{
 				value: 'level-2-3',
 				title: 'Level 2-3',
-				checked: true,
 			},
 		],
 	},
@@ -55,8 +50,6 @@ const nodes = [
 	{
 		value: 'level-4',
 		title: 'Level 4',
-		checked: false,
-		collapsed: true,
 		children: [
 			{
 				value: 'level-4-1',
