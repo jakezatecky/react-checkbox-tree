@@ -116,7 +116,9 @@ class TreeNode extends React.Component {
 						<span className="rct-icon">
 							{this.getNodeIcon()}
 						</span>
-						{this.props.title}
+						<span className="rct-title">
+							{this.props.title}
+						</span>
 						{this.getHiddenInput()}
 					</label>
 				</span>
