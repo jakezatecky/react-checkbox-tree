@@ -1,4 +1,4 @@
-$theme: #33c;
+$rct-icon-color: #33c !default;
 
 .react-checkbox-tree {
   ol {
@@ -17,7 +17,7 @@ $theme: #33c;
     .fa-folder-open-o,
     .fa-folder-o,
     .fa-file-o {
-      color: $theme;
+      color: $rct-icon-color;
     }
   }
 }
