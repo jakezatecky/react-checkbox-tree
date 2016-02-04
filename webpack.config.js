@@ -4,9 +4,12 @@ var webpack = require('webpack');
 
 module.exports = {
 	output: {
-		filename: 'react-checkbox-tree.js',
+		filename: 'index.js',
 		libraryTarget: 'umd',
 		library: 'ReactCheckboxTree',
+	},
+	externals: {
+		react: 'React',
 	},
 	module: {
 		loaders: [

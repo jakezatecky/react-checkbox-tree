@@ -1,3 +1,6 @@
-import Tree from './js/Tree';
+// Use CommonJS export to trick Webpack into working around the issues that
+// window.[module].default is set rather than window.[module]
+//
+// See: https://github.com/webpack/webpack/issues/706
 
-export default Tree;
+module.exports = require('./js/Tree.js').default;
