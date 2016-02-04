@@ -6,6 +6,8 @@ class TreeNode extends React.Component {
 		title: React.PropTypes.string,
 		children: React.PropTypes.node,
 		checked: React.PropTypes.number,
+		rawChildren: React.PropTypes.any,
+		onCheck: React.PropTypes.func,
 	};
 
 	constructor(props) {
@@ -16,6 +18,7 @@ class TreeNode extends React.Component {
 		};
 
 		this.handleCollapseClick = this.handleCollapseClick.bind(this);
+		this.handleCheckboxClick = this.handleCheckboxClick.bind(this);
 	}
 
 	getCollapseIcon() {
@@ -68,6 +71,21 @@ class TreeNode extends React.Component {
 		});
 	}
 
+	handleCheckboxClick() {
+		let isChecked = 0;
+
+		// Toggle off/partial check state to checked
+		if (this.props.checked === 0 || this.props.checked === 2) {
+			isChecked = 1;
+		}
+
+		this.props.onCheck({
+			value: this.props.value,
+			checked: isChecked,
+			children: this.props.rawChildren,
+		});
+	}
+
 	render() {
 		return (
 			<li className="rct-node">
@@ -75,7 +93,7 @@ class TreeNode extends React.Component {
 					<span className="rct-collapse" onClick={this.handleCollapseClick} title="toggle">
 						{this.getCollapseIcon()}
 					</span>
-					<label>
+					<label onClick={this.handleCheckboxClick}>
 						<span className="rct-checkbox">
 							{this.getCheckboxIcon()}
 						</span>

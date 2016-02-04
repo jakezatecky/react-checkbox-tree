@@ -8,11 +8,21 @@ class Tree extends React.Component {
 		checked: React.PropTypes.array,
 	};
 
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			checked: props.checked,
+		};
+
+		this.handleCheck = this.handleCheck.bind(this);
+	}
+
 	getFormattedNodes(nodes) {
 		return nodes.map((node) => {
 			const formatted = Object.create(node);
 
-			formatted.checked = this.props.checked.indexOf(node.value) > -1;
+			formatted.checked = this.state.checked.indexOf(node.value) > -1;
 
 			if (this.hasChildren(node)) {
 				formatted.children = this.getFormattedNodes(formatted.children);
@@ -24,7 +34,7 @@ class Tree extends React.Component {
 
 	getTreeNodes(nodes) {
 		const treeNodes = nodes.map((node, index) => {
-			const checked = this.isChecked(node);
+			const checked = this.getCheckState(node);
 			const children = this.getChildNodes(node);
 
 			return (
@@ -33,7 +43,8 @@ class Tree extends React.Component {
 					value={node.value}
 					title={node.title}
 					checked={checked}
-					collapsed={node.collapsed}
+					rawChildren={node.children}
+					onCheck={this.handleCheck}
 				>
 					{children}
 				</TreeNode>
@@ -47,15 +58,7 @@ class Tree extends React.Component {
 		);
 	}
 
-	getChildNodes(node) {
-		if (this.hasChildren(node)) {
-			return this.getTreeNodes(node.children);
-		}
-
-		return null;
-	}
-
-	isChecked(node) {
+	getCheckState(node) {
 		if (this.hasChildren(node) === false) {
 			return node.checked ? 1 : 0;
 		}
@@ -69,6 +72,34 @@ class Tree extends React.Component {
 		}
 
 		return 0;
+	}
+
+	getChildNodes(node) {
+		if (this.hasChildren(node)) {
+			return this.getTreeNodes(node.children);
+		}
+
+		return null;
+	}
+
+	setCheckState(node, isChecked) {
+		if (this.hasChildren(node)) {
+			// Percolate check status down to all children
+			node.children.forEach((child) => {
+				this.setCheckState(child, isChecked);
+			});
+		} else {
+			// Set leaf to check/unchecked state
+			const index = this.state.checked.indexOf(node.value);
+
+			if (index > -1) {
+				this.state.checked.splice(index, 1);
+			}
+
+			if (isChecked) {
+				this.state.checked.push(node.value);
+			}
+		}
 	}
 
 	isEveryChildChecked(node) {
@@ -97,6 +128,16 @@ class Tree extends React.Component {
 		}
 
 		return node.children.length > 0;
+	}
+
+	handleCheck(node) {
+		const isChecked = node.checked;
+
+		this.setCheckState(node, isChecked);
+
+		this.setState({
+			checked: this.state.checked,
+		});
 	}
 
 	render() {
