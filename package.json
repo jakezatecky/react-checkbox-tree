@@ -1,6 +1,6 @@
 {
   "name": "react-checkbox-tree",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "React component for checkbox trees.",
   "author": "Jake Zatecky",
   "license": "MIT",
@@ -9,7 +9,7 @@
     "url": "https://github.com/jakezatecky/react-checkbox-tree"
   },
   "bugs": "https://github.com/jakezatecky/react-checkbox-tree/issues",
-  "main": "",
+  "main": "src/index.js",
   "devDependencies": {
     "babel-core": "^6.4.5",
     "babel-eslint": "^4.1.8",
