@@ -3,6 +3,7 @@ import React from 'react';
 class TreeNode extends React.Component {
 	static propTypes = {
 		name: React.PropTypes.string,
+		nameAsArray: React.PropTypes.bool,
 		value: React.PropTypes.string,
 		title: React.PropTypes.string,
 		children: React.PropTypes.node,
@@ -59,7 +60,7 @@ class TreeNode extends React.Component {
 	}
 
 	getHiddenInput() {
-		if (this.props.name === undefined) {
+		if (this.props.name === undefined || !this.props.nameAsArray) {
 			return null;
 		}
 

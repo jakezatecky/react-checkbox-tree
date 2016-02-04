@@ -5,6 +5,7 @@ import TreeNode from './TreeNode.js';
 class Tree extends React.Component {
 	static propTypes = {
 		name: React.PropTypes.string,
+		nameAsArray: React.PropTypes.bool,
 		nodes: React.PropTypes.array,
 		checked: React.PropTypes.array,
 	};
@@ -42,6 +43,7 @@ class Tree extends React.Component {
 				<TreeNode
 					key={index}
 					name={this.props.name}
+					nameAsArray={this.props.nameAsArray}
 					value={node.value}
 					title={node.title}
 					checked={checked}
@@ -82,6 +84,16 @@ class Tree extends React.Component {
 		}
 
 		return null;
+	}
+
+	getHiddenInput() {
+		if (this.props.name === undefined || this.props.nameAsArray) {
+			return null;
+		}
+
+		const checked = this.state.checked.join(',');
+
+		return <input name={this.props.name} value={checked} type="hidden" />;
 	}
 
 	setCheckState(node, isChecked) {
@@ -148,6 +160,7 @@ class Tree extends React.Component {
 
 		return (
 			<div className="react-checkbox-tree">
+				{this.getHiddenInput()}
 				{treeNodes}
 			</div>
 		);
