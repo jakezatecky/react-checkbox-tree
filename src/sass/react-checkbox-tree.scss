@@ -1,0 +1,42 @@
+$theme: #33c;
+
+.react-checkbox-tree {
+  ol {
+    padding-left: 24px;
+    list-style-type: none;
+
+    label {
+      cursor: pointer;
+    }
+
+    .fa {
+      width: 14px;
+      margin: 0 5px;
+    }
+
+    .fa-folder-open-o,
+    .fa-folder-o,
+    .fa-file-o {
+      color: $theme;
+    }
+  }
+}
+
+.rct-text {
+  display: flex;
+  align-items: center;
+}
+
+.rct-collapse {
+  font-size: 12px;
+
+  .fa-chevron-right,
+  .fa-chevron-down {
+    cursor: pointer;
+  }
+}
+
+.rct-half-checked,
+.rct-collapse > .fa-chevron-right {
+  opacity: .5;
+}

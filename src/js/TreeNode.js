@@ -1,0 +1,94 @@
+import React from 'react';
+
+class TreeNode extends React.Component {
+	static propTypes = {
+		value: React.PropTypes.string,
+		title: React.PropTypes.string,
+		children: React.PropTypes.node,
+		checked: React.PropTypes.number,
+	};
+
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			collapsed: true,
+		};
+
+		this.handleCollapseClick = this.handleCollapseClick.bind(this);
+	}
+
+	getCollapseIcon() {
+		if (this.props.children === null) {
+			return <i className="fa" />;
+		}
+
+		if (this.state.collapsed) {
+			return <i className="fa fa-chevron-right" />;
+		}
+
+		return <i className="fa fa-chevron-down" />;
+	}
+
+	getCheckboxIcon() {
+		if (this.props.checked === 0) {
+			return <i className="fa fa-square-o" />;
+		}
+
+		if (this.props.checked === 1) {
+			return <i className="fa fa-check-square-o" />;
+		}
+
+		return <i className="fa fa-check-square-o rct-half-checked" />;
+	}
+
+	getNodeIcon() {
+		if (this.props.children !== null) {
+			if (this.state.collapsed) {
+				return <i className="fa fa-folder-o" />;
+			}
+
+			return <i className="fa fa-folder-open-o" />;
+		}
+
+		return <i className="fa fa-file-o" />;
+	}
+
+	getChildren() {
+		if (this.state.collapsed) {
+			return null;
+		}
+
+		return this.props.children;
+	}
+
+	handleCollapseClick() {
+		this.setState({
+			collapsed: !this.state.collapsed,
+		});
+	}
+
+	render() {
+		return (
+			<li className="rct-node">
+				<span className="rct-text">
+					<span className="rct-collapse" onClick={this.handleCollapseClick} title="toggle">
+						{this.getCollapseIcon()}
+					</span>
+					<label>
+						<span className="rct-checkbox">
+							{this.getCheckboxIcon()}
+						</span>
+						<span className="rct-icon">
+							{this.getNodeIcon()}
+						</span>
+						{this.props.title}
+					</label>
+				</span>
+				{this.getChildren()}
+			</li>
+		);
+	}
+}
+
+export default TreeNode;
