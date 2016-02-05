@@ -28,7 +28,7 @@ gulp.task('script-test-mocha', ['script-compile-test'], function () {
 		.pipe(mocha({ reporter: 'spec' }));
 });
 
-gulp.task('script-test', ['script-test-format', 'script-compile-test']);
+gulp.task('script-test', ['script-test-format']);
 
 gulp.task('script-build', ['script-test'], function () {
 	return gulp.src(['./src/index.js'])
@@ -47,6 +47,12 @@ gulp.task('style-build', function () {
 			outputStyle: 'expanded',
 		}).on('error', sass.logError))
 		.pipe(gulp.dest('./lib'));
+});
+
+gulp.task('examples-build', ['script-build', 'style-build'], function () {
+	return gulp.src(['./examples/index.js'])
+		.pipe(webpack(require('./webpack.config.js')))
+		.pipe(gulp.dest('./examples/compiled/'));
 });
 
 gulp.task('watch', function () {
