@@ -1,5 +1,7 @@
 # react-checkbox-tree
 
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://raw.githubusercontent.com/jakezatecky/react-checkbox-tree/master/LICENSE.txt)
+
 Checkbox treeview for React.
 
 # Usage
