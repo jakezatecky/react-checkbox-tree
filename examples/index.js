@@ -88,5 +88,8 @@ const checked = [
 	'/public/index.html',
 	'/.gitignore',
 ];
+const expanded = [
+	'/app',
+];
 
-ReactDOM.render(<Tree name="airports" nodes={nodes} checked={checked}/>, document.getElementById('mount'));
+ReactDOM.render(<Tree name="airports" nodes={nodes} checked={checked} expanded={expanded} />, document.getElementById('mount'));

@@ -8,6 +8,12 @@ class Tree extends React.Component {
 		nameAsArray: React.PropTypes.bool,
 		nodes: React.PropTypes.array,
 		checked: React.PropTypes.array,
+		expanded: React.PropTypes.array,
+	};
+
+	static defaultProps = {
+		checked: [],
+		expanded: [],
 	};
 
 	constructor(props) {
@@ -15,6 +21,7 @@ class Tree extends React.Component {
 
 		this.state = {
 			checked: props.checked,
+			expanded: props.expanded,
 		};
 
 		this.handleCheck = this.handleCheck.bind(this);
@@ -25,6 +32,7 @@ class Tree extends React.Component {
 			const formatted = Object.create(node);
 
 			formatted.checked = this.state.checked.indexOf(node.value) > -1;
+			formatted.collapsed = this.state.expanded.indexOf(node.value) === -1;
 
 			if (this.hasChildren(node)) {
 				formatted.children = this.getFormattedNodes(formatted.children);
@@ -47,6 +55,7 @@ class Tree extends React.Component {
 					value={node.value}
 					title={node.title}
 					checked={checked}
+					collapsed={node.collapsed}
 					rawChildren={node.children}
 					onCheck={this.handleCheck}
 				>

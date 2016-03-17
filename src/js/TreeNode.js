@@ -8,6 +8,7 @@ class TreeNode extends React.Component {
 		title: React.PropTypes.string,
 		children: React.PropTypes.node,
 		checked: React.PropTypes.number,
+		collapsed: React.PropTypes.bool,
 		rawChildren: React.PropTypes.any,
 		onCheck: React.PropTypes.func,
 	};
@@ -16,7 +17,7 @@ class TreeNode extends React.Component {
 		super(props);
 
 		this.state = {
-			collapsed: true,
+			collapsed: props.collapsed,
 		};
 
 		this.handleCollapseClick = this.handleCollapseClick.bind(this);
