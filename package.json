@@ -13,6 +13,9 @@
   "scripts": {
     "examples": "gulp build-examples && http-server"
   },
+  "peerDependencies": {
+    "react": "^15.0.0"
+  },
   "devDependencies": {
     "babel-core": "^6.4.5",
     "babel-eslint": "^6.0.3",
@@ -33,11 +36,9 @@
     "gulp-scss-lint": "^0.3.9",
     "http-server": "^0.9.0",
     "mocha": "^2.4.5",
+    "react": "^15.0.0",
     "react-dom": "^15.0.1",
     "webpack": "^1.12.12",
     "webpack-stream": "^3.1.0"
-  },
-  "dependencies": {
-    "react": "^15.0.0"
   }
 }

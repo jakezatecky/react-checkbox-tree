@@ -51,7 +51,7 @@ gulp.task('build-style', function () {
 
 gulp.task('build-examples', ['build-script', 'build-style'], function () {
 	return gulp.src(['./examples/index.js'])
-		.pipe(webpack(require('./webpack.config.js')))
+		.pipe(webpack(require('./webpack.test.config.js')))
 		.pipe(gulp.dest('./examples/compiled/'));
 });
 
