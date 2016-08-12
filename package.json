@@ -4,6 +4,11 @@
   "description": "React component for checkbox trees.",
   "author": "Jake Zatecky",
   "license": "MIT",
+  "keywords": [
+    "react",
+    "checkbox",
+    "tree"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/jakezatecky/react-checkbox-tree"
