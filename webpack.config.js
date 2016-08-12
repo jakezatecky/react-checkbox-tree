@@ -1,5 +1,3 @@
-/* eslint-disable */
-
 module.exports = {
 	output: {
 		filename: 'index.js',
@@ -8,11 +6,11 @@ module.exports = {
 	},
 	externals: [
 		{
-			'react': {
+			react: {
 				root: 'React',
 				commonjs2: 'react',
 				commonjs: 'react',
-				amd: 'react'
+				amd: 'react',
 			},
 		},
 		{
@@ -20,7 +18,7 @@ module.exports = {
 				root: 'ReactDOM',
 				commonjs2: 'react-dom',
 				commonjs: 'react-dom',
-				amd: 'react-dom'
+				amd: 'react-dom',
 			},
 		},
 	],
@@ -31,7 +29,7 @@ module.exports = {
 				exclude: /(node_modules|bower_components|vender_modules)/,
 				loader: 'babel',
 				query: {
-					presets: ['react', 'es2015', 'stage-0']
+					presets: ['react', 'es2015', 'stage-0'],
 				},
 			},
 		],

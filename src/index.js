@@ -3,4 +3,4 @@
 //
 // See: https://github.com/webpack/webpack/issues/706
 
-module.exports = require('./js/Tree.js').default;
+module.exports = require('./js/Tree').default;

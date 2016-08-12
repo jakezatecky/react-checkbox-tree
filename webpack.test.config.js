@@ -1,5 +1,3 @@
-/* eslint-disable */
-
 module.exports = {
 	output: {
 		filename: 'index.js',
@@ -13,7 +11,7 @@ module.exports = {
 				exclude: /(node_modules|bower_components|vender_modules)/,
 				loader: 'babel',
 				query: {
-					presets: ['react', 'es2015', 'stage-0']
+					presets: ['react', 'es2015', 'stage-0'],
 				},
 			},
 		],
