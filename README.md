@@ -35,6 +35,6 @@ render() {
         }],
     }];
 
-    return <CheckboxTree node={nodes} />;
+    return <CheckboxTree nodes={nodes} />;
 }
 ```
