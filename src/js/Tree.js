@@ -1,6 +1,6 @@
 import React from 'react';
 
-import TreeNode from './TreeNode.js';
+import TreeNode from './TreeNode';
 
 class Tree extends React.Component {
 	static propTypes = {
