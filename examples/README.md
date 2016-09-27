@@ -2,7 +2,7 @@
 
 1. Clone this repo
 2. Install [Ruby][ruby]
-3. Run `gem install sass scsslint`
+3. Run `gem install sass scss_lint`
 4. Run `npm install`
 5. Start the server with `npm run examples`
 
