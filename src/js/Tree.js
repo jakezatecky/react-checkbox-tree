@@ -181,9 +181,6 @@ class Tree extends React.Component {
 		return this.renderJoinedHiddenInput();
 	}
 
-	/**
-	 * @returns {Array}
-	 */
 	renderArrayHiddenInput() {
 		return this.state.checked.map((value, index) => {
 			const name = `${this.props.name}[]`;
@@ -192,11 +189,6 @@ class Tree extends React.Component {
 		});
 	}
 
-	/**
-	 * Returns a hidden input element with the checked items joined together.
-	 *
-	 * @returns {XML}
-	 */
 	renderJoinedHiddenInput() {
 		const checked = this.state.checked.join(',');
 
