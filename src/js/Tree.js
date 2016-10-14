@@ -24,16 +24,42 @@ class Tree extends React.Component {
 			expanded: props.expanded,
 		};
 
-		this.handleCheck = this.handleCheck.bind(this);
-		this.handleCollapse = this.handleCollapse.bind(this);
+		this.onCheck = this.onCheck.bind(this);
+		this.onCollapse = this.onCollapse.bind(this);
+	}
+
+	onCheck(node) {
+		const isChecked = node.checked;
+
+		this.setCheckState(node, isChecked);
+
+		this.setState({
+			checked: this.state.checked,
+		});
+	}
+
+	onCollapse(node) {
+		const isCollapsed = node.collapsed;
+		const expanded = this.state.expanded;
+		const nodeIndex = expanded.indexOf(node.value);
+
+		if (isCollapsed && nodeIndex > -1) {
+			expanded.splice(nodeIndex, 1);
+		} else if (!isCollapsed && nodeIndex === -1) {
+			expanded.push(node.value);
+		}
+
+		this.setState({ expanded });
 	}
 
 	getFormattedNodes(nodes) {
+		const { checked, expanded } = this.state;
+
 		return nodes.map((node) => {
 			const formatted = Object.create(node);
 
-			formatted.checked = this.state.checked.indexOf(node.value) > -1;
-			formatted.collapsed = this.state.expanded.indexOf(node.value) === -1;
+			formatted.checked = checked.indexOf(node.value) > -1;
+			formatted.collapsed = expanded.indexOf(node.value) === -1;
 
 			if (this.hasChildren(node)) {
 				formatted.children = this.getFormattedNodes(formatted.children);
@@ -41,34 +67,6 @@ class Tree extends React.Component {
 
 			return formatted;
 		});
-	}
-
-	getTreeNodes(nodes) {
-		const treeNodes = nodes.map((node, index) => {
-			const checked = this.getCheckState(node);
-			const children = this.getChildNodes(node);
-
-			return (
-				<TreeNode
-					key={index}
-					value={node.value}
-					title={node.title}
-					checked={checked}
-					collapsed={node.collapsed}
-					rawChildren={node.children}
-					onCheck={this.handleCheck}
-					onCollapse={this.handleCollapse}
-				>
-					{children}
-				</TreeNode>
-			);
-		});
-
-		return (
-			<ol>
-				{treeNodes}
-			</ol>
-		);
 	}
 
 	getCheckState(node) {
@@ -85,48 +83,6 @@ class Tree extends React.Component {
 		}
 
 		return 0;
-	}
-
-	getChildNodes(node) {
-		if (this.hasChildren(node)) {
-			return this.getTreeNodes(node.children);
-		}
-
-		return null;
-	}
-
-	getHiddenInput() {
-		if (this.props.name === undefined) {
-			return null;
-		}
-
-		if (this.props.nameAsArray) {
-			return this.getArrayHiddenInput();
-		}
-
-		return this.getJoinedHiddenInput();
-	}
-
-	/**
-	 * @returns {Array}
-	 */
-	getArrayHiddenInput() {
-		return this.state.checked.map((value, index) => {
-			const name = `${this.props.name}[]`;
-
-			return <input key={index} name={name} type="hidden" value={value} />;
-		});
-	}
-
-	/**
-	 * Returns a hidden input element with the checked items joined together.
-	 *
-	 * @returns {XML}
-	 */
-	getJoinedHiddenInput() {
-		const checked = this.state.checked.join(',');
-
-		return <input name={this.props.name} value={checked} type="hidden" />;
 	}
 
 	setCheckState(node, isChecked) {
@@ -177,37 +133,83 @@ class Tree extends React.Component {
 		return node.children.length > 0;
 	}
 
-	handleCheck(node) {
-		const isChecked = node.checked;
+	renderTreeNodes(nodes) {
+		const treeNodes = nodes.map((node, index) => {
+			const checked = this.getCheckState(node);
+			const children = this.renderChildNodes(node);
 
-		this.setCheckState(node, isChecked);
+			return (
+				<TreeNode
+					key={index}
+					value={node.value}
+					title={node.title}
+					checked={checked}
+					collapsed={node.collapsed}
+					rawChildren={node.children}
+					onCheck={this.onCheck}
+					onCollapse={this.onCollapse}
+				>
+					{children}
+				</TreeNode>
+			);
+		});
 
-		this.setState({
-			checked: this.state.checked,
+		return (
+			<ol>
+				{treeNodes}
+			</ol>
+		);
+	}
+
+	renderChildNodes(node) {
+		if (this.hasChildren(node)) {
+			return this.renderTreeNodes(node.children);
+		}
+
+		return null;
+	}
+
+	renderHiddenInput() {
+		if (this.props.name === undefined) {
+			return null;
+		}
+
+		if (this.props.nameAsArray) {
+			return this.renderArrayHiddenInput();
+		}
+
+		return this.renderJoinedHiddenInput();
+	}
+
+	/**
+	 * @returns {Array}
+	 */
+	renderArrayHiddenInput() {
+		return this.state.checked.map((value, index) => {
+			const name = `${this.props.name}[]`;
+
+			return <input key={index} name={name} type="hidden" value={value} />;
 		});
 	}
 
-	handleCollapse(node) {
-		const isCollapsed = node.collapsed;
-		const expanded = this.state.expanded;
-		const nodeIndex = expanded.indexOf(node.value);
+	/**
+	 * Returns a hidden input element with the checked items joined together.
+	 *
+	 * @returns {XML}
+	 */
+	renderJoinedHiddenInput() {
+		const checked = this.state.checked.join(',');
 
-		if (isCollapsed && nodeIndex > -1) {
-			expanded.splice(nodeIndex, 1);
-		} else if (!isCollapsed && nodeIndex === -1) {
-			expanded.push(node.value);
-		}
-
-		this.setState({ expanded });
+		return <input name={this.props.name} value={checked} type="hidden" />;
 	}
 
 	render() {
 		const nodes = this.getFormattedNodes(this.props.nodes);
-		const treeNodes = this.getTreeNodes(nodes);
+		const treeNodes = this.renderTreeNodes(nodes);
 
 		return (
 			<div className="react-checkbox-tree">
-				{this.getHiddenInput()}
+				{this.renderHiddenInput()}
 				{treeNodes}
 			</div>
 		);
