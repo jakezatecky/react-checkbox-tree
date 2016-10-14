@@ -9,6 +9,8 @@ class Tree extends React.Component {
 		nodes: React.PropTypes.array,
 		checked: React.PropTypes.array,
 		expanded: React.PropTypes.array,
+		onCheck: React.PropTypes.func,
+		onExpand: React.PropTypes.func,
 	};
 
 	static defaultProps = {
@@ -19,28 +21,22 @@ class Tree extends React.Component {
 	constructor(props) {
 		super(props);
 
-		this.state = {
-			checked: props.checked,
-			expanded: props.expanded,
-		};
-
 		this.onCheck = this.onCheck.bind(this);
 		this.onExpand = this.onExpand.bind(this);
 	}
 
 	onCheck(node) {
+		const { checked } = this.props;
 		const isChecked = node.checked;
 
-		this.setCheckState(node, isChecked);
+		this.setCheckState(checked, node, isChecked);
 
-		this.setState({
-			checked: this.state.checked,
-		});
+		this.props.onCheck(checked);
 	}
 
 	onExpand(node) {
 		const isExpanded = node.expanded;
-		const expanded = this.state.expanded;
+		const expanded = this.props.expanded;
 		const nodeIndex = expanded.indexOf(node.value);
 
 		if (!isExpanded && nodeIndex > -1) {
@@ -51,11 +47,11 @@ class Tree extends React.Component {
 			expanded.push(node.value);
 		}
 
-		this.setState({ expanded });
+		this.props.onExpand(expanded);
 	}
 
 	getFormattedNodes(nodes) {
-		const { checked, expanded } = this.state;
+		const { checked, expanded } = this.props;
 
 		return nodes.map((node) => {
 			const formatted = Object.create(node);
@@ -87,22 +83,22 @@ class Tree extends React.Component {
 		return 0;
 	}
 
-	setCheckState(node, isChecked) {
+	setCheckState(checked, node, isChecked) {
 		if (this.hasChildren(node)) {
 			// Percolate check status down to all children
 			node.children.forEach((child) => {
-				this.setCheckState(child, isChecked);
+				this.setCheckState(checked, child, isChecked);
 			});
 		} else {
 			// Set leaf to check/unchecked state
-			const index = this.state.checked.indexOf(node.value);
+			const index = checked.indexOf(node.value);
 
 			if (index > -1) {
-				this.state.checked.splice(index, 1);
+				checked.splice(index, 1);
 			}
 
 			if (isChecked) {
-				this.state.checked.push(node.value);
+				checked.push(node.value);
 			}
 		}
 	}
@@ -184,7 +180,7 @@ class Tree extends React.Component {
 	}
 
 	renderArrayHiddenInput() {
-		return this.state.checked.map((value, index) => {
+		return this.props.checked.map((value, index) => {
 			const name = `${this.props.name}[]`;
 
 			return <input key={index} name={name} type="hidden" value={value} />;
@@ -192,7 +188,7 @@ class Tree extends React.Component {
 	}
 
 	renderJoinedHiddenInput() {
-		const checked = this.state.checked.join(',');
+		const checked = this.props.checked.join(',');
 
 		return <input name={this.props.name} value={checked} type="hidden" />;
 	}

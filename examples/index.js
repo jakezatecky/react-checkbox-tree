@@ -81,15 +81,50 @@ const nodes = [
 		title: 'README.md',
 	},
 ];
-const checked = [
-	'/app/Http/Controllers/WelcomeController.php',
-	'/app/Http/routes.php',
-	'/public/assets/style.css',
-	'/public/index.html',
-	'/.gitignore',
-];
-const expanded = [
-	'/app',
-];
 
-ReactDOM.render(<Tree name="airports" nodes={nodes} checked={checked} expanded={expanded} />, document.getElementById('mount'));
+class Widget extends React.Component {
+	constructor() {
+		super();
+
+		this.state = {
+			checked: [
+				'/app/Http/Controllers/WelcomeController.php',
+				'/app/Http/routes.php',
+				'/public/assets/style.css',
+				'/public/index.html',
+				'/.gitignore',
+			],
+			expanded: [
+				'/app',
+			],
+		};
+
+		this.onCheck = this.onCheck.bind(this);
+		this.onExpand = this.onExpand.bind(this);
+	}
+
+	onCheck(checked) {
+		this.setState({ checked });
+	}
+
+	onExpand(expanded) {
+		this.setState({ expanded });
+	}
+
+	render() {
+		const { checked, expanded } = this.state;
+
+		return (
+			<Tree
+				name="airports"
+				nodes={nodes}
+				checked={checked}
+				expanded={expanded}
+				onCheck={this.onCheck}
+				onExpand={this.onExpand}
+			/>
+		);
+	}
+}
+
+ReactDOM.render(<Widget />, document.getElementById('mount'));
