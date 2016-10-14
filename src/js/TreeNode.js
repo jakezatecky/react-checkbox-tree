@@ -89,7 +89,7 @@ class TreeNode extends React.Component {
 		return (
 			<li className="rct-node">
 				<span className="rct-text">
-					<span className="rct-collapse" onClick={this.onCollapse} title="toggle">
+					<span className="rct-collapse" onClick={this.onCollapse} title="Toggle">
 						{this.renderCollapseIcon()}
 					</span>
 					<label onClick={this.onCheck}>
