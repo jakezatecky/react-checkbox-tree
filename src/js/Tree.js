@@ -25,6 +25,7 @@ class Tree extends React.Component {
 		};
 
 		this.handleCheck = this.handleCheck.bind(this);
+		this.handleCollapse = this.handleCollapse.bind(this);
 	}
 
 	getFormattedNodes(nodes) {
@@ -56,6 +57,7 @@ class Tree extends React.Component {
 					collapsed={node.collapsed}
 					rawChildren={node.children}
 					onCheck={this.handleCheck}
+					onCollapse={this.handleCollapse}
 				>
 					{children}
 				</TreeNode>
@@ -183,6 +185,20 @@ class Tree extends React.Component {
 		this.setState({
 			checked: this.state.checked,
 		});
+	}
+
+	handleCollapse(node) {
+		const isCollapsed = node.collapsed;
+		const expanded = this.state.expanded;
+		const nodeIndex = expanded.indexOf(node.value);
+
+		if (isCollapsed && nodeIndex > -1) {
+			expanded.splice(nodeIndex, 1);
+		} else if (!isCollapsed && nodeIndex === -1) {
+			expanded.push(node.value);
+		}
+
+		this.setState({ expanded });
 	}
 
 	render() {

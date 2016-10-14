@@ -9,14 +9,11 @@ class TreeNode extends React.Component {
 		collapsed: React.PropTypes.bool,
 		rawChildren: React.PropTypes.any,
 		onCheck: React.PropTypes.func,
+		onCollapse: React.PropTypes.func,
 	};
 
 	constructor(props) {
 		super(props);
-
-		this.state = {
-			collapsed: props.collapsed,
-		};
 
 		this.handleCollapseClick = this.handleCollapseClick.bind(this);
 		this.handleCheckboxClick = this.handleCheckboxClick.bind(this);
@@ -27,7 +24,7 @@ class TreeNode extends React.Component {
 			return <i className="fa" />;
 		}
 
-		if (this.state.collapsed) {
+		if (this.props.collapsed) {
 			return <i className="fa fa-chevron-right" />;
 		}
 
@@ -48,7 +45,7 @@ class TreeNode extends React.Component {
 
 	getNodeIcon() {
 		if (this.props.children !== null) {
-			if (this.state.collapsed) {
+			if (this.props.collapsed) {
 				return <i className="fa fa-folder-o" />;
 			}
 
@@ -59,7 +56,7 @@ class TreeNode extends React.Component {
 	}
 
 	getChildren() {
-		if (this.state.collapsed) {
+		if (this.props.collapsed) {
 			return null;
 		}
 
@@ -67,8 +64,9 @@ class TreeNode extends React.Component {
 	}
 
 	handleCollapseClick() {
-		this.setState({
-			collapsed: !this.state.collapsed,
+		this.props.onCollapse({
+			value: this.props.value,
+			collapsed: !this.props.collapsed,
 		});
 	}
 
