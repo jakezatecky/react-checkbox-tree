@@ -25,7 +25,7 @@ class Tree extends React.Component {
 		};
 
 		this.onCheck = this.onCheck.bind(this);
-		this.onCollapse = this.onCollapse.bind(this);
+		this.onExpand = this.onExpand.bind(this);
 	}
 
 	onCheck(node) {
@@ -38,14 +38,16 @@ class Tree extends React.Component {
 		});
 	}
 
-	onCollapse(node) {
-		const isCollapsed = node.collapsed;
+	onExpand(node) {
+		const isExpanded = node.expanded;
 		const expanded = this.state.expanded;
 		const nodeIndex = expanded.indexOf(node.value);
 
-		if (isCollapsed && nodeIndex > -1) {
+		if (!isExpanded && nodeIndex > -1) {
+			// Node is now collapsed, remove from expanded list
 			expanded.splice(nodeIndex, 1);
-		} else if (!isCollapsed && nodeIndex === -1) {
+		} else if (isExpanded && nodeIndex === -1) {
+			// Add node to expanded list
 			expanded.push(node.value);
 		}
 
@@ -59,7 +61,7 @@ class Tree extends React.Component {
 			const formatted = Object.create(node);
 
 			formatted.checked = checked.indexOf(node.value) > -1;
-			formatted.collapsed = expanded.indexOf(node.value) === -1;
+			formatted.expanded = expanded.indexOf(node.value) > -1;
 
 			if (this.hasChildren(node)) {
 				formatted.children = this.getFormattedNodes(formatted.children);
@@ -144,10 +146,10 @@ class Tree extends React.Component {
 					value={node.value}
 					title={node.title}
 					checked={checked}
-					collapsed={node.collapsed}
+					expanded={node.expanded}
 					rawChildren={node.children}
 					onCheck={this.onCheck}
-					onCollapse={this.onCollapse}
+					onExpand={this.onExpand}
 				>
 					{children}
 				</TreeNode>

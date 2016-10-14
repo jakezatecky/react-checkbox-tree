@@ -2,21 +2,21 @@ import React from 'react';
 
 class TreeNode extends React.Component {
 	static propTypes = {
-		value: React.PropTypes.string,
-		title: React.PropTypes.string,
 		children: React.PropTypes.node,
 		checked: React.PropTypes.number,
-		collapsed: React.PropTypes.bool,
+		expanded: React.PropTypes.bool,
 		rawChildren: React.PropTypes.any,
 		onCheck: React.PropTypes.func,
-		onCollapse: React.PropTypes.func,
+		onExpand: React.PropTypes.func,
+		title: React.PropTypes.string,
+		value: React.PropTypes.string,
 	};
 
 	constructor(props) {
 		super(props);
 
 		this.onCheck = this.onCheck.bind(this);
-		this.onCollapse = this.onCollapse.bind(this);
+		this.onExpand = this.onExpand.bind(this);
 	}
 
 	onCheck() {
@@ -34,10 +34,10 @@ class TreeNode extends React.Component {
 		});
 	}
 
-	onCollapse() {
-		this.props.onCollapse({
+	onExpand() {
+		this.props.onExpand({
 			value: this.props.value,
-			collapsed: !this.props.collapsed,
+			expanded: !this.props.expanded,
 		});
 	}
 
@@ -46,7 +46,7 @@ class TreeNode extends React.Component {
 			return <i className="fa" />;
 		}
 
-		if (this.props.collapsed) {
+		if (!this.props.expanded) {
 			return <i className="fa fa-chevron-right" />;
 		}
 
@@ -67,7 +67,7 @@ class TreeNode extends React.Component {
 
 	renderNodeIcon() {
 		if (this.props.children !== null) {
-			if (this.props.collapsed) {
+			if (!this.props.expanded) {
 				return <i className="fa fa-folder-o" />;
 			}
 
@@ -78,7 +78,7 @@ class TreeNode extends React.Component {
 	}
 
 	renderChildren() {
-		if (this.props.collapsed) {
+		if (!this.props.expanded) {
 			return null;
 		}
 
@@ -89,7 +89,7 @@ class TreeNode extends React.Component {
 		return (
 			<li className="rct-node">
 				<span className="rct-text">
-					<span className="rct-collapse" onClick={this.onCollapse} title="Toggle">
+					<span className="rct-collapse" onClick={this.onExpand} title="Toggle">
 						{this.renderCollapseIcon()}
 					</span>
 					<label onClick={this.onCheck}>
