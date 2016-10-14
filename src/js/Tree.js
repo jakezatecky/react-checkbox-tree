@@ -50,8 +50,6 @@ class Tree extends React.Component {
 			return (
 				<TreeNode
 					key={index}
-					name={this.props.name}
-					nameAsArray={this.props.nameAsArray}
 					value={node.value}
 					title={node.title}
 					checked={checked}
@@ -96,10 +94,34 @@ class Tree extends React.Component {
 	}
 
 	getHiddenInput() {
-		if (this.props.name === undefined || this.props.nameAsArray) {
+		if (this.props.name === undefined) {
 			return null;
 		}
 
+		if (this.props.nameAsArray) {
+			return this.getArrayHiddenInput();
+		}
+
+		return this.getJoinedHiddenInput();
+	}
+
+	/**
+	 * @returns {Array}
+	 */
+	getArrayHiddenInput() {
+		return this.state.checked.map((value, index) => {
+			const name = `${this.props.name}[]`;
+
+			return <input key={index} name={name} type="hidden" value={value} />;
+		});
+	}
+
+	/**
+	 * Returns a hidden input element with the checked items joined together.
+	 *
+	 * @returns {XML}
+	 */
+	getJoinedHiddenInput() {
 		const checked = this.state.checked.join(',');
 
 		return <input name={this.props.name} value={checked} type="hidden" />;
