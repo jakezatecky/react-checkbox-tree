@@ -13,11 +13,6 @@ class Tree extends React.Component {
 		onExpand: React.PropTypes.func,
 	};
 
-	static defaultProps = {
-		checked: [],
-		expanded: [],
-	};
-
 	constructor(props) {
 		super(props);
 
