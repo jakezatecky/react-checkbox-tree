@@ -155,7 +155,7 @@ class Tree extends React.Component {
 	}
 
 	renderChildNodes(node) {
-		if (this.hasChildren(node)) {
+		if (this.hasChildren(node) && node.expanded) {
 			return this.renderTreeNodes(node.children);
 		}
 
