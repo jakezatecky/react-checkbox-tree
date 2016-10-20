@@ -21,7 +21,7 @@ class Tree extends React.Component {
 	}
 
 	onCheck(node) {
-		const { checked } = this.props;
+		const checked = [...this.props.checked];
 		const isChecked = node.checked;
 
 		this.setCheckState(checked, node, isChecked);
@@ -31,7 +31,7 @@ class Tree extends React.Component {
 
 	onExpand(node) {
 		const isExpanded = node.expanded;
-		const expanded = this.props.expanded;
+		const expanded = [...this.props.expanded];
 		const nodeIndex = expanded.indexOf(node.value);
 
 		if (!isExpanded && nodeIndex > -1) {
@@ -119,7 +119,7 @@ class Tree extends React.Component {
 	}
 
 	hasChildren(node) {
-		if (typeof node.children !== 'object') {
+		if (node.children === undefined) {
 			return false;
 		}
 
