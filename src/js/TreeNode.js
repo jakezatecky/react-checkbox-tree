@@ -2,14 +2,14 @@ import React from 'react';
 
 class TreeNode extends React.Component {
 	static propTypes = {
-		children: React.PropTypes.node,
-		checked: React.PropTypes.number,
-		expanded: React.PropTypes.bool,
-		rawChildren: React.PropTypes.any,
-		onCheck: React.PropTypes.func,
-		onExpand: React.PropTypes.func,
-		title: React.PropTypes.string,
-		value: React.PropTypes.string,
+		children: React.PropTypes.node.isRequired,
+		checked: React.PropTypes.number.isRequired,
+		expanded: React.PropTypes.bool.isRequired,
+		rawChildren: React.PropTypes.any.isRequired,
+		onCheck: React.PropTypes.func.isRequired,
+		onExpand: React.PropTypes.func.isRequired,
+		title: React.PropTypes.string.isRequired,
+		value: React.PropTypes.string.isRequired,
 	};
 
 	constructor(props) {

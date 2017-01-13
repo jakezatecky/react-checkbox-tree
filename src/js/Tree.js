@@ -12,6 +12,9 @@ class Tree extends React.Component {
 	};
 
 	static defaultProps = {
+		name: undefined,
+		nameAsArray: false,
+		nodes: [],
 		checked: [],
 		expanded: [],
 	};
@@ -137,12 +140,13 @@ class Tree extends React.Component {
 
 	renderTreeNodes(nodes) {
 		const treeNodes = nodes.map((node, index) => {
+			const key = `${index}-${node.value}`;
 			const checked = this.getCheckState(node);
 			const children = this.renderChildNodes(node);
 
 			return (
 				<TreeNode
-					key={index}
+					key={key}
 					value={node.value}
 					title={node.title}
 					checked={checked}
@@ -185,9 +189,10 @@ class Tree extends React.Component {
 
 	renderArrayHiddenInput() {
 		return this.state.checked.map((value, index) => {
+			const key = index;
 			const name = `${this.props.name}[]`;
 
-			return <input key={index} name={name} type="hidden" value={value} />;
+			return <input key={key} name={name} type="hidden" value={value} />;
 		});
 	}
 
