@@ -5,6 +5,8 @@ import nodeShape from './nodeShape';
 
 class Tree extends React.Component {
 	static propTypes = {
+		checked: React.PropTypes.arrayOf(React.PropTypes.string),
+		expanded: React.PropTypes.arrayOf(React.PropTypes.string),
 		name: React.PropTypes.string,
 		nameAsArray: React.PropTypes.bool,
 		nodes: React.PropTypes.arrayOf(
@@ -16,16 +18,14 @@ class Tree extends React.Component {
 				}),
 			]),
 		),
-		checked: React.PropTypes.arrayOf(React.PropTypes.string),
-		expanded: React.PropTypes.arrayOf(React.PropTypes.string),
 	};
 
 	static defaultProps = {
+		checked: [],
+		expanded: [],
 		name: undefined,
 		nameAsArray: false,
 		nodes: [],
-		checked: [],
-		expanded: [],
 	};
 
 	constructor(props) {
