@@ -1,11 +1,13 @@
 import React from 'react';
 
+import nodeShape from './nodeShape';
+
 class TreeNode extends React.Component {
 	static propTypes = {
 		children: React.PropTypes.node.isRequired,
 		checked: React.PropTypes.number.isRequired,
 		expanded: React.PropTypes.bool.isRequired,
-		rawChildren: React.PropTypes.any.isRequired,
+		rawChildren: React.PropTypes.arrayOf(nodeShape).isRequired,
 		onCheck: React.PropTypes.func.isRequired,
 		onExpand: React.PropTypes.func.isRequired,
 		title: React.PropTypes.string.isRequired,

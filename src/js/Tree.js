@@ -1,14 +1,23 @@
 import React from 'react';
 
 import TreeNode from './TreeNode';
+import nodeShape from './nodeShape';
 
 class Tree extends React.Component {
 	static propTypes = {
 		name: React.PropTypes.string,
 		nameAsArray: React.PropTypes.bool,
-		nodes: React.PropTypes.array,
-		checked: React.PropTypes.array,
-		expanded: React.PropTypes.array,
+		nodes: React.PropTypes.arrayOf(
+			React.PropTypes.oneOfType([
+				nodeShape,
+				React.PropTypes.shape({
+					...nodeShape,
+					children: React.PropTypes.arrayOf(nodeShape),
+				}),
+			]),
+		),
+		checked: React.PropTypes.arrayOf(React.PropTypes.string),
+		expanded: React.PropTypes.arrayOf(React.PropTypes.string),
 	};
 
 	static defaultProps = {
