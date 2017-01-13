@@ -197,11 +197,10 @@ class Tree extends React.Component {
 	}
 
 	renderArrayHiddenInput() {
-		return this.state.checked.map((value, index) => {
-			const key = index;
+		return this.state.checked.map((value) => {
 			const name = `${this.props.name}[]`;
 
-			return <input key={key} name={name} type="hidden" value={value} />;
+			return <input key={value} name={name} type="hidden" value={value} />;
 		});
 	}
 
