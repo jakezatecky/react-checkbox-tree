@@ -156,11 +156,11 @@ class Tree extends React.Component {
 			return (
 				<TreeNode
 					key={key}
-					value={node.value}
-					title={node.title}
 					checked={checked}
 					expanded={node.expanded}
 					rawChildren={node.children}
+					title={node.title}
+					value={node.value}
 					onCheck={this.onCheck}
 					onExpand={this.onExpand}
 				>
@@ -208,7 +208,7 @@ class Tree extends React.Component {
 	renderJoinedHiddenInput() {
 		const checked = this.state.checked.join(',');
 
-		return <input name={this.props.name} value={checked} type="hidden" />;
+		return <input name={this.props.name} type="hidden" value={checked} />;
 	}
 
 	render() {
