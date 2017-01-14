@@ -10,34 +10,79 @@
 ![Demo](demo.gif)
 
 
-# Usage
+## Installation
 
-Install the library:
+The easiest way to use react-checkbox-tree is to install from NPM and include it in your own React build process (e.g. using [Webpack](http://webpack.github.io/docs/what-is-webpack.html)):
 
-``` shell
+```
 npm install react-checkbox-tree --save
 ```
 
-Then render the component:
+## Usage
+
+A quick usage example is included below. Note that the react-checkbox-tree component is [controlled](https://facebook.github.io/react/docs/forms.html#controlled-components). In other words, it is stateless. You must update its `checked` and `expanded` properties whenever a change occurs.
 
 ``` javascript
 import CheckboxTree from 'react-checkbox-tree';
 
-...
+const nodes = [{
+    value: 'node-1',
+    title: 'Parent Node 1',
+    children: [{
+        value: 'node-1-1',
+        title: 'Leaf Node 1-1',
+    }, {
+        value: 'node-1-2',
+        title: 'Leaf Node 1-2'
+    }],
+}];
 
-render() {
-    const nodes = [{
-        value: 'node-1',
-        title: 'Parent Node 1',
-        children: [{
-            value: 'node-1-1',
-            title: 'Leaf Node 1-1',
-        }, {
-            value: 'node-1-2',
-            title: 'Leaf Node 1-2'
-        }],
-    }];
+class Widget extends React.Component {
+    constructor() {
+        super();
 
-    return <CheckboxTree nodes={nodes} />;
+        this.state = {
+            checked: [],
+            expanded: [],
+        };
+
+        this.onCheck = this.onCheck.bind(this);
+        this.onExpand = this.onExpand.bind(this);
+    }
+
+    onCheck(checked) {
+        this.setState({ checked });
+    }
+
+    onExpand(expanded) {
+        this.setState({ expanded });
+    }
+
+    render() {
+        const { checked, expanded } = this.state;
+
+        return (
+            <Tree
+                name="tree_nodes"
+                nodes={nodes}
+                checked={checked}
+                expanded={expanded}
+                onCheck={this.onCheck}
+                onExpand={this.onExpand}
+            />
+        );
+    }
 }
 ```
+
+### Properties
+
+| Property      | Type     | Description                                                                                   |
+| ------------- | -------- | --------------------------------------------------------------------------------------------- |
+| `nodes`       | array    | **Required**. Specifies the tree nodes and their children.                                    |
+| `checked`     | array    | **Required**. An array of checked node values.                                                |
+| `expanded`    | array    | **Required**. An array of expanded node values.                                               |
+| `onCheck`     | function | onCheck handler: `function(checked) {}`                                                       |
+| `onExpand`    | function | onExpand handler: `function(expanded) {}`                                                     |
+| `name`        | string   | Optional name for the hidden `<input>` element.                                               |
+| `nameAsArray` | bool     | If true, the hidden `<input>` will encode its values as an array rather than a joined string. |

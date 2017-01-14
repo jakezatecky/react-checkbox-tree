@@ -50,7 +50,7 @@ class TreeNode extends React.Component {
 	}
 
 	renderCollapseIcon() {
-		if (this.props.children === null) {
+		if (this.props.rawChildren === null) {
 			return <i className="fa" />;
 		}
 
@@ -74,7 +74,7 @@ class TreeNode extends React.Component {
 	}
 
 	renderNodeIcon() {
-		if (this.props.children !== null) {
+		if (this.props.rawChildren !== null) {
 			if (!this.props.expanded) {
 				return <i className="fa fa-folder-o" />;
 			}

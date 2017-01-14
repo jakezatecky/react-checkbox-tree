@@ -72,8 +72,10 @@ class Tree extends React.Component {
 			formatted.checked = checked.indexOf(node.value) > -1;
 			formatted.expanded = expanded.indexOf(node.value) > -1;
 
-			if (this.hasChildren(node)) {
+			if (Array.isArray(node.children) && node.children.length > 0) {
 				formatted.children = this.getFormattedNodes(formatted.children);
+			} else {
+				formatted.children = null;
 			}
 
 			return formatted;
@@ -81,7 +83,7 @@ class Tree extends React.Component {
 	}
 
 	getCheckState(node) {
-		if (this.hasChildren(node) === false) {
+		if (node.children === null) {
 			return node.checked ? 1 : 0;
 		}
 
@@ -97,7 +99,7 @@ class Tree extends React.Component {
 	}
 
 	setCheckState(checked, node, isChecked) {
-		if (this.hasChildren(node)) {
+		if (node.children !== null) {
 			// Percolate check status down to all children
 			node.children.forEach((child) => {
 				this.setCheckState(checked, child, isChecked);
@@ -118,7 +120,7 @@ class Tree extends React.Component {
 
 	isEveryChildChecked(node) {
 		return node.children.every((child) => {
-			if (this.hasChildren(child)) {
+			if (child.children !== null) {
 				return this.isEveryChildChecked(child);
 			}
 
@@ -128,20 +130,12 @@ class Tree extends React.Component {
 
 	isSomeChildChecked(node) {
 		return node.children.some((child) => {
-			if (this.hasChildren(child)) {
+			if (child.children !== null) {
 				return this.isSomeChildChecked(child);
 			}
 
 			return child.checked;
 		});
-	}
-
-	hasChildren(node) {
-		if (typeof node.children !== 'object') {
-			return false;
-		}
-
-		return node.children.length > 0;
 	}
 
 	renderTreeNodes(nodes) {
@@ -174,7 +168,7 @@ class Tree extends React.Component {
 	}
 
 	renderChildNodes(node) {
-		if (this.hasChildren(node)) {
+		if (node.children !== null && node.expanded) {
 			return this.renderTreeNodes(node.children);
 		}
 
