@@ -5,6 +5,8 @@ import nodeShape from './nodeShape';
 
 class Tree extends React.Component {
 	static propTypes = {
+		onCheck: React.PropTypes.func.isRequired,
+		onExpand: React.PropTypes.func.isRequired,
 		checked: React.PropTypes.arrayOf(React.PropTypes.string),
 		expanded: React.PropTypes.arrayOf(React.PropTypes.string),
 		name: React.PropTypes.string,
@@ -18,8 +20,6 @@ class Tree extends React.Component {
 				}),
 			]),
 		),
-		onCheck: React.PropTypes.func,
-		onExpand: React.PropTypes.func,
 	};
 
 	static defaultProps = {
