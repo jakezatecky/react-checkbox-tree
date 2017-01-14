@@ -5,11 +5,11 @@ import nodeShape from './nodeShape';
 
 class Tree extends React.Component {
 	static propTypes = {
+		checked: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
+		expanded: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
 		onCheck: React.PropTypes.func.isRequired,
 		onExpand: React.PropTypes.func.isRequired,
 
-		checked: React.PropTypes.arrayOf(React.PropTypes.string),
-		expanded: React.PropTypes.arrayOf(React.PropTypes.string),
 		name: React.PropTypes.string,
 		nameAsArray: React.PropTypes.bool,
 		nodes: React.PropTypes.arrayOf(
