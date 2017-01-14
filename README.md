@@ -45,17 +45,6 @@ class Widget extends React.Component {
             checked: [],
             expanded: [],
         };
-
-        this.onCheck = this.onCheck.bind(this);
-        this.onExpand = this.onExpand.bind(this);
-    }
-
-    onCheck(checked) {
-        this.setState({ checked });
-    }
-
-    onExpand(expanded) {
-        this.setState({ expanded });
     }
 
     render() {
@@ -67,8 +56,8 @@ class Widget extends React.Component {
                 nodes={nodes}
                 checked={checked}
                 expanded={expanded}
-                onCheck={this.onCheck}
-                onExpand={this.onExpand}
+                onCheck={checked => this.setState({ checked }}
+                onExpand={expanded => this.setState({ expanded }}
             />
         );
     }
