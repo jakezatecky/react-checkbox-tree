@@ -9,8 +9,7 @@
 
 ![Demo](demo.gif)
 
-
-## Installation
+# Installation
 
 The easiest way to use react-checkbox-tree is to install from NPM and include it in your own React build process (e.g. using [Webpack](http://webpack.github.io/docs/what-is-webpack.html)):
 
@@ -18,7 +17,7 @@ The easiest way to use react-checkbox-tree is to install from NPM and include it
 npm install react-checkbox-tree --save
 ```
 
-## Usage
+# Usage
 
 A quick usage example is included below. Note that the react-checkbox-tree component is [controlled](https://facebook.github.io/react/docs/forms.html#controlled-components). In other words, it is stateless. You must update its `checked` and `expanded` properties whenever a change occurs.
 
@@ -64,7 +63,7 @@ class Widget extends React.Component {
 }
 ```
 
-### Properties
+## Properties
 
 | Property      | Type     | Description                                                                                   |
 | ------------- | -------- | --------------------------------------------------------------------------------------------- |
