@@ -7,13 +7,14 @@ class Tree extends React.Component {
 	static propTypes = {
 		onCheck: React.PropTypes.func.isRequired,
 		onExpand: React.PropTypes.func.isRequired,
+
 		checked: React.PropTypes.arrayOf(React.PropTypes.string),
 		expanded: React.PropTypes.arrayOf(React.PropTypes.string),
 		name: React.PropTypes.string,
 		nameAsArray: React.PropTypes.bool,
 		nodes: React.PropTypes.arrayOf(
 			React.PropTypes.oneOfType([
-				nodeShape,
+				React.PropTypes.shape(nodeShape),
 				React.PropTypes.shape({
 					...nodeShape,
 					children: React.PropTypes.arrayOf(nodeShape),

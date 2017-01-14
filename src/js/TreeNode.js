@@ -5,13 +5,19 @@ import nodeShape from './nodeShape';
 class TreeNode extends React.Component {
 	static propTypes = {
 		checked: React.PropTypes.number.isRequired,
-		children: React.PropTypes.node.isRequired,
 		expanded: React.PropTypes.bool.isRequired,
-		rawChildren: React.PropTypes.arrayOf(nodeShape).isRequired,
 		title: React.PropTypes.string.isRequired,
 		value: React.PropTypes.string.isRequired,
 		onCheck: React.PropTypes.func.isRequired,
 		onExpand: React.PropTypes.func.isRequired,
+
+		children: React.PropTypes.node,
+		rawChildren: React.PropTypes.arrayOf(React.PropTypes.shape(nodeShape)),
+	};
+
+	static defaultProps = {
+		children: null,
+		rawChildren: undefined,
 	};
 
 	constructor(props) {
