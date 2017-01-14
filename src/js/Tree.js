@@ -1,14 +1,23 @@
 import React from 'react';
 
 import TreeNode from './TreeNode';
+import nodeShape from './nodeShape';
 
 class Tree extends React.Component {
 	static propTypes = {
+		checked: React.PropTypes.arrayOf(React.PropTypes.string),
+		expanded: React.PropTypes.arrayOf(React.PropTypes.string),
 		name: React.PropTypes.string,
 		nameAsArray: React.PropTypes.bool,
-		nodes: React.PropTypes.array,
-		checked: React.PropTypes.array,
-		expanded: React.PropTypes.array,
+		nodes: React.PropTypes.arrayOf(
+			React.PropTypes.oneOfType([
+				nodeShape,
+				React.PropTypes.shape({
+					...nodeShape,
+					children: React.PropTypes.arrayOf(nodeShape),
+				}),
+			]),
+		),
 		onCheck: React.PropTypes.func,
 		onExpand: React.PropTypes.func,
 	};
@@ -16,6 +25,9 @@ class Tree extends React.Component {
 	static defaultProps = {
 		checked: [],
 		expanded: [],
+		name: undefined,
+		nameAsArray: false,
+		nodes: [],
 	};
 
 	constructor(props) {
@@ -133,17 +145,18 @@ class Tree extends React.Component {
 
 	renderTreeNodes(nodes) {
 		const treeNodes = nodes.map((node, index) => {
+			const key = `${index}-${node.value}`;
 			const checked = this.getCheckState(node);
 			const children = this.renderChildNodes(node);
 
 			return (
 				<TreeNode
-					key={index}
-					value={node.value}
-					title={node.title}
+					key={key}
 					checked={checked}
 					expanded={node.expanded}
 					rawChildren={node.children}
+					title={node.title}
+					value={node.value}
 					onCheck={this.onCheck}
 					onExpand={this.onExpand}
 				>
@@ -180,17 +193,17 @@ class Tree extends React.Component {
 	}
 
 	renderArrayHiddenInput() {
-		return this.props.checked.map((value, index) => {
+		return this.props.checked.map((value) => {
 			const name = `${this.props.name}[]`;
 
-			return <input key={index} name={name} type="hidden" value={value} />;
+			return <input key={value} name={name} type="hidden" value={value} />;
 		});
 	}
 
 	renderJoinedHiddenInput() {
 		const checked = this.props.checked.join(',');
 
-		return <input name={this.props.name} value={checked} type="hidden" />;
+		return <input name={this.props.name} type="hidden" value={checked} />;
 	}
 
 	render() {

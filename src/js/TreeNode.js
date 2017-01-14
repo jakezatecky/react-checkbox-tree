@@ -1,15 +1,17 @@
 import React from 'react';
 
+import nodeShape from './nodeShape';
+
 class TreeNode extends React.Component {
 	static propTypes = {
-		children: React.PropTypes.node,
-		checked: React.PropTypes.number,
-		expanded: React.PropTypes.bool,
-		rawChildren: React.PropTypes.any,
-		onCheck: React.PropTypes.func,
-		onExpand: React.PropTypes.func,
-		title: React.PropTypes.string,
-		value: React.PropTypes.string,
+		checked: React.PropTypes.number.isRequired,
+		children: React.PropTypes.node.isRequired,
+		expanded: React.PropTypes.bool.isRequired,
+		rawChildren: React.PropTypes.arrayOf(nodeShape).isRequired,
+		title: React.PropTypes.string.isRequired,
+		value: React.PropTypes.string.isRequired,
+		onCheck: React.PropTypes.func.isRequired,
+		onExpand: React.PropTypes.func.isRequired,
 	};
 
 	constructor(props) {
@@ -89,7 +91,7 @@ class TreeNode extends React.Component {
 		return (
 			<li className="rct-node">
 				<span className="rct-text">
-					<span className="rct-collapse" onClick={this.onExpand} title="Toggle">
+					<span className="rct-collapse" title="Toggle" onClick={this.onExpand}>
 						{this.renderCollapseIcon()}
 					</span>
 					<label onClick={this.onCheck}>
