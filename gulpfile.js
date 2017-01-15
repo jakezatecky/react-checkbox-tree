@@ -5,6 +5,7 @@ const header = require('gulp-header');
 const webpack = require('webpack-stream');
 const scsslint = require('gulp-scss-lint');
 const sass = require('gulp-sass');
+const autoprefixer = require('gulp-autoprefixer');
 const pkg = require('./package.json');
 
 const webpackConfig = require('./webpack.config');
@@ -47,6 +48,9 @@ gulp.task('build-style', () =>
 		.pipe(sass({
 			outputStyle: 'expanded',
 		}).on('error', sass.logError))
+		.pipe(autoprefixer({
+			browsers: ['last 2 versions'],
+		}))
 		.pipe(gulp.dest('./lib'))
 );
 
@@ -57,6 +61,9 @@ gulp.task('build-examples-style', () =>
 		.pipe(sass({
 			outputStyle: 'expanded',
 		}).on('error', sass.logError))
+		.pipe(autoprefixer({
+			browsers: ['last 2 versions'],
+		}))
 		.pipe(gulp.dest('./examples/dist'))
 );
 
