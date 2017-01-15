@@ -1,0 +1,72 @@
+.react-checkbox-tree {
+  font-size: 16px;
+}
+
+.react-checkbox-tree ol {
+  padding-left: 0;
+  list-style-type: none;
+}
+
+.react-checkbox-tree ol ol {
+  padding-left: 24px;
+}
+
+.react-checkbox-tree label {
+  margin-bottom: 0;
+  cursor: pointer;
+}
+
+.react-checkbox-tree label:hover {
+  background: rgba(51, 51, 204, 0.1);
+}
+
+.react-checkbox-tree .fa {
+  width: 14px;
+  margin: 0 5px;
+}
+
+.react-checkbox-tree .fa-folder-open-o,
+.react-checkbox-tree .fa-folder-o,
+.react-checkbox-tree .fa-file-o {
+  color: #33c;
+}
+
+.rct-text {
+  display: flex;
+  align-items: center;
+}
+
+.rct-collapse {
+  font-size: 12px;
+}
+
+.rct-collapse .fa-chevron-right,
+.rct-collapse .fa-chevron-down {
+  text-align: center;
+  cursor: pointer;
+}
+
+.rct-collapse > .fa-chevron-right {
+  opacity: .5;
+}
+
+.rct-collapse > .fa-chevron-right:hover {
+  opacity: 1;
+}
+
+.rct-half-checked {
+  opacity: .5;
+}
+
+.rct-title {
+  margin-right: 5px;
+}
+
+html,
+body {
+  margin: 0;
+}
+
+body {
+  font-family: 'Lato', sans-serif;
+}

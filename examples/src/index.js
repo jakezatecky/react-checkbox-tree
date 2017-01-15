@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import Tree from '../src/js/Tree';
+import Tree from '../../src/js/Tree';
 
 const nodes = [
 	{
