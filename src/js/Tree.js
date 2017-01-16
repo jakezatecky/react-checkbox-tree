@@ -39,28 +39,15 @@ class Tree extends React.Component {
 	}
 
 	onCheck(node) {
-		const checked = [...this.props.checked];
-		const isChecked = node.checked;
+		const { checked, onCheck } = this.props;
 
-		this.setCheckState(checked, node, isChecked);
-
-		this.props.onCheck(checked);
+		onCheck(this.toggleChecked([...checked], node, node.checked));
 	}
 
 	onExpand(node) {
-		const isExpanded = node.expanded;
-		const expanded = [...this.props.expanded];
-		const nodeIndex = expanded.indexOf(node.value);
+		const { expanded, onExpand } = this.props;
 
-		if (!isExpanded && nodeIndex > -1) {
-			// Node is now collapsed, remove from expanded list
-			expanded.splice(nodeIndex, 1);
-		} else if (isExpanded && nodeIndex === -1) {
-			// Add node to expanded list
-			expanded.push(node.value);
-		}
-
-		this.props.onExpand(expanded);
+		onExpand(this.toggleNode([...expanded], node, node.expanded));
 	}
 
 	getFormattedNodes(nodes) {
@@ -98,24 +85,30 @@ class Tree extends React.Component {
 		return 0;
 	}
 
-	setCheckState(checked, node, isChecked) {
+	toggleChecked(checked, node, isChecked) {
 		if (node.children !== null) {
 			// Percolate check status down to all children
 			node.children.forEach((child) => {
-				this.setCheckState(checked, child, isChecked);
+				this.toggleChecked(checked, child, isChecked);
 			});
 		} else {
 			// Set leaf to check/unchecked state
-			const index = checked.indexOf(node.value);
-
-			if (index > -1) {
-				checked.splice(index, 1);
-			}
-
-			if (isChecked) {
-				checked.push(node.value);
-			}
+			this.toggleNode(checked, node, isChecked);
 		}
+
+		return checked;
+	}
+
+	toggleNode(list, node, toggleValue) {
+		const index = list.indexOf(node.value);
+
+		if (index > -1 && !toggleValue) {
+			list.splice(index, 1);
+		} else if (index === -1 && toggleValue) {
+			list.push(node.value);
+		}
+
+		return list;
 	}
 
 	isEveryChildChecked(node) {
