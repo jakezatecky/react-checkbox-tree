@@ -21609,38 +21609,31 @@ return /******/ (function(modules) { // webpackBootstrap
 		_createClass(Tree, [{
 			key: 'onCheck',
 			value: function onCheck(node) {
-				var checked = [].concat(_toConsumableArray(this.props.checked));
-				var isChecked = node.checked;
+				var _props = this.props;
+				var checked = _props.checked;
+				var onCheck = _props.onCheck;
 
-				this.setCheckState(checked, node, isChecked);
 
-				this.props.onCheck(checked);
+				onCheck(this.toggleChecked([].concat(_toConsumableArray(checked)), node, node.checked));
 			}
 		}, {
 			key: 'onExpand',
 			value: function onExpand(node) {
-				var isExpanded = node.expanded;
-				var expanded = [].concat(_toConsumableArray(this.props.expanded));
-				var nodeIndex = expanded.indexOf(node.value);
+				var _props2 = this.props;
+				var expanded = _props2.expanded;
+				var onExpand = _props2.onExpand;
 
-				if (!isExpanded && nodeIndex > -1) {
-					// Node is now collapsed, remove from expanded list
-					expanded.splice(nodeIndex, 1);
-				} else if (isExpanded && nodeIndex === -1) {
-					// Add node to expanded list
-					expanded.push(node.value);
-				}
 
-				this.props.onExpand(expanded);
+				onExpand(this.toggleNode([].concat(_toConsumableArray(expanded)), node, node.expanded));
 			}
 		}, {
 			key: 'getFormattedNodes',
 			value: function getFormattedNodes(nodes) {
 				var _this2 = this;
 
-				var _props = this.props;
-				var checked = _props.checked;
-				var expanded = _props.expanded;
+				var _props3 = this.props;
+				var checked = _props3.checked;
+				var expanded = _props3.expanded;
 
 
 				return nodes.map(function (node) {
@@ -21676,27 +21669,34 @@ return /******/ (function(modules) { // webpackBootstrap
 				return 0;
 			}
 		}, {
-			key: 'setCheckState',
-			value: function setCheckState(checked, node, isChecked) {
+			key: 'toggleChecked',
+			value: function toggleChecked(checked, node, isChecked) {
 				var _this3 = this;
 
 				if (node.children !== null) {
 					// Percolate check status down to all children
 					node.children.forEach(function (child) {
-						_this3.setCheckState(checked, child, isChecked);
+						_this3.toggleChecked(checked, child, isChecked);
 					});
 				} else {
 					// Set leaf to check/unchecked state
-					var index = checked.indexOf(node.value);
-
-					if (index > -1) {
-						checked.splice(index, 1);
-					}
-
-					if (isChecked) {
-						checked.push(node.value);
-					}
+					this.toggleNode(checked, node, isChecked);
 				}
+
+				return checked;
+			}
+		}, {
+			key: 'toggleNode',
+			value: function toggleNode(list, node, toggleValue) {
+				var index = list.indexOf(node.value);
+
+				if (index > -1 && !toggleValue) {
+					list.splice(index, 1);
+				} else if (index === -1 && toggleValue) {
+					list.push(node.value);
+				}
+
+				return list;
 			}
 		}, {
 			key: 'isEveryChildChecked',
@@ -21740,6 +21740,7 @@ return /******/ (function(modules) { // webpackBootstrap
 							key: key,
 							checked: checked,
 							expanded: node.expanded,
+							optimisticToggle: _this6.props.optimisticToggle,
 							rawChildren: node.children,
 							title: node.title,
 							value: node.value,
@@ -21824,14 +21825,16 @@ return /******/ (function(modules) { // webpackBootstrap
 		nameAsArray: _react2.default.PropTypes.bool,
 		nodes: _react2.default.PropTypes.arrayOf(_react2.default.PropTypes.oneOfType([_react2.default.PropTypes.shape(_nodeShape2.default), _react2.default.PropTypes.shape(_extends({}, _nodeShape2.default, {
 			children: _react2.default.PropTypes.arrayOf(_nodeShape2.default)
-		}))]))
+		}))])),
+		optimisticToggle: _react2.default.PropTypes.bool
 	};
 	Tree.defaultProps = {
 		checked: [],
 		expanded: [],
 		name: undefined,
 		nameAsArray: false,
-		nodes: []
+		nodes: [],
+		optimisticToggle: true
 	};
 	exports.default = Tree;
 
@@ -21879,11 +21882,16 @@ return /******/ (function(modules) { // webpackBootstrap
 		_createClass(TreeNode, [{
 			key: 'onCheck',
 			value: function onCheck() {
-				var isChecked = 0;
+				var isChecked = false;
 
-				// Toggle off/partial check state to checked
-				if (this.props.checked === 0 || this.props.checked === 2) {
-					isChecked = 1;
+				// Toggle off state to checked
+				if (this.props.checked === 0) {
+					isChecked = true;
+				}
+
+				// Toggle partial state based on model
+				if (this.props.checked === 2) {
+					isChecked = this.props.optimisticToggle;
 				}
 
 				this.props.onCheck({
@@ -21993,6 +22001,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	TreeNode.propTypes = {
 		checked: _react2.default.PropTypes.number.isRequired,
 		expanded: _react2.default.PropTypes.bool.isRequired,
+		optimisticToggle: _react2.default.PropTypes.bool.isRequired,
 		title: _react2.default.PropTypes.string.isRequired,
 		value: _react2.default.PropTypes.string.isRequired,
 		onCheck: _react2.default.PropTypes.func.isRequired,

@@ -65,12 +65,13 @@ class Widget extends React.Component {
 
 ## Properties
 
-| Property      | Type     | Description                                                                                   |
-| ------------- | -------- | --------------------------------------------------------------------------------------------- |
-| `nodes`       | array    | **Required**. Specifies the tree nodes and their children.                                    |
-| `checked`     | array    | **Required**. An array of checked node values.                                                |
-| `expanded`    | array    | **Required**. An array of expanded node values.                                               |
-| `onCheck`     | function | **Required**. onCheck handler: `function(checked) {}`                                         |
-| `onExpand`    | function | **Required**. onExpand handler: `function(expanded) {}`                                       |
-| `name`        | string   | Optional name for the hidden `<input>` element.                                               |
-| `nameAsArray` | bool     | If true, the hidden `<input>` will encode its values as an array rather than a joined string. |
+| Property           | Type     | Description                                                                                      | Default     |
+| ------------------ | -------- | ------------------------------------------------------------------------------------------------ | ----------- |
+| `nodes`            | array    | **Required**. Specifies the tree nodes and their children.                                       |             |
+| `checked`          | array    | **Required**. An array of checked node values.                                                   |             |
+| `expanded`         | array    | **Required**. An array of expanded node values.                                                  |             |
+| `onCheck`          | function | **Required**. onCheck handler: `function(checked) {}`                                            |             |
+| `onExpand`         | function | **Required**. onExpand handler: `function(expanded) {}`                                          |             |
+| `name`             | string   | Optional name for the hidden `<input>` element.                                                  | `undefined` |
+| `nameAsArray`      | bool     | If true, the hidden `<input>` will encode its values as an array rather than a joined string.    | `false`     |
+| `optimisticToggle` | bool     | If true, toggling a partially-checked node will select all children. If false, it will deselect. | `false`     |

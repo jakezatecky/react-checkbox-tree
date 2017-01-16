@@ -6,6 +6,7 @@ class TreeNode extends React.Component {
 	static propTypes = {
 		checked: React.PropTypes.number.isRequired,
 		expanded: React.PropTypes.bool.isRequired,
+		optimisticToggle: React.PropTypes.bool.isRequired,
 		title: React.PropTypes.string.isRequired,
 		value: React.PropTypes.string.isRequired,
 		onCheck: React.PropTypes.func.isRequired,
@@ -28,11 +29,16 @@ class TreeNode extends React.Component {
 	}
 
 	onCheck() {
-		let isChecked = 0;
+		let isChecked = false;
 
-		// Toggle off/partial check state to checked
-		if (this.props.checked === 0 || this.props.checked === 2) {
-			isChecked = 1;
+		// Toggle off state to checked
+		if (this.props.checked === 0) {
+			isChecked = true;
+		}
+
+		// Toggle partial state based on model
+		if (this.props.checked === 2) {
+			isChecked = this.props.optimisticToggle;
 		}
 
 		this.props.onCheck({

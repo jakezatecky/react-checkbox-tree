@@ -21,6 +21,7 @@ class Tree extends React.Component {
 				}),
 			]),
 		),
+		optimisticToggle: React.PropTypes.bool,
 	};
 
 	static defaultProps = {
@@ -29,6 +30,7 @@ class Tree extends React.Component {
 		name: undefined,
 		nameAsArray: false,
 		nodes: [],
+		optimisticToggle: true,
 	};
 
 	constructor(props) {
@@ -142,6 +144,7 @@ class Tree extends React.Component {
 					key={key}
 					checked={checked}
 					expanded={node.expanded}
+					optimisticToggle={this.props.optimisticToggle}
 					rawChildren={node.children}
 					title={node.title}
 					value={node.value}
