@@ -116,10 +116,10 @@ class Widget extends React.Component {
 
 		return (
 			<Tree
-				name="airports"
-				nodes={nodes}
 				checked={checked}
 				expanded={expanded}
+				name="airports"
+				nodes={nodes}
 				onCheck={this.onCheck}
 				onExpand={this.onExpand}
 			/>
