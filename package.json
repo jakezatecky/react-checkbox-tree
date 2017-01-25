@@ -16,7 +16,7 @@
   "bugs": "https://github.com/jakezatecky/react-checkbox-tree/issues",
   "main": "lib/index.js",
   "scripts": {
-    "examples": "gulp build-examples && http-server"
+    "examples": "gulp examples"
   },
   "peerDependencies": {
     "react": "^15.3.0"
@@ -28,6 +28,7 @@
     "babel-preset-es2015": "^6.13.2",
     "babel-preset-react": "^6.11.1",
     "babel-preset-stage-0": "^6.5.0",
+    "browser-sync": "^2.18.6",
     "chai": "^3.5.0",
     "eslint": "^3.13.0",
     "eslint-config-airbnb": "^14.0.0",
@@ -41,7 +42,6 @@
     "gulp-mocha-phantomjs": "^0.12.0",
     "gulp-sass": "^3.0.0",
     "gulp-scss-lint": "^0.4.0",
-    "http-server": "^0.9.0",
     "mocha": "^3.0.2",
     "react": "^15.3.0",
     "react-dom": "^15.3.0",

@@ -175,10 +175,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 				return _react2.default.createElement(_Tree2.default, {
-					name: 'airports',
-					nodes: nodes,
 					checked: checked,
 					expanded: expanded,
+					name: 'airports',
+					nodes: nodes,
 					onCheck: this.onCheck,
 					onExpand: this.onExpand
 				});
@@ -21818,14 +21818,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	Tree.propTypes = {
 		checked: _react2.default.PropTypes.arrayOf(_react2.default.PropTypes.string).isRequired,
 		expanded: _react2.default.PropTypes.arrayOf(_react2.default.PropTypes.string).isRequired,
+		nodes: _react2.default.PropTypes.arrayOf(_react2.default.PropTypes.oneOfType([_react2.default.PropTypes.shape(_nodeShape2.default), _react2.default.PropTypes.shape(_extends({}, _nodeShape2.default, {
+			children: _react2.default.PropTypes.arrayOf(_nodeShape2.default)
+		}))])).isRequired,
 		onCheck: _react2.default.PropTypes.func.isRequired,
 		onExpand: _react2.default.PropTypes.func.isRequired,
 
 		name: _react2.default.PropTypes.string,
 		nameAsArray: _react2.default.PropTypes.bool,
-		nodes: _react2.default.PropTypes.arrayOf(_react2.default.PropTypes.oneOfType([_react2.default.PropTypes.shape(_nodeShape2.default), _react2.default.PropTypes.shape(_extends({}, _nodeShape2.default, {
-			children: _react2.default.PropTypes.arrayOf(_nodeShape2.default)
-		}))])),
 		optimisticToggle: _react2.default.PropTypes.bool
 	};
 	Tree.defaultProps = {
