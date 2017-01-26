@@ -1,6 +1,2 @@
-// Use CommonJS export to trick Webpack into working around the issues that
-// window.[module].default is set rather than window.[module]
-//
-// See: https://github.com/webpack/webpack/issues/706
-
+// Export default to provide support for non-ES6 solutions
 module.exports = require('./js/Tree').default;
