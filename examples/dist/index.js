@@ -56,8 +56,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
 	var _react = __webpack_require__(1);
 
 	var _react2 = _interopRequireDefault(_react);
@@ -66,129 +64,18 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 
-	var _Tree = __webpack_require__(172);
+	var _BasicExample = __webpack_require__(172);
 
-	var _Tree2 = _interopRequireDefault(_Tree);
+	var _BasicExample2 = _interopRequireDefault(_BasicExample);
+
+	var _PessimisticToggleExample = __webpack_require__(176);
+
+	var _PessimisticToggleExample2 = _interopRequireDefault(_PessimisticToggleExample);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var nodes = [{
-		value: '/app',
-		title: 'app',
-		children: [{
-			value: '/app/Http',
-			title: 'Http',
-			children: [{
-				value: '/app/Http/Controllers',
-				title: 'Controllers',
-				children: [{
-					value: '/app/Http/Controllers/WelcomeController.php',
-					title: 'WelcomeController.php'
-				}]
-			}, {
-				value: '/app/Http/routes.php',
-				title: 'routes.php'
-			}]
-		}, {
-			value: '/app/Providers',
-			title: 'Providers',
-			children: [{
-				value: '/app/Http/Providers/EventServiceProvider.php',
-				title: 'EventServiceProvider.php'
-			}]
-		}]
-	}, {
-		value: '/config',
-		title: 'config',
-		children: [{
-			value: '/config/app.php',
-			title: 'app.php'
-		}, {
-			value: '/config/database.php',
-			title: 'database.php'
-		}]
-	}, {
-		value: '/public',
-		title: 'public',
-		children: [{
-			value: '/public/assets/',
-			title: 'assets',
-			children: [{
-				value: '/public/assets/style.css',
-				title: 'style.css'
-			}]
-		}, {
-			value: '/public/index.html',
-			title: 'index.html'
-		}]
-	}, {
-		value: '/.env',
-		title: '.env'
-	}, {
-		value: '/.gitignore',
-		title: '.gitignore'
-	}, {
-		value: '/README.md',
-		title: 'README.md'
-	}];
-
-	var Widget = function (_React$Component) {
-		_inherits(Widget, _React$Component);
-
-		function Widget() {
-			_classCallCheck(this, Widget);
-
-			var _this = _possibleConstructorReturn(this, (Widget.__proto__ || Object.getPrototypeOf(Widget)).call(this));
-
-			_this.state = {
-				checked: ['/app/Http/Controllers/WelcomeController.php', '/app/Http/routes.php', '/public/assets/style.css', '/public/index.html', '/.gitignore'],
-				expanded: ['/app']
-			};
-
-			_this.onCheck = _this.onCheck.bind(_this);
-			_this.onExpand = _this.onExpand.bind(_this);
-			return _this;
-		}
-
-		_createClass(Widget, [{
-			key: 'onCheck',
-			value: function onCheck(checked) {
-				this.setState({ checked: checked });
-			}
-		}, {
-			key: 'onExpand',
-			value: function onExpand(expanded) {
-				this.setState({ expanded: expanded });
-			}
-		}, {
-			key: 'render',
-			value: function render() {
-				var _state = this.state;
-				var checked = _state.checked;
-				var expanded = _state.expanded;
-
-
-				return _react2.default.createElement(_Tree2.default, {
-					checked: checked,
-					expanded: expanded,
-					name: 'airports',
-					nodes: nodes,
-					onCheck: this.onCheck,
-					onExpand: this.onExpand
-				});
-			}
-		}]);
-
-		return Widget;
-	}(_react2.default.Component);
-
-	_reactDom2.default.render(_react2.default.createElement(Widget, null), document.getElementById('mount'));
+	_reactDom2.default.render(_react2.default.createElement(_BasicExample2.default, null), document.getElementById('basic-example'));
+	_reactDom2.default.render(_react2.default.createElement(_PessimisticToggleExample2.default, null), document.getElementById('pessimistic-toggle-example'));
 
 /***/ },
 /* 1 */
@@ -21567,6 +21454,146 @@ return /******/ (function(modules) { // webpackBootstrap
 		value: true
 	});
 
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _Tree = __webpack_require__(173);
+
+	var _Tree2 = _interopRequireDefault(_Tree);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var nodes = [{
+		value: '/app',
+		title: 'app',
+		children: [{
+			value: '/app/Http',
+			title: 'Http',
+			children: [{
+				value: '/app/Http/Controllers',
+				title: 'Controllers',
+				children: [{
+					value: '/app/Http/Controllers/WelcomeController.php',
+					title: 'WelcomeController.php'
+				}]
+			}, {
+				value: '/app/Http/routes.php',
+				title: 'routes.php'
+			}]
+		}, {
+			value: '/app/Providers',
+			title: 'Providers',
+			children: [{
+				value: '/app/Http/Providers/EventServiceProvider.php',
+				title: 'EventServiceProvider.php'
+			}]
+		}]
+	}, {
+		value: '/config',
+		title: 'config',
+		children: [{
+			value: '/config/app.php',
+			title: 'app.php'
+		}, {
+			value: '/config/database.php',
+			title: 'database.php'
+		}]
+	}, {
+		value: '/public',
+		title: 'public',
+		children: [{
+			value: '/public/assets/',
+			title: 'assets',
+			children: [{
+				value: '/public/assets/style.css',
+				title: 'style.css'
+			}]
+		}, {
+			value: '/public/index.html',
+			title: 'index.html'
+		}]
+	}, {
+		value: '/.env',
+		title: '.env'
+	}, {
+		value: '/.gitignore',
+		title: '.gitignore'
+	}, {
+		value: '/README.md',
+		title: 'README.md'
+	}];
+
+	var BasicExample = function (_React$Component) {
+		_inherits(BasicExample, _React$Component);
+
+		function BasicExample() {
+			_classCallCheck(this, BasicExample);
+
+			var _this = _possibleConstructorReturn(this, (BasicExample.__proto__ || Object.getPrototypeOf(BasicExample)).call(this));
+
+			_this.state = {
+				checked: ['/app/Http/Controllers/WelcomeController.php', '/app/Http/routes.php', '/public/assets/style.css', '/public/index.html', '/.gitignore'],
+				expanded: ['/app']
+			};
+
+			_this.onCheck = _this.onCheck.bind(_this);
+			_this.onExpand = _this.onExpand.bind(_this);
+			return _this;
+		}
+
+		_createClass(BasicExample, [{
+			key: 'onCheck',
+			value: function onCheck(checked) {
+				this.setState({ checked: checked });
+			}
+		}, {
+			key: 'onExpand',
+			value: function onExpand(expanded) {
+				this.setState({ expanded: expanded });
+			}
+		}, {
+			key: 'render',
+			value: function render() {
+				var _state = this.state;
+				var checked = _state.checked;
+				var expanded = _state.expanded;
+
+
+				return _react2.default.createElement(_Tree2.default, {
+					checked: checked,
+					expanded: expanded,
+					name: 'airports',
+					nodes: nodes,
+					onCheck: this.onCheck,
+					onExpand: this.onExpand
+				});
+			}
+		}]);
+
+		return BasicExample;
+	}(_react2.default.Component);
+
+	exports.default = BasicExample;
+
+/***/ },
+/* 173 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -21575,11 +21602,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _TreeNode = __webpack_require__(173);
+	var _TreeNode = __webpack_require__(174);
 
 	var _TreeNode2 = _interopRequireDefault(_TreeNode);
 
-	var _nodeShape = __webpack_require__(174);
+	var _nodeShape = __webpack_require__(175);
 
 	var _nodeShape2 = _interopRequireDefault(_nodeShape);
 
@@ -21839,7 +21866,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = Tree;
 
 /***/ },
-/* 173 */
+/* 174 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21854,7 +21881,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _nodeShape = __webpack_require__(174);
+	var _nodeShape = __webpack_require__(175);
 
 	var _nodeShape2 = _interopRequireDefault(_nodeShape);
 
@@ -22017,7 +22044,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = TreeNode;
 
 /***/ },
-/* 174 */
+/* 175 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -22036,6 +22063,147 @@ return /******/ (function(modules) { // webpackBootstrap
 		value: _react2.default.PropTypes.oneOfType([_react2.default.PropTypes.string, _react2.default.PropTypes.number]),
 		title: _react2.default.PropTypes.string
 	};
+
+/***/ },
+/* 176 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _Tree = __webpack_require__(173);
+
+	var _Tree2 = _interopRequireDefault(_Tree);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var nodes = [{
+		value: '/app',
+		title: 'app',
+		children: [{
+			value: '/app/Http',
+			title: 'Http',
+			children: [{
+				value: '/app/Http/Controllers',
+				title: 'Controllers',
+				children: [{
+					value: '/app/Http/Controllers/WelcomeController.php',
+					title: 'WelcomeController.php'
+				}]
+			}, {
+				value: '/app/Http/routes.php',
+				title: 'routes.php'
+			}]
+		}, {
+			value: '/app/Providers',
+			title: 'Providers',
+			children: [{
+				value: '/app/Http/Providers/EventServiceProvider.php',
+				title: 'EventServiceProvider.php'
+			}]
+		}]
+	}, {
+		value: '/config',
+		title: 'config',
+		children: [{
+			value: '/config/app.php',
+			title: 'app.php'
+		}, {
+			value: '/config/database.php',
+			title: 'database.php'
+		}]
+	}, {
+		value: '/public',
+		title: 'public',
+		children: [{
+			value: '/public/assets/',
+			title: 'assets',
+			children: [{
+				value: '/public/assets/style.css',
+				title: 'style.css'
+			}]
+		}, {
+			value: '/public/index.html',
+			title: 'index.html'
+		}]
+	}, {
+		value: '/.env',
+		title: '.env'
+	}, {
+		value: '/.gitignore',
+		title: '.gitignore'
+	}, {
+		value: '/README.md',
+		title: 'README.md'
+	}];
+
+	var PessimisticToggleExample = function (_React$Component) {
+		_inherits(PessimisticToggleExample, _React$Component);
+
+		function PessimisticToggleExample() {
+			_classCallCheck(this, PessimisticToggleExample);
+
+			var _this = _possibleConstructorReturn(this, (PessimisticToggleExample.__proto__ || Object.getPrototypeOf(PessimisticToggleExample)).call(this));
+
+			_this.state = {
+				checked: ['/app/Http/Controllers/WelcomeController.php', '/app/Http/routes.php', '/public/assets/style.css', '/public/index.html', '/.gitignore'],
+				expanded: ['/app']
+			};
+
+			_this.onCheck = _this.onCheck.bind(_this);
+			_this.onExpand = _this.onExpand.bind(_this);
+			return _this;
+		}
+
+		_createClass(PessimisticToggleExample, [{
+			key: 'onCheck',
+			value: function onCheck(checked) {
+				this.setState({ checked: checked });
+			}
+		}, {
+			key: 'onExpand',
+			value: function onExpand(expanded) {
+				this.setState({ expanded: expanded });
+			}
+		}, {
+			key: 'render',
+			value: function render() {
+				var _state = this.state;
+				var checked = _state.checked;
+				var expanded = _state.expanded;
+
+
+				return _react2.default.createElement(_Tree2.default, {
+					checked: checked,
+					expanded: expanded,
+					name: 'airports',
+					nodes: nodes,
+					optimisticToggle: false,
+					onCheck: this.onCheck,
+					onExpand: this.onExpand
+				});
+			}
+		}]);
+
+		return PessimisticToggleExample;
+	}(_react2.default.Component);
+
+	exports.default = PessimisticToggleExample;
 
 /***/ }
 /******/ ])
