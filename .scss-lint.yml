@@ -2,15 +2,25 @@
 
 scss_files: "**/*.scss"
 
+# Default severity of all linters.
+severity: warning
+
 linters:
   BangFormat:
     enabled: true
     space_before_bang: true
     space_after_bang: false
 
+  BemDepth:
+    enabled: false
+    max_elements: 1
+
   BorderZero:
     enabled: true
     convention: zero # or `none`
+
+  ChainedClasses:
+    enabled: false
 
   ColorKeyword:
     enabled: true
@@ -20,12 +30,16 @@ linters:
 
   Comment:
     enabled: true
+    style: silent
 
   DebugStatement:
     enabled: true
 
   DeclarationOrder:
     enabled: true
+
+  DisableLinterReason:
+    enabled: false
 
   DuplicateProperty:
     enabled: true
@@ -40,6 +54,9 @@ linters:
 
   EmptyRule:
     enabled: true
+
+  ExtendDirective:
+    enabled: false
 
   FinalNewline:
     enabled: true
@@ -84,14 +101,15 @@ linters:
   NameFormat:
     enabled: true
     allow_leading_underscore: true
-    convention: hyphenated_lowercase # or 'BEM', or a regex pattern
+    convention: hyphenated_lowercase # or 'camel_case', or 'snake_case', or a regex pattern
 
   NestingDepth:
     enabled: true
     max_depth: 3
+    ignore_parent_selectors: false
 
   PlaceholderInExtend:
-    enabled: true
+    enabled: false
 
   PropertyCount:
     enabled: false
@@ -101,16 +119,34 @@ linters:
   PropertySortOrder:
     enabled: true
     ignore_unspecified: false
+    min_properties: 2
     separate_groups: false
-    order: recess # use Twitter's sort order
+    order: concentric # use Twitter's sort order
 
   PropertySpelling:
     enabled: true
     extra_properties: []
+    disabled_properties: []
+
+  PropertyUnits:
+    enabled: true
+    global: [
+      'ch', 'em', 'ex', 'rem',                 # Font-relative lengths
+      'cm', 'in', 'mm', 'pc', 'pt', 'px', 'q', # Absolute lengths
+      'vh', 'vw', 'vmin', 'vmax',              # Viewport-percentage lengths
+      'deg', 'grad', 'rad', 'turn',            # Angle
+      'ms', 's',                               # Duration
+      'Hz', 'kHz',                             # Frequency
+      'dpi', 'dpcm', 'dppx',                   # Resolution
+      '%']                                     # Other
+    properties: {}
+
+  PseudoElement:
+    enabled: true
 
   QualifyingElement:
     enabled: true
-    allow_element_with_attribute: true
+    allow_element_with_attribute: false
     allow_element_with_class: false
     allow_element_with_id: false
 
@@ -120,20 +156,22 @@ linters:
 
   SelectorFormat:
     enabled: true
-    convention: hyphenated_lowercase # or 'BEM', or 'hyphenated_BEM', or 'snake_case', or 'camel_case', or a regex pattern
+    convention: hyphenated_lowercase # or 'strict_BEM', or 'hyphenated_BEM', or 'snake_case', or 'camel_case', or a regex pattern
 
   Shorthand:
     enabled: true
+    allowed_shorthands: [1, 2, 3, 4]
 
   SingleLinePerProperty:
     enabled: true
     allow_single_line_rule_sets: true
 
   SingleLinePerSelector:
-    enabled: true
+    enabled: false
 
   SpaceAfterComma:
     enabled: true
+    style: one_space # or 'no_space', or 'at_least_one_space'
 
   SpaceAfterPropertyColon:
     enabled: true
@@ -142,10 +180,17 @@ linters:
   SpaceAfterPropertyName:
     enabled: true
 
+  SpaceAfterVariableName:
+    enabled: true
+
+  SpaceAroundOperator:
+    enabled: true
+    style: one_space # or 'at_least_one_space', or 'no_space'
+
   SpaceBeforeBrace:
     enabled: true
     style: space # or 'new_line'
-    allow_single_line_padding: false
+    allow_single_line_padding: true
 
   SpaceBetweenParens:
     enabled: true
@@ -158,7 +203,13 @@ linters:
   TrailingSemicolon:
     enabled: true
 
+  TrailingWhitespace:
+    enabled: true
+
   TrailingZero:
+    enabled: false
+
+  TransitionAll:
     enabled: false
 
   UnnecessaryMantissa:
@@ -177,11 +228,11 @@ linters:
     enabled: false
     properties: []
 
-  VendorPrefixes:
+  VendorPrefix:
     enabled: true
     identifier_list: base
-    include: []
-    exclude: []
+    additional_identifiers: []
+    excluded_identifiers: []
 
   ZeroUnit:
     enabled: true
