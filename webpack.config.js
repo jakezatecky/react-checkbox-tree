@@ -23,11 +23,11 @@ module.exports = {
 		},
 	],
 	module: {
-		loaders: [
+		rules: [
 			{
 				test: /\.js?$/,
 				exclude: /(node_modules|bower_components|vender_modules)/,
-				loader: 'babel',
+				loader: 'babel-loader',
 			},
 		],
 	},
