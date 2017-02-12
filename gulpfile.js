@@ -1,11 +1,12 @@
 const gulp = require('gulp');
 const eslint = require('gulp-eslint');
-const mocha = require('gulp-mocha-phantomjs');
+const mocha = require('gulp-mocha');
 const header = require('gulp-header');
 const webpack = require('webpack-stream');
 const scsslint = require('gulp-scss-lint');
 const sass = require('gulp-sass');
 const autoprefixer = require('gulp-autoprefixer');
+const babel = require('babel-core/register');
 const pkg = require('./package.json');
 const browserSync = require('browser-sync').create();
 const webpackConfig = require('./webpack.config');
@@ -20,21 +21,18 @@ gulp.task('test-script-format', () =>
 		.pipe(eslint.failOnError())
 );
 
-gulp.task('compile-test-script', () =>
-	gulp.src(['./test/index.js'])
-		.pipe(webpack(webpackConfig))
-		.pipe(gulp.dest('./test/compiled/'))
+gulp.task('test-mocha', ['test-script-format'], () =>
+	gulp.src(['./test/**/*.js'])
+		.pipe(mocha({
+			compilers: {
+				js: babel,
+			},
+		}))
 );
 
-// Disabled for now
-gulp.task('test-mocha', ['script-compile-test'], () =>
-	gulp.src(['test/test.html'])
-		.pipe(mocha({ reporter: 'spec' }))
-);
+gulp.task('test', ['test-script-format', 'test-mocha']);
 
-gulp.task('test-script', ['test-script-format']);
-
-gulp.task('build-script', ['test-script'], () =>
+gulp.task('build-script', ['test'], () =>
 	gulp.src(['./src/index.js'])
 		.pipe(webpack(webpackConfig))
 		.pipe(header(banner, { pkg }))
