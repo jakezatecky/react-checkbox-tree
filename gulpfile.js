@@ -52,6 +52,8 @@ gulp.task('build-style', () =>
 		.pipe(gulp.dest('./lib'))
 );
 
+gulp.task('build', ['build-script', 'build-style']);
+
 gulp.task('build-examples-style', () =>
 	gulp.src('./examples/src/**/*.scss')
 		.pipe(scsslint())
@@ -86,4 +88,5 @@ gulp.task('examples', ['build-examples-style', 'build-examples-script', 'build-e
 	gulp.watch(['./src/sass/**/*.scss', './examples/src/**/*.scss'], ['build-examples-style']);
 	gulp.watch(['./examples/src/**/*.html'], ['build-examples-html']).on('change', browserSync.reload);
 });
-gulp.task('default', ['build-script', 'build-style']);
+
+gulp.task('default', ['build']);
