@@ -2,7 +2,8 @@ const gulp = require('gulp');
 const eslint = require('gulp-eslint');
 const mocha = require('gulp-mocha');
 const header = require('gulp-header');
-const webpack = require('webpack-stream');
+const webpack = require('webpack');
+const webpackStream = require('webpack-stream');
 const scsslint = require('gulp-scss-lint');
 const sass = require('gulp-sass');
 const autoprefixer = require('gulp-autoprefixer');
@@ -34,7 +35,7 @@ gulp.task('test', ['test-script-format', 'test-mocha']);
 
 gulp.task('build-script', ['test'], () =>
 	gulp.src(['./src/index.js'])
-		.pipe(webpack(webpackConfig))
+		.pipe(webpackStream(webpackConfig, webpack))
 		.pipe(header(banner, { pkg }))
 		.pipe(gulp.dest('./lib/'))
 );
@@ -70,7 +71,7 @@ gulp.task('build-examples-style', () =>
 
 gulp.task('build-examples-script', () =>
 	gulp.src(['./examples/src/index.js'])
-		.pipe(webpack(testWebpackConfig))
+		.pipe(webpackStream(testWebpackConfig, webpack))
 		.pipe(gulp.dest('./examples/dist/'))
 		.pipe(browserSync.stream())
 );
