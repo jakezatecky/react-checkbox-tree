@@ -2,6 +2,7 @@ import React from 'react';
 
 import TreeNode from './TreeNode';
 import nodeShape from './nodeShape';
+import uniqueDomId from './uniqueDomId';
 
 class Tree extends React.Component {
 	static propTypes = {
@@ -38,6 +39,8 @@ class Tree extends React.Component {
 
 		this.onCheck = this.onCheck.bind(this);
 		this.onExpand = this.onExpand.bind(this);
+
+		this.id = uniqueDomId('rct');
 	}
 
 	onCheck(node) {
@@ -147,6 +150,7 @@ class Tree extends React.Component {
 					optimisticToggle={this.props.optimisticToggle}
 					rawChildren={node.children}
 					title={node.title}
+					treeId={this.id}
 					value={node.value}
 					onCheck={this.onCheck}
 					onExpand={this.onExpand}

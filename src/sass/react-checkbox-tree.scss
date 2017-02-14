@@ -14,6 +14,15 @@ $rct-label-hover: rgba($rct-icon-color, .1) !default;
     }
   }
 
+  button {
+    line-height: normal;
+    color: inherit;
+
+    &:focus {
+      outline: none;
+    }
+  }
+
   label {
     margin-bottom: 0;
     cursor: pointer;
@@ -21,6 +30,10 @@ $rct-label-hover: rgba($rct-icon-color, .1) !default;
     &:hover {
       background: $rct-label-hover;
     }
+  }
+
+  input {
+    display: none;
   }
 
   .fa {
@@ -41,11 +54,16 @@ $rct-label-hover: rgba($rct-icon-color, .1) !default;
 }
 
 .rct-collapse {
+  border: 0;
+  background: none;
+  cursor: pointer;
+  padding: 0;
+  line-height: normal;
+  color: inherit;
   font-size: 12px;
 
   .fa-chevron-right,
   .fa-chevron-down {
-    cursor: pointer;
     text-align: center;
   }
 

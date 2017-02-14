@@ -8,6 +8,7 @@ class TreeNode extends React.Component {
 		expanded: React.PropTypes.bool.isRequired,
 		optimisticToggle: React.PropTypes.bool.isRequired,
 		title: React.PropTypes.string.isRequired,
+		treeId: React.PropTypes.string.isRequired,
 		value: React.PropTypes.string.isRequired,
 		onCheck: React.PropTypes.func.isRequired,
 		onExpand: React.PropTypes.func.isRequired,
@@ -100,13 +101,17 @@ class TreeNode extends React.Component {
 	}
 
 	render() {
+		const { checked, treeId, title, value } = this.props;
+		const inputId = `${treeId}-${value}`;
+
 		return (
 			<li className="rct-node">
 				<span className="rct-text">
-					<span className="rct-collapse" title="Toggle" onClick={this.onExpand}>
+					<button className="rct-collapse" title="Toggle" onClick={this.onExpand}>
 						{this.renderCollapseIcon()}
-					</span>
-					<label onClick={this.onCheck}>
+					</button>
+					<label htmlFor={inputId}>
+						<input checked={checked === 1} id={inputId} type="checkbox" onChange={this.onCheck} />
 						<span className="rct-checkbox">
 							{this.renderCheckboxIcon()}
 						</span>
@@ -114,7 +119,7 @@ class TreeNode extends React.Component {
 							{this.renderNodeIcon()}
 						</span>
 						<span className="rct-title">
-							{this.props.title}
+							{title}
 						</span>
 					</label>
 				</span>

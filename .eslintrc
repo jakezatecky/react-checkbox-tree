@@ -4,8 +4,6 @@
   "rules": {
     "class-methods-use-this": 0,
     "indent": [2, "tab"],
-    "jsx-a11y/label-has-for": 0,
-    "jsx-a11y/no-static-element-interactions": 0,
     "no-tabs": 0,
     "react/jsx-indent": [2, "tab"],
     "react/jsx-indent-props" : [2, "tab"],

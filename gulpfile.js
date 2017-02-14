@@ -28,6 +28,9 @@ gulp.task('test-mocha', ['test-script-format'], () =>
 			compilers: {
 				js: babel,
 			},
+			require: [
+				'./test/setup.js',
+			],
 		}))
 );
 
