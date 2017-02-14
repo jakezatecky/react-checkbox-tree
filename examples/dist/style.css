@@ -3,13 +3,22 @@
 }
 
 .react-checkbox-tree ol {
-  padding-left: 0;
   margin: 0;
+  padding-left: 0;
   list-style-type: none;
 }
 
 .react-checkbox-tree ol ol {
   padding-left: 24px;
+}
+
+.react-checkbox-tree button {
+  line-height: normal;
+  color: inherit;
+}
+
+.react-checkbox-tree button:focus {
+  outline: none;
 }
 
 .react-checkbox-tree label {
@@ -21,9 +30,13 @@
   background: rgba(51, 51, 204, 0.1);
 }
 
+.react-checkbox-tree input {
+  display: none;
+}
+
 .react-checkbox-tree .fa {
-  width: 14px;
   margin: 0 5px;
+  width: 14px;
 }
 
 .react-checkbox-tree .fa-folder-open-o,
@@ -40,13 +53,18 @@
 }
 
 .rct-collapse {
+  border: 0;
+  background: none;
+  cursor: pointer;
+  padding: 0;
+  line-height: normal;
+  color: inherit;
   font-size: 12px;
 }
 
 .rct-collapse .fa-chevron-right,
 .rct-collapse .fa-chevron-down {
   text-align: center;
-  cursor: pointer;
 }
 
 .rct-collapse > .fa-chevron-right {
@@ -426,5 +444,6 @@ a:hover {
 }
 
 .react-checkbox-tree {
-  font-family: 'Lato', sans-serif;
+  color: #444;
+  font-family: 'Roboto', sans-serif;
 }
