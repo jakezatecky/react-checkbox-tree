@@ -15,13 +15,13 @@ const nodes = [
 						value: '/app/Http/Controllers',
 						title: 'Controllers',
 						children: [{
-							value: '/app/Http/Controllers/WelcomeController.php',
-							title: 'WelcomeController.php',
+							value: '/app/Http/Controllers/WelcomeController.js',
+							title: 'WelcomeController.js',
 						}],
 					},
 					{
-						value: '/app/Http/routes.php',
-						title: 'routes.php',
+						value: '/app/Http/routes.js',
+						title: 'routes.js',
 					},
 				],
 			},
@@ -29,8 +29,8 @@ const nodes = [
 				value: '/app/Providers',
 				title: 'Providers',
 				children: [{
-					value: '/app/Http/Providers/EventServiceProvider.php',
-					title: 'EventServiceProvider.php',
+					value: '/app/Http/Providers/EventServiceProvider.js',
+					title: 'EventServiceProvider.js',
 				}],
 			},
 		],
@@ -40,12 +40,12 @@ const nodes = [
 		title: 'config',
 		children: [
 			{
-				value: '/config/app.php',
-				title: 'app.php',
+				value: '/config/app.js',
+				title: 'app.js',
 			},
 			{
-				value: '/config/database.php',
-				title: 'database.php',
+				value: '/config/database.js',
+				title: 'database.js',
 			},
 		],
 	},
@@ -87,8 +87,8 @@ class PessimisticToggleExample extends React.Component {
 
 		this.state = {
 			checked: [
-				'/app/Http/Controllers/WelcomeController.php',
-				'/app/Http/routes.php',
+				'/app/Http/Controllers/WelcomeController.js',
+				'/app/Http/routes.js',
 				'/public/assets/style.css',
 				'/public/index.html',
 				'/.gitignore',

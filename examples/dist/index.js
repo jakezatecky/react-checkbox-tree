@@ -9783,30 +9783,30 @@ var nodes = [{
 			value: '/app/Http/Controllers',
 			title: 'Controllers',
 			children: [{
-				value: '/app/Http/Controllers/WelcomeController.php',
-				title: 'WelcomeController.php'
+				value: '/app/Http/Controllers/WelcomeController.js',
+				title: 'WelcomeController.js'
 			}]
 		}, {
-			value: '/app/Http/routes.php',
-			title: 'routes.php'
+			value: '/app/Http/routes.js',
+			title: 'routes.js'
 		}]
 	}, {
 		value: '/app/Providers',
 		title: 'Providers',
 		children: [{
-			value: '/app/Http/Providers/EventServiceProvider.php',
-			title: 'EventServiceProvider.php'
+			value: '/app/Http/Providers/EventServiceProvider.js',
+			title: 'EventServiceProvider.js'
 		}]
 	}]
 }, {
 	value: '/config',
 	title: 'config',
 	children: [{
-		value: '/config/app.php',
-		title: 'app.php'
+		value: '/config/app.js',
+		title: 'app.js'
 	}, {
-		value: '/config/database.php',
-		title: 'database.php'
+		value: '/config/database.js',
+		title: 'database.js'
 	}]
 }, {
 	value: '/public',
@@ -9842,7 +9842,7 @@ var BasicExample = function (_React$Component) {
 		var _this = _possibleConstructorReturn(this, (BasicExample.__proto__ || Object.getPrototypeOf(BasicExample)).call(this));
 
 		_this.state = {
-			checked: ['/app/Http/Controllers/WelcomeController.php', '/app/Http/routes.php', '/public/assets/style.css', '/public/index.html', '/.gitignore'],
+			checked: ['/app/Http/Controllers/WelcomeController.js', '/app/Http/routes.js', '/public/assets/style.css', '/public/index.html', '/.gitignore'],
 			expanded: ['/app']
 		};
 
@@ -9924,30 +9924,30 @@ var nodes = [{
 			value: '/app/Http/Controllers',
 			title: 'Controllers',
 			children: [{
-				value: '/app/Http/Controllers/WelcomeController.php',
-				title: 'WelcomeController.php'
+				value: '/app/Http/Controllers/WelcomeController.js',
+				title: 'WelcomeController.js'
 			}]
 		}, {
-			value: '/app/Http/routes.php',
-			title: 'routes.php'
+			value: '/app/Http/routes.js',
+			title: 'routes.js'
 		}]
 	}, {
 		value: '/app/Providers',
 		title: 'Providers',
 		children: [{
-			value: '/app/Http/Providers/EventServiceProvider.php',
-			title: 'EventServiceProvider.php'
+			value: '/app/Http/Providers/EventServiceProvider.js',
+			title: 'EventServiceProvider.js'
 		}]
 	}]
 }, {
 	value: '/config',
 	title: 'config',
 	children: [{
-		value: '/config/app.php',
-		title: 'app.php'
+		value: '/config/app.js',
+		title: 'app.js'
 	}, {
-		value: '/config/database.php',
-		title: 'database.php'
+		value: '/config/database.js',
+		title: 'database.js'
 	}]
 }, {
 	value: '/public',
@@ -9983,7 +9983,7 @@ var PessimisticToggleExample = function (_React$Component) {
 		var _this = _possibleConstructorReturn(this, (PessimisticToggleExample.__proto__ || Object.getPrototypeOf(PessimisticToggleExample)).call(this));
 
 		_this.state = {
-			checked: ['/app/Http/Controllers/WelcomeController.php', '/app/Http/routes.php', '/public/assets/style.css', '/public/index.html', '/.gitignore'],
+			checked: ['/app/Http/Controllers/WelcomeController.js', '/app/Http/routes.js', '/public/assets/style.css', '/public/index.html', '/.gitignore'],
 			expanded: ['/app']
 		};
 
