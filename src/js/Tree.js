@@ -6,8 +6,6 @@ import uniqueDomId from './uniqueDomId';
 
 class Tree extends React.Component {
 	static propTypes = {
-		checked: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
-		expanded: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
 		nodes: React.PropTypes.arrayOf(
 			React.PropTypes.oneOfType([
 				React.PropTypes.shape(nodeShape),
@@ -17,12 +15,14 @@ class Tree extends React.Component {
 				}),
 			]),
 		).isRequired,
-		onCheck: React.PropTypes.func.isRequired,
-		onExpand: React.PropTypes.func.isRequired,
 
+		checked: React.PropTypes.arrayOf(React.PropTypes.string),
+		expanded: React.PropTypes.arrayOf(React.PropTypes.string),
 		name: React.PropTypes.string,
 		nameAsArray: React.PropTypes.bool,
 		optimisticToggle: React.PropTypes.bool,
+		onCheck: React.PropTypes.func,
+		onExpand: React.PropTypes.func,
 	};
 
 	static defaultProps = {
@@ -32,6 +32,8 @@ class Tree extends React.Component {
 		nameAsArray: false,
 		nodes: [],
 		optimisticToggle: true,
+		onCheck: () => {},
+		onExpand: () => {},
 	};
 
 	constructor(props) {

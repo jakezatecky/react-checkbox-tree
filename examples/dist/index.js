@@ -6990,17 +6990,17 @@ var Tree = function (_React$Component) {
 }(_react2.default.Component);
 
 Tree.propTypes = {
-	checked: _react2.default.PropTypes.arrayOf(_react2.default.PropTypes.string).isRequired,
-	expanded: _react2.default.PropTypes.arrayOf(_react2.default.PropTypes.string).isRequired,
 	nodes: _react2.default.PropTypes.arrayOf(_react2.default.PropTypes.oneOfType([_react2.default.PropTypes.shape(_nodeShape2.default), _react2.default.PropTypes.shape(_extends({}, _nodeShape2.default, {
 		children: _react2.default.PropTypes.arrayOf(_nodeShape2.default)
 	}))])).isRequired,
-	onCheck: _react2.default.PropTypes.func.isRequired,
-	onExpand: _react2.default.PropTypes.func.isRequired,
 
+	checked: _react2.default.PropTypes.arrayOf(_react2.default.PropTypes.string),
+	expanded: _react2.default.PropTypes.arrayOf(_react2.default.PropTypes.string),
 	name: _react2.default.PropTypes.string,
 	nameAsArray: _react2.default.PropTypes.bool,
-	optimisticToggle: _react2.default.PropTypes.bool
+	optimisticToggle: _react2.default.PropTypes.bool,
+	onCheck: _react2.default.PropTypes.func,
+	onExpand: _react2.default.PropTypes.func
 };
 Tree.defaultProps = {
 	checked: [],
@@ -7008,7 +7008,9 @@ Tree.defaultProps = {
 	name: undefined,
 	nameAsArray: false,
 	nodes: [],
-	optimisticToggle: true
+	optimisticToggle: true,
+	onCheck: function onCheck() {},
+	onExpand: function onExpand() {}
 };
 exports.default = Tree;
 
