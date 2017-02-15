@@ -118,7 +118,7 @@ class TreeNode extends React.Component {
 						<span className="rct-icon">
 							{this.renderNodeIcon()}
 						</span>
-						<span className="rct-label">
+						<span className="rct-title">
 							{label}
 						</span>
 					</label>
