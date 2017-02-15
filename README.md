@@ -29,15 +29,12 @@ import React from 'react';
 import CheckboxTree from 'react-checkbox-tree';
 
 const nodes = [{
-    value: 'node-1',
-    title: 'Parent Node 1',
-    children: [{
-        value: 'node-1-1',
-        title: 'Leaf Node 1-1',
-    }, {
-        value: 'node-1-2',
-        title: 'Leaf Node 1-2',
-    }],
+    value: 'mars',
+    title: 'Mars',
+    children: [
+        { value: 'phobos', title: 'Phobos' },
+        { value: 'deimos', title: 'Deimos' },
+    ],
 }];
 
 class Widget extends React.Component {
