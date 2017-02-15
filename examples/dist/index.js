@@ -6913,9 +6913,9 @@ var Tree = function (_React$Component) {
 						key: key,
 						checked: checked,
 						expanded: node.expanded,
+						label: node.label || node.title,
 						optimisticToggle: _this6.props.optimisticToggle,
 						rawChildren: node.children,
-						title: node.title,
 						treeId: _this6.id,
 						value: node.value,
 						onCheck: _this6.onCheck,
@@ -9777,62 +9777,62 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 var nodes = [{
 	value: '/app',
-	title: 'app',
+	label: 'app',
 	children: [{
 		value: '/app/Http',
-		title: 'Http',
+		label: 'Http',
 		children: [{
 			value: '/app/Http/Controllers',
-			title: 'Controllers',
+			label: 'Controllers',
 			children: [{
 				value: '/app/Http/Controllers/WelcomeController.js',
-				title: 'WelcomeController.js'
+				label: 'WelcomeController.js'
 			}]
 		}, {
 			value: '/app/Http/routes.js',
-			title: 'routes.js'
+			label: 'routes.js'
 		}]
 	}, {
 		value: '/app/Providers',
-		title: 'Providers',
+		label: 'Providers',
 		children: [{
 			value: '/app/Http/Providers/EventServiceProvider.js',
-			title: 'EventServiceProvider.js'
+			label: 'EventServiceProvider.js'
 		}]
 	}]
 }, {
 	value: '/config',
-	title: 'config',
+	label: 'config',
 	children: [{
 		value: '/config/app.js',
-		title: 'app.js'
+		label: 'app.js'
 	}, {
 		value: '/config/database.js',
-		title: 'database.js'
+		label: 'database.js'
 	}]
 }, {
 	value: '/public',
-	title: 'public',
+	label: 'public',
 	children: [{
 		value: '/public/assets/',
-		title: 'assets',
+		label: 'assets',
 		children: [{
 			value: '/public/assets/style.css',
-			title: 'style.css'
+			label: 'style.css'
 		}]
 	}, {
 		value: '/public/index.html',
-		title: 'index.html'
+		label: 'index.html'
 	}]
 }, {
 	value: '/.env',
-	title: '.env'
+	label: '.env'
 }, {
 	value: '/.gitignore',
-	title: '.gitignore'
+	label: '.gitignore'
 }, {
 	value: '/README.md',
-	title: 'README.md'
+	label: 'README.md'
 }];
 
 var BasicExample = function (_React$Component) {
@@ -9918,62 +9918,62 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 var nodes = [{
 	value: '/app',
-	title: 'app',
+	label: 'app',
 	children: [{
 		value: '/app/Http',
-		title: 'Http',
+		label: 'Http',
 		children: [{
 			value: '/app/Http/Controllers',
-			title: 'Controllers',
+			label: 'Controllers',
 			children: [{
 				value: '/app/Http/Controllers/WelcomeController.js',
-				title: 'WelcomeController.js'
+				label: 'WelcomeController.js'
 			}]
 		}, {
 			value: '/app/Http/routes.js',
-			title: 'routes.js'
+			label: 'routes.js'
 		}]
 	}, {
 		value: '/app/Providers',
-		title: 'Providers',
+		label: 'Providers',
 		children: [{
 			value: '/app/Http/Providers/EventServiceProvider.js',
-			title: 'EventServiceProvider.js'
+			label: 'EventServiceProvider.js'
 		}]
 	}]
 }, {
 	value: '/config',
-	title: 'config',
+	label: 'config',
 	children: [{
 		value: '/config/app.js',
-		title: 'app.js'
+		label: 'app.js'
 	}, {
 		value: '/config/database.js',
-		title: 'database.js'
+		label: 'database.js'
 	}]
 }, {
 	value: '/public',
-	title: 'public',
+	label: 'public',
 	children: [{
 		value: '/public/assets/',
-		title: 'assets',
+		label: 'assets',
 		children: [{
 			value: '/public/assets/style.css',
-			title: 'style.css'
+			label: 'style.css'
 		}]
 	}, {
 		value: '/public/index.html',
-		title: 'index.html'
+		label: 'index.html'
 	}]
 }, {
 	value: '/.env',
-	title: '.env'
+	label: '.env'
 }, {
 	value: '/.gitignore',
-	title: '.gitignore'
+	label: '.gitignore'
 }, {
 	value: '/README.md',
-	title: 'README.md'
+	label: 'README.md'
 }];
 
 var PessimisticToggleExample = function (_React$Component) {
@@ -10164,7 +10164,7 @@ var TreeNode = function (_React$Component) {
 			var _props = this.props;
 			var checked = _props.checked;
 			var treeId = _props.treeId;
-			var title = _props.title;
+			var label = _props.label;
 			var value = _props.value;
 
 			var inputId = treeId + '-' + value;
@@ -10196,8 +10196,8 @@ var TreeNode = function (_React$Component) {
 						),
 						_react2.default.createElement(
 							'span',
-							{ className: 'rct-title' },
-							title
+							{ className: 'rct-label' },
+							label
 						)
 					)
 				),
@@ -10212,8 +10212,8 @@ var TreeNode = function (_React$Component) {
 TreeNode.propTypes = {
 	checked: _react2.default.PropTypes.number.isRequired,
 	expanded: _react2.default.PropTypes.bool.isRequired,
+	label: _react2.default.PropTypes.string.isRequired,
 	optimisticToggle: _react2.default.PropTypes.bool.isRequired,
-	title: _react2.default.PropTypes.string.isRequired,
 	treeId: _react2.default.PropTypes.string.isRequired,
 	value: _react2.default.PropTypes.string.isRequired,
 	onCheck: _react2.default.PropTypes.func.isRequired,

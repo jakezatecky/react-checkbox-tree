@@ -149,9 +149,9 @@ class Tree extends React.Component {
 					key={key}
 					checked={checked}
 					expanded={node.expanded}
+					label={node.label || node.title}
 					optimisticToggle={this.props.optimisticToggle}
 					rawChildren={node.children}
-					title={node.title}
 					treeId={this.id}
 					value={node.value}
 					onCheck={this.onCheck}

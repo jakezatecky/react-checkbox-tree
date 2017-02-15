@@ -30,10 +30,10 @@ import CheckboxTree from 'react-checkbox-tree';
 
 const nodes = [{
     value: 'mars',
-    title: 'Mars',
+    label: 'Mars',
     children: [
-        { value: 'phobos', title: 'Phobos' },
-        { value: 'deimos', title: 'Deimos' },
+        { value: 'phobos', label: 'Phobos' },
+        { value: 'deimos', label: 'Deimos' },
     ],
 }];
 

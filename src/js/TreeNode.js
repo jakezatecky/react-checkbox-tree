@@ -6,8 +6,8 @@ class TreeNode extends React.Component {
 	static propTypes = {
 		checked: React.PropTypes.number.isRequired,
 		expanded: React.PropTypes.bool.isRequired,
+		label: React.PropTypes.string.isRequired,
 		optimisticToggle: React.PropTypes.bool.isRequired,
-		title: React.PropTypes.string.isRequired,
 		treeId: React.PropTypes.string.isRequired,
 		value: React.PropTypes.string.isRequired,
 		onCheck: React.PropTypes.func.isRequired,
@@ -101,7 +101,7 @@ class TreeNode extends React.Component {
 	}
 
 	render() {
-		const { checked, treeId, title, value } = this.props;
+		const { checked, treeId, label, value } = this.props;
 		const inputId = `${treeId}-${value}`;
 
 		return (
@@ -118,8 +118,8 @@ class TreeNode extends React.Component {
 						<span className="rct-icon">
 							{this.renderNodeIcon()}
 						</span>
-						<span className="rct-title">
-							{title}
+						<span className="rct-label">
+							{label}
 						</span>
 					</label>
 				</span>

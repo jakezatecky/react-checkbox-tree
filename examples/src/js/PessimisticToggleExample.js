@@ -5,79 +5,79 @@ import Tree from '../../../src/js/Tree';
 const nodes = [
 	{
 		value: '/app',
-		title: 'app',
+		label: 'app',
 		children: [
 			{
 				value: '/app/Http',
-				title: 'Http',
+				label: 'Http',
 				children: [
 					{
 						value: '/app/Http/Controllers',
-						title: 'Controllers',
+						label: 'Controllers',
 						children: [{
 							value: '/app/Http/Controllers/WelcomeController.js',
-							title: 'WelcomeController.js',
+							label: 'WelcomeController.js',
 						}],
 					},
 					{
 						value: '/app/Http/routes.js',
-						title: 'routes.js',
+						label: 'routes.js',
 					},
 				],
 			},
 			{
 				value: '/app/Providers',
-				title: 'Providers',
+				label: 'Providers',
 				children: [{
 					value: '/app/Http/Providers/EventServiceProvider.js',
-					title: 'EventServiceProvider.js',
+					label: 'EventServiceProvider.js',
 				}],
 			},
 		],
 	},
 	{
 		value: '/config',
-		title: 'config',
+		label: 'config',
 		children: [
 			{
 				value: '/config/app.js',
-				title: 'app.js',
+				label: 'app.js',
 			},
 			{
 				value: '/config/database.js',
-				title: 'database.js',
+				label: 'database.js',
 			},
 		],
 	},
 	{
 		value: '/public',
-		title: 'public',
+		label: 'public',
 		children: [
 			{
 				value: '/public/assets/',
-				title: 'assets',
+				label: 'assets',
 				children: [{
 					value: '/public/assets/style.css',
-					title: 'style.css',
+					label: 'style.css',
 				}],
 			},
 			{
 				value: '/public/index.html',
-				title: 'index.html',
+				label: 'index.html',
 			},
 		],
 	},
 	{
 		value: '/.env',
-		title: '.env',
+		label: '.env',
 	},
 	{
 		value: '/.gitignore',
-		title: '.gitignore',
+		label: '.gitignore',
 	},
 	{
 		value: '/README.md',
-		title: 'README.md',
+		label: 'README.md',
 	},
 ];
 
