@@ -9874,7 +9874,6 @@ var BasicExample = function (_React$Component) {
 			return _react2.default.createElement(_Tree2.default, {
 				checked: checked,
 				expanded: expanded,
-				name: 'airports',
 				nodes: nodes,
 				onCheck: this.onCheck,
 				onExpand: this.onExpand
@@ -10015,7 +10014,6 @@ var PessimisticToggleExample = function (_React$Component) {
 			return _react2.default.createElement(_Tree2.default, {
 				checked: checked,
 				expanded: expanded,
-				name: 'airports',
 				nodes: nodes,
 				optimisticToggle: false,
 				onCheck: this.onCheck,

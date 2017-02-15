@@ -117,7 +117,6 @@ class BasicExample extends React.Component {
 			<Tree
 				checked={checked}
 				expanded={expanded}
-				name="airports"
 				nodes={nodes}
 				onCheck={this.onCheck}
 				onExpand={this.onExpand}
