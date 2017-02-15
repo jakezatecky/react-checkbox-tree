@@ -25,6 +25,7 @@ npm install react-checkbox-tree --save
 A quick usage example is included below. Note that the react-checkbox-tree component is [controlled](https://facebook.github.io/react/docs/forms.html#controlled-components). In other words, it is stateless. You must update its `checked` and `expanded` properties whenever a change occurs.
 
 ``` javascript
+import React from 'react';
 import CheckboxTree from 'react-checkbox-tree';
 
 const nodes = [{
@@ -35,7 +36,7 @@ const nodes = [{
         title: 'Leaf Node 1-1',
     }, {
         value: 'node-1-2',
-        title: 'Leaf Node 1-2'
+        title: 'Leaf Node 1-2',
     }],
 }];
 
@@ -54,7 +55,6 @@ class Widget extends React.Component {
 
         return (
             <Tree
-                name="tree_nodes"
                 nodes={nodes}
                 checked={checked}
                 expanded={expanded}
