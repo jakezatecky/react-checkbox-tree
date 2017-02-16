@@ -6,6 +6,10 @@
 
 * [#20]: Add support for `label` in `nodes` property and deprecate `title`
 
+### New Features
+
+* [#21]: Add greater accessibility support
+
 ## [v0.4.0](https://github.com/jakezatecky/react-dual-listbox/compare/v0.3.0...v0.4.0) (2017-01-27)
 
 ### Bug Fixes

@@ -10175,7 +10175,7 @@ var TreeNode = function (_React$Component) {
 					{ className: 'rct-text' },
 					_react2.default.createElement(
 						'button',
-						{ className: 'rct-collapse', title: 'Toggle', onClick: this.onExpand },
+						{ 'aria-label': 'Toggle', className: 'rct-collapse', title: 'Toggle', onClick: this.onExpand },
 						this.renderCollapseIcon()
 					),
 					_react2.default.createElement(
@@ -10194,7 +10194,7 @@ var TreeNode = function (_React$Component) {
 						),
 						_react2.default.createElement(
 							'span',
-							{ className: 'rct-label' },
+							{ className: 'rct-title' },
 							label
 						)
 					)
