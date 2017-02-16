@@ -6810,7 +6810,7 @@ var Tree = function (_React$Component) {
 
 
 			return nodes.map(function (node) {
-				var formatted = Object.create(node);
+				var formatted = _extends({}, node);
 
 				formatted.checked = checked.indexOf(node.value) > -1;
 				formatted.expanded = expanded.indexOf(node.value) > -1;

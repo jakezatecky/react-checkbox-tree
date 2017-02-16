@@ -61,7 +61,7 @@ class Tree extends React.Component {
 		const { checked, expanded } = this.props;
 
 		return nodes.map((node) => {
-			const formatted = Object.create(node);
+			const formatted = { ...node };
 
 			formatted.checked = checked.indexOf(node.value) > -1;
 			formatted.expanded = expanded.indexOf(node.value) > -1;
