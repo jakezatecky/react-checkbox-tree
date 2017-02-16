@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## [v0.4.1](https://github.com/jakezatecky/react-dual-listbox/compare/v0.4.0...v0.4.1) (2017-02-15)
+## [v0.4.1](https://github.com/jakezatecky/react-checkbox-tree/compare/v0.4.0...v0.4.1) (2017-02-15)
 
 ### Deprecations
 
@@ -10,7 +10,7 @@
 
 * [#21]: Add greater accessibility support
 
-## [v0.4.0](https://github.com/jakezatecky/react-dual-listbox/compare/v0.3.0...v0.4.0) (2017-01-27)
+## [v0.4.0](https://github.com/jakezatecky/react-checkbox-tree/compare/v0.3.0...v0.4.0) (2017-01-27)
 
 ### Bug Fixes
 
