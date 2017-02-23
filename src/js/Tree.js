@@ -1,8 +1,8 @@
 import React from 'react';
+import shortid from 'shortid';
 
 import TreeNode from './TreeNode';
 import nodeShape from './nodeShape';
-import uniqueDomId from './uniqueDomId';
 
 class Tree extends React.Component {
 	static propTypes = {
@@ -42,7 +42,7 @@ class Tree extends React.Component {
 		this.onCheck = this.onCheck.bind(this);
 		this.onExpand = this.onExpand.bind(this);
 
-		this.id = uniqueDomId('rct');
+		this.id = `rct-${shortid.generate()}`;
 	}
 
 	onCheck(node) {
