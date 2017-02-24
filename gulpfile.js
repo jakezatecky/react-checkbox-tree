@@ -7,7 +7,6 @@ const webpackStream = require('webpack-stream');
 const scsslint = require('gulp-scss-lint');
 const sass = require('gulp-sass');
 const autoprefixer = require('gulp-autoprefixer');
-const babel = require('babel-core/register');
 const pkg = require('./package.json');
 const browserSync = require('browser-sync').create();
 const webpackConfig = require('./webpack.config');
@@ -25,9 +24,9 @@ gulp.task('test-script-format', () =>
 gulp.task('test-mocha', ['test-script-format'], () =>
 	gulp.src(['./test/**/*.js'])
 		.pipe(mocha({
-			compilers: {
-				js: babel,
-			},
+			compilers: [
+				'js:babel-core/register',
+			],
 			require: [
 				'./test/setup.js',
 			],
