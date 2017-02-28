@@ -14,7 +14,7 @@ class TreeNode extends React.Component {
 		onExpand: React.PropTypes.func.isRequired,
 
 		children: React.PropTypes.node,
-		rawChildren: React.PropTypes.arrayOf(React.PropTypes.shape(nodeShape)),
+		rawChildren: React.PropTypes.arrayOf(nodeShape),
 	};
 
 	static defaultProps = {

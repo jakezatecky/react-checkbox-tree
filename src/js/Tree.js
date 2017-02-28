@@ -6,15 +6,7 @@ import nodeShape from './nodeShape';
 
 class Tree extends React.Component {
 	static propTypes = {
-		nodes: React.PropTypes.arrayOf(
-			React.PropTypes.oneOfType([
-				React.PropTypes.shape(nodeShape),
-				React.PropTypes.shape({
-					...nodeShape,
-					children: React.PropTypes.arrayOf(nodeShape),
-				}),
-			]),
-		).isRequired,
+		nodes: React.PropTypes.arrayOf(nodeShape).isRequired,
 
 		checked: React.PropTypes.arrayOf(React.PropTypes.string),
 		expanded: React.PropTypes.arrayOf(React.PropTypes.string),
