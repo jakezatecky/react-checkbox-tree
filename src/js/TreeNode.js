@@ -81,15 +81,15 @@ class TreeNode extends React.Component {
 	}
 
 	renderNodeIcon() {
-		if (this.props.rawChildren !== null) {
-			if (!this.props.expanded) {
-				return <i className="fa fa-folder-o" />;
-			}
-
-			return <i className="fa fa-folder-open-o" />;
+		if (this.props.rawChildren === null) {
+			return <i className="fa fa-file-o" />;
 		}
 
-		return <i className="fa fa-file-o" />;
+		if (!this.props.expanded) {
+			return <i className="fa fa-folder-o" />;
+		}
+
+		return <i className="fa fa-folder-open-o" />;
 	}
 
 	renderChildren() {
