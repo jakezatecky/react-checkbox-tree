@@ -57,15 +57,27 @@ class TreeNode extends React.Component {
 	}
 
 	renderCollapseIcon() {
-		if (this.props.rawChildren === null) {
-			return <i className="fa" />;
-		}
-
 		if (!this.props.expanded) {
 			return <i className="fa fa-chevron-right" />;
 		}
 
 		return <i className="fa fa-chevron-down" />;
+	}
+
+	renderCollapseButton() {
+		if (this.props.rawChildren === null) {
+			return (
+				<span className="rct-collapse">
+					<i className="fa" />
+				</span>
+			);
+		}
+
+		return (
+			<button aria-label="Toggle" className="rct-collapse rct-collapse-btn" title="Toggle" onClick={this.onExpand}>
+				{this.renderCollapseIcon()}
+			</button>
+		);
 	}
 
 	renderCheckboxIcon() {
@@ -107,9 +119,7 @@ class TreeNode extends React.Component {
 		return (
 			<li className="rct-node">
 				<span className="rct-text">
-					<button aria-label="Toggle" className="rct-collapse" title="Toggle" onClick={this.onExpand}>
-						{this.renderCollapseIcon()}
-					</button>
+					{this.renderCollapseButton()}
 					<label htmlFor={inputId}>
 						<input checked={checked === 1} id={inputId} type="checkbox" onChange={this.onCheck} />
 						<span className="rct-checkbox">
