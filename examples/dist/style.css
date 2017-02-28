@@ -55,11 +55,14 @@
 .rct-collapse {
   border: 0;
   background: none;
-  cursor: pointer;
   padding: 0;
   line-height: normal;
   color: inherit;
   font-size: 12px;
+}
+
+.rct-collapse.rct-collapse-btn {
+  cursor: pointer;
 }
 
 .rct-collapse .fa-chevron-right,
