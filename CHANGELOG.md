@@ -2,7 +2,7 @@
 
 ## [v0.4.2](https://github.com/jakezatecky/react-checkbox-tree/compare/v0.4.1...v0.4.) (2016-02-27)
 
-## Bug Fixes
+### Bug Fixes
 
 * [#22]: Remove expand-like behavior on nodes without children
 * [#23]: Fix issue where property validation was not occurring on node items
