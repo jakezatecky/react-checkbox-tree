@@ -44,4 +44,102 @@ describe('<TreeNode />', () => {
 			));
 		});
 	});
+
+	describe('expanded', () => {
+		it('should render children when set to true', () => {
+			const wrapper = shallow(
+				<TreeNode
+					checked={0}
+					expanded
+					label="Jupiter"
+					optimisticToggle
+					rawChildren={[{ value: 'europa', label: 'Europa' }]}
+					treeId="id"
+					value="jupiter"
+					onCheck={() => {}}
+					onExpand={() => {}}
+				>
+					<TreeNode
+						checked={0}
+						expanded={false}
+						label="Europa"
+						optimisticToggle
+						treeId="id"
+						value="europa"
+						onCheck={() => {}}
+						onExpand={() => {}}
+					/>
+				</TreeNode>,
+			);
+
+			assert.equal('europa', wrapper.find(TreeNode).prop('value'));
+		});
+
+		it('should not render children when set to false', () => {
+			const wrapper = shallow(
+				<TreeNode
+					checked={0}
+					expanded={false}
+					label="Jupiter"
+					optimisticToggle
+					rawChildren={[{ value: 'europa', label: 'Europa' }]}
+					treeId="id"
+					value="jupiter"
+					onCheck={() => {}}
+					onExpand={() => {}}
+				>
+					<TreeNode
+						checked={0}
+						expanded={false}
+						label="Europa"
+						optimisticToggle
+						treeId="id"
+						value="europa"
+						onCheck={() => {}}
+						onExpand={() => {}}
+					/>
+				</TreeNode>,
+			);
+
+			assert.isFalse(wrapper.find(TreeNode).exists());
+		});
+
+		it('should render expanded icons when set to true', () => {
+			const wrapper = shallow(
+				<TreeNode
+					checked={0}
+					expanded
+					label="Jupiter"
+					optimisticToggle
+					rawChildren={[{ value: 'europa', label: 'Europa' }]}
+					treeId="id"
+					value="jupiter"
+					onCheck={() => {}}
+					onExpand={() => {}}
+				/>,
+			);
+
+			assert.isTrue(wrapper.contains(<i className="fa fa-chevron-down" />));
+			assert.isTrue(wrapper.contains(<i className="fa fa-folder-open-o" />));
+		});
+
+		it('should render collapsed icons when set to false', () => {
+			const wrapper = shallow(
+				<TreeNode
+					checked={0}
+					expanded={false}
+					label="Jupiter"
+					optimisticToggle
+					rawChildren={[{ value: 'europa', label: 'Europa' }]}
+					treeId="id"
+					value="jupiter"
+					onCheck={() => {}}
+					onExpand={() => {}}
+				/>,
+			);
+
+			assert.isTrue(wrapper.contains(<i className="fa fa-chevron-right" />));
+			assert.isTrue(wrapper.contains(<i className="fa fa-folder-o" />));
+		});
+	});
 });
