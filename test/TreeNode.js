@@ -24,6 +24,15 @@ describe('<TreeNode />', () => {
 
 			assert.isTrue(wrapper.find('.rct-node').exists());
 		});
+
+		it('should render a label associated with a checkbox', () => {
+			const wrapper = shallow(
+				<TreeNode {...baseProps} treeId="planets" value="jupiter" />,
+			);
+
+			assert.equal('planets-jupiter', wrapper.find('label').prop('htmlFor'));
+			assert.equal('planets-jupiter', wrapper.find('label input[type="checkbox"]').prop('id'));
+		});
 	});
 
 	describe('label', () => {
