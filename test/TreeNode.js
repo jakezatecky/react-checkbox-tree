@@ -4,6 +4,17 @@ import { assert } from 'chai';
 
 import TreeNode from '../src/js/TreeNode';
 
+const baseProps = {
+	checked: 0,
+	expanded: false,
+	label: 'Jupiter',
+	optimisticToggle: true,
+	treeId: 'id',
+	value: 'jupiter',
+	onCheck: () => {},
+	onExpand: () => {},
+};
+
 describe('<TreeNode />', () => {
 	describe('component', () => {
 		it('should render the rct-node container', () => {
@@ -42,6 +53,44 @@ describe('<TreeNode />', () => {
 			assert.isTrue(wrapper.contains(
 				<span className="rct-title">Europa</span>,
 			));
+		});
+	});
+
+	describe('checked', () => {
+		it('should render icons associated with each check state', () => {
+			const iconMap = {
+				0: <i className="fa fa-square-o" />,
+				1: <i className="fa fa-check-square-o" />,
+				2: <i className="fa fa-check-square-o rct-half-checked" />,
+			};
+
+			Object.keys(iconMap).forEach((state) => {
+				const wrapper = shallow(
+					<TreeNode {...baseProps} checked={parseInt(state, 10)} />,
+				);
+
+				assert.isTrue(wrapper.contains(iconMap[state]));
+			});
+		});
+
+		it('should render an unchecked input element when not set to 1', () => {
+			const wrapper1 = shallow(
+				<TreeNode {...baseProps} checked={0} />,
+			);
+			const wrapper2 = shallow(
+				<TreeNode {...baseProps} checked={2} />,
+			);
+
+			assert.isFalse(wrapper1.find('input[type="checkbox"]').prop('checked'));
+			assert.isFalse(wrapper2.find('input[type="checkbox"]').prop('checked'));
+		});
+
+		it('should render a checked input element when set to 1', () => {
+			const wrapper = shallow(
+				<TreeNode {...baseProps} checked={1} />,
+			);
+
+			assert.isTrue(wrapper.find('input[type="checkbox"]').prop('checked'));
 		});
 	});
 
