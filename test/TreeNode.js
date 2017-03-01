@@ -19,16 +19,7 @@ describe('<TreeNode />', () => {
 	describe('component', () => {
 		it('should render the rct-node container', () => {
 			const wrapper = shallow(
-				<TreeNode
-					checked={0}
-					expanded={false}
-					label="Europa"
-					optimisticToggle
-					treeId="id"
-					value="europa"
-					onCheck={() => {}}
-					onExpand={() => {}}
-				/>,
+				<TreeNode {...baseProps} />,
 			);
 
 			assert.isTrue(wrapper.find('.rct-node').exists());
@@ -38,16 +29,7 @@ describe('<TreeNode />', () => {
 	describe('label', () => {
 		it('should render the node\'s label', () => {
 			const wrapper = shallow(
-				<TreeNode
-					checked={0}
-					expanded={false}
-					label="Europa"
-					optimisticToggle
-					treeId="id"
-					value="europa"
-					onCheck={() => {}}
-					onExpand={() => {}}
-				/>,
+				<TreeNode {...baseProps} label="Europa" value="europa" />,
 			);
 
 			assert.isTrue(wrapper.contains(
@@ -97,27 +79,8 @@ describe('<TreeNode />', () => {
 	describe('expanded', () => {
 		it('should render children when set to true', () => {
 			const wrapper = shallow(
-				<TreeNode
-					checked={0}
-					expanded
-					label="Jupiter"
-					optimisticToggle
-					rawChildren={[{ value: 'europa', label: 'Europa' }]}
-					treeId="id"
-					value="jupiter"
-					onCheck={() => {}}
-					onExpand={() => {}}
-				>
-					<TreeNode
-						checked={0}
-						expanded={false}
-						label="Europa"
-						optimisticToggle
-						treeId="id"
-						value="europa"
-						onCheck={() => {}}
-						onExpand={() => {}}
-					/>
+				<TreeNode {...baseProps} expanded rawChildren={[{ value: 'europa', label: 'Europa' }]}>
+					<TreeNode {...baseProps} label="Europa" value="europa" />
 				</TreeNode>,
 			);
 
@@ -126,27 +89,8 @@ describe('<TreeNode />', () => {
 
 		it('should not render children when set to false', () => {
 			const wrapper = shallow(
-				<TreeNode
-					checked={0}
-					expanded={false}
-					label="Jupiter"
-					optimisticToggle
-					rawChildren={[{ value: 'europa', label: 'Europa' }]}
-					treeId="id"
-					value="jupiter"
-					onCheck={() => {}}
-					onExpand={() => {}}
-				>
-					<TreeNode
-						checked={0}
-						expanded={false}
-						label="Europa"
-						optimisticToggle
-						treeId="id"
-						value="europa"
-						onCheck={() => {}}
-						onExpand={() => {}}
-					/>
+				<TreeNode {...baseProps} expanded={false} rawChildren={[{ value: 'europa', label: 'Europa' }]}>
+					<TreeNode {...baseProps} />
 				</TreeNode>,
 			);
 
@@ -155,17 +99,7 @@ describe('<TreeNode />', () => {
 
 		it('should render expanded icons when set to true', () => {
 			const wrapper = shallow(
-				<TreeNode
-					checked={0}
-					expanded
-					label="Jupiter"
-					optimisticToggle
-					rawChildren={[{ value: 'europa', label: 'Europa' }]}
-					treeId="id"
-					value="jupiter"
-					onCheck={() => {}}
-					onExpand={() => {}}
-				/>,
+				<TreeNode {...baseProps} expanded rawChildren={[{ value: 'europa', label: 'Europa' }]} />,
 			);
 
 			assert.isTrue(wrapper.contains(<i className="fa fa-chevron-down" />));
@@ -174,17 +108,7 @@ describe('<TreeNode />', () => {
 
 		it('should render collapsed icons when set to false', () => {
 			const wrapper = shallow(
-				<TreeNode
-					checked={0}
-					expanded={false}
-					label="Jupiter"
-					optimisticToggle
-					rawChildren={[{ value: 'europa', label: 'Europa' }]}
-					treeId="id"
-					value="jupiter"
-					onCheck={() => {}}
-					onExpand={() => {}}
-				/>,
+				<TreeNode {...baseProps} expanded={false} rawChildren={[{ value: 'europa', label: 'Europa' }]} />,
 			);
 
 			assert.isTrue(wrapper.contains(<i className="fa fa-chevron-right" />));
