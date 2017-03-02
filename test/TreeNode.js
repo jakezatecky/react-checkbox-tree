@@ -35,18 +35,6 @@ describe('<TreeNode />', () => {
 		});
 	});
 
-	describe('label', () => {
-		it('should render the node\'s label', () => {
-			const wrapper = shallow(
-				<TreeNode {...baseProps} label="Europa" value="europa" />,
-			);
-
-			assert.isTrue(wrapper.contains(
-				<span className="rct-title">Europa</span>,
-			));
-		});
-	});
-
 	describe('checked', () => {
 		it('should render icons associated with each check state', () => {
 			const iconMap = {
@@ -122,6 +110,18 @@ describe('<TreeNode />', () => {
 
 			assert.isTrue(wrapper.contains(<i className="fa fa-chevron-right" />));
 			assert.isTrue(wrapper.contains(<i className="fa fa-folder-o" />));
+		});
+	});
+
+	describe('label', () => {
+		it('should render the node\'s label', () => {
+			const wrapper = shallow(
+				<TreeNode {...baseProps} label="Europa" value="europa" />,
+			);
+
+			assert.isTrue(wrapper.contains(
+				<span className="rct-title">Europa</span>,
+			));
 		});
 	});
 });
