@@ -124,4 +124,26 @@ describe('<TreeNode />', () => {
 			));
 		});
 	});
+
+	describe('onExpand', () => {
+		it('should negate the expanded property and pass the current node\'s value', () => {
+			let actual = {};
+
+			const wrapper = shallow(
+				<TreeNode
+					{...baseProps}
+					expanded
+					rawChildren={[{ value: 'europa', label: 'Europa' }]}
+					value="jupiter"
+					onExpand={(node) => {
+						actual = node;
+					}}
+				/>,
+			);
+
+			wrapper.find('.rct-collapse').simulate('click');
+
+			assert.deepEqual({ value: 'jupiter', expanded: false }, actual);
+		});
+	});
 });
