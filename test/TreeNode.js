@@ -125,6 +125,83 @@ describe('<TreeNode />', () => {
 		});
 	});
 
+	describe('onCheck', () => {
+		it('should pass the current node\'s value', () => {
+			let actual = {};
+
+			const wrapper = shallow(
+				<TreeNode
+					{...baseProps}
+					value="jupiter"
+					onCheck={(node) => {
+						actual = node;
+					}}
+				/>,
+			);
+
+			wrapper.find('input[type="checkbox"]').simulate('change');
+
+			assert.equal('jupiter', actual.value);
+		});
+
+		it('should toggle an unchecked node to checked', () => {
+			let actual = {};
+
+			const wrapper = shallow(
+				<TreeNode
+					{...baseProps}
+					checked={0}
+					value="jupiter"
+					onCheck={(node) => {
+						actual = node;
+					}}
+				/>,
+			);
+
+			wrapper.find('input[type="checkbox"]').simulate('change');
+
+			assert.isTrue(actual.checked);
+		});
+
+		it('should toggle a checked node to unchecked', () => {
+			let actual = {};
+
+			const wrapper = shallow(
+				<TreeNode
+					{...baseProps}
+					checked={1}
+					value="jupiter"
+					onCheck={(node) => {
+						actual = node;
+					}}
+				/>,
+			);
+
+			wrapper.find('input[type="checkbox"]').simulate('change');
+
+			assert.isFalse(actual.checked);
+		});
+
+		it('should toggle a partially-checked node to checked', () => {
+			let actual = {};
+
+			const wrapper = shallow(
+				<TreeNode
+					{...baseProps}
+					checked={2}
+					value="jupiter"
+					onCheck={(node) => {
+						actual = node;
+					}}
+				/>,
+			);
+
+			wrapper.find('input[type="checkbox"]').simulate('change');
+
+			assert.isTrue(actual.checked);
+		});
+	});
+
 	describe('onExpand', () => {
 		it('should negate the expanded property and pass the current node\'s value', () => {
 			let actual = {};
