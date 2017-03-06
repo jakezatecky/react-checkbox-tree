@@ -200,6 +200,28 @@ describe('<TreeNode />', () => {
 
 			assert.isTrue(actual.checked);
 		});
+
+		describe('optimisticToggle', () => {
+			it('should toggle a partially-checked node to unchecked', () => {
+				let actual = {};
+
+				const wrapper = shallow(
+					<TreeNode
+						{...baseProps}
+						checked={2}
+						optimisticToggle={false}
+						value="jupiter"
+						onCheck={(node) => {
+							actual = node;
+						}}
+					/>,
+				);
+
+				wrapper.find('input[type="checkbox"]').simulate('change');
+
+				assert.isFalse(actual.checked);
+			});
+		});
 	});
 
 	describe('onExpand', () => {
