@@ -48,15 +48,13 @@ class Widget extends React.Component {
     }
 
     render() {
-        const { checked, expanded } = this.state;
-
         return (
-            <Tree
+            <CheckboxTree
                 nodes={nodes}
-                checked={checked}
-                expanded={expanded}
-                onCheck={checked => this.setState({ checked }}
-                onExpand={expanded => this.setState({ expanded }}
+                checked={this.state.checked}
+                expanded={this.state.expanded}
+                onCheck={checked => this.setState({ checked })}
+                onExpand={expanded => this.setState({ expanded })}
             />
         );
     }
