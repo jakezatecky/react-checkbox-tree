@@ -36,15 +36,12 @@ $rct-label-hover: rgba($rct-icon-color, .1) !default;
     display: none;
   }
 
-  .fa {
+  .rct-icon {
+    display: inline-block;
     margin: 0 5px;
     width: 14px;
-  }
-
-  .fa-folder-open-o,
-  .fa-folder-o,
-  .fa-file-o {
-    color: $rct-icon-color;
+    font-family: "FontAwesome";
+    font-style: normal;
   }
 }
 
@@ -65,12 +62,7 @@ $rct-label-hover: rgba($rct-icon-color, .1) !default;
     cursor: pointer;
   }
 
-  .fa-chevron-right,
-  .fa-chevron-down {
-    text-align: center;
-  }
-
-  > .fa-chevron-right {
+  > .rct-icon-expand-close {
     opacity: .5;
 
     &:hover {
@@ -79,6 +71,39 @@ $rct-label-hover: rgba($rct-icon-color, .1) !default;
   }
 }
 
-.rct-half-checked {
+.rct-node-icon {
+  color: $rct-icon-color;
+}
+
+.rct-icon-expand-close::before {
+  content: "\f054";
+}
+
+.rct-icon-expand-open::before {
+  content: "\f078";
+}
+
+.rct-icon-uncheck::before {
+  content: "\f096";
+}
+
+.rct-icon-check::before {
+  content: "\f046";
+}
+
+.rct-icon-half-check::before {
   opacity: .5;
+  content: "\f046";
+}
+
+.rct-icon-leaf::before {
+  content: "\f016";
+}
+
+.rct-icon-parent-open::before {
+  content: "\f115";
+}
+
+.rct-icon-parent-close::before {
+  content: "\f114";
 }

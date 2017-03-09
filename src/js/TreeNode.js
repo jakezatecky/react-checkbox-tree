@@ -58,17 +58,17 @@ class TreeNode extends React.Component {
 
 	renderCollapseIcon() {
 		if (!this.props.expanded) {
-			return <i className="fa fa-chevron-right" />;
+			return <i className="rct-icon rct-icon-expand-close" />;
 		}
 
-		return <i className="fa fa-chevron-down" />;
+		return <i className="rct-icon rct-icon-expand-open" />;
 	}
 
 	renderCollapseButton() {
 		if (this.props.rawChildren === null) {
 			return (
 				<span className="rct-collapse">
-					<i className="fa" />
+					<i className="rct-icon" />
 				</span>
 			);
 		}
@@ -82,26 +82,26 @@ class TreeNode extends React.Component {
 
 	renderCheckboxIcon() {
 		if (this.props.checked === 0) {
-			return <i className="fa fa-square-o" />;
+			return <i className="rct-icon rct-icon-uncheck" />;
 		}
 
 		if (this.props.checked === 1) {
-			return <i className="fa fa-check-square-o" />;
+			return <i className="rct-icon rct-icon-check" />;
 		}
 
-		return <i className="fa fa-check-square-o rct-half-checked" />;
+		return <i className="rct-icon rct-icon-half-check" />;
 	}
 
 	renderNodeIcon() {
 		if (this.props.rawChildren === null) {
-			return <i className="fa fa-file-o" />;
+			return <i className="rct-icon rct-icon-leaf" />;
 		}
 
 		if (!this.props.expanded) {
-			return <i className="fa fa-folder-o" />;
+			return <i className="rct-icon rct-icon-parent-close" />;
 		}
 
-		return <i className="fa fa-folder-open-o" />;
+		return <i className="rct-icon rct-icon-parent-open" />;
 	}
 
 	renderChildren() {
@@ -125,7 +125,7 @@ class TreeNode extends React.Component {
 						<span className="rct-checkbox">
 							{this.renderCheckboxIcon()}
 						</span>
-						<span className="rct-icon">
+						<span className="rct-node-icon">
 							{this.renderNodeIcon()}
 						</span>
 						<span className="rct-title">

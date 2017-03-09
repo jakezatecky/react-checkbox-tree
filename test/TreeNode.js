@@ -38,9 +38,9 @@ describe('<TreeNode />', () => {
 	describe('checked', () => {
 		it('should render icons associated with each check state', () => {
 			const iconMap = {
-				0: <i className="fa fa-square-o" />,
-				1: <i className="fa fa-check-square-o" />,
-				2: <i className="fa fa-check-square-o rct-half-checked" />,
+				0: <i className="rct-icon rct-icon-uncheck" />,
+				1: <i className="rct-icon rct-icon-check" />,
+				2: <i className="rct-icon rct-icon-half-check" />,
 			};
 
 			Object.keys(iconMap).forEach((state) => {
@@ -99,8 +99,8 @@ describe('<TreeNode />', () => {
 				<TreeNode {...baseProps} expanded rawChildren={[{ value: 'europa', label: 'Europa' }]} />,
 			);
 
-			assert.isTrue(wrapper.contains(<i className="fa fa-chevron-down" />));
-			assert.isTrue(wrapper.contains(<i className="fa fa-folder-open-o" />));
+			assert.isTrue(wrapper.contains(<i className="rct-icon rct-icon-expand-open" />));
+			assert.isTrue(wrapper.contains(<i className="rct-icon rct-icon-parent-open" />));
 		});
 
 		it('should render collapsed icons when set to false', () => {
@@ -108,8 +108,8 @@ describe('<TreeNode />', () => {
 				<TreeNode {...baseProps} expanded={false} rawChildren={[{ value: 'europa', label: 'Europa' }]} />,
 			);
 
-			assert.isTrue(wrapper.contains(<i className="fa fa-chevron-right" />));
-			assert.isTrue(wrapper.contains(<i className="fa fa-folder-o" />));
+			assert.isTrue(wrapper.contains(<i className="rct-icon rct-icon-expand-close" />));
+			assert.isTrue(wrapper.contains(<i className="rct-icon rct-icon-parent-close" />));
 		});
 	});
 
