@@ -4,7 +4,7 @@ import shortid from 'shortid';
 import TreeNode from './TreeNode';
 import nodeShape from './nodeShape';
 
-class Tree extends React.Component {
+class CheckboxTree extends React.Component {
 	static propTypes = {
 		nodes: React.PropTypes.arrayOf(nodeShape).isRequired,
 
@@ -208,4 +208,4 @@ class Tree extends React.Component {
 	}
 }
 
-export default Tree;
+export default CheckboxTree;

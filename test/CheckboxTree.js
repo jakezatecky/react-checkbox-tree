@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import { assert } from 'chai';
 
-import CheckboxTree from '../src/js/Tree';
+import CheckboxTree from '../src/js/CheckboxTree';
 import TreeNode from '../src/js/TreeNode';
 
 describe('<CheckboxTree />', () => {

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Tree from '../../../src/js/Tree';
+import Tree from '../../../src/js/CheckboxTree';
 
 const nodes = [
 	{
