@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v0.5.0
+
+### Breaking Changes
+
+* [#20]: Remove deprecated `title` property in `nodes` (use `label` instead)
+
 ## [v0.4.2](https://github.com/jakezatecky/react-checkbox-tree/compare/v0.4.1...v0.4.2) (2016-02-27)
 
 ### Bug Fixes

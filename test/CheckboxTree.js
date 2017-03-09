@@ -33,20 +33,10 @@ describe('<CheckboxTree />', () => {
 			assert.equal('Jupiter', wrapper.find(TreeNode).prop('label'));
 		});
 
-		it('should render the node\'s legacy label', () => {
-			const wrapper = shallow(
-				<CheckboxTree
-					nodes={[{ value: 'jupiter', title: 'Jupiter' }]}
-				/>,
-			);
-
-			assert.equal('Jupiter', wrapper.find(TreeNode).prop('label'));
-		});
-
 		it('should render the node\'s value', () => {
 			const wrapper = shallow(
 				<CheckboxTree
-					nodes={[{ value: 'jupiter', title: 'Jupiter' }]}
+					nodes={[{ value: 'jupiter', label: 'Jupiter' }]}
 				/>,
 			);
 
@@ -57,8 +47,8 @@ describe('<CheckboxTree />', () => {
 			const wrapper = shallow(
 				<CheckboxTree
 					nodes={[
-						{ value: 'jupiter', title: 'Jupiter' },
-						{ value: 'saturn', title: 'Saturn' },
+						{ value: 'jupiter', label: 'Jupiter' },
+						{ value: 'saturn', label: 'Saturn' },
 					]}
 				/>,
 			);
@@ -73,7 +63,7 @@ describe('<CheckboxTree />', () => {
 					nodes={[
 						{
 							value: 'jupiter',
-							title: 'Jupiter',
+							label: 'Jupiter',
 							children: [
 								{ value: 'europa', label: 'Europa' },
 							],

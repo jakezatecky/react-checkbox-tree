@@ -141,7 +141,7 @@ class CheckboxTree extends React.Component {
 					key={key}
 					checked={checked}
 					expanded={node.expanded}
-					label={node.label || node.title}
+					label={node.label}
 					optimisticToggle={this.props.optimisticToggle}
 					rawChildren={node.children}
 					treeId={this.id}
