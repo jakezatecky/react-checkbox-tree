@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Tree from '../../../src/js/CheckboxTree';
+import CheckboxTree from '../../../src/index';
 
 const nodes = [
 	{
@@ -114,7 +114,7 @@ class BasicExample extends React.Component {
 		const { checked, expanded } = this.state;
 
 		return (
-			<Tree
+			<CheckboxTree
 				checked={checked}
 				expanded={expanded}
 				nodes={nodes}
