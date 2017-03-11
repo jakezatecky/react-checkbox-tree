@@ -113,6 +113,20 @@ describe('<TreeNode />', () => {
 		});
 	});
 
+	describe('icon', () => {
+		it('should replace the node\'s icons with the supplied value', () => {
+			const wrapper = shallow(
+				<TreeNode {...baseProps} icon={<i className="fa fa-plus" />} />,
+			);
+
+			assert.isTrue(wrapper.contains(
+				<span className="rct-node-icon">
+					<i className="fa fa-plus" />
+				</span>,
+			));
+		});
+	});
+
 	describe('label', () => {
 		it('should render the node\'s label', () => {
 			const wrapper = shallow(

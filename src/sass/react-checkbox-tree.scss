@@ -37,11 +37,20 @@ $rct-label-hover: rgba($rct-icon-color, .1) !default;
   }
 
   .rct-icon {
-    display: inline-block;
-    margin: 0 5px;
-    width: 14px;
     font-family: "FontAwesome";
     font-style: normal;
+  }
+}
+
+.rct-collapse,
+.rct-node-icon,
+.rct-checkbox {
+  padding: 0 5px;
+
+  * {
+    display: inline-block;
+    margin: 0;
+    width: 14px;
   }
 }
 
@@ -53,7 +62,6 @@ $rct-label-hover: rgba($rct-icon-color, .1) !default;
 .rct-collapse {
   border: 0;
   background: none;
-  padding: 0;
   line-height: normal;
   color: inherit;
   font-size: 12px;

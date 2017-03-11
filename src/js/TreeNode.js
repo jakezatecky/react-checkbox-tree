@@ -14,11 +14,13 @@ class TreeNode extends React.Component {
 		onExpand: React.PropTypes.func.isRequired,
 
 		children: React.PropTypes.node,
+		icon: React.PropTypes.node,
 		rawChildren: React.PropTypes.arrayOf(nodeShape),
 	};
 
 	static defaultProps = {
 		children: null,
+		icon: null,
 		rawChildren: undefined,
 	};
 
@@ -93,6 +95,10 @@ class TreeNode extends React.Component {
 	}
 
 	renderNodeIcon() {
+		if (this.props.icon !== null) {
+			return this.props.icon;
+		}
+
 		if (this.props.rawChildren === null) {
 			return <i className="rct-icon rct-icon-leaf" />;
 		}

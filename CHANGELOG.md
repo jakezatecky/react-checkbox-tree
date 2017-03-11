@@ -9,6 +9,7 @@
 ### New Features
 
 * [#2]: Allow customization of icons via CSS
+* [#26]: Allow icon customization at node level
 
 ## [v0.4.2](https://github.com/jakezatecky/react-checkbox-tree/compare/v0.4.1...v0.4.2) (2016-02-27)
 

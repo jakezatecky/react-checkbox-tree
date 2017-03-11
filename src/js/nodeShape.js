@@ -1,11 +1,13 @@
 import React from 'react';
 
 const nodeShape = {
+	label: React.PropTypes.string.isRequired,
 	value: React.PropTypes.oneOfType([
 		React.PropTypes.string,
 		React.PropTypes.number,
 	]).isRequired,
-	label: React.PropTypes.string.isRequired,
+
+	icon: React.PropTypes.node,
 };
 
 const nodeShapeWithChildren = React.PropTypes.oneOfType([
