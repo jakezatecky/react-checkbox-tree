@@ -73,3 +73,14 @@ class Widget extends React.Component {
 | `name`             | string   | Optional name for the hidden `<input>` element.                                                  | `undefined` |
 | `nameAsArray`      | bool     | If true, the hidden `<input>` will encode its values as an array rather than a joined string.    | `false`     |
 | `optimisticToggle` | bool     | If true, toggling a partially-checked node will select all children. If false, it will deselect. | `true`      |
+
+### Node Properties
+
+Individual nodes within the `nodes` property can have the following structure:
+
+| Property   | Type   | Description                     |
+| ---------- | ------ | ------------------------------- |
+| `label`    | string | **Required**. The node's label. |
+| `value`    | mixed  | **Required**. The node's value. |
+| `children` | array  | An array of child nodes.        |
+| `icon`     | mixed  | A custom icon for the node.     |
