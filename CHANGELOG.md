@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## v0.5.0
+## [v0.5.0](https://github.com/jakezatecky/react-checkbox-tree/compare/v0.4.2...v0.5.0) (2017-03-12)
 
 ### Breaking Changes
 
@@ -11,7 +11,7 @@
 * [#2]: Allow customization of icons via CSS
 * [#26]: Allow icon customization at node level
 
-## [v0.4.2](https://github.com/jakezatecky/react-checkbox-tree/compare/v0.4.1...v0.4.2) (2016-02-27)
+## [v0.4.2](https://github.com/jakezatecky/react-checkbox-tree/compare/v0.4.1...v0.4.2) (2017-02-27)
 
 ### Bug Fixes
 

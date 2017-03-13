@@ -34,15 +34,23 @@
   display: none;
 }
 
-.react-checkbox-tree .fa {
-  margin: 0 5px;
-  width: 14px;
+.react-checkbox-tree .rct-icon {
+  font-family: "FontAwesome";
+  font-style: normal;
 }
 
-.react-checkbox-tree .fa-folder-open-o,
-.react-checkbox-tree .fa-folder-o,
-.react-checkbox-tree .fa-file-o {
-  color: #33c;
+.rct-collapse,
+.rct-node-icon,
+.rct-checkbox {
+  padding: 0 5px;
+}
+
+.rct-collapse *,
+.rct-node-icon *,
+.rct-checkbox * {
+  display: inline-block;
+  margin: 0;
+  width: 14px;
 }
 
 .rct-text {
@@ -55,7 +63,6 @@
 .rct-collapse {
   border: 0;
   background: none;
-  padding: 0;
   line-height: normal;
   color: inherit;
   font-size: 12px;
@@ -65,21 +72,53 @@
   cursor: pointer;
 }
 
-.rct-collapse .fa-chevron-right,
-.rct-collapse .fa-chevron-down {
-  text-align: center;
-}
-
-.rct-collapse > .fa-chevron-right {
+.rct-collapse > .rct-icon-expand-close {
   opacity: .5;
 }
 
-.rct-collapse > .fa-chevron-right:hover {
+.rct-collapse > .rct-icon-expand-close:hover {
   opacity: 1;
 }
 
-.rct-half-checked {
+.rct-node-icon {
+  color: #33c;
+}
+
+.rct-title {
+  padding: 0 5px;
+}
+
+.rct-icon-expand-close::before {
+  content: "\f054";
+}
+
+.rct-icon-expand-open::before {
+  content: "\f078";
+}
+
+.rct-icon-uncheck::before {
+  content: "\f096";
+}
+
+.rct-icon-check::before {
+  content: "\f046";
+}
+
+.rct-icon-half-check::before {
   opacity: .5;
+  content: "\f046";
+}
+
+.rct-icon-leaf::before {
+  content: "\f016";
+}
+
+.rct-icon-parent-open::before {
+  content: "\f115";
+}
+
+.rct-icon-parent-close::before {
+  content: "\f114";
 }
 
 * {
