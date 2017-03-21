@@ -22,7 +22,7 @@ class TreeNode extends React.Component {
 	static defaultProps = {
 		children: null,
 		icon: null,
-		rawChildren: undefined,
+		rawChildren: null,
 	};
 
 	constructor(props) {
