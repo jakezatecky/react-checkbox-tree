@@ -55,6 +55,7 @@
     "webpack-stream": "^3.2.0"
   },
   "dependencies": {
+    "classnames": "^2.2.5",
     "shortid": "^2.2.6"
   }
 }

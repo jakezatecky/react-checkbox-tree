@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import React from 'react';
 
 import nodeShape from './nodeShape';
@@ -58,6 +59,10 @@ class TreeNode extends React.Component {
 		});
 	}
 
+	hasChildren() {
+		return this.props.rawChildren !== null;
+	}
+
 	renderCollapseIcon() {
 		if (!this.props.expanded) {
 			return <i className="rct-icon rct-icon-expand-close" />;
@@ -67,7 +72,7 @@ class TreeNode extends React.Component {
 	}
 
 	renderCollapseButton() {
-		if (this.props.rawChildren === null) {
+		if (!this.hasChildren()) {
 			return (
 				<span className="rct-collapse">
 					<i className="rct-icon" />
@@ -99,7 +104,7 @@ class TreeNode extends React.Component {
 			return this.props.icon;
 		}
 
-		if (this.props.rawChildren === null) {
+		if (!this.hasChildren()) {
 			return <i className="rct-icon rct-icon-leaf" />;
 		}
 
@@ -121,9 +126,14 @@ class TreeNode extends React.Component {
 	render() {
 		const { checked, treeId, label, value } = this.props;
 		const inputId = `${treeId}-${value}`;
+		const nodeClass = classNames({
+			'rct-node': true,
+			'rct-node-parent': this.hasChildren(),
+			'rct-node-leaf': !this.hasChildren(),
+		});
 
 		return (
-			<li className="rct-node">
+			<li className={nodeClass}>
 				<span className="rct-text">
 					{this.renderCollapseButton()}
 					<label htmlFor={inputId}>
