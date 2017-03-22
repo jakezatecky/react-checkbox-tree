@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [v0.5.1](https://github.com/jakezatecky/react-checkbox-tree/compare/v0.5.0...v0.5.1) (2017-03-21)
+
+### New Features
+
+* [#27]: Add `rct-node-leaf` and `rct-node-parent` classes to the TreeNode `<li>` element
+
 ## [v0.5.0](https://github.com/jakezatecky/react-checkbox-tree/compare/v0.4.2...v0.5.0) (2017-03-12)
 
 ### Breaking Changes
