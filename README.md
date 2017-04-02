@@ -18,7 +18,7 @@ The easiest way to use react-checkbox-tree is to install from NPM and include it
 npm install react-checkbox-tree --save
 ```
 
-> **Note** &ndash; This library requires that [Font Awesome](http://fontawesome.io/) styles are loaded in the browser.
+> **Note** &ndash; This library makes use of [Font Awesome](http://fontawesome.io/) styles and expects them to be loaded in the browser.
 
 # Usage
 
