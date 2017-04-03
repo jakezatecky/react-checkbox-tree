@@ -10,7 +10,9 @@
 
 ![Demo](demo.gif)
 
-## Installation
+## Usage
+
+### Installation
 
 The easiest way to use react-checkbox-tree is to install using your favorite dependency manager and include it in your own React build process (e.g. using [Webpack](http://webpack.github.io/docs/what-is-webpack.html)):
 
@@ -24,7 +26,23 @@ yarn add react-checkbox-tree
 
 > **Note** &ndash; This library makes use of [Font Awesome](http://fontawesome.io/) styles and expects them to be loaded in the browser.
 
-## Usage
+
+### Include CSS
+
+For your convenience, the library's styles can be consumed utilizing one of the following files:
+
+* `node_modules/react-checkbox-tree/lib/react-checkbox-tree.css`
+* `node_modules/react-checkbox-tree/src/less/react-checkbox-tree.less`
+* `node_modules/react-checkbox-tree/src/sass/react-checkbox-tree.scss`
+
+Either include one of these files in your stylesheets or utilize a CSS loader:
+
+``` javascript
+import 'react-checkbox-tree/lib/react-checkbox-tree.css';
+```
+
+
+### Render Component
 
 A quick usage example is included below. Note that the react-checkbox-tree component is [controlled](https://facebook.github.io/react/docs/forms.html#controlled-components). In other words, it is stateless. You must update its `checked` and `expanded` properties whenever a change occurs.
 
