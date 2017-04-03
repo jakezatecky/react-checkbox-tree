@@ -10,17 +10,21 @@
 
 ![Demo](demo.gif)
 
-# Installation
+## Installation
 
-The easiest way to use react-checkbox-tree is to install from NPM and include it in your own React build process (e.g. using [Webpack](http://webpack.github.io/docs/what-is-webpack.html)):
+The easiest way to use react-checkbox-tree is to install using your favorite dependency manager and include it in your own React build process (e.g. using [Webpack](http://webpack.github.io/docs/what-is-webpack.html)):
 
 ```
 npm install react-checkbox-tree --save
 ```
 
+``` shell
+yarn add react-checkbox-tree
+```
+
 > **Note** &ndash; This library makes use of [Font Awesome](http://fontawesome.io/) styles and expects them to be loaded in the browser.
 
-# Usage
+## Usage
 
 A quick usage example is included below. Note that the react-checkbox-tree component is [controlled](https://facebook.github.io/react/docs/forms.html#controlled-components). In other words, it is stateless. You must update its `checked` and `expanded` properties whenever a change occurs.
 
@@ -61,7 +65,7 @@ class Widget extends React.Component {
 }
 ```
 
-## Properties
+### Properties
 
 | Property           | Type     | Description                                                                                      | Default     |
 | ------------------ | -------- | ------------------------------------------------------------------------------------------------ | ----------- |
@@ -74,7 +78,7 @@ class Widget extends React.Component {
 | `nameAsArray`      | bool     | If true, the hidden `<input>` will encode its values as an array rather than a joined string.    | `false`     |
 | `optimisticToggle` | bool     | If true, toggling a partially-checked node will select all children. If false, it will deselect. | `true`      |
 
-### Node Properties
+#### Node Properties
 
 Individual nodes within the `nodes` property can have the following structure:
 
