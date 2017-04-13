@@ -1,20 +1,20 @@
-import React from 'react';
+import PropTypes from 'prop-types';
 
 const nodeShape = {
-	label: React.PropTypes.string.isRequired,
-	value: React.PropTypes.oneOfType([
-		React.PropTypes.string,
-		React.PropTypes.number,
+	label: PropTypes.string.isRequired,
+	value: PropTypes.oneOfType([
+		PropTypes.string,
+		PropTypes.number,
 	]).isRequired,
 
-	icon: React.PropTypes.node,
+	icon: PropTypes.node,
 };
 
-const nodeShapeWithChildren = React.PropTypes.oneOfType([
-	React.PropTypes.shape(nodeShape),
-	React.PropTypes.shape({
+const nodeShapeWithChildren = PropTypes.oneOfType([
+	PropTypes.shape(nodeShape),
+	PropTypes.shape({
 		...nodeShape,
-		children: React.PropTypes.arrayOf(nodeShape).isRequired,
+		children: PropTypes.arrayOf(nodeShape).isRequired,
 	}),
 ]);
 

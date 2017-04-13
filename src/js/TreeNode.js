@@ -1,22 +1,23 @@
 import classNames from 'classnames';
+import PropTypes from 'prop-types';
 import React from 'react';
 
 import nodeShape from './nodeShape';
 
 class TreeNode extends React.Component {
 	static propTypes = {
-		checked: React.PropTypes.number.isRequired,
-		expanded: React.PropTypes.bool.isRequired,
-		label: React.PropTypes.string.isRequired,
-		optimisticToggle: React.PropTypes.bool.isRequired,
-		treeId: React.PropTypes.string.isRequired,
-		value: React.PropTypes.string.isRequired,
-		onCheck: React.PropTypes.func.isRequired,
-		onExpand: React.PropTypes.func.isRequired,
+		checked: PropTypes.number.isRequired,
+		expanded: PropTypes.bool.isRequired,
+		label: PropTypes.string.isRequired,
+		optimisticToggle: PropTypes.bool.isRequired,
+		treeId: PropTypes.string.isRequired,
+		value: PropTypes.string.isRequired,
+		onCheck: PropTypes.func.isRequired,
+		onExpand: PropTypes.func.isRequired,
 
-		children: React.PropTypes.node,
-		icon: React.PropTypes.node,
-		rawChildren: React.PropTypes.arrayOf(nodeShape),
+		children: PropTypes.node,
+		icon: PropTypes.node,
+		rawChildren: PropTypes.arrayOf(nodeShape),
 	};
 
 	static defaultProps = {

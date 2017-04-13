@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import shortid from 'shortid';
 
@@ -6,15 +7,15 @@ import nodeShape from './nodeShape';
 
 class CheckboxTree extends React.Component {
 	static propTypes = {
-		nodes: React.PropTypes.arrayOf(nodeShape).isRequired,
+		nodes: PropTypes.arrayOf(nodeShape).isRequired,
 
-		checked: React.PropTypes.arrayOf(React.PropTypes.string),
-		expanded: React.PropTypes.arrayOf(React.PropTypes.string),
-		name: React.PropTypes.string,
-		nameAsArray: React.PropTypes.bool,
-		optimisticToggle: React.PropTypes.bool,
-		onCheck: React.PropTypes.func,
-		onExpand: React.PropTypes.func,
+		checked: PropTypes.arrayOf(React.PropTypes.string),
+		expanded: PropTypes.arrayOf(React.PropTypes.string),
+		name: PropTypes.string,
+		nameAsArray: PropTypes.bool,
+		optimisticToggle: PropTypes.bool,
+		onCheck: PropTypes.func,
+		onExpand: PropTypes.func,
 	};
 
 	static defaultProps = {
