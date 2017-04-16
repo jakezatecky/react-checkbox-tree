@@ -35,7 +35,7 @@ For your convenience, the library's styles can be consumed utilizing one of the 
 
 * `node_modules/react-checkbox-tree/lib/react-checkbox-tree.css`
 * `node_modules/react-checkbox-tree/src/less/react-checkbox-tree.less`
-* `node_modules/react-checkbox-tree/src/sass/react-checkbox-tree.scss`
+* `node_modules/react-checkbox-tree/src/scss/react-checkbox-tree.scss`
 
 Either include one of these files in your stylesheets or utilize a CSS loader:
 
