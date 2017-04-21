@@ -38,9 +38,9 @@ describe('<TreeNode />', () => {
 	describe('checked', () => {
 		it('should render icons associated with each check state', () => {
 			const iconMap = {
-				0: <i className="rct-icon rct-icon-uncheck" />,
-				1: <i className="rct-icon rct-icon-check" />,
-				2: <i className="rct-icon rct-icon-half-check" />,
+				0: <span className="rct-icon rct-icon-uncheck" />,
+				1: <span className="rct-icon rct-icon-check" />,
+				2: <span className="rct-icon rct-icon-half-check" />,
 			};
 
 			Object.keys(iconMap).forEach((state) => {
@@ -99,8 +99,8 @@ describe('<TreeNode />', () => {
 				<TreeNode {...baseProps} expanded rawChildren={[{ value: 'europa', label: 'Europa' }]} />,
 			);
 
-			assert.isTrue(wrapper.contains(<i className="rct-icon rct-icon-expand-open" />));
-			assert.isTrue(wrapper.contains(<i className="rct-icon rct-icon-parent-open" />));
+			assert.isTrue(wrapper.contains(<span className="rct-icon rct-icon-expand-open" />));
+			assert.isTrue(wrapper.contains(<span className="rct-icon rct-icon-parent-open" />));
 		});
 
 		it('should render collapsed icons when set to false', () => {
@@ -108,20 +108,20 @@ describe('<TreeNode />', () => {
 				<TreeNode {...baseProps} expanded={false} rawChildren={[{ value: 'europa', label: 'Europa' }]} />,
 			);
 
-			assert.isTrue(wrapper.contains(<i className="rct-icon rct-icon-expand-close" />));
-			assert.isTrue(wrapper.contains(<i className="rct-icon rct-icon-parent-close" />));
+			assert.isTrue(wrapper.contains(<span className="rct-icon rct-icon-expand-close" />));
+			assert.isTrue(wrapper.contains(<span className="rct-icon rct-icon-parent-close" />));
 		});
 	});
 
 	describe('icon', () => {
 		it('should replace the node\'s icons with the supplied value', () => {
 			const wrapper = shallow(
-				<TreeNode {...baseProps} icon={<i className="fa fa-plus" />} />,
+				<TreeNode {...baseProps} icon={<span className="fa fa-plus" />} />,
 			);
 
 			assert.isTrue(wrapper.contains(
 				<span className="rct-node-icon">
-					<i className="fa fa-plus" />
+					<span className="fa fa-plus" />
 				</span>,
 			));
 		});
