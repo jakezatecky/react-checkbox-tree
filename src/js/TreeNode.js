@@ -82,7 +82,13 @@ class TreeNode extends React.Component {
 		}
 
 		return (
-			<button aria-label="Toggle" className="rct-collapse rct-collapse-btn" title="Toggle" onClick={this.onExpand}>
+			<button
+				aria-label="Toggle"
+				className="rct-collapse rct-collapse-btn"
+				title="Toggle"
+				type="button"
+				onClick={this.onExpand}
+			>
 				{this.renderCollapseIcon()}
 			</button>
 		);
