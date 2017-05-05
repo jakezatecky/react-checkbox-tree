@@ -10,6 +10,7 @@ class TreeNode extends React.Component {
 		expanded: PropTypes.bool.isRequired,
 		label: PropTypes.string.isRequired,
 		optimisticToggle: PropTypes.bool.isRequired,
+		showNodeIcon: PropTypes.bool.isRequired,
 		treeId: PropTypes.string.isRequired,
 		value: PropTypes.string.isRequired,
 		onCheck: PropTypes.func.isRequired,
@@ -64,14 +65,6 @@ class TreeNode extends React.Component {
 		return this.props.rawChildren !== null;
 	}
 
-	renderCollapseIcon() {
-		if (!this.props.expanded) {
-			return <span className="rct-icon rct-icon-expand-close" />;
-		}
-
-		return <span className="rct-icon rct-icon-expand-open" />;
-	}
-
 	renderCollapseButton() {
 		if (!this.hasChildren()) {
 			return (
@@ -92,6 +85,14 @@ class TreeNode extends React.Component {
 				{this.renderCollapseIcon()}
 			</button>
 		);
+	}
+
+	renderCollapseIcon() {
+		if (!this.props.expanded) {
+			return <span className="rct-icon rct-icon-expand-close" />;
+		}
+
+		return <span className="rct-icon rct-icon-expand-open" />;
 	}
 
 	renderCheckboxIcon() {
@@ -131,7 +132,7 @@ class TreeNode extends React.Component {
 	}
 
 	render() {
-		const { checked, treeId, label, value } = this.props;
+		const { checked, treeId, label, showNodeIcon, value } = this.props;
 		const inputId = `${treeId}-${value}`;
 		const nodeClass = classNames({
 			'rct-node': true,
@@ -148,9 +149,11 @@ class TreeNode extends React.Component {
 						<span className="rct-checkbox">
 							{this.renderCheckboxIcon()}
 						</span>
-						<span className="rct-node-icon">
-							{this.renderNodeIcon()}
-						</span>
+						{showNodeIcon ? (
+							<span className="rct-node-icon">
+								{this.renderNodeIcon()}
+							</span>
+						) : null}
 						<span className="rct-title">
 							{label}
 						</span>

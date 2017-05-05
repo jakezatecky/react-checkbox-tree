@@ -93,10 +93,11 @@ class Widget extends React.Component {
 | `checked`          | array    | An array of checked node values.                                                                 | `[]`        |
 | `expanded`         | array    | An array of expanded node values.                                                                | `[]`        |
 | `onCheck`          | function | onCheck handler: `function(checked) {}`                                                          | `() => {}`  |
-| `onExpand`         | function | onExpand handler: `function(expanded) {}`                                                        | `() => {}` |
+| `onExpand`         | function | onExpand handler: `function(expanded) {}`                                                        | `() => {}`  |
 | `name`             | string   | Optional name for the hidden `<input>` element.                                                  | `undefined` |
 | `nameAsArray`      | bool     | If true, the hidden `<input>` will encode its values as an array rather than a joined string.    | `false`     |
 | `optimisticToggle` | bool     | If true, toggling a partially-checked node will select all children. If false, it will deselect. | `true`      |
+| `showNodeIcon`     | bool     | If true, each node will show a parent or leaf icon.                                              | `true`      |
 
 #### Node Properties
 

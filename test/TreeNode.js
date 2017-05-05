@@ -9,6 +9,7 @@ const baseProps = {
 	expanded: false,
 	label: 'Jupiter',
 	optimisticToggle: true,
+	showNodeIcon: true,
 	treeId: 'id',
 	value: 'jupiter',
 	onCheck: () => {},
@@ -135,6 +136,32 @@ describe('<TreeNode />', () => {
 
 			assert.isTrue(wrapper.contains(
 				<span className="rct-title">Europa</span>,
+			));
+		});
+	});
+
+	describe('showNodeIcon', () => {
+		it('should render the node icon when true', () => {
+			const wrapper = shallow(
+				<TreeNode {...baseProps} />,
+			);
+
+			assert.isTrue(wrapper.contains(
+				<span className="rct-node-icon">
+					<span className="rct-icon rct-icon-leaf" />
+				</span>,
+			));
+		});
+
+		it('should not render the node icon when false', () => {
+			const wrapper = shallow(
+				<TreeNode {...baseProps} showNodeIcon={false} />,
+			);
+
+			assert.isFalse(wrapper.contains(
+				<span className="rct-node-icon">
+					<span className="rct-icon rct-icon-leaf" />
+				</span>,
 			));
 		});
 	});
