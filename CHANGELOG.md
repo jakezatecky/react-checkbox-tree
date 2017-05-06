@@ -4,6 +4,7 @@
 
 ### New Features
 
+* [#32]: Allow customization of `className` at the node level
 * [#30]: Add `showNodeIcon` property to optionally remove node icons
 
 ## [v0.5.2](https://github.com/jakezatecky/react-checkbox-tree/compare/v0.5.1...v0.5.2) (2017-05-03)

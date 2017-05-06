@@ -143,6 +143,7 @@ class CheckboxTree extends React.Component {
 				<TreeNode
 					key={key}
 					checked={checked}
+					className={node.className}
 					expanded={node.expanded}
 					icon={node.icon}
 					label={node.label}

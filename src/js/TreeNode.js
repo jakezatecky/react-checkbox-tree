@@ -17,12 +17,14 @@ class TreeNode extends React.Component {
 		onExpand: PropTypes.func.isRequired,
 
 		children: PropTypes.node,
+		className: PropTypes.string,
 		icon: PropTypes.node,
 		rawChildren: PropTypes.arrayOf(nodeShape),
 	};
 
 	static defaultProps = {
 		children: null,
+		className: null,
 		icon: null,
 		rawChildren: null,
 	};
@@ -132,13 +134,13 @@ class TreeNode extends React.Component {
 	}
 
 	render() {
-		const { checked, treeId, label, showNodeIcon, value } = this.props;
+		const { checked, className, treeId, label, showNodeIcon, value } = this.props;
 		const inputId = `${treeId}-${value}`;
 		const nodeClass = classNames({
 			'rct-node': true,
 			'rct-node-parent': this.hasChildren(),
 			'rct-node-leaf': !this.hasChildren(),
-		});
+		}, className);
 
 		return (
 			<li className={nodeClass}>

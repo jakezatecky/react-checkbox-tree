@@ -74,6 +74,16 @@ describe('<TreeNode />', () => {
 		});
 	});
 
+	describe('className', () => {
+		it('should append the supplied className to <li> of the node', () => {
+			const wrapper = shallow(
+				<TreeNode {...baseProps} className="my-test-class" />,
+			);
+
+			assert.isTrue(wrapper.find('.my-test-class').exists());
+		});
+	});
+
 	describe('expanded', () => {
 		it('should render children when set to true', () => {
 			const wrapper = shallow(
