@@ -7,6 +7,10 @@
 * [#32]: Allow customization of `className` at the node level
 * [#30]: Add `showNodeIcon` property to optionally remove node icons
 
+### Other
+
+* [#14]: Component performance when rendering and updating a large number of nodes has been significantly increased
+
 ## [v0.5.2](https://github.com/jakezatecky/react-checkbox-tree/compare/v0.5.1...v0.5.2) (2017-05-03)
 
 ### Bug Fixes

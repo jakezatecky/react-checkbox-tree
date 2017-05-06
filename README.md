@@ -85,6 +85,8 @@ class Widget extends React.Component {
 }
 ```
 
+All node objects **must** have a unique `value`. This value is serialized into the `checked` and `expanded` arrays and is also used for performance optimizations.
+
 ### Properties
 
 | Property           | Type     | Description                                                                                      | Default     |

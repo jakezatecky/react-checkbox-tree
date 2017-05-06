@@ -1,3 +1,4 @@
+import { isEqual } from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
 import shortid from 'shortid';
@@ -34,32 +35,47 @@ class CheckboxTree extends React.Component {
 	constructor(props) {
 		super(props);
 
+		this.id = `rct-${shortid.generate()}`;
+		this.nodes = {};
+
+		this.flattenNodes(props.nodes);
+		this.unserializeLists({
+			checked: props.checked,
+			expanded: props.expanded,
+		});
+
 		this.onCheck = this.onCheck.bind(this);
 		this.onExpand = this.onExpand.bind(this);
+	}
 
-		this.id = `rct-${shortid.generate()}`;
+	componentWillReceiveProps({ nodes, checked, expanded }) {
+		if (!isEqual(this.props.nodes, nodes)) {
+			this.flattenNodes(nodes);
+		}
+
+		this.unserializeLists({ checked, expanded });
 	}
 
 	onCheck(node) {
-		const { checked, onCheck } = this.props;
+		const { onCheck } = this.props;
 
-		onCheck(this.toggleChecked([...checked], node, node.checked));
+		this.toggleChecked(node, node.checked);
+		onCheck(this.serializeList('checked'));
 	}
 
 	onExpand(node) {
-		const { expanded, onExpand } = this.props;
+		const { onExpand } = this.props;
 
-		onExpand(this.toggleNode([...expanded], node, node.expanded));
+		this.toggleNode('expanded', node, node.expanded);
+		onExpand(this.serializeList('expanded'));
 	}
 
 	getFormattedNodes(nodes) {
-		const { checked, expanded } = this.props;
-
 		return nodes.map((node) => {
 			const formatted = { ...node };
 
-			formatted.checked = checked.indexOf(node.value) > -1;
-			formatted.expanded = expanded.indexOf(node.value) > -1;
+			formatted.checked = this.nodes[node.value].checked;
+			formatted.expanded = this.nodes[node.value].expanded;
 
 			if (Array.isArray(node.children) && node.children.length > 0) {
 				formatted.children = this.getFormattedNodes(formatted.children);
@@ -87,28 +103,57 @@ class CheckboxTree extends React.Component {
 		return 0;
 	}
 
-	toggleChecked(checked, node, isChecked) {
+	toggleChecked(node, isChecked) {
 		if (node.children !== null) {
 			// Percolate check status down to all children
 			node.children.forEach((child) => {
-				this.toggleChecked(checked, child, isChecked);
+				this.toggleChecked(child, isChecked);
 			});
 		} else {
 			// Set leaf to check/unchecked state
-			this.toggleNode(checked, node, isChecked);
+			this.toggleNode('checked', node, isChecked);
 		}
-
-		return checked;
 	}
 
-	toggleNode(list, node, toggleValue) {
-		const index = list.indexOf(node.value);
+	toggleNode(key, node, toggleValue) {
+		this.nodes[node.value][key] = toggleValue;
+	}
 
-		if (index > -1 && !toggleValue) {
-			list.splice(index, 1);
-		} else if (index === -1 && toggleValue) {
-			list.push(node.value);
+	flattenNodes(nodes) {
+		if (!Array.isArray(nodes) || nodes.length === 0) {
+			return;
 		}
+
+		nodes.forEach((node) => {
+			this.nodes[node.value] = {};
+			this.flattenNodes(node.children);
+		});
+	}
+
+	unserializeLists(lists) {
+		// Reset values to false
+		Object.keys(this.nodes).forEach((value) => {
+			Object.keys(lists).forEach((listKey) => {
+				this.nodes[value][listKey] = false;
+			});
+		});
+
+		// Unserialize values and set their nodes to true
+		Object.keys(lists).forEach((listKey) => {
+			lists[listKey].forEach((value) => {
+				this.nodes[value][listKey] = true;
+			});
+		});
+	}
+
+	serializeList(key) {
+		const list = [];
+
+		Object.keys(this.nodes).forEach((value) => {
+			if (this.nodes[value][key]) {
+				list.push(value);
+			}
+		});
 
 		return list;
 	}
@@ -134,8 +179,8 @@ class CheckboxTree extends React.Component {
 	}
 
 	renderTreeNodes(nodes) {
-		const treeNodes = nodes.map((node, index) => {
-			const key = `${index}-${node.value}`;
+		const treeNodes = nodes.map((node) => {
+			const key = `${node.value}`;
 			const checked = this.getCheckState(node);
 			const children = this.renderChildNodes(node);
 
