@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [v0.6.1](https://github.com/jakezatecky/react-checkbox-tree/compare/v0.6.0...v0.6.1) (2017-05-09)
+
+### Other
+
+* [#33]: Add a `prepublish` command to ensure that the `./lib` folder is built before package is published to npm
+
 ## [v0.6.0](https://github.com/jakezatecky/react-checkbox-tree/compare/v0.5.2...v0.6.0) (2017-05-06)
 
 ### New Features
