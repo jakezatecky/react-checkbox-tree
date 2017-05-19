@@ -25,7 +25,6 @@ class CheckboxTree extends React.Component {
 		expanded: [],
 		name: undefined,
 		nameAsArray: false,
-		nodes: [],
 		optimisticToggle: true,
 		showNodeIcon: true,
 		onCheck: () => {},
