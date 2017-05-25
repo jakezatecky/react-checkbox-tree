@@ -96,7 +96,7 @@ All node objects **must** have a unique `value`. This value is serialized into t
 | `expanded`         | array    | An array of expanded node values.                                                                | `[]`        |
 | `name`             | string   | Optional name for the hidden `<input>` element.                                                  | `undefined` |
 | `nameAsArray`      | bool     | If true, the hidden `<input>` will encode its values as an array rather than a joined string.    | `false`     |
-| `noCascade`        | bool     | If true, the toggling a parent will **not** cascade its check state to its children.             | `false`     |
+| `noCascade`        | bool     | If true, toggling a parent node will **not** cascade its check state to its children.            | `false`     |
 | `optimisticToggle` | bool     | If true, toggling a partially-checked node will select all children. If false, it will deselect. | `true`      |
 | `showNodeIcon`     | bool     | If true, each node will show a parent or leaf icon.                                              | `true`      |
 | `onCheck`          | function | onCheck handler: `function(checked) {}`                                                          | `() => {}`  |
