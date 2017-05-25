@@ -28,8 +28,19 @@
       <h2>Custom Icons Example</h2>
       <div id="custom-icons-example"></div>
 
+      <h2>No Cascading Example</h2>
+      <p>
+        By default, the check state of a parent is determined by the check state of its children. Similarly, checking or
+        unchecking a parent node will cascade that status to all of its children. To disable this behavior, simply pass
+        the <code>noCascade</code> property.
+      </p>
+      <div id="no-cascade-example"></div>
+
       <h2>Pessimistic Toggle Example</h2>
-      <p>Try clicking a partially-checked node. Instead of select all children, the pessimistic model will uncheck them.</p>
+      <p>
+        Try clicking a partially-checked node below. Instead of cascading a checked state to all children, the
+        pessimistic model will uncheck children and their descendents.
+      </p>
       <div id="pessimistic-toggle-example"></div>
 
       <h2>Large Data Example</h2>
