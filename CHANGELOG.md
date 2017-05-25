@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v0.6.2 (TBD)
+
+### New Features
+
+* [#34]: Add `noCascade` option to decouple parent check state from children
+
 ## [v0.6.1](https://github.com/jakezatecky/react-checkbox-tree/compare/v0.6.0...v0.6.1) (2017-05-09)
 
 ### Other

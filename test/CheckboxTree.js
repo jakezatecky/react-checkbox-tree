@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 import { assert } from 'chai';
 
 import CheckboxTree from '../src/js/CheckboxTree';
@@ -75,6 +75,61 @@ describe('<CheckboxTree />', () => {
 			const { value, label } = wrapper.find(TreeNode).prop('rawChildren')[0];
 
 			assert.deepEqual({ value: 'europa', label: 'Europa' }, { value, label });
+		});
+	});
+
+	describe('noCascade', () => {
+		it('should not toggle the check state of children when set to true', () => {
+			let actual = null;
+
+			const wrapper = mount(
+				<CheckboxTree
+					checked={[]}
+					noCascade
+					nodes={[
+						{
+							value: 'jupiter',
+							label: 'Jupiter',
+							children: [
+								{ value: 'io', label: 'Io' },
+								{ value: 'europa', label: 'Europa' },
+							],
+						},
+					]}
+					onCheck={(checked) => {
+						actual = checked;
+					}}
+				/>,
+			);
+
+			wrapper.find('TreeNode input[type="checkbox"]').simulate('change');
+			assert.deepEqual(['jupiter'], actual);
+		});
+
+		it('should toggle the check state of children when set to false', () => {
+			let actual = null;
+
+			const wrapper = mount(
+				<CheckboxTree
+					checked={[]}
+					nodes={[
+						{
+							value: 'jupiter',
+							label: 'Jupiter',
+							children: [
+								{ value: 'io', label: 'Io' },
+								{ value: 'europa', label: 'Europa' },
+							],
+						},
+					]}
+					onCheck={(checked) => {
+						actual = checked;
+					}}
+				/>,
+			);
+
+			wrapper.find('TreeNode input[type="checkbox"]').simulate('change');
+			assert.deepEqual(['io', 'europa'], actual);
 		});
 	});
 });

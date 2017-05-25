@@ -44,7 +44,7 @@ class TreeNode extends React.Component {
 			isChecked = true;
 		}
 
-		// Toggle partial state based on model
+		// Toggle partial state based on cascade model
 		if (this.props.checked === 2) {
 			isChecked = this.props.optimisticToggle;
 		}
