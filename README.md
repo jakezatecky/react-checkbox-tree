@@ -93,6 +93,8 @@ All node objects **must** have a unique `value`. This value is serialized into t
 | ------------------ | -------- | ------------------------------------------------------------------------------------------------ | ----------- |
 | `nodes`            | array    | **Required**. Specifies the tree nodes and their children.                                       |             |
 | `checked`          | array    | An array of checked node values.                                                                 | `[]`        |
+| `disabled`         | bool     | If true, the component will be disabled and nodes cannot be checked.                             | `false`     |
+| `expandDisabled`   | bool     | If true, the ability to expand nodes will be disabled.                                           | `false`     |
 | `expanded`         | array    | An array of expanded node values.                                                                | `[]`        |
 | `name`             | string   | Optional name for the hidden `<input>` element.                                                  | `undefined` |
 | `nameAsArray`      | bool     | If true, the hidden `<input>` will encode its values as an array rather than a joined string.    | `false`     |

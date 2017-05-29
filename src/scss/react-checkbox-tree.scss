@@ -21,6 +21,10 @@ $rct-label-hover: rgba($rct-icon-color, .1) !default;
     &:focus {
       outline: none;
     }
+
+    &:disabled {
+      cursor: not-allowed;
+    }
   }
 
   label {
@@ -39,6 +43,18 @@ $rct-label-hover: rgba($rct-icon-color, .1) !default;
   .rct-icon {
     font-family: "FontAwesome";
     font-style: normal;
+  }
+}
+
+.rct-disabled {
+  opacity: .75;
+
+  label {
+    cursor: not-allowed;
+
+    &:hover {
+      background: transparent;
+    }
   }
 }
 

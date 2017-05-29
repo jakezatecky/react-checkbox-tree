@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import { isEqual } from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -11,6 +12,8 @@ class CheckboxTree extends React.Component {
 		nodes: PropTypes.arrayOf(nodeShape).isRequired,
 
 		checked: PropTypes.arrayOf(PropTypes.string),
+		disabled: PropTypes.bool,
+		expandDisabled: PropTypes.bool,
 		expanded: PropTypes.arrayOf(PropTypes.string),
 		name: PropTypes.string,
 		nameAsArray: PropTypes.bool,
@@ -23,6 +26,8 @@ class CheckboxTree extends React.Component {
 
 	static defaultProps = {
 		checked: [],
+		disabled: false,
+		expandDisabled: false,
 		expanded: [],
 		name: undefined,
 		nameAsArray: false,
@@ -180,7 +185,7 @@ class CheckboxTree extends React.Component {
 	}
 
 	renderTreeNodes(nodes) {
-		const { noCascade, optimisticToggle, showNodeIcon } = this.props;
+		const { disabled, expandDisabled, noCascade, optimisticToggle, showNodeIcon } = this.props;
 		const treeNodes = nodes.map((node) => {
 			const key = `${node.value}`;
 			const checked = this.getCheckState(node, noCascade);
@@ -191,6 +196,8 @@ class CheckboxTree extends React.Component {
 					key={key}
 					checked={checked}
 					className={node.className}
+					disabled={disabled}
+					expandDisabled={expandDisabled}
 					expanded={node.expanded}
 					icon={node.icon}
 					label={node.label}
@@ -251,9 +258,13 @@ class CheckboxTree extends React.Component {
 	render() {
 		const nodes = this.getFormattedNodes(this.props.nodes);
 		const treeNodes = this.renderTreeNodes(nodes);
+		const className = classNames({
+			'react-checkbox-tree': true,
+			'rct-disabled': this.props.disabled,
+		});
 
 		return (
-			<div className="react-checkbox-tree">
+			<div className={className}>
 				{this.renderHiddenInput()}
 				{treeNodes}
 			</div>

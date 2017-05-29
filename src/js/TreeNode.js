@@ -7,6 +7,8 @@ import nodeShape from './nodeShape';
 class TreeNode extends React.Component {
 	static propTypes = {
 		checked: PropTypes.number.isRequired,
+		disabled: PropTypes.bool.isRequired,
+		expandDisabled: PropTypes.bool.isRequired,
 		expanded: PropTypes.bool.isRequired,
 		label: PropTypes.string.isRequired,
 		optimisticToggle: PropTypes.bool.isRequired,
@@ -68,6 +70,8 @@ class TreeNode extends React.Component {
 	}
 
 	renderCollapseButton() {
+		const { expandDisabled } = this.props;
+
 		if (!this.hasChildren()) {
 			return (
 				<span className="rct-collapse">
@@ -80,6 +84,7 @@ class TreeNode extends React.Component {
 			<button
 				aria-label="Toggle"
 				className="rct-collapse rct-collapse-btn"
+				disabled={expandDisabled}
 				title="Toggle"
 				type="button"
 				onClick={this.onExpand}
@@ -134,7 +139,7 @@ class TreeNode extends React.Component {
 	}
 
 	render() {
-		const { checked, className, treeId, label, showNodeIcon, value } = this.props;
+		const { checked, className, disabled, treeId, label, showNodeIcon, value } = this.props;
 		const inputId = `${treeId}-${value}`;
 		const nodeClass = classNames({
 			'rct-node': true,
@@ -147,7 +152,13 @@ class TreeNode extends React.Component {
 				<span className="rct-text">
 					{this.renderCollapseButton()}
 					<label htmlFor={inputId}>
-						<input checked={checked === 1} id={inputId} type="checkbox" onChange={this.onCheck} />
+						<input
+							checked={checked === 1}
+							disabled={disabled}
+							id={inputId}
+							type="checkbox"
+							onChange={this.onCheck}
+						/>
 						<span className="rct-checkbox">
 							{this.renderCheckboxIcon()}
 						</span>
