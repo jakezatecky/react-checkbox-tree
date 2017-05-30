@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## [v0.6.3](https://github.com/jakezatecky/react-checkbox-tree/compare/v0.6.2...v0.6.3) (2017-05-30)
+
+The **v0.6.x** series will likely be the last series before the **v1.0** release. The API is not expected to significantly change, but new features will not be added to pre-1.0 versions.
+
+### New Features
+
+* [#35]: Add `disabled` and `expandDisabled` options to `<CheckboxTree>`
+
 ## [v0.6.2](https://github.com/jakezatecky/react-checkbox-tree/compare/v0.6.1...v0.6.2) (2017-05-25)
 
 ### New Features

@@ -21,6 +21,10 @@
   outline: none;
 }
 
+.react-checkbox-tree button:disabled {
+  cursor: not-allowed;
+}
+
 .react-checkbox-tree label {
   margin-bottom: 0;
   cursor: pointer;
@@ -37,6 +41,18 @@
 .react-checkbox-tree .rct-icon {
   font-family: "FontAwesome";
   font-style: normal;
+}
+
+.rct-disabled {
+  opacity: .75;
+}
+
+.rct-disabled label {
+  cursor: not-allowed;
+}
+
+.rct-disabled label:hover {
+  background: transparent;
 }
 
 .rct-collapse,
