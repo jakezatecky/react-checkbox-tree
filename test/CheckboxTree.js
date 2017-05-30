@@ -22,6 +22,16 @@ describe('<CheckboxTree />', () => {
 		});
 	});
 
+	describe('disabled', () => {
+		it('should add the class rct-disabled to the root', () => {
+			const wrapper = shallow(
+				<CheckboxTree disabled nodes={[]} />,
+			);
+
+			assert.isTrue(wrapper.find('.react-checkbox-tree.rct-disabled').exists());
+		});
+	});
+
 	describe('nodes', () => {
 		it('should render the node\'s label', () => {
 			const wrapper = shallow(

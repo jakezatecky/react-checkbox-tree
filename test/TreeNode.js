@@ -6,6 +6,8 @@ import TreeNode from '../src/js/TreeNode';
 
 const baseProps = {
 	checked: 0,
+	disabled: false,
+	expandDisabled: false,
 	expanded: false,
 	label: 'Jupiter',
 	optimisticToggle: true,
@@ -81,6 +83,26 @@ describe('<TreeNode />', () => {
 			);
 
 			assert.isTrue(wrapper.find('.my-test-class').exists());
+		});
+	});
+
+	describe('disabled', () => {
+		it('should disable the hidden <input> element', () => {
+			const wrapper = shallow(
+				<TreeNode {...baseProps} disabled />,
+			);
+
+			assert.isTrue(wrapper.find('input[disabled]').exists());
+		});
+	});
+
+	describe('expandDisabled', () => {
+		it('should disable the expand <button>', () => {
+			const wrapper = shallow(
+				<TreeNode {...baseProps} expandDisabled rawChildren={[{ value: 'europa', label: 'Europa' }]} />,
+			);
+
+			assert.isTrue(wrapper.find('button.rct-collapse-btn[disabled]').exists());
 		});
 	});
 
