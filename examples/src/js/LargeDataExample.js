@@ -4,62 +4,62 @@ import CheckboxTree from 'react-checkbox-tree';
 const parents = [];
 
 for (let i = 0; i < 100; i += 1) {
-	const children = [];
+    const children = [];
 
-	for (let j = 0; j < 200; j += 1) {
-		children.push({
-			value: `node-0-${i}-${j}`,
-			label: `Node 0-${i}-${j}`,
-		});
-	}
+    for (let j = 0; j < 200; j += 1) {
+        children.push({
+            value: `node-0-${i}-${j}`,
+            label: `Node 0-${i}-${j}`,
+        });
+    }
 
-	parents.push({
-		value: `node-0-${i}`,
-		label: `Node 0-${i}`,
-		children,
-	});
+    parents.push({
+        value: `node-0-${i}`,
+        label: `Node 0-${i}`,
+        children,
+    });
 }
 
 const nodes = [{
-	value: 'node-0',
-	label: 'Node 0',
-	children: parents,
+    value: 'node-0',
+    label: 'Node 0',
+    children: parents,
 }];
 
 class LargeDataExample extends React.Component {
-	constructor() {
-		super();
+    constructor() {
+        super();
 
-		this.state = {
-			checked: [],
-			expanded: [],
-		};
+        this.state = {
+            checked: [],
+            expanded: [],
+        };
 
-		this.onCheck = this.onCheck.bind(this);
-		this.onExpand = this.onExpand.bind(this);
-	}
+        this.onCheck = this.onCheck.bind(this);
+        this.onExpand = this.onExpand.bind(this);
+    }
 
-	onCheck(checked) {
-		this.setState({ checked });
-	}
+    onCheck(checked) {
+        this.setState({ checked });
+    }
 
-	onExpand(expanded) {
-		this.setState({ expanded });
-	}
+    onExpand(expanded) {
+        this.setState({ expanded });
+    }
 
-	render() {
-		const { checked, expanded } = this.state;
+    render() {
+        const { checked, expanded } = this.state;
 
-		return (
-			<CheckboxTree
-				checked={checked}
-				expanded={expanded}
-				nodes={nodes}
-				onCheck={this.onCheck}
-				onExpand={this.onExpand}
-			/>
-		);
-	}
+        return (
+            <CheckboxTree
+                checked={checked}
+                expanded={expanded}
+                nodes={nodes}
+                onCheck={this.onCheck}
+                onExpand={this.onExpand}
+            />
+        );
+    }
 }
 
 export default LargeDataExample;
