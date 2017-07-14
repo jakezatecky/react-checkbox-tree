@@ -145,6 +145,7 @@ class TreeNode extends React.Component {
 			'rct-node': true,
 			'rct-node-parent': this.hasChildren(),
 			'rct-node-leaf': !this.hasChildren(),
+			'rct-disabled': disabled,
 		}, className);
 
 		return (
