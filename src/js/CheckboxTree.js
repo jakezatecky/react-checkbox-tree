@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { isEqual } from 'lodash';
+import isEqual from 'lodash/isEqual';
 import PropTypes from 'prop-types';
 import React from 'react';
 import shortid from 'shortid';
@@ -190,29 +190,30 @@ class CheckboxTree extends React.Component {
             const key = `${node.value}`;
             const checked = this.getCheckState(node, noCascade);
             const children = this.renderChildNodes(node);
+			const nodeDisabled = !!(disabled || node.disabled);
 
-            return (
-                <TreeNode
-                    key={key}
-                    checked={checked}
-                    className={node.className}
-                    disabled={disabled}
-                    expandDisabled={expandDisabled}
-                    expanded={node.expanded}
-                    icon={node.icon}
-                    label={node.label}
-                    optimisticToggle={optimisticToggle}
-                    rawChildren={node.children}
-                    showNodeIcon={showNodeIcon}
-                    treeId={this.id}
-                    value={node.value}
-                    onCheck={this.onCheck}
-                    onExpand={this.onExpand}
-                >
-                    {children}
-                </TreeNode>
-            );
-        });
+			return (
+				<TreeNode
+					key={key}
+					checked={checked}
+					className={node.className}
+					disabled={nodeDisabled}
+					expandDisabled={expandDisabled}
+					expanded={node.expanded}
+					icon={node.icon}
+					label={node.label}
+					optimisticToggle={optimisticToggle}
+					rawChildren={node.children}
+					showNodeIcon={showNodeIcon}
+					treeId={this.id}
+					value={node.value}
+					onCheck={this.onCheck}
+					onExpand={this.onExpand}
+				>
+					{children}
+				</TreeNode>
+			);
+		});
 
         return (
             <ol>

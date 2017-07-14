@@ -10,7 +10,7 @@ class TreeNode extends React.Component {
         disabled: PropTypes.bool.isRequired,
         expandDisabled: PropTypes.bool.isRequired,
         expanded: PropTypes.bool.isRequired,
-        label: PropTypes.string.isRequired,
+        label: PropTypes.node.isRequired,
         optimisticToggle: PropTypes.bool.isRequired,
         showNodeIcon: PropTypes.bool.isRequired,
         treeId: PropTypes.string.isRequired,
@@ -138,13 +138,14 @@ class TreeNode extends React.Component {
         return this.props.children;
     }
 
-    render() {
-        const { checked, className, disabled, treeId, label, showNodeIcon, value } = this.props;
-        const inputId = `${treeId}-${value}`;
-        const nodeClass = classNames({
-            'rct-node': true,
-            'rct-node-parent': this.hasChildren(),
-            'rct-node-leaf': !this.hasChildren(),
+	render() {
+		const { checked, className, disabled, treeId, label, showNodeIcon, value } = this.props;
+		const inputId = `${treeId}-${value}`;
+		const nodeClass = classNames({
+			'rct-node': true,
+			'rct-node-parent': this.hasChildren(),
+			'rct-node-leaf': !this.hasChildren(),
+		    'rct-disabled': disabled,
         }, className);
 
         return (
