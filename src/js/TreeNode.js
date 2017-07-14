@@ -10,7 +10,7 @@ class TreeNode extends React.Component {
 		disabled: PropTypes.bool.isRequired,
 		expandDisabled: PropTypes.bool.isRequired,
 		expanded: PropTypes.bool.isRequired,
-		label: PropTypes.string.isRequired,
+		label: PropTypes.node.isRequired,
 		optimisticToggle: PropTypes.bool.isRequired,
 		showNodeIcon: PropTypes.bool.isRequired,
 		treeId: PropTypes.string.isRequired,

@@ -110,7 +110,7 @@ Individual nodes within the `nodes` property can have the following structure:
 
 | Property    | Type   | Description                     |
 | ----------- | ------ | ------------------------------- |
-| `label`     | string | **Required**. The node's label. |
+| `label`     | mixed  | **Required**. The node's label. |
 | `value`     | mixed  | **Required**. The node's value. |
 | `children`  | array  | An array of child nodes.        |
 | `className` | string | A className to add to the node. |
