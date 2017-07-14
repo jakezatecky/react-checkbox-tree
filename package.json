@@ -17,6 +17,7 @@
   "bugs": "https://github.com/jakezatecky/react-checkbox-tree/issues",
   "main": "lib/index.js",
   "scripts": {
+    "build-babel": "babel src/js -d lib",
     "build": "gulp build",
     "examples": "gulp examples",
     "gh-deploy": "git subtree push --prefix examples/dist origin gh-pages",
@@ -24,9 +25,12 @@
     "test": "gulp test"
   },
   "peerDependencies": {
+    "lodash": "^4.17.4",
+    "prop-types": "^15.5.8",
     "react": "^15.3.0"
   },
   "devDependencies": {
+    "babel-cli": "^6.13.2",
     "babel-core": "^6.13.2",
     "babel-eslint": "^7.0.0",
     "babel-loader": "^7.0.0",
@@ -50,7 +54,9 @@
     "gulp-sass": "^3.0.0",
     "gulp-scss-lint": "^0.4.0",
     "jsdom": "^11.0.0",
+    "lodash": "^4.17.4",
     "mocha": "^3.0.2",
+    "prop-types": "^15.5.8",
     "react": "^15.4.2",
     "react-addons-test-utils": "^15.4.2",
     "react-dom": "^15.4.2",
@@ -60,8 +66,6 @@
   },
   "dependencies": {
     "classnames": "^2.2.5",
-    "lodash": "^4.17.4",
-    "prop-types": "^15.5.8",
     "shortid": "^2.2.6"
   }
 }
