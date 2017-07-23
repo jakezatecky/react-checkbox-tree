@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [v0.6.4](https://github.com/jakezatecky/react-checkbox-tree/compare/v0.6.3...v0.6.4) (2017-07-22)
+
+### Bug Fix
+
+* [#42]: Fix npm package not aligning with Git version
+
 ## [v0.6.3](https://github.com/jakezatecky/react-checkbox-tree/compare/v0.6.2...v0.6.3) (2017-05-30)
 
 The **v0.6.x** series will likely be the last series before the **v1.0** release. The API is not expected to significantly change, but new features will not be added to pre-1.0 versions.
