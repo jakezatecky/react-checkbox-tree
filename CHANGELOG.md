@@ -2,7 +2,7 @@
 
 ## [v0.6.4](https://github.com/jakezatecky/react-checkbox-tree/compare/v0.6.3...v0.6.4) (2017-07-22)
 
-### Bug Fix
+### Bug Fixes
 
 * [#42]: Fix npm package not aligning with Git version
 
