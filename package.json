@@ -23,6 +23,7 @@
     "prepublishOnly": "gulp build",
     "test": "gulp test"
   },
+  "typings": "index.d.ts",
   "peerDependencies": {
     "react": "^15.3.0"
   },
