@@ -3,7 +3,7 @@
 [![npm](https://img.shields.io/npm/v/react-checkbox-tree.svg?style=flat-square)](https://www.npmjs.com/package/react-checkbox-tree)
 [![Build Status](https://img.shields.io/travis/jakezatecky/react-checkbox-tree/master.svg?style=flat-square)](https://travis-ci.org/jakezatecky/react-checkbox-tree)
 [![Dependency Status](https://img.shields.io/david/jakezatecky/react-checkbox-tree.svg?style=flat-square)](https://david-dm.org/jakezatecky/react-checkbox-tree)
-[![devDependency Status](https://david-dm.org/jakezatecky/react-checkbox-tree/dev-status.svg?style=flat-square)](https://david-dm.org/jakezatecky/react-checkbox-tree#info=devDependencies)
+[![devDependency Status](https://david-dm.org/jakezatecky/react-checkbox-tree/dev-status.svg?style=flat-square)](https://david-dm.org/jakezatecky/react-checkbox-tree?type=dev)
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://raw.githubusercontent.com/jakezatecky/react-checkbox-tree/master/LICENSE.txt)
 
 > A simple and elegant checkbox tree for React.
@@ -110,8 +110,9 @@ Individual nodes within the `nodes` property can have the following structure:
 
 | Property    | Type   | Description                     |
 | ----------- | ------ | ------------------------------- |
-| `label`     | string | **Required**. The node's label. |
+| `label`     | mixed  | **Required**. The node's label. |
 | `value`     | mixed  | **Required**. The node's value. |
 | `children`  | array  | An array of child nodes.        |
 | `className` | string | A className to add to the node. |
+| `disabled`  | bool   | Disable node.                   |
 | `icon`      | mixed  | A custom icon for the node.     |

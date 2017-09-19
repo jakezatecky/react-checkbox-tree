@@ -1,18 +1,5 @@
 {
-  "extends": "airbnb",
-  "parser": "babel-eslint",
-  "rules": {
-    "class-methods-use-this": 0,
-    "indent": [2, "tab"],
-    "no-tabs": 0,
-    "react/jsx-indent": [2, "tab"],
-    "react/jsx-indent-props" : [2, "tab"],
-    "react/jsx-filename-extension": 0,
-    "react/sort-prop-types": [2, {
-      "callbacksLast": true,
-      "requiredFirst": true
-    }]
-  },
+  "extends": "takiyon-react",
   "env": {
     "browser": true,
     "mocha": true
