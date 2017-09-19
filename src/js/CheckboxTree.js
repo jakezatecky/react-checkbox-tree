@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { isEqual } from 'lodash';
+import isEqual from 'lodash/isEqual';
 import PropTypes from 'prop-types';
 import React from 'react';
 import shortid from 'shortid';
@@ -190,13 +190,14 @@ class CheckboxTree extends React.Component {
             const key = `${node.value}`;
             const checked = this.getCheckState(node, noCascade);
             const children = this.renderChildNodes(node);
+            const nodeDisabled = !!(disabled || node.disabled);
 
             return (
                 <TreeNode
                     key={key}
                     checked={checked}
                     className={node.className}
-                    disabled={disabled}
+                    disabled={nodeDisabled}
                     expandDisabled={expandDisabled}
                     expanded={node.expanded}
                     icon={node.icon}
