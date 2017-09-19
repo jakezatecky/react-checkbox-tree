@@ -80,7 +80,7 @@ const nodes = [
     },
 ];
 
-class BasicExample extends React.Component {
+class DisabledExample extends React.Component {
     constructor() {
         super();
 
@@ -115,6 +115,7 @@ class BasicExample extends React.Component {
         return (
             <CheckboxTree
                 checked={checked}
+                disabled
                 expanded={expanded}
                 nodes={nodes}
                 onCheck={this.onCheck}
@@ -124,4 +125,4 @@ class BasicExample extends React.Component {
     }
 }
 
-export default BasicExample;
+export default DisabledExample;
