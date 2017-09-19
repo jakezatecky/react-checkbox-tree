@@ -142,4 +142,68 @@ describe('<CheckboxTree />', () => {
             assert.deepEqual(['io', 'europa'], actual);
         });
     });
+
+    describe('nodeProps', () => {
+        describe('disabled', () => {
+            it('should disable the target node when set to true', () => {
+                const wrapper = shallow(
+                    <CheckboxTree
+                        nodes={[
+                            {
+                                value: 'jupiter',
+                                label: 'Jupiter',
+                                disabled: true,
+                                children: [
+                                    { value: 'europa', label: 'Europa' },
+                                ],
+                            },
+                        ]}
+                    />,
+                );
+
+                assert.isTrue(wrapper.find(TreeNode).prop('disabled'));
+            });
+
+            it('should disable the child nodes when `noCascade` is false', () => {
+                const wrapper = shallow(
+                    <CheckboxTree
+                        expanded={['jupiter']}
+                        nodes={[
+                            {
+                                value: 'jupiter',
+                                label: 'Jupiter',
+                                disabled: true,
+                                children: [
+                                    { value: 'europa', label: 'Europa' },
+                                ],
+                            },
+                        ]}
+                    />,
+                );
+
+                assert.isTrue(wrapper.find('TreeNode[value="europa"]').prop('disabled'));
+            });
+
+            it('should NOT disable the child nodes when `noCascade` is true', () => {
+                const wrapper = shallow(
+                    <CheckboxTree
+                        expanded={['jupiter']}
+                        noCascade
+                        nodes={[
+                            {
+                                value: 'jupiter',
+                                label: 'Jupiter',
+                                disabled: true,
+                                children: [
+                                    { value: 'europa', label: 'Europa' },
+                                ],
+                            },
+                        ]}
+                    />,
+                );
+
+                assert.isFalse(wrapper.find('TreeNode[value="europa"]').prop('disabled'));
+            });
+        });
+    });
 });
