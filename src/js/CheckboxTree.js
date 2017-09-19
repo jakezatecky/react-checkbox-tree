@@ -109,6 +109,18 @@ class CheckboxTree extends React.Component {
         return 0;
     }
 
+    getDisabledState(node, parent, disabledProp, noCascade) {
+        if (disabledProp) {
+            return true;
+        }
+
+        if (!noCascade && parent.disabled) {
+            return true;
+        }
+
+        return Boolean(node.disabled);
+    }
+
     toggleChecked(node, isChecked, noCascade) {
         if (node.children === null || noCascade) {
             // Set the check status of a leaf node or an uncoupled parent
@@ -184,13 +196,13 @@ class CheckboxTree extends React.Component {
         });
     }
 
-    renderTreeNodes(nodes) {
+    renderTreeNodes(nodes, parent = {}) {
         const { disabled, expandDisabled, noCascade, optimisticToggle, showNodeIcon } = this.props;
         const treeNodes = nodes.map((node) => {
             const key = `${node.value}`;
             const checked = this.getCheckState(node, noCascade);
             const children = this.renderChildNodes(node);
-            const nodeDisabled = !!(disabled || node.disabled);
+            const nodeDisabled = this.getDisabledState(node, parent, disabled, noCascade);
 
             return (
                 <TreeNode
@@ -224,7 +236,7 @@ class CheckboxTree extends React.Component {
 
     renderChildNodes(node) {
         if (node.children !== null && node.expanded) {
-            return this.renderTreeNodes(node.children);
+            return this.renderTreeNodes(node.children, node);
         }
 
         return null;
