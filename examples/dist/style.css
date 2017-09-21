@@ -34,6 +34,10 @@
   background: rgba(51, 51, 204, 0.1);
 }
 
+.react-checkbox-tree label:active {
+  background: rgba(51, 51, 204, 0.15);
+}
+
 .react-checkbox-tree input {
   display: none;
 }
@@ -43,27 +47,28 @@
   font-style: normal;
 }
 
-.rct-disabled {
+.rct-disabled > .rct-text > label {
   opacity: .75;
-}
-
-.rct-disabled label {
   cursor: not-allowed;
 }
 
-.rct-disabled label:hover {
+.rct-disabled > .rct-text > label:hover {
+  background: transparent;
+}
+
+.rct-disabled > .rct-text > label:active {
   background: transparent;
 }
 
 .rct-collapse,
-.rct-node-icon,
-.rct-checkbox {
+.rct-checkbox,
+.rct-node-icon {
   padding: 0 5px;
 }
 
 .rct-collapse *,
-.rct-node-icon *,
-.rct-checkbox * {
+.rct-checkbox *,
+.rct-node-icon * {
   display: inline-block;
   margin: 0;
   width: 14px;
