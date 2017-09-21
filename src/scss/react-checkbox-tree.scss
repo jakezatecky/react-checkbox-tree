@@ -1,5 +1,6 @@
 $rct-icon-color: #33c !default;
 $rct-label-hover: rgba($rct-icon-color, .1) !default;
+$rct-label-active: rgba($rct-icon-color, .15) !default;
 
 .react-checkbox-tree {
   font-size: 16px;
@@ -34,6 +35,10 @@ $rct-label-hover: rgba($rct-icon-color, .1) !default;
     &:hover {
       background: $rct-label-hover;
     }
+
+    &:active {
+      background: $rct-label-active;
+    }
   }
 
   input {
@@ -54,12 +59,16 @@ $rct-label-hover: rgba($rct-icon-color, .1) !default;
     &:hover {
       background: transparent;
     }
+
+    &:active {
+      background: transparent;
+    }
   }
 }
 
 .rct-collapse,
-.rct-node-icon,
-.rct-checkbox {
+.rct-checkbox,
+.rct-node-icon {
   padding: 0 5px;
 
   * {

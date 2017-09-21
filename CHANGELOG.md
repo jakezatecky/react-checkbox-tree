@@ -7,6 +7,10 @@
 * [#49]: Add the ability to specify `disabled` to individual nodes
 * [#50]: Allow `node.label` to be any valid React node
 
+### Usability
+
+* [#51]: Apply additional background color when a node is active
+
 ## [v0.6.4](https://github.com/jakezatecky/react-checkbox-tree/compare/v0.6.3...v0.6.4) (2017-07-22)
 
 ### Bug Fixes
