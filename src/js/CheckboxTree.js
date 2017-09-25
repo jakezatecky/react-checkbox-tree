@@ -197,7 +197,13 @@ class CheckboxTree extends React.Component {
     }
 
     renderTreeNodes(nodes, parent = {}) {
-        const { disabled, expandDisabled, noCascade, optimisticToggle, showNodeIcon } = this.props;
+        const {
+            disabled,
+            expandDisabled,
+            noCascade,
+            optimisticToggle,
+            showNodeIcon,
+        } = this.props;
         const treeNodes = nodes.map((node) => {
             const key = `${node.value}`;
             const checked = this.getCheckState(node, noCascade);

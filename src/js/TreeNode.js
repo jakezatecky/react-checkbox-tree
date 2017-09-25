@@ -139,7 +139,15 @@ class TreeNode extends React.Component {
     }
 
     render() {
-        const { checked, className, disabled, treeId, label, showNodeIcon, value } = this.props;
+        const {
+            checked,
+            className,
+            disabled,
+            label,
+            showNodeIcon,
+            treeId,
+            value,
+        } = this.props;
         const inputId = `${treeId}-${value}`;
         const nodeClass = classNames({
             'rct-node': true,
