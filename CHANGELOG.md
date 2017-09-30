@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [v1.0.1](https://github.com/jakezatecky/react-checkbox-tree/compare/v1.0.0...v1.0.1) (2017-09-30)
+
+### Dependencies
+
+* [#54]: Add support for React 16
+
 ## [v1.0.0](https://github.com/jakezatecky/react-checkbox-tree/compare/v0.6.4...v1.0.0) (2017-09-21)
 
 ### New Features
