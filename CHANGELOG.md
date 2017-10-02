@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v1.1.0 (TBA)
+
+### New Features
+
+* [#53]: Add `nativeCheckboxes` property to allow use of native browser checkboxes instead of pseudo-checkbox icons
+
 ## [v1.0.1](https://github.com/jakezatecky/react-checkbox-tree/compare/v1.0.0...v1.0.1) (2017-09-30)
 
 ### Dependencies

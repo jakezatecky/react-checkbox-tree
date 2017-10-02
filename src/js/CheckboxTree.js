@@ -17,6 +17,7 @@ class CheckboxTree extends React.Component {
         expanded: PropTypes.arrayOf(PropTypes.string),
         name: PropTypes.string,
         nameAsArray: PropTypes.bool,
+        nativeCheckboxes: PropTypes.bool,
         noCascade: PropTypes.bool,
         optimisticToggle: PropTypes.bool,
         showNodeIcon: PropTypes.bool,
@@ -31,6 +32,7 @@ class CheckboxTree extends React.Component {
         expanded: [],
         name: undefined,
         nameAsArray: false,
+        nativeCheckboxes: false,
         noCascade: false,
         optimisticToggle: true,
         showNodeIcon: true,
@@ -280,6 +282,7 @@ class CheckboxTree extends React.Component {
         const className = classNames({
             'react-checkbox-tree': true,
             'rct-disabled': this.props.disabled,
+            'rct-native-display': this.props.nativeCheckboxes,
         });
 
         return (

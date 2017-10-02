@@ -32,6 +32,16 @@ describe('<CheckboxTree />', () => {
         });
     });
 
+    describe('nativeCheckboxes', () => {
+        it('should add the class rct-native-display to the root', () => {
+            const wrapper = shallow(
+                <CheckboxTree nativeCheckboxes nodes={[]} />,
+            );
+
+            assert.isTrue(wrapper.find('.react-checkbox-tree.rct-native-display').exists());
+        });
+    });
+
     describe('nodes', () => {
         it('should render the node\'s label', () => {
             const wrapper = shallow(

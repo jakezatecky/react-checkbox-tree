@@ -41,8 +41,12 @@
     }
   }
 
-  input {
+  &:not(.rct-native-display) input {
     display: none;
+  }
+
+  &.rct-native-display input {
+    margin: 0 5px;
   }
 
   .rct-icon {
@@ -66,6 +70,11 @@
   }
 }
 
+.rct-text {
+  display: flex;
+  align-items: center;
+}
+
 .rct-collapse,
 .rct-checkbox,
 .rct-node-icon {
@@ -76,11 +85,6 @@
     margin: 0;
     width: 14px;
   }
-}
-
-.rct-text {
-  display: flex;
-  align-items: center;
 }
 
 .rct-collapse {
@@ -100,6 +104,12 @@
     &:hover {
       opacity: 1;
     }
+  }
+}
+
+.rct-checkbox {
+  .rct-native-display & {
+    display: none;
   }
 }
 

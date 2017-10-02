@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 
+import NativeCheckbox from './NativeCheckbox';
 import nodeShape from './nodeShape';
 
 class TreeNode extends React.Component {
@@ -161,11 +162,11 @@ class TreeNode extends React.Component {
                 <span className="rct-text">
                     {this.renderCollapseButton()}
                     <label htmlFor={inputId}>
-                        <input
+                        <NativeCheckbox
                             checked={checked === 1}
                             disabled={disabled}
                             id={inputId}
-                            type="checkbox"
+                            indeterminate={checked === 2}
                             onChange={this.onCheck}
                         />
                         <span className="rct-checkbox">

@@ -34,7 +34,7 @@ describe('<TreeNode />', () => {
             );
 
             assert.equal('planets-jupiter', wrapper.find('label').prop('htmlFor'));
-            assert.equal('planets-jupiter', wrapper.find('label input[type="checkbox"]').prop('id'));
+            assert.equal('planets-jupiter', wrapper.find('label NativeCheckbox').prop('id'));
         });
     });
 
@@ -63,8 +63,8 @@ describe('<TreeNode />', () => {
                 <TreeNode {...baseProps} checked={2} />,
             );
 
-            assert.isFalse(wrapper1.find('input[type="checkbox"]').prop('checked'));
-            assert.isFalse(wrapper2.find('input[type="checkbox"]').prop('checked'));
+            assert.isFalse(wrapper1.find('NativeCheckbox').prop('checked'));
+            assert.isFalse(wrapper2.find('NativeCheckbox').prop('checked'));
         });
 
         it('should render a checked input element when set to 1', () => {
@@ -72,7 +72,7 @@ describe('<TreeNode />', () => {
                 <TreeNode {...baseProps} checked={1} />,
             );
 
-            assert.isTrue(wrapper.find('input[type="checkbox"]').prop('checked'));
+            assert.isTrue(wrapper.find('NativeCheckbox').prop('checked'));
         });
     });
 
@@ -92,7 +92,7 @@ describe('<TreeNode />', () => {
                 <TreeNode {...baseProps} disabled />,
             );
 
-            assert.isTrue(wrapper.find('input[disabled]').exists());
+            assert.isTrue(wrapper.find('NativeCheckbox[disabled]').exists());
         });
     });
 
@@ -212,7 +212,7 @@ describe('<TreeNode />', () => {
                 />,
             );
 
-            wrapper.find('input[type="checkbox"]').simulate('change');
+            wrapper.find('NativeCheckbox').simulate('change');
 
             assert.equal('jupiter', actual.value);
         });
@@ -231,7 +231,7 @@ describe('<TreeNode />', () => {
                 />,
             );
 
-            wrapper.find('input[type="checkbox"]').simulate('change');
+            wrapper.find('NativeCheckbox').simulate('change');
 
             assert.isTrue(actual.checked);
         });
@@ -250,7 +250,7 @@ describe('<TreeNode />', () => {
                 />,
             );
 
-            wrapper.find('input[type="checkbox"]').simulate('change');
+            wrapper.find('NativeCheckbox').simulate('change');
 
             assert.isFalse(actual.checked);
         });
@@ -269,7 +269,7 @@ describe('<TreeNode />', () => {
                 />,
             );
 
-            wrapper.find('input[type="checkbox"]').simulate('change');
+            wrapper.find('NativeCheckbox').simulate('change');
 
             assert.isTrue(actual.checked);
         });
@@ -290,7 +290,7 @@ describe('<TreeNode />', () => {
                     />,
                 );
 
-                wrapper.find('input[type="checkbox"]').simulate('change');
+                wrapper.find('NativeCheckbox').simulate('change');
 
                 assert.isFalse(actual.checked);
             });
