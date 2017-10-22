@@ -148,7 +148,7 @@ class TreeNode extends React.Component {
             treeId,
             value,
         } = this.props;
-        const inputId = `${treeId}-${value}`;
+        const inputId = `${treeId}-${value.split(' ').join('_')}`;
         const nodeClass = classNames({
             'rct-node': true,
             'rct-node-parent': this.hasChildren(),
