@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import isEqual from 'lodash/isEqual';
 import PropTypes from 'prop-types';
 import React from 'react';
-import shortid from 'shortid';
+import nanoid from 'nanoid';
 
 import TreeNode from './TreeNode';
 import nodeShape from './nodeShape';
@@ -41,7 +41,7 @@ class CheckboxTree extends React.Component {
     constructor(props) {
         super(props);
 
-        this.id = `rct-${shortid.generate()}`;
+        this.id = `rct-${nanoid(7)}`;
         this.nodes = {};
 
         this.flattenNodes(props.nodes);
