@@ -143,3 +143,30 @@ $rct-label-active: rgba($rct-icon-color, .15) !default;
 .rct-icon-parent-close::before {
   content: "\f114";
 }
+
+.input-group {
+  position: relative;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-align: stretch;
+  align-items: stretch;
+  width: 100%;
+}
+
+.input-group-addon {
+  padding: .375rem .75rem;
+  margin-bottom: 0;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #495057;
+  text-align: center;
+  background-color: #e9ecef;
+  border: 1px solid #ced4da;
+  border-right-width: 1px;
+  border-right-style: solid;
+  border-right-color: rgb(206, 212, 218);
+  border-radius: .25rem;
+  border-top-right-radius: 0.25rem;
+  border-bottom-right-radius: 0.25rem;
+}
