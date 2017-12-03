@@ -1,5 +1,4 @@
 import classNames from 'classnames';
-import isEqual from 'lodash/isEqual';
 import PropTypes from 'prop-types';
 import React from 'react';
 import nanoid from 'nanoid';
@@ -55,8 +54,8 @@ class CheckboxTree extends React.Component {
     }
 
     componentWillReceiveProps({ nodes, checked, expanded }) {
-            this.flattenNodes(nodes);
-            this.unserializeLists({ checked, expanded });
+        this.flattenNodes(nodes);
+        this.unserializeLists({ checked, expanded });
     }
 
     onCheck(node) {
