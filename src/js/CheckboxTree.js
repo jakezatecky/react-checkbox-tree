@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import isEqual from 'lodash/isEqual';
 import PropTypes from 'prop-types';
 import React from 'react';
-import shortid from 'shortid';
+import nanoid from 'nanoid';
 
 import TreeNode from './TreeNode';
 import nodeShape from './nodeShape';
@@ -43,7 +43,7 @@ class CheckboxTree extends React.Component {
     constructor(props) {
         super(props);
 
-        this.id = `rct-${shortid.generate()}`;
+        this.id = `rct-${nanoid(7)}`;
         this.nodes = {};
 
         this.flattenNodes(props.nodes);
@@ -68,14 +68,14 @@ class CheckboxTree extends React.Component {
         const { noCascade, onCheck } = this.props;
 
         this.toggleChecked(node, node.checked, noCascade);
-        onCheck(this.serializeList('checked'));
+        onCheck(this.serializeList('checked'), node);
     }
 
     onExpand(node) {
         const { onExpand } = this.props;
 
         this.toggleNode('expanded', node, node.expanded);
-        onExpand(this.serializeList('expanded'));
+        onExpand(this.serializeList('expanded'), node);
     }
 
     getFormattedNodes(nodes) {
