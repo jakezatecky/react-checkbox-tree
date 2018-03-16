@@ -206,4 +206,61 @@ describe('<CheckboxTree />', () => {
             });
         });
     });
+
+    describe('onCheck', () => {
+        it('should pass the node toggled as the second parameter', () => {
+            let actualNode = null;
+
+            const wrapper = mount(
+                <CheckboxTree
+                    checked={[]}
+                    nodes={[
+                        {
+                            value: 'jupiter',
+                            label: 'Jupiter',
+                            children: [
+                                { value: 'io', label: 'Io' },
+                                { value: 'europa', label: 'Europa' },
+                            ],
+                        },
+                    ]}
+                    onCheck={(checked, node) => {
+                        actualNode = node;
+                    }}
+                />,
+            );
+
+            wrapper.find('TreeNode input[type="checkbox"]').simulate('change');
+            assert.equal('jupiter', actualNode.value);
+        });
+    });
+
+
+    describe('onExpand', () => {
+        it('should pass the node toggled as the second parameter', () => {
+            let actualNode = null;
+
+            const wrapper = mount(
+                <CheckboxTree
+                    checked={[]}
+                    nodes={[
+                        {
+                            value: 'jupiter',
+                            label: 'Jupiter',
+                            children: [
+                                { value: 'io', label: 'Io' },
+                                { value: 'europa', label: 'Europa' },
+                            ],
+                        },
+                    ]}
+                    onExpand={(expanded, node) => {
+                        actualNode = node;
+                    }}
+                />,
+            );
+
+            wrapper.find('TreeNode .rct-collapse-btn').simulate('click');
+            assert.equal('jupiter', actualNode.value);
+        });
+    });
 });

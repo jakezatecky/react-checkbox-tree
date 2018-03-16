@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v1.1.0 (TBA)
+
+### New Features
+
+* [#72]: Add the node that triggers `onCheck` or `onExpand` as a second parameter
+
 ## [v1.0.2](https://github.com/jakezatecky/react-checkbox-tree/compare/v1.0.1...v1.0.2) (2017-10-24)
 
 ### Bug Fixes
