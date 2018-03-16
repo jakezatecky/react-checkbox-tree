@@ -61,7 +61,7 @@
   "dependencies": {
     "classnames": "^2.2.5",
     "lodash": "^4.17.4",
-    "prop-types": "^15.5.8",
-    "shortid": "^2.2.6"
+    "nanoid": "^1.0.1",
+    "prop-types": "^15.5.8"
   }
 }
