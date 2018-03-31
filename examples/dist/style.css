@@ -25,6 +25,10 @@
   cursor: not-allowed;
 }
 
+.react-checkbox-tree .rct-bare-label {
+  cursor: default;
+}
+
 .react-checkbox-tree label {
   margin-bottom: 0;
   cursor: pointer;
@@ -38,8 +42,12 @@
   background: rgba(51, 51, 204, 0.15);
 }
 
-.react-checkbox-tree input {
+.react-checkbox-tree:not(.rct-native-display) input {
   display: none;
+}
+
+.react-checkbox-tree.rct-native-display input {
+  margin: 0 5px;
 }
 
 .react-checkbox-tree .rct-icon {
@@ -60,6 +68,15 @@
   background: transparent;
 }
 
+.rct-text {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
 .rct-collapse,
 .rct-checkbox,
 .rct-node-icon {
@@ -72,15 +89,6 @@
   display: inline-block;
   margin: 0;
   width: 14px;
-}
-
-.rct-text {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
 }
 
 .rct-collapse {
@@ -101,6 +109,10 @@
 
 .rct-collapse > .rct-icon-expand-close:hover {
   opacity: 1;
+}
+
+.rct-native-display .rct-checkbox {
+  display: none;
 }
 
 .rct-node-icon {
