@@ -23,6 +23,7 @@ class TreeNode extends React.Component {
         className: PropTypes.string,
         icon: PropTypes.node,
         rawChildren: PropTypes.arrayOf(nodeShape),
+        showCheckbox: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -30,6 +31,7 @@ class TreeNode extends React.Component {
         className: null,
         icon: null,
         rawChildren: null,
+        showCheckbox: true,
     };
 
     constructor(props) {
@@ -131,6 +133,63 @@ class TreeNode extends React.Component {
         return <span className="rct-icon rct-icon-parent-open" />;
     }
 
+    renderBareLabel(children) {
+        return (
+            <span className="rct-bare-label">
+                {children}
+            </span>
+        );
+    }
+
+    renderCheckboxLabel(children) {
+        const {
+            checked,
+            disabled,
+            label,
+            treeId,
+            value,
+        } = this.props;
+
+        const inputId = `${treeId}-${value.split(' ').join('_')}`;
+
+        return (
+            <label htmlFor={inputId}>
+                <NativeCheckbox
+                    checked={checked === 1}
+                    disabled={disabled}
+                    id={inputId}
+                    indeterminate={checked === 2}
+                    onChange={this.onCheck}
+                />
+                <span className="rct-checkbox">
+                    {this.renderCheckboxIcon()}
+                </span>
+                {children}
+            </label>
+        );
+    }
+
+    renderLabel() {
+        const { label, showCheckbox, showNodeIcon } = this.props;
+
+        const labelChildren = [
+            showNodeIcon ? (
+                <span key={0} className="rct-node-icon">
+                    {this.renderNodeIcon()}
+                </span>
+            ) : null,
+            <span key={1} className="rct-title">
+                {label}
+            </span>,
+        ];
+
+        if (!showCheckbox) {
+            return this.renderBareLabel(labelChildren);
+        }
+
+        return this.renderCheckboxLabel(labelChildren);
+    }
+
     renderChildren() {
         if (!this.props.expanded) {
             return null;
@@ -140,16 +199,7 @@ class TreeNode extends React.Component {
     }
 
     render() {
-        const {
-            checked,
-            className,
-            disabled,
-            label,
-            showNodeIcon,
-            treeId,
-            value,
-        } = this.props;
-        const inputId = `${treeId}-${value.split(' ').join('_')}`;
+        const { className, disabled } = this.props;
         const nodeClass = classNames({
             'rct-node': true,
             'rct-node-parent': this.hasChildren(),
@@ -161,26 +211,7 @@ class TreeNode extends React.Component {
             <li className={nodeClass}>
                 <span className="rct-text">
                     {this.renderCollapseButton()}
-                    <label htmlFor={inputId}>
-                        <NativeCheckbox
-                            checked={checked === 1}
-                            disabled={disabled}
-                            id={inputId}
-                            indeterminate={checked === 2}
-                            onChange={this.onCheck}
-                        />
-                        <span className="rct-checkbox">
-                            {this.renderCheckboxIcon()}
-                        </span>
-                        {showNodeIcon ? (
-                            <span className="rct-node-icon">
-                                {this.renderNodeIcon()}
-                            </span>
-                        ) : null}
-                        <span className="rct-title">
-                            {label}
-                        </span>
-                    </label>
+                    {this.renderLabel()}
                 </span>
                 {this.renderChildren()}
             </li>

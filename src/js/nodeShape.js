@@ -8,6 +8,7 @@ const nodeShape = {
     ]).isRequired,
 
     icon: PropTypes.node,
+    showCheckbox: PropTypes.bool,
 };
 
 const nodeShapeWithChildren = PropTypes.oneOfType([

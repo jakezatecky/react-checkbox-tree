@@ -19,6 +19,7 @@ class CheckboxTree extends React.Component {
         nameAsArray: PropTypes.bool,
         nativeCheckboxes: PropTypes.bool,
         noCascade: PropTypes.bool,
+        onlyLeafCheckboxes: PropTypes.bool,
         optimisticToggle: PropTypes.bool,
         showNodeIcon: PropTypes.bool,
         onCheck: PropTypes.func,
@@ -34,6 +35,7 @@ class CheckboxTree extends React.Component {
         nameAsArray: false,
         nativeCheckboxes: false,
         noCascade: false,
+        onlyLeafCheckboxes: false,
         optimisticToggle: true,
         showNodeIcon: true,
         onCheck: () => {},
@@ -84,6 +86,7 @@ class CheckboxTree extends React.Component {
 
             formatted.checked = this.nodes[node.value].checked;
             formatted.expanded = this.nodes[node.value].expanded;
+            formatted.showCheckbox = node.showCheckbox !== undefined ? node.showCheckbox : true;
 
             if (Array.isArray(node.children) && node.children.length > 0) {
                 formatted.children = this.getFormattedNodes(formatted.children);
@@ -203,14 +206,18 @@ class CheckboxTree extends React.Component {
             disabled,
             expandDisabled,
             noCascade,
+            onlyLeafCheckboxes,
             optimisticToggle,
             showNodeIcon,
         } = this.props;
         const treeNodes = nodes.map((node) => {
             const key = `${node.value}`;
             const checked = this.getCheckState(node, noCascade);
+            const isLeaf = node.children === null;
             const children = this.renderChildNodes(node);
             const nodeDisabled = this.getDisabledState(node, parent, disabled, noCascade);
+            // Show checkbox only if this is a leaf node or showCheckbox is true
+            const showCheckbox = onlyLeafCheckboxes ? isLeaf : node.showCheckbox;
 
             return (
                 <TreeNode
@@ -224,6 +231,7 @@ class CheckboxTree extends React.Component {
                     label={node.label}
                     optimisticToggle={optimisticToggle}
                     rawChildren={node.children}
+                    showCheckbox={showCheckbox}
                     showNodeIcon={showNodeIcon}
                     treeId={this.id}
                     value={node.value}

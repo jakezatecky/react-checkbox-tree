@@ -5,7 +5,8 @@
 ### New Features
 
 * [#53]: Add `nativeCheckboxes` property to allow use of native browser checkboxes instead of pseudo-checkbox icons
-* [#72]: Add the node that triggers `onCheck` or `onExpand` as a second parameter
+* [#72]: Add the node that triggers `onCheck` or `onExpand` as a second parameter to the callback functions
+* [#80]: Add `onlyLeafCheckboxes` property and support `showCheckbox` on the node-level
 
 ## [v1.0.2](https://github.com/jakezatecky/react-checkbox-tree/compare/v1.0.1...v1.0.2) (2017-10-24)
 

@@ -217,6 +217,32 @@ describe('<CheckboxTree />', () => {
         });
     });
 
+    describe('onlyLeafCheckboxes', () => {
+        it('should only render show checkboxes for leaf nodes', () => {
+            const wrapper = mount(
+                <CheckboxTree
+                    checked={[]}
+                    expanded={['jupiter']}
+                    nodes={[
+                        {
+                            value: 'jupiter',
+                            label: 'Jupiter',
+                            children: [
+                                { value: 'io', label: 'Io' },
+                                { value: 'europa', label: 'Europa' },
+                            ],
+                        },
+                    ]}
+                    onlyLeafCheckboxes
+                />,
+            );
+
+            assert.isFalse(wrapper.find('TreeNode[value="jupiter"]').prop('showCheckbox'));
+            assert.isTrue(wrapper.find('TreeNode[value="io"]').prop('showCheckbox'));
+            assert.isTrue(wrapper.find('TreeNode[value="europa"]').prop('showCheckbox'));
+        });
+    });
+
     describe('onCheck', () => {
         it('should pass the node toggled as the second parameter', () => {
             let actualNode = null;
@@ -244,7 +270,6 @@ describe('<CheckboxTree />', () => {
             assert.equal('jupiter', actualNode.value);
         });
     });
-
 
     describe('onExpand', () => {
         it('should pass the node toggled as the second parameter', () => {

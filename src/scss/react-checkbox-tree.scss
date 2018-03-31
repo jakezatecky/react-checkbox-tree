@@ -28,6 +28,10 @@ $rct-label-active: rgba($rct-icon-color, .15) !default;
     }
   }
 
+  .rct-bare-label {
+    cursor: default;
+  }
+
   label {
     margin-bottom: 0;
     cursor: pointer;

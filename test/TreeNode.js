@@ -172,6 +172,30 @@ describe('<TreeNode />', () => {
         });
     });
 
+    describe('showCheckbox', () => {
+        it('should render a checkbox for the node when true', () => {
+            const wrapper = shallow(
+                <TreeNode {...baseProps} />,
+            );
+
+            assert.isTrue(wrapper.contains(
+                <span className="rct-checkbox">
+                    <span className="rct-icon rct-icon-uncheck" />
+                </span>,
+            ));
+        });
+
+        it('should not render a checkbox or label for the node when false', () => {
+            const wrapper = shallow(
+                <TreeNode {...baseProps} showCheckbox={false} />,
+            );
+
+            assert.isFalse(wrapper.find('label').exists());
+            assert.isFalse(wrapper.find('.rct-checkbox').exists());
+            assert.isTrue(wrapper.find('.rct-bare-label').exists());
+        });
+    });
+
     describe('showNodeIcon', () => {
         it('should render the node icon when true', () => {
             const wrapper = shallow(
