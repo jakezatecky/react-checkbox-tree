@@ -46,7 +46,7 @@
     "gulp": "^3.9.1",
     "gulp-autoprefixer": "^5.0.0",
     "gulp-eslint": "^4.0.0",
-    "gulp-header": "^1.8.8",
+    "gulp-header": "^2.0.5",
     "gulp-mocha": "^5.0.0",
     "gulp-sass": "^3.0.0",
     "gulp-scss-lint": "^0.6.1",
@@ -55,7 +55,7 @@
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
     "react-test-renderer": "^16.0.0",
-    "webpack": "^3.0.0",
+    "webpack": "^4.4.1",
     "webpack-stream": "^4.0.0"
   },
   "dependencies": {

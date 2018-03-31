@@ -1,4 +1,5 @@
 module.exports = {
+    mode: 'production',
     output: {
         filename: 'index.js',
         libraryTarget: 'umd',
