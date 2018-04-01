@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v1.2.0 (TBA)
+
+### Other
+
+* [#69]: Tree will no longer throw an exception if `checked` or `expanded` contains values that do not recursively exist in the `nodes` property
+
 ## [v1.1.0](https://github.com/jakezatecky/react-checkbox-tree/compare/v1.0.2...v1.1.0) (2018-03-31)
 
 ### New Features

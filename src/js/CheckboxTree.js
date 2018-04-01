@@ -164,7 +164,9 @@ class CheckboxTree extends React.Component {
         // Unserialize values and set their nodes to true
         Object.keys(lists).forEach((listKey) => {
             lists[listKey].forEach((value) => {
-                this.nodes[value][listKey] = true;
+                if (this.nodes[value] !== undefined) {
+                    this.nodes[value][listKey] = true;
+                }
             });
         });
     }

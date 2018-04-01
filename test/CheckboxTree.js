@@ -22,6 +22,19 @@ describe('<CheckboxTree />', () => {
         });
     });
 
+    describe('checked', () => {
+        it('should not throw an exception if it contains values that are not in the `nodes` property', () => {
+            const wrapper = shallow(
+                <CheckboxTree
+                    checked={['neptune']}
+                    nodes={[{ value: 'jupiter', label: 'Jupiter' }]}
+                />,
+            );
+
+            assert.isTrue(wrapper.find('.react-checkbox-tree').exists());
+        });
+    });
+
     describe('disabled', () => {
         it('should add the class rct-disabled to the root', () => {
             const wrapper = shallow(
@@ -29,6 +42,19 @@ describe('<CheckboxTree />', () => {
             );
 
             assert.isTrue(wrapper.find('.react-checkbox-tree.rct-disabled').exists());
+        });
+    });
+
+    describe('expanded', () => {
+        it('should not throw an exception if it contains values that are not in the `nodes` property', () => {
+            const wrapper = shallow(
+                <CheckboxTree
+                    expanded={['mars']}
+                    nodes={[{ value: 'jupiter', label: 'Jupiter' }]}
+                />,
+            );
+
+            assert.isTrue(wrapper.find('.react-checkbox-tree').exists());
         });
     });
 
