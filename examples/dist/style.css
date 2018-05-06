@@ -91,6 +91,15 @@
   width: 14px;
 }
 
+.rct-node-clickable:hover {
+  background: rgba(51, 51, 204, 0.1);
+}
+
+.rct-node-clickable:focus {
+  background: rgba(51, 51, 204, 0.5);
+  outline: 0;
+}
+
 .rct-collapse {
   border: 0;
   background: none;

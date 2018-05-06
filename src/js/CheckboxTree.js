@@ -23,6 +23,7 @@ class CheckboxTree extends React.Component {
         optimisticToggle: PropTypes.bool,
         showNodeIcon: PropTypes.bool,
         onCheck: PropTypes.func,
+        onClick: PropTypes.func,
         onExpand: PropTypes.func,
     };
 
@@ -39,6 +40,7 @@ class CheckboxTree extends React.Component {
         optimisticToggle: true,
         showNodeIcon: true,
         onCheck: () => {},
+        onClick: () => {},
         onExpand: () => {},
     };
 
@@ -211,6 +213,7 @@ class CheckboxTree extends React.Component {
             onlyLeafCheckboxes,
             optimisticToggle,
             showNodeIcon,
+            onClick,
         } = this.props;
         const treeNodes = nodes.map((node) => {
             const key = `${node.value}`;
@@ -238,6 +241,7 @@ class CheckboxTree extends React.Component {
                     treeId={this.id}
                     value={node.value}
                     onCheck={this.onCheck}
+                    onClick={onClick}
                     onExpand={this.onExpand}
                 >
                     {children}

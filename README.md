@@ -104,6 +104,7 @@ All node objects **must** have a unique `value`. This value is serialized into t
 | `optimisticToggle`   | bool     | If true, toggling a partially-checked node will select all children. If false, it will deselect. | `true`      |
 | `showNodeIcon`       | bool     | If true, each node will show a parent or leaf icon.                                              | `true`      |
 | `onCheck`            | function | onCheck handler: `function(checked) {}`                                                          | `() => {}`  |
+| `onClick`            | function | onClick handler: `function(clicked) {}`. If set, it will be called when clicked on a node label. | `() => {}`  |
 | `onExpand`           | function | onExpand handler: `function(expanded) {}`                                                        | `() => {}`  |
 
 #### Node Properties

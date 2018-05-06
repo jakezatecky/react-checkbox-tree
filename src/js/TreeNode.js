@@ -24,6 +24,7 @@ class TreeNode extends React.Component {
         icon: PropTypes.node,
         rawChildren: PropTypes.arrayOf(nodeShape),
         showCheckbox: PropTypes.bool,
+        onClick: PropTypes.func,
     };
 
     static defaultProps = {
@@ -32,12 +33,14 @@ class TreeNode extends React.Component {
         icon: null,
         rawChildren: null,
         showCheckbox: true,
+        onClick: () => {},
     };
 
     constructor(props) {
         super(props);
 
         this.onCheck = this.onCheck.bind(this);
+        this.onClick = this.onClick.bind(this);
         this.onExpand = this.onExpand.bind(this);
     }
 
@@ -55,6 +58,25 @@ class TreeNode extends React.Component {
         }
 
         this.props.onCheck({
+            value: this.props.value,
+            checked: isChecked,
+            children: this.props.rawChildren,
+        });
+    }
+
+    onClick() {
+        let isChecked = false;
+
+        if (this.props.checked === 1) {
+            isChecked = true;
+        }
+
+        // Get partial state based on cascade model
+        if (this.props.checked === 2) {
+            isChecked = this.props.optimisticToggle;
+        }
+
+        this.props.onClick({
             value: this.props.value,
             checked: isChecked,
             children: this.props.rawChildren,
@@ -134,9 +156,23 @@ class TreeNode extends React.Component {
     }
 
     renderBareLabel(children) {
+        const { onClick } = this.props;
+
+        const clickable = onClick.toString() !== TreeNode.defaultProps.onClick.toString();
+
         return (
             <span className="rct-bare-label">
-                {children}
+                {clickable ? (
+                    <span
+                        className="rct-node-clickable"
+                        onClick={this.onClick}
+                        onKeyPress={this.onClick}
+                        role="button"
+                        tabIndex={0}
+                    >
+                        {children}
+                    </span>
+                ) : children}
             </span>
         );
     }
@@ -148,24 +184,39 @@ class TreeNode extends React.Component {
             label,
             treeId,
             value,
+            onClick,
         } = this.props;
 
+        const clickable = onClick.toString() !== TreeNode.defaultProps.onClick.toString();
         const inputId = `${treeId}-${value.split(' ').join('_')}`;
 
         return (
-            <label htmlFor={inputId}>
-                <NativeCheckbox
-                    checked={checked === 1}
-                    disabled={disabled}
-                    id={inputId}
-                    indeterminate={checked === 2}
-                    onChange={this.onCheck}
-                />
-                <span className="rct-checkbox">
-                    {this.renderCheckboxIcon()}
-                </span>
-                {children}
-            </label>
+            <span>
+                <label htmlFor={inputId}>
+                    <NativeCheckbox
+                        checked={checked === 1}
+                        disabled={disabled}
+                        id={inputId}
+                        indeterminate={checked === 2}
+                        onChange={this.onCheck}
+                    />
+                    <span className="rct-checkbox">
+                        {this.renderCheckboxIcon()}
+                    </span>
+                    {!clickable ? children : null}
+                </label>
+                {clickable ? (
+                    <span
+                        className="rct-node-clickable"
+                        onClick={this.onClick}
+                        onKeyPress={this.onClick}
+                        role="link"
+                        tabIndex={0}
+                    >
+                        {children}
+                    </span>
+                ) : null}
+            </span>
         );
     }
 
