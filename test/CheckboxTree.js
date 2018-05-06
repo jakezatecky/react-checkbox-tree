@@ -297,6 +297,34 @@ describe('<CheckboxTree />', () => {
         });
     });
 
+    describe('onClick', () => {
+        it('should pass the node clicked as the first parameter', () => {
+            let actualNode = null;
+
+            const wrapper = mount(
+                <CheckboxTree
+                    checked={[]}
+                    nodes={[
+                        {
+                            value: 'jupiter',
+                            label: 'Jupiter',
+                            children: [
+                                { value: 'io', label: 'Io' },
+                                { value: 'europa', label: 'Europa' },
+                            ],
+                        },
+                    ]}
+                    onClick={(node) => {
+                        actualNode = node;
+                    }}
+                />,
+            );
+
+            wrapper.find('.rct-node-clickable').simulate('click');
+            assert.equal('jupiter', actualNode.value);
+        });
+    });
+
     describe('onExpand', () => {
         it('should pass the node toggled as the second parameter', () => {
             let actualNode = null;
