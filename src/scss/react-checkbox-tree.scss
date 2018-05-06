@@ -97,9 +97,10 @@ $rct-clickable-focus: rgba($rct-icon-color, .5) !default;
   &:hover {
     background: $rct-clickable-hover;
   }
+
   &:focus {
-    background: $rct-clickable-focus;
     outline: 0;
+    background: $rct-clickable-focus;
   }
 }
 
