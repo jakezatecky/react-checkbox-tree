@@ -14,6 +14,7 @@ class CheckboxTree extends React.Component {
         checked: PropTypes.arrayOf(PropTypes.string),
         disabled: PropTypes.bool,
         expandDisabled: PropTypes.bool,
+        expandOnClick: PropTypes.bool,
         expanded: PropTypes.arrayOf(PropTypes.string),
         name: PropTypes.string,
         nameAsArray: PropTypes.bool,
@@ -31,6 +32,7 @@ class CheckboxTree extends React.Component {
         checked: [],
         disabled: false,
         expandDisabled: false,
+        expandOnClick: false,
         expanded: [],
         name: undefined,
         nameAsArray: false,
@@ -209,6 +211,7 @@ class CheckboxTree extends React.Component {
         const {
             disabled,
             expandDisabled,
+            expandOnClick,
             noCascade,
             onlyLeafCheckboxes,
             optimisticToggle,
@@ -231,6 +234,7 @@ class CheckboxTree extends React.Component {
                     className={node.className}
                     disabled={nodeDisabled}
                     expandDisabled={expandDisabled}
+                    expandOnClick={expandOnClick}
                     expanded={node.expanded}
                     icon={node.icon}
                     label={node.label}

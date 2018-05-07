@@ -21,6 +21,7 @@ class TreeNode extends React.Component {
 
         children: PropTypes.node,
         className: PropTypes.string,
+        expandOnClick: PropTypes.bool,
         icon: PropTypes.node,
         rawChildren: PropTypes.arrayOf(nodeShape),
         showCheckbox: PropTypes.bool,
@@ -30,6 +31,7 @@ class TreeNode extends React.Component {
     static defaultProps = {
         children: null,
         className: null,
+        expandOnClick: false,
         icon: null,
         rawChildren: null,
         showCheckbox: true,
@@ -74,6 +76,11 @@ class TreeNode extends React.Component {
         // Get partial state based on cascade model
         if (this.props.checked === 2) {
             isChecked = this.props.optimisticToggle;
+        }
+
+        // Auto expand if enabled
+        if (this.hasChildren() && this.props.expandOnClick) {
+            this.onExpand();
         }
 
         this.props.onClick({

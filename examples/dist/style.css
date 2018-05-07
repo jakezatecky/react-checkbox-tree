@@ -96,8 +96,8 @@
 }
 
 .rct-node-clickable:focus {
-  background: rgba(51, 51, 204, 0.5);
   outline: 0;
+  background: rgba(51, 51, 204, 0.5);
 }
 
 .rct-collapse {

@@ -127,6 +127,7 @@ class ClickExample extends React.Component {
                         checked={checked}
                         expanded={expanded}
                         nodes={nodes}
+                        expandOnClick
                         onCheck={this.onCheck}
                         onClick={this.onClick}
                         onExpand={this.onExpand}
