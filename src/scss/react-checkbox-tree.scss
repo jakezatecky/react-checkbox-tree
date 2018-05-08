@@ -2,7 +2,7 @@ $rct-icon-color: #33c !default;
 $rct-label-hover: rgba($rct-icon-color, .1) !default;
 $rct-label-active: rgba($rct-icon-color, .15) !default;
 $rct-clickable-hover: rgba($rct-icon-color, .1) !default;
-$rct-clickable-focus: rgba($rct-icon-color, .5) !default;
+$rct-clickable-focus: rgba($rct-icon-color, .2) !default;
 
 .react-checkbox-tree {
   font-size: 16px;
@@ -93,17 +93,6 @@ $rct-clickable-focus: rgba($rct-icon-color, .5) !default;
   }
 }
 
-.rct-node-clickable {
-  &:hover {
-    background: $rct-clickable-hover;
-  }
-
-  &:focus {
-    outline: 0;
-    background: $rct-clickable-focus;
-  }
-}
-
 .rct-collapse {
   border: 0;
   background: none;
@@ -127,6 +116,19 @@ $rct-clickable-focus: rgba($rct-icon-color, .5) !default;
 .rct-checkbox {
   .rct-native-display & {
     display: none;
+  }
+}
+
+.rct-node-clickable {
+  cursor: pointer;
+
+  &:hover {
+    background: $rct-clickable-hover;
+  }
+
+  &:focus {
+    outline: 0;
+    background: $rct-clickable-focus;
   }
 }
 
