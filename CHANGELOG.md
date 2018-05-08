@@ -1,6 +1,10 @@
 # CHANGELOG
 
-## v1.2.0 (TBA)
+## [v1.2.0](https://github.com/jakezatecky/react-checkbox-tree/compare/v1.1.0...v1.2.0) (2018-05-08)
+
+### New Features
+
+* [#68]: Add `onClick` and `expandOnClick` properties
 
 ### Other
 

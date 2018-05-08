@@ -91,15 +91,6 @@
   width: 14px;
 }
 
-.rct-node-clickable:hover {
-  background: rgba(51, 51, 204, 0.1);
-}
-
-.rct-node-clickable:focus {
-  outline: 0;
-  background: rgba(51, 51, 204, 0.5);
-}
-
 .rct-collapse {
   border: 0;
   background: none;
@@ -122,6 +113,19 @@
 
 .rct-native-display .rct-checkbox {
   display: none;
+}
+
+.rct-node-clickable {
+  cursor: pointer;
+}
+
+.rct-node-clickable:hover {
+  background: rgba(51, 51, 204, 0.1);
+}
+
+.rct-node-clickable:focus {
+  outline: 0;
+  background: rgba(51, 51, 204, 0.2);
 }
 
 .rct-node-icon {
@@ -530,4 +534,14 @@ a:hover {
 .react-checkbox-tree {
   color: #444;
   font-family: 'Roboto', sans-serif;
+}
+
+.clickable-labels {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.clickable-labels > * {
+  width: 50%;
 }
