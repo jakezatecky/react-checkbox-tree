@@ -342,4 +342,81 @@ describe('<TreeNode />', () => {
             assert.deepEqual({ value: 'jupiter', expanded: false }, actual);
         });
     });
+
+    describe('onClick', () => {
+        it('should pass the current node\'s value', () => {
+            let actual = {};
+
+            const wrapper = shallow(
+                <TreeNode
+                    {...baseProps}
+                    value="jupiter"
+                    onClick={(node) => {
+                        actual = node;
+                    }}
+                />,
+            );
+
+            wrapper.find('.rct-node-clickable').simulate('click');
+
+            assert.equal('jupiter', actual.value);
+        });
+
+        it('should get the unchecked node as unchecked', () => {
+            let actual = {};
+
+            const wrapper = shallow(
+                <TreeNode
+                    {...baseProps}
+                    checked={0}
+                    value="jupiter"
+                    onClick={(node) => {
+                        actual = node;
+                    }}
+                />,
+            );
+
+            wrapper.find('.rct-node-clickable').simulate('click');
+
+            assert.isFalse(actual.checked);
+        });
+
+        it('should get the checked node as checked', () => {
+            let actual = {};
+
+            const wrapper = shallow(
+                <TreeNode
+                    {...baseProps}
+                    checked={1}
+                    value="jupiter"
+                    onClick={(node) => {
+                        actual = node;
+                    }}
+                />,
+            );
+
+            wrapper.find('.rct-node-clickable').simulate('click');
+
+            assert.isTrue(actual.checked);
+        });
+
+        it('should get the partially-checked node as checked', () => {
+            let actual = {};
+
+            const wrapper = shallow(
+                <TreeNode
+                    {...baseProps}
+                    checked={2}
+                    value="jupiter"
+                    onClick={(node) => {
+                        actual = node;
+                    }}
+                />,
+            );
+
+            wrapper.find('.rct-node-clickable').simulate('click');
+
+            assert.isTrue(actual.checked);
+        });
+    });
 });

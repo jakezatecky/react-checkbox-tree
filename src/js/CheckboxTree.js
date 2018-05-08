@@ -14,6 +14,7 @@ class CheckboxTree extends React.Component {
         checked: PropTypes.arrayOf(PropTypes.string),
         disabled: PropTypes.bool,
         expandDisabled: PropTypes.bool,
+        expandOnClick: PropTypes.bool,
         expanded: PropTypes.arrayOf(PropTypes.string),
         name: PropTypes.string,
         nameAsArray: PropTypes.bool,
@@ -23,6 +24,7 @@ class CheckboxTree extends React.Component {
         optimisticToggle: PropTypes.bool,
         showNodeIcon: PropTypes.bool,
         onCheck: PropTypes.func,
+        onClick: PropTypes.func,
         onExpand: PropTypes.func,
     };
 
@@ -30,6 +32,7 @@ class CheckboxTree extends React.Component {
         checked: [],
         disabled: false,
         expandDisabled: false,
+        expandOnClick: false,
         expanded: [],
         name: undefined,
         nameAsArray: false,
@@ -39,6 +42,7 @@ class CheckboxTree extends React.Component {
         optimisticToggle: true,
         showNodeIcon: true,
         onCheck: () => {},
+        onClick: () => {},
         onExpand: () => {},
     };
 
@@ -207,10 +211,12 @@ class CheckboxTree extends React.Component {
         const {
             disabled,
             expandDisabled,
+            expandOnClick,
             noCascade,
             onlyLeafCheckboxes,
             optimisticToggle,
             showNodeIcon,
+            onClick,
         } = this.props;
         const treeNodes = nodes.map((node) => {
             const key = `${node.value}`;
@@ -228,6 +234,7 @@ class CheckboxTree extends React.Component {
                     className={node.className}
                     disabled={nodeDisabled}
                     expandDisabled={expandDisabled}
+                    expandOnClick={expandOnClick}
                     expanded={node.expanded}
                     icon={node.icon}
                     label={node.label}
@@ -238,6 +245,7 @@ class CheckboxTree extends React.Component {
                     treeId={this.id}
                     value={node.value}
                     onCheck={this.onCheck}
+                    onClick={onClick}
                     onExpand={this.onExpand}
                 >
                     {children}
