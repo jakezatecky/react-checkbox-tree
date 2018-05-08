@@ -197,34 +197,37 @@ class TreeNode extends React.Component {
         const clickable = onClick.toString() !== TreeNode.defaultProps.onClick.toString();
         const inputId = `${treeId}-${value.split(' ').join('_')}`;
 
-        return (
-            <span>
-                <label htmlFor={inputId}>
-                    <NativeCheckbox
-                        checked={checked === 1}
-                        disabled={disabled}
-                        id={inputId}
-                        indeterminate={checked === 2}
-                        onChange={this.onCheck}
-                    />
-                    <span className="rct-checkbox">
-                        {this.renderCheckboxIcon()}
-                    </span>
-                    {!clickable ? children : null}
-                </label>
-                {clickable ? (
-                    <span
-                        className="rct-node-clickable"
-                        onClick={this.onClick}
-                        onKeyPress={this.onClick}
-                        role="link"
-                        tabIndex={0}
-                    >
-                        {children}
-                    </span>
-                ) : null}
-            </span>
-        );
+        const render = [(
+            <label htmlFor={inputId}>
+                <NativeCheckbox
+                    checked={checked === 1}
+                    disabled={disabled}
+                    id={inputId}
+                    indeterminate={checked === 2}
+                    onChange={this.onCheck}
+                />
+                <span className="rct-checkbox">
+                    {this.renderCheckboxIcon()}
+                </span>
+                {!clickable ? children : null}
+            </label>
+        )];
+
+        if (clickable) {
+            render.push((
+                <span
+                    className="rct-node-clickable"
+                    onClick={this.onClick}
+                    onKeyPress={this.onClick}
+                    role="link"
+                    tabIndex={0}
+                >
+                    {children}
+                </span>
+            ));
+        }
+
+        return render;
     }
 
     renderLabel() {
