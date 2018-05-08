@@ -117,24 +117,21 @@ class ClickExample extends React.Component {
 
     render() {
         const { checked, expanded, clicked } = this.state;
-
-        const notClickedText = 'Not Clicked';
+        const notClickedText = '(none)';
 
         return (
-            <div className="row">
-                <div style={{ width: '50%', display: 'inline-block', verticalAlign: 'top' }}>
-                    <CheckboxTree
-                        checked={checked}
-                        expanded={expanded}
-                        nodes={nodes}
-                        expandOnClick
-                        onCheck={this.onCheck}
-                        onClick={this.onClick}
-                        onExpand={this.onExpand}
-                    />
-                </div>
-                <div style={{ width: '50%', display: 'inline-block', verticalAlign: 'top' }}>
-                    <b>Clicked Node</b>: {clicked.value || notClickedText} <br />
+            <div className="clickable-labels">
+                <CheckboxTree
+                    checked={checked}
+                    expanded={expanded}
+                    nodes={nodes}
+                    expandOnClick
+                    onCheck={this.onCheck}
+                    onClick={this.onClick}
+                    onExpand={this.onExpand}
+                />
+                <div className="clickable-labels-info">
+                    <strong>Clicked Node</strong>: {clicked.value || notClickedText}
                 </div>
             </div>
         );

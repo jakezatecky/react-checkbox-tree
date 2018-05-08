@@ -11,3 +11,11 @@ $rct-border-color: #ccc;
   color: $rct-color;
   font-family: 'Roboto', sans-serif;
 }
+
+.clickable-labels {
+  display: flex;
+
+  > * {
+    width: 50%;
+  }
+}
