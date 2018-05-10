@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [v1.2.1](https://github.com/jakezatecky/react-checkbox-tree/compare/v1.2.0...v1.2.1) (2018-05-10)
+
+### Bug Fixes
+
+* [#87]: Fix issue where passing the `onClick` property would trigger a warning about unique `key` prop
+
 ## [v1.2.0](https://github.com/jakezatecky/react-checkbox-tree/compare/v1.1.0...v1.2.0) (2018-05-08)
 
 ### New Features
