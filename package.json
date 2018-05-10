@@ -60,7 +60,7 @@
   },
   "dependencies": {
     "classnames": "^2.2.5",
-    "lodash": "^4.17.4",
+    "lodash": "^4.17.10",
     "nanoid": "^1.0.1",
     "prop-types": "^15.5.8"
   }
