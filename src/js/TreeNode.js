@@ -198,7 +198,7 @@ class TreeNode extends React.Component {
         const inputId = `${treeId}-${value.split(' ').join('_')}`;
 
         const render = [(
-            <label htmlFor={inputId}>
+            <label key={0} htmlFor={inputId}>
                 <NativeCheckbox
                     checked={checked === 1}
                     disabled={disabled}
@@ -216,6 +216,7 @@ class TreeNode extends React.Component {
         if (clickable) {
             render.push((
                 <span
+                    key={1}
                     className="rct-node-clickable"
                     onClick={this.onClick}
                     onKeyPress={this.onClick}
