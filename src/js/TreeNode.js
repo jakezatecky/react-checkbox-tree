@@ -195,7 +195,7 @@ class TreeNode extends React.Component {
         } = this.props;
 
         const clickable = onClick.toString() !== TreeNode.defaultProps.onClick.toString();
-        const inputId = `${treeId}-${value.split(' ').join('_')}`;
+        const inputId = `${treeId}-${Number.isNaN(value) ? value.split(' ').join('_') : value}`;
 
         const render = [(
             <label key={0} htmlFor={inputId}>
