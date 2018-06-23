@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v1.2.3 (TBA)
+
+### Bug Fixes
+
+* [#81]: Fix render errors for all numeric value types
+
 ## [v1.2.2](https://github.com/jakezatecky/react-checkbox-tree/compare/v1.2.1...v1.2.2) (2018-05-24)
 
 ### Bug Fixes
