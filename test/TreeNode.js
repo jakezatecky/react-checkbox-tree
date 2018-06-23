@@ -36,6 +36,15 @@ describe('<TreeNode />', () => {
             assert.equal('planets-jupiter', wrapper.find('label').prop('htmlFor'));
             assert.equal('planets-jupiter', wrapper.find('label NativeCheckbox').prop('id'));
         });
+
+        it('should render a label associated with a checkbox given integer value', () => {
+            const wrapper = shallow(
+                <TreeNode {...baseProps} treeId="planets" value={0} />,
+            );
+
+            assert.equal('planets-0', wrapper.find('label').prop('htmlFor'));
+            assert.equal('planets-0', wrapper.find('label NativeCheckbox').prop('id'));
+        });
     });
 
     describe('checked', () => {
