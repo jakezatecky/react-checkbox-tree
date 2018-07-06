@@ -9,6 +9,7 @@ const baseProps = {
     disabled: false,
     expandDisabled: false,
     expanded: false,
+    isLeaf: true,
     label: 'Jupiter',
     optimisticToggle: true,
     showNodeIcon: true,
@@ -117,7 +118,7 @@ describe('<TreeNode />', () => {
     describe('expandDisabled', () => {
         it('should disable the expand <button>', () => {
             const wrapper = shallow(
-                <TreeNode {...baseProps} expandDisabled rawChildren={[{ value: 'europa', label: 'Europa' }]} />,
+                <TreeNode {...baseProps} expandDisabled isLeaf={false} />,
             );
 
             assert.isTrue(wrapper.find('button.rct-collapse-btn[disabled]').exists());
@@ -127,7 +128,7 @@ describe('<TreeNode />', () => {
     describe('expanded', () => {
         it('should render children when set to true', () => {
             const wrapper = shallow(
-                <TreeNode {...baseProps} expanded rawChildren={[{ value: 'europa', label: 'Europa' }]}>
+                <TreeNode {...baseProps} expanded isLeaf={false}>
                     <TreeNode {...baseProps} label="Europa" value="europa" />
                 </TreeNode>,
             );
@@ -137,7 +138,7 @@ describe('<TreeNode />', () => {
 
         it('should not render children when set to false', () => {
             const wrapper = shallow(
-                <TreeNode {...baseProps} expanded={false} rawChildren={[{ value: 'europa', label: 'Europa' }]}>
+                <TreeNode {...baseProps} expanded={false} isLeaf={false}>
                     <TreeNode {...baseProps} />
                 </TreeNode>,
             );
@@ -147,7 +148,7 @@ describe('<TreeNode />', () => {
 
         it('should render expanded icons when set to true', () => {
             const wrapper = shallow(
-                <TreeNode {...baseProps} expanded rawChildren={[{ value: 'europa', label: 'Europa' }]} />,
+                <TreeNode {...baseProps} expanded isLeaf={false} />,
             );
 
             assert.isTrue(wrapper.contains(<span className="rct-icon rct-icon-expand-open" />));
@@ -156,7 +157,7 @@ describe('<TreeNode />', () => {
 
         it('should render collapsed icons when set to false', () => {
             const wrapper = shallow(
-                <TreeNode {...baseProps} expanded={false} rawChildren={[{ value: 'europa', label: 'Europa' }]} />,
+                <TreeNode {...baseProps} expanded={false} isLeaf={false} />,
             );
 
             assert.isTrue(wrapper.contains(<span className="rct-icon rct-icon-expand-close" />));
@@ -347,7 +348,7 @@ describe('<TreeNode />', () => {
                 <TreeNode
                     {...baseProps}
                     expanded
-                    rawChildren={[{ value: 'europa', label: 'Europa' }]}
+                    isLeaf={false}
                     value="jupiter"
                     onExpand={(node) => {
                         actual = node;

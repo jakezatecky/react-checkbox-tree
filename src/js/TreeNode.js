@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import NativeCheckbox from './NativeCheckbox';
-import nodeShape from './nodeShape';
 
 class TreeNode extends React.Component {
     static propTypes = {
@@ -11,11 +10,12 @@ class TreeNode extends React.Component {
         disabled: PropTypes.bool.isRequired,
         expandDisabled: PropTypes.bool.isRequired,
         expanded: PropTypes.bool.isRequired,
+        isLeaf: PropTypes.bool.isRequired,
         label: PropTypes.node.isRequired,
         optimisticToggle: PropTypes.bool.isRequired,
         showNodeIcon: PropTypes.bool.isRequired,
         treeId: PropTypes.string.isRequired,
-        value: PropTypes.string.isRequired,
+        value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
         onCheck: PropTypes.func.isRequired,
         onExpand: PropTypes.func.isRequired,
 
@@ -23,7 +23,6 @@ class TreeNode extends React.Component {
         className: PropTypes.string,
         expandOnClick: PropTypes.bool,
         icon: PropTypes.node,
-        rawChildren: PropTypes.arrayOf(nodeShape),
         showCheckbox: PropTypes.bool,
         onClick: PropTypes.func,
     };
@@ -33,7 +32,6 @@ class TreeNode extends React.Component {
         className: null,
         expandOnClick: false,
         icon: null,
-        rawChildren: null,
         showCheckbox: true,
         onClick: () => {},
     };
@@ -62,7 +60,6 @@ class TreeNode extends React.Component {
         this.props.onCheck({
             value: this.props.value,
             checked: isChecked,
-            children: this.props.rawChildren,
         });
     }
 
@@ -79,14 +76,13 @@ class TreeNode extends React.Component {
         }
 
         // Auto expand if enabled
-        if (this.hasChildren() && this.props.expandOnClick) {
+        if (!this.props.isLeaf && this.props.expandOnClick) {
             this.onExpand();
         }
 
         this.props.onClick({
             value: this.props.value,
             checked: isChecked,
-            children: this.props.rawChildren,
         });
     }
 
@@ -97,14 +93,10 @@ class TreeNode extends React.Component {
         });
     }
 
-    hasChildren() {
-        return this.props.rawChildren !== null;
-    }
-
     renderCollapseButton() {
         const { expandDisabled } = this.props;
 
-        if (!this.hasChildren()) {
+        if (this.props.isLeaf) {
             return (
                 <span className="rct-collapse">
                     <span className="rct-icon" />
@@ -151,7 +143,7 @@ class TreeNode extends React.Component {
             return this.props.icon;
         }
 
-        if (!this.hasChildren()) {
+        if (this.props.isLeaf) {
             return <span className="rct-icon rct-icon-leaf" />;
         }
 
@@ -264,8 +256,8 @@ class TreeNode extends React.Component {
         const { className, disabled } = this.props;
         const nodeClass = classNames({
             'rct-node': true,
-            'rct-node-parent': this.hasChildren(),
-            'rct-node-leaf': !this.hasChildren(),
+            'rct-node-parent': !this.props.isLeaf,
+            'rct-node-leaf': this.props.isLeaf,
             'rct-disabled': disabled,
         }, className);
 
