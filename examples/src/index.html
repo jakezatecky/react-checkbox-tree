@@ -29,6 +29,7 @@
       </p>
 
       <h1>Examples</h1>
+
       <h2>Basic Example</h2>
       <div id="basic-example"></div>
 
@@ -76,6 +77,22 @@
       <h2>Large Data Example</h2>
       <p>The checkbox tree is capable of supporting a large number of nodes at once.</p>
       <div id="large-data-example"></div>
+
+      <h2>Radio Group Example</h2>
+      <p>
+        A parent node can be classified as a "radio group" which means that its child nodes will have
+        radio buttons instead of checkboxes. This allows mutually exclusive options within the checkbox tree.
+      </p>
+      <p>
+        Note:
+        <ul>
+          <li>Checkmarks do not cascade through radio groups in either direction.</li>
+          <li>Checking or unchecking a radio group node does not cascade down to the radio buttons below.</li>
+          <li>Checkboxes below radio group items do not change when the radio button above turns on or off.</li>
+          <li>Checkboxes under a radio button node will cascade normally below the radio button.
+      </ul>
+      </p>
+      <div id="radio-example"></div>
 
       <footer class="site-footer">
         <span class="site-footer-owner">

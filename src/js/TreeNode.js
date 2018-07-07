@@ -23,6 +23,7 @@ class TreeNode extends React.Component {
         className: PropTypes.string,
         expandOnClick: PropTypes.bool,
         icon: PropTypes.node,
+        isRadio: PropTypes.bool,
         showCheckbox: PropTypes.bool,
         onClick: PropTypes.func,
     };
@@ -32,6 +33,7 @@ class TreeNode extends React.Component {
         className: null,
         expandOnClick: false,
         icon: null,
+        isRadio: false,
         showCheckbox: true,
         onClick: () => {},
     };
@@ -127,12 +129,16 @@ class TreeNode extends React.Component {
     }
 
     renderCheckboxIcon() {
+        const onNames = ['check', 'radio-on'];
+        const offNames = ['uncheck', 'radio-off'];
+        const key = this.props.isRadio ? 1 : 0;
+
         if (this.props.checked === 0) {
-            return <span className="rct-icon rct-icon-uncheck" />;
+            return <span className={`rct-icon rct-icon-${offNames[key]}`} />;
         }
 
         if (this.props.checked === 1) {
-            return <span className="rct-icon rct-icon-check" />;
+            return <span className={`rct-icon rct-icon-${onNames[key]}`} />;
         }
 
         return <span className="rct-icon rct-icon-half-check" />;

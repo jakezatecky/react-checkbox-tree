@@ -112,12 +112,13 @@ All node objects **must** have a unique `value`. This value is serialized into t
 
 Individual nodes within the `nodes` property can have the following structure:
 
-| Property       | Type   | Description                              | Default |
-| -------------- | ------ | ---------------------------------------- | ------- |
-| `label`        | mixed  | **Required**. The node's label.          |         |
-| `value`        | mixed  | **Required**. The node's value.          |         |
-| `children`     | array  | An array of child nodes.                 | `null`  |
-| `className`    | string | A className to add to the node.          | `null`  |
-| `disabled`     | bool   | Whether the node should be disabled.     | `false` |
-| `icon`         | mixed  | A custom icon for the node.              | `null`  |
-| `showCheckbox` | bool   | Whether the node should show a checkbox. | `true`  |
+| Property       | Type   | Description                                  | Default |
+| -------------- | ------ | -------------------------------------------  | ------- |
+| `label`        | mixed  | **Required**. The node's label.              |         |
+| `value`        | mixed  | **Required**. The node's value.              |         |
+| `children`     | array  | An array of child nodes.                     | `null`  |
+| `className`    | string | A className to add to the node.              | `null`  |
+| `disabled`     | bool   | Whether the node should be disabled.         | `false` |
+| `icon`         | mixed  | A custom icon for the node.                  | `null`  |
+| `showCheckbox` | bool   | Whether the node should show a checkbox.     | `true`  |
+| `isRadioGroup` | bool   | Whether the node is a radio group container. | `false` |
