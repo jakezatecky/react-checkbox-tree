@@ -86,42 +86,6 @@ class CheckboxTree extends React.Component {
         onExpand(this.serializeList('expanded'), node);
     }
 
-    getFormattedNodes(nodes) {
-        // not used
-        return nodes.map((node) => {
-            const formatted = { ...node };
-
-            formatted.checked = this.nodes[node.value].checked;
-            formatted.expanded = this.nodes[node.value].expanded;
-            formatted.showCheckbox = node.showCheckbox !== undefined ? node.showCheckbox : true;
-
-            if (Array.isArray(node.children) && node.children.length > 0) {
-                formatted.children = this.getFormattedNodes(formatted.children);
-            } else {
-                formatted.children = null;
-            }
-
-            return formatted;
-        });
-    }
-
-    getCheckState(node, noCascade) {
-        // not used
-        if (node.children === null || noCascade) {
-            return node.checked ? 1 : 0;
-        }
-
-        if (this.isEveryChildChecked(node)) {
-            return 1;
-        }
-
-        if (this.isSomeChildChecked(node)) {
-            return 2;
-        }
-
-        return 0;
-    }
-
     getShallowCheckState(node, noCascade) {
         // node is from props.nodes
         const flatNode = this.flatNodes[node.value];
@@ -222,28 +186,6 @@ class CheckboxTree extends React.Component {
         return list;
     }
 
-    isEveryChildChecked(node) {
-        // not used
-        return node.children.every((child) => {
-            if (child.children !== null) {
-                return this.isEveryChildChecked(child);
-            }
-
-            return child.checked;
-        });
-    }
-
-    isSomeChildChecked(node) {
-        // not used
-        return node.children.some((child) => {
-            if (child.children !== null) {
-                return this.isSomeChildChecked(child);
-            }
-
-            return child.checked;
-        });
-    }
-
     renderTreeNodes(nodes, parent = {}) {
         // nodes are props.nodes
         const {
@@ -314,16 +256,6 @@ class CheckboxTree extends React.Component {
                 {treeNodes}
             </ol>
         );
-    }
-
-    renderChildNodes(node) {
-        // not used
-        // node is from props.nodes
-        if (node.children !== null && node.expanded) {
-            return this.renderTreeNodes(node.children, node);
-        }
-
-        return null;
     }
 
     renderHiddenInput() {
