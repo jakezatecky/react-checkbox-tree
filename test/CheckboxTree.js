@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
-import { assert } from 'chai';
+import { assert, expect } from 'chai';
 
 import CheckboxTree from '../src/js/CheckboxTree';
 import TreeNode from '../src/js/TreeNode';
@@ -352,6 +352,94 @@ describe('<CheckboxTree />', () => {
 
             wrapper.find('TreeNode .rct-collapse-btn').simulate('click');
             assert.equal('jupiter', actualNode.value);
+        });
+    });
+
+    describe('isRadioGroup', () => {
+        it('should should render children with radio buttons', () => {
+            const wrapper = mount(
+                <CheckboxTree
+                    checked={[]}
+                    expanded={['jupiter']}
+                    nodes={[
+                        {
+                            value: 'jupiter',
+                            label: 'Jupiter',
+                            isRadioGroup: true,
+                            children: [
+                                { value: 'io', label: 'Io' },
+                                { value: 'europa', label: 'Europa' },
+                                { value: 'ganymede', label: 'Ganymede' },
+                                { value: 'callisto', label: 'Callisto' },
+                            ],
+                        },
+                    ]}
+                />,
+            );
+
+            const radioGroupChildren = wrapper.find('TreeNode [value="jupiter"]').children().find(TreeNode);
+
+            const num = radioGroupChildren.length;
+            const numOn = wrapper.find('.rct-checkbox .rct-icon-radio-on').length;
+            const numOff = wrapper.find('.rct-checkbox .rct-icon-radio-off').length;
+
+            assert.equal(numOn + numOff, num);
+            expect(wrapper.find('.rct-icon-radio-on').length).to.equal(1);
+            expect(wrapper.find('.rct-icon-radio-off').length).to.equal(3);
+        });
+
+        it('should should default check the first item in radio group if none checked', () => {
+            const wrapper = mount(
+                <CheckboxTree
+                    checked={['jupiter']}
+                    expanded={['jupiter']}
+                    nodes={[
+                        {
+                            value: 'jupiter',
+                            label: 'Jupiter',
+                            isRadioGroup: true,
+                            children: [
+                                { value: 'io', label: 'Io' },
+                                { value: 'europa', label: 'Europa' },
+                                { value: 'ganymede', label: 'Ganymede' },
+                            ],
+                        },
+                    ]}
+                />,
+            );
+
+            const radioGroupChildren = wrapper.find('TreeNode [value="jupiter"]').children().find(TreeNode);
+
+            expect(radioGroupChildren.first().props().checked).to.equal(1);
+            expect(radioGroupChildren.find('[checked=1]').length).to.equal(1);
+            expect(radioGroupChildren.find('[checked=0]').length).to.equal(2);
+        });
+
+        it('should should check the first checked child of the radio group if multiple are checked', () => {
+            const wrapper = mount(
+                <CheckboxTree
+                    checked={['jupiter', 'ganymede', 'europa']}
+                    expanded={['jupiter']}
+                    nodes={[
+                        {
+                            value: 'jupiter',
+                            label: 'Jupiter',
+                            isRadioGroup: true,
+                            children: [
+                                { value: 'io', label: 'Io' },
+                                { value: 'europa', label: 'Europa' },
+                                { value: 'ganymede', label: 'Ganymede' },
+                            ],
+                        },
+                    ]}
+                />,
+            );
+
+            const radioGroupChildren = wrapper.find('TreeNode [value="jupiter"]').children().find(TreeNode);
+
+            expect(radioGroupChildren.find('[value="europa"]').props().checked).to.equal(1);
+            expect(radioGroupChildren.find('[checked=1]').length).to.equal(1);
+            expect(radioGroupChildren.find('[checked=0]').length).to.equal(2);
         });
     });
 });
