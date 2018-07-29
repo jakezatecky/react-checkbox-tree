@@ -10,5 +10,9 @@
         "config": "webpack.test.config.js"
       }
     }
+  },
+  "rules": {
+    "react/destructuring-assignment": "off",
+    "react/jsx-sort-props": "off"
   }
 }

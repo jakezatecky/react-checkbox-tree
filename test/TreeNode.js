@@ -185,7 +185,9 @@ describe('<TreeNode />', () => {
             );
 
             assert.isTrue(wrapper.contains(
-                <span className="rct-title">Europa</span>,
+                <span className="rct-title">
+                    Europa
+                </span>,
             ));
         });
     });
