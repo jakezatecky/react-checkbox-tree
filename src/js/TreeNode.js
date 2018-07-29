@@ -198,7 +198,7 @@ class TreeNode extends React.Component {
         const inputId = `${treeId}-${String(value).split(' ').join('_')}`;
 
         const render = [(
-            <label key={0} htmlFor={inputId}>
+            <label key={0} htmlFor={inputId}> {/* eslint-disable-line jsx-a11y/label-has-for */}
                 <NativeCheckbox
                     checked={checked === 1}
                     disabled={disabled}
