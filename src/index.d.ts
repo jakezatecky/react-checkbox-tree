@@ -1,7 +1,5 @@
-declare module "react-checkbox-tree" 
-{
-    interface Node 
-    {
+declare module "react-checkbox-tree" {
+    interface Node {
         label: string;
         value: string;
         children?: Array<Node>;
@@ -11,8 +9,7 @@ declare module "react-checkbox-tree"
         showCheckbox?: boolean;
     }
 
-    interface CheckboxProps 
-    {
+    interface CheckboxProps {
         nodes: Array<Node>;
         checked: Array<string>;
         expanded: Array<string>;
@@ -29,7 +26,7 @@ declare module "react-checkbox-tree"
         onlyLeafCheckboxes?: boolean;
         optimisticToggle?: boolean;
         showNodeIcon?: boolean;
-        onClick?: (clicked: string) => void;
+        onClick?: (event: { checked: boolean, value: any }) => void;
     }
 
     export default class CheckboxTree extends React.Component<CheckboxProps> { }
