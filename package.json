@@ -1,6 +1,6 @@
 {
   "name": "react-checkbox-tree",
-  "version": "1.2.3",
+  "version": "1.2.4-rc.0",
   "description": "A simple and elegant checkbox tree for React.",
   "author": "Jake Zatecky",
   "license": "MIT",
@@ -16,6 +16,7 @@
   "homepage": "https://jakezatecky.github.io/react-checkbox-tree",
   "bugs": "https://github.com/jakezatecky/react-checkbox-tree/issues",
   "main": "lib/index.js",
+  "browser": "lib/index.browser.js",
   "scripts": {
     "build": "gulp build",
     "examples": "gulp examples",
