@@ -45,7 +45,7 @@ gulp.task('build-script', ['test'], () => (
         .pipe(gulp.dest('./lib/'))
 ));
 
-gulp.task('build-script-web', ['test'], () => (
+gulp.task('build-script-web', ['build-script'], () => (
     gulp.src(['./src/index.js'])
         .pipe(webpackStream(webpackConfig('web'), webpack))
         .pipe(header(banner, { pkg }))
