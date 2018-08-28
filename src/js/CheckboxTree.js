@@ -5,17 +5,18 @@ import React from 'react';
 import nanoid from 'nanoid';
 
 import TreeNode from './TreeNode';
+import listShape from './listShape';
 import nodeShape from './nodeShape';
 
 class CheckboxTree extends React.Component {
     static propTypes = {
         nodes: PropTypes.arrayOf(nodeShape).isRequired,
 
-        checked: PropTypes.arrayOf(PropTypes.string),
+        checked: listShape,
         disabled: PropTypes.bool,
         expandDisabled: PropTypes.bool,
         expandOnClick: PropTypes.bool,
-        expanded: PropTypes.arrayOf(PropTypes.string),
+        expanded: listShape,
         name: PropTypes.string,
         nameAsArray: PropTypes.bool,
         nativeCheckboxes: PropTypes.bool,

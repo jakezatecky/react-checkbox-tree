@@ -15,7 +15,10 @@ class TreeNode extends React.Component {
         optimisticToggle: PropTypes.bool.isRequired,
         showNodeIcon: PropTypes.bool.isRequired,
         treeId: PropTypes.string.isRequired,
-        value: PropTypes.string.isRequired,
+        value: PropTypes.oneOfType([
+            PropTypes.string,
+            PropTypes.number,
+        ]).isRequired,
         onCheck: PropTypes.func.isRequired,
         onExpand: PropTypes.func.isRequired,
 
