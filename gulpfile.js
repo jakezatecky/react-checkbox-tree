@@ -30,7 +30,7 @@ gulp.task('test-mocha', ['test-script-format'], () => (
     gulp.src(['./test/**/*.js'])
         .pipe(mocha({
             require: [
-                'babel-register',
+                '@babel/register',
                 './test/setup.js',
             ],
         }))
