@@ -40,7 +40,14 @@ gulp.task('test', ['test-script-format', 'test-mocha']);
 
 gulp.task('build-script', ['test'], () => (
     gulp.src(['./src/index.js'])
-        .pipe(webpackStream(webpackConfig, webpack))
+        .pipe(webpackStream(webpackConfig('node'), webpack))
+        .pipe(header(banner, { pkg }))
+        .pipe(gulp.dest('./lib/'))
+));
+
+gulp.task('build-script-web', ['test'], () => (
+    gulp.src(['./src/index.js'])
+        .pipe(webpackStream(webpackConfig('web'), webpack))
         .pipe(header(banner, { pkg }))
         .pipe(gulp.dest('./lib/'))
 ));
@@ -58,7 +65,7 @@ gulp.task('build-style', () => (
         .pipe(gulp.dest('./lib'))
 ));
 
-gulp.task('build', ['build-script', 'build-style']);
+gulp.task('build', ['build-script', 'build-script-web', 'build-style']);
 
 gulp.task('build-examples-style', () => (
     gulp.src('./examples/src/scss/**/*.scss')
