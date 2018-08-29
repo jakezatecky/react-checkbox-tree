@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## v1.2.4
+## [v1.2.4](https://github.com/jakezatecky/react-checkbox-tree/compare/v1.2.3...v1.2.4) (2018-08-29)
 
 ### Bug Fixes
 
