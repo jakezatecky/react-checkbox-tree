@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## v1.2.4
+
+### Bug Fixes
+
+* [#82], [#84]: Fix undefined Crypto API errors in Node environments
+* [#104]: Fix issue where numeric node values could trigger PropType warnings
+
 ## [v1.2.3](https://github.com/jakezatecky/react-checkbox-tree/compare/v1.2.2...v1.2.3) (2018-06-23)
 
 ### Bug Fixes
