@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import NativeCheckbox from './NativeCheckbox';
+import iconsShape from './iconsShape';
 import nodeShape from './nodeShape';
 
 class TreeNode extends React.Component {
@@ -11,6 +12,7 @@ class TreeNode extends React.Component {
         disabled: PropTypes.bool.isRequired,
         expandDisabled: PropTypes.bool.isRequired,
         expanded: PropTypes.bool.isRequired,
+        icons: iconsShape.isRequired,
         label: PropTypes.node.isRequired,
         optimisticToggle: PropTypes.bool.isRequired,
         showNodeIcon: PropTypes.bool.isRequired,
@@ -130,39 +132,45 @@ class TreeNode extends React.Component {
     }
 
     renderCollapseIcon() {
-        if (!this.props.expanded) {
-            return <span className="rct-icon rct-icon-expand-close" />;
+        const { expanded, icons: { expandClose, expandOpen } } = this.props;
+
+        if (!expanded) {
+            return expandClose;
         }
 
-        return <span className="rct-icon rct-icon-expand-open" />;
+        return expandOpen;
     }
 
     renderCheckboxIcon() {
-        if (this.props.checked === 0) {
-            return <span className="rct-icon rct-icon-uncheck" />;
+        const { checked, icons: { uncheck, check, halfCheck } } = this.props;
+
+        if (checked === 0) {
+            return uncheck;
         }
 
-        if (this.props.checked === 1) {
-            return <span className="rct-icon rct-icon-check" />;
+        if (checked === 1) {
+            return check;
         }
 
-        return <span className="rct-icon rct-icon-half-check" />;
+        return halfCheck;
     }
 
     renderNodeIcon() {
-        if (this.props.icon !== null) {
-            return this.props.icon;
+        const { expanded, icon, icons: { leaf, parentClose, parentOpen } } = this.props;
+
+        if (icon !== null) {
+            return icon;
         }
 
         if (!this.hasChildren()) {
-            return <span className="rct-icon rct-icon-leaf" />;
+            return leaf;
         }
 
-        if (!this.props.expanded) {
-            return <span className="rct-icon rct-icon-parent-close" />;
+        if (!expanded) {
+            return parentClose;
         }
 
-        return <span className="rct-icon rct-icon-parent-open" />;
+        return parentOpen;
     }
 
     renderBareLabel(children) {

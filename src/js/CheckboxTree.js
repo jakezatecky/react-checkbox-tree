@@ -5,6 +5,7 @@ import React from 'react';
 import nanoid from 'nanoid';
 
 import TreeNode from './TreeNode';
+import iconsShape from './iconsShape';
 import listShape from './listShape';
 import nodeShape from './nodeShape';
 
@@ -17,6 +18,7 @@ class CheckboxTree extends React.Component {
         expandDisabled: PropTypes.bool,
         expandOnClick: PropTypes.bool,
         expanded: listShape,
+        icons: iconsShape,
         name: PropTypes.string,
         nameAsArray: PropTypes.bool,
         nativeCheckboxes: PropTypes.bool,
@@ -35,6 +37,16 @@ class CheckboxTree extends React.Component {
         expandDisabled: false,
         expandOnClick: false,
         expanded: [],
+        icons: {
+            check: <span className="rct-icon rct-icon-check" />,
+            uncheck: <span className="rct-icon rct-icon-uncheck" />,
+            halfCheck: <span className="rct-icon rct-icon-half-check" />,
+            expandClose: <span className="rct-icon rct-icon-expand-close" />,
+            expandOpen: <span className="rct-icon rct-icon-expand-open" />,
+            parentClose: <span className="rct-icon rct-icon-parent-close" />,
+            parentOpen: <span className="rct-icon rct-icon-parent-open" />,
+            leaf: <span className="rct-icon rct-icon-leaf" />,
+        },
         name: undefined,
         nameAsArray: false,
         nativeCheckboxes: false,
@@ -213,12 +225,14 @@ class CheckboxTree extends React.Component {
             disabled,
             expandDisabled,
             expandOnClick,
+            icons,
             noCascade,
             onlyLeafCheckboxes,
             optimisticToggle,
             showNodeIcon,
             onClick,
         } = this.props;
+        const { icons: defaultIcons } = CheckboxTree.defaultProps;
         const treeNodes = nodes.map((node) => {
             const key = `${node.value}`;
             const checked = this.getCheckState(node, noCascade);
@@ -238,6 +252,7 @@ class CheckboxTree extends React.Component {
                     expandOnClick={expandOnClick}
                     expanded={node.expanded}
                     icon={node.icon}
+                    icons={{ ...defaultIcons, ...icons }}
                     label={node.label}
                     optimisticToggle={optimisticToggle}
                     rawChildren={node.children}

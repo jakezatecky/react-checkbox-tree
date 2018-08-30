@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v1.3.0 (TBA)
+
+### New Features
+
+* [#102]: Add `icons` property to allow specification of icon components
+
 ## [v1.2.4](https://github.com/jakezatecky/react-checkbox-tree/compare/v1.2.3...v1.2.4) (2018-08-29)
 
 ### Bug Fixes

@@ -9,6 +9,16 @@ const baseProps = {
     disabled: false,
     expandDisabled: false,
     expanded: false,
+    icons: {
+        check: <span className="rct-icon rct-icon-check" />,
+        uncheck: <span className="rct-icon rct-icon-uncheck" />,
+        halfCheck: <span className="rct-icon rct-icon-half-check" />,
+        expandClose: <span className="rct-icon rct-icon-expand-close" />,
+        expandOpen: <span className="rct-icon rct-icon-expand-open" />,
+        parentClose: <span className="rct-icon rct-icon-parent-close" />,
+        parentOpen: <span className="rct-icon rct-icon-parent-open" />,
+        leaf: <span className="rct-icon rct-icon-leaf" />,
+    },
     label: 'Jupiter',
     optimisticToggle: true,
     showNodeIcon: true,
@@ -173,6 +183,20 @@ describe('<TreeNode />', () => {
             assert.isTrue(wrapper.contains(
                 <span className="rct-node-icon">
                     <span className="fa fa-plus" />
+                </span>,
+            ));
+        });
+    });
+
+    describe('icons', () => {
+        it('should replace the default set of icons with the provided values', () => {
+            const wrapper = shallow(
+                <TreeNode {...baseProps} icons={{ uncheck: <span className="other-uncheck" /> }} />,
+            );
+
+            assert.isTrue(wrapper.contains(
+                <span className="rct-checkbox">
+                    <span className="other-uncheck" />
                 </span>,
             ));
         });

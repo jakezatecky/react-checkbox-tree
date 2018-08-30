@@ -58,6 +58,34 @@ describe('<CheckboxTree />', () => {
         });
     });
 
+    describe('icons', () => {
+        it('should pass the property directly to tree nodes', () => {
+            const wrapper = shallow(
+                <CheckboxTree
+                    icons={{ check: <span className="other-check" /> }}
+                    nodes={[{ value: 'jupiter', label: 'Jupiter' }]}
+                />,
+            );
+
+            assert.equal('other-check', shallow(
+                wrapper.find(TreeNode).prop('icons').check,
+            ).prop('className'));
+        });
+
+        it('should be merged in with the defaults when keys are missing', () => {
+            const wrapper = shallow(
+                <CheckboxTree
+                    icons={{ check: <span className="other-check" /> }}
+                    nodes={[{ value: 'jupiter', label: 'Jupiter' }]}
+                />,
+            );
+
+            assert.equal('rct-icon rct-icon-uncheck', shallow(
+                wrapper.find(TreeNode).prop('icons').uncheck,
+            ).prop('className'));
+        });
+    });
+
     describe('nativeCheckboxes', () => {
         it('should add the class rct-native-display to the root', () => {
             const wrapper = shallow(

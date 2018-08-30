@@ -89,24 +89,25 @@ All node objects **must** have a unique `value`. This value is serialized into t
 
 ### Properties
 
-| Property             | Type     | Description                                                                                      | Default     |
-| -------------------- | -------- | ------------------------------------------------------------------------------------------------ | ----------- |
-| `nodes`              | array    | **Required**. Specifies the tree nodes and their children.                                       |             |
-| `checked`            | array    | An array of checked node values.                                                                 | `[]`        |
-| `disabled`           | bool     | If true, the component will be disabled and nodes cannot be checked.                             | `false`     |
-| `expandDisabled`     | bool     | If true, the ability to expand nodes will be disabled.                                           | `false`     |
-| `expandOnClick`      | bool     | If true, nodes will be expanded by clicking on labels. Requires a non-empty `onClick` function.  | `false`     |
-| `expanded`           | array    | An array of expanded node values.                                                                | `[]`        |
-| `name`               | string   | Optional name for the hidden `<input>` element.                                                  | `undefined` |
-| `nameAsArray`        | bool     | If true, the hidden `<input>` will encode its values as an array rather than a joined string.    | `false`     |
-| `nativeCheckboxes`   | bool     | If true, native browser checkboxes will be used instead of pseudo-checkbox icons.                | `false`     |
-| `noCascade`          | bool     | If true, toggling a parent node will **not** cascade its check state to its children.            | `false`     |
-| `onlyLeafCheckboxes` | bool     | If true, checkboxes will only be shown for leaf nodes.                                           | `false`     |
-| `optimisticToggle`   | bool     | If true, toggling a partially-checked node will select all children. If false, it will deselect. | `true`      |
-| `showNodeIcon`       | bool     | If true, each node will show a parent or leaf icon.                                              | `true`      |
-| `onCheck`            | function | onCheck handler: `function(checked) {}`                                                          | `() => {}`  |
-| `onClick`            | function | onClick handler: `function(clicked) {}`. If set, it will be called when clicked on a node label. | `() => {}`  |
-| `onExpand`           | function | onExpand handler: `function(expanded) {}`                                                        | `() => {}`  |
+| Property             | Type     | Description                                                                                                            | Default     |
+| -------------------- | -------- | ---------------------------------------------------------------------------------------------------------------------- | ----------- |
+| `nodes`              | array    | **Required**. Specifies the tree nodes and their children.                                                             |             |
+| `checked`            | array    | An array of checked node values.                                                                                       | `[]`        |
+| `disabled`           | bool     | If true, the component will be disabled and nodes cannot be checked.                                                   | `false`     |
+| `expandDisabled`     | bool     | If true, the ability to expand nodes will be disabled.                                                                 | `false`     |
+| `expandOnClick`      | bool     | If true, nodes will be expanded by clicking on labels. Requires a non-empty `onClick` function.                        | `false`     |
+| `icons`              | object   | Nodes for `check`, `uncheck`, `halfCheck`, `expandClose`, `expandOpen`, `parentClose`, `parentOpen`, and `leaf` icons. | { ... }     |
+| `expanded`           | array    | An array of expanded node values.                                                                                      | `[]`        |
+| `name`               | string   | Optional name for the hidden `<input>` element.                                                                        | `undefined` |
+| `nameAsArray`        | bool     | If true, the hidden `<input>` will encode its values as an array rather than a joined string.                          | `false`     |
+| `nativeCheckboxes`   | bool     | If true, native browser checkboxes will be used instead of pseudo-checkbox icons.                                      | `false`     |
+| `noCascade`          | bool     | If true, toggling a parent node will **not** cascade its check state to its children.                                  | `false`     |
+| `onlyLeafCheckboxes` | bool     | If true, checkboxes will only be shown for leaf nodes.                                                                 | `false`     |
+| `optimisticToggle`   | bool     | If true, toggling a partially-checked node will select all children. If false, it will deselect.                       | `true`      |
+| `showNodeIcon`       | bool     | If true, each node will show a parent or leaf icon.                                                                    | `true`      |
+| `onCheck`            | function | onCheck handler: `function(checked) {}`                                                                                | `() => {}`  |
+| `onClick`            | function | onClick handler: `function(clicked) {}`. If set, it will be called when clicked on a node label.                       | `() => {}`  |
+| `onExpand`           | function | onExpand handler: `function(expanded) {}`                                                                              | `() => {}`  |
 
 #### Node Properties
 
