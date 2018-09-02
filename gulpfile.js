@@ -6,6 +6,9 @@ const webpack = require('webpack');
 const webpackStream = require('webpack-stream');
 const scsslint = require('gulp-scss-lint');
 const sass = require('gulp-sass');
+const less = require('gulp-less');
+const minify = require('gulp-clean-css');
+const run = require('gulp-run');
 const autoprefixer = require('gulp-autoprefixer');
 const browserSync = require('browser-sync').create();
 const pkg = require('./package.json');
@@ -63,9 +66,25 @@ gulp.task('build-style', () => (
             browsers: ['last 2 versions'],
         }))
         .pipe(gulp.dest('./lib'))
+        .pipe(minify())
+        .pipe(gulp.dest('./.css-compare/scss'))
 ));
 
-gulp.task('build', ['build-script', 'build-script-web', 'build-style']);
+gulp.task('build-style-less', () => (
+    gulp.src('./src/less/**/*.less')
+        .pipe(less())
+        .pipe(autoprefixer({
+            browsers: ['last 2 versions'],
+        }))
+        .pipe(minify())
+        .pipe(gulp.dest('./.css-compare/less'))
+));
+
+gulp.task('compare-css-output', ['build-style', 'build-style-less'], () => (
+    run('cmp .css-compare/less/react-checkbox-tree.css .css-compare/scss/react-checkbox-tree.css').exec()
+));
+
+gulp.task('build', ['build-script', 'build-script-web', 'compare-css-output']);
 
 gulp.task('build-examples-style', () => (
     gulp.src('./examples/src/scss/**/*.scss')
