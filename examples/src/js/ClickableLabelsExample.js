@@ -80,6 +80,7 @@ const nodes = [
     },
 ];
 
+/* eslint-disable react/jsx-one-expression-per-line */
 class ClickExample extends React.Component {
     constructor() {
         super();

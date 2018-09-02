@@ -96,7 +96,6 @@ class NoCascadeExample extends React.Component {
                 '/app',
                 '/app/Http',
             ],
-            cascadeToggle: 'optimistic',
         };
 
         this.onCheck = this.onCheck.bind(this);
