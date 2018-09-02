@@ -48,7 +48,7 @@ gulp.task('build-script', ['test'], () => (
         .pipe(gulp.dest('./lib/'))
 ));
 
-gulp.task('build-script-web', ['test'], () => (
+gulp.task('build-script-web', ['build-script'], () => (
     gulp.src(['./src/index.js'])
         .pipe(webpackStream(webpackConfig('web'), webpack))
         .pipe(header(banner, { pkg }))
@@ -84,7 +84,7 @@ gulp.task('compare-css-output', ['build-style', 'build-style-less'], () => (
     run('cmp .css-compare/less/react-checkbox-tree.css .css-compare/scss/react-checkbox-tree.css').exec()
 ));
 
-gulp.task('build', ['build-script', 'build-script-web', 'compare-css-output']);
+gulp.task('build', ['build-script-web', 'compare-css-output']);
 
 gulp.task('build-examples-style', () => (
     gulp.src('./examples/src/scss/**/*.scss')
