@@ -7,6 +7,10 @@
 * [#102]: Add `icons` property to allow specification of icon components
 * [#103]: Add `title` node property and `showNodeTitle` tree property
 
+### Other
+
+* [#91]: Prevent disconnection between Sass and Less files on build
+
 ## [v1.2.4](https://github.com/jakezatecky/react-checkbox-tree/compare/v1.2.3...v1.2.4) (2018-08-29)
 
 ### Bug Fixes
