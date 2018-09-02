@@ -105,6 +105,7 @@ All node objects **must** have a unique `value`. This value is serialized into t
 | `onlyLeafCheckboxes` | bool     | If true, checkboxes will only be shown for leaf nodes.                                                                 | `false`     |
 | `optimisticToggle`   | bool     | If true, toggling a partially-checked node will select all children. If false, it will deselect.                       | `true`      |
 | `showNodeIcon`       | bool     | If true, each node will show a parent or leaf icon.                                                                    | `true`      |
+| `showNodeTitle`      | bool     | If true, the `label` of each node will become the `title` of the resulting DOM node. Overridden by `node.title`.       | `false`     |
 | `onCheck`            | function | onCheck handler: `function(checked) {}`                                                                                | `() => {}`  |
 | `onClick`            | function | onClick handler: `function(clicked) {}`. If set, it will be called when clicked on a node label.                       | `() => {}`  |
 | `onExpand`           | function | onExpand handler: `function(expanded) {}`                                                                              | `() => {}`  |
@@ -122,3 +123,4 @@ Individual nodes within the `nodes` property can have the following structure:
 | `disabled`     | bool   | Whether the node should be disabled.     | `false` |
 | `icon`         | mixed  | A custom icon for the node.              | `null`  |
 | `showCheckbox` | bool   | Whether the node should show a checkbox. | `true`  |
+| `title`        | string | A custom `title` attribute for the node. | `null`  |

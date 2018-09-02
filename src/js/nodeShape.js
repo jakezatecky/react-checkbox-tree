@@ -9,6 +9,7 @@ const nodeShape = {
 
     icon: PropTypes.node,
     showCheckbox: PropTypes.bool,
+    title: PropTypes.string,
 };
 
 const nodeShapeWithChildren = PropTypes.oneOfType([

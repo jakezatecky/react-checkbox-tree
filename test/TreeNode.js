@@ -266,6 +266,24 @@ describe('<TreeNode />', () => {
         });
     });
 
+    describe('title', () => {
+        it('should add the `title` property to the label when set', () => {
+            const wrapper = shallow(
+                <TreeNode {...baseProps} title="Some extra text" />,
+            );
+
+            assert.equal('Some extra text', wrapper.find('label').prop('title'));
+        });
+
+        it('should add the `title` property to the bare label when set on a checkbox-less node', () => {
+            const wrapper = shallow(
+                <TreeNode {...baseProps} showCheckbox={false} title="Some extra text" />,
+            );
+
+            assert.equal('Some extra text', wrapper.find('.rct-bare-label').prop('title'));
+        });
+    });
+
     describe('onCheck', () => {
         it('should pass the current node\'s value', () => {
             let actual = {};

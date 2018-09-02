@@ -297,6 +297,41 @@ describe('<CheckboxTree />', () => {
         });
     });
 
+    describe('showNodeTitle', () => {
+        it('should add `title` properties to a TreeNode from the `label` property when set', () => {
+            const wrapper = shallow(
+                <CheckboxTree
+                    nodes={[
+                        {
+                            value: 'jupiter',
+                            label: 'Jupiter',
+                        },
+                    ]}
+                    showNodeTitle
+                />,
+            );
+
+            assert.equal('Jupiter', wrapper.find('TreeNode').prop('title'));
+        });
+
+        it('should prioritize the node `title` over the `label', () => {
+            const wrapper = shallow(
+                <CheckboxTree
+                    nodes={[
+                        {
+                            value: 'jupiter',
+                            label: 'Jupiter',
+                            title: 'That Big Failed Star',
+                        },
+                    ]}
+                    showNodeTitle
+                />,
+            );
+
+            assert.equal('That Big Failed Star', wrapper.find('TreeNode').prop('title'));
+        });
+    });
+
     describe('onCheck', () => {
         it('should pass the node toggled as the second parameter', () => {
             let actualNode = null;

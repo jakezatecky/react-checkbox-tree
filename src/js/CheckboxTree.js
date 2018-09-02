@@ -26,6 +26,7 @@ class CheckboxTree extends React.Component {
         onlyLeafCheckboxes: PropTypes.bool,
         optimisticToggle: PropTypes.bool,
         showNodeIcon: PropTypes.bool,
+        showNodeTitle: PropTypes.bool,
         onCheck: PropTypes.func,
         onClick: PropTypes.func,
         onExpand: PropTypes.func,
@@ -54,6 +55,7 @@ class CheckboxTree extends React.Component {
         onlyLeafCheckboxes: false,
         optimisticToggle: true,
         showNodeIcon: true,
+        showNodeTitle: false,
         onCheck: () => {},
         onClick: () => {},
         onExpand: () => {},
@@ -229,6 +231,7 @@ class CheckboxTree extends React.Component {
             noCascade,
             onlyLeafCheckboxes,
             optimisticToggle,
+            showNodeTitle,
             showNodeIcon,
             onClick,
         } = this.props;
@@ -258,6 +261,7 @@ class CheckboxTree extends React.Component {
                     rawChildren={node.children}
                     showCheckbox={showCheckbox}
                     showNodeIcon={showNodeIcon}
+                    title={showNodeTitle ? node.title || node.label : node.title}
                     treeId={this.id}
                     value={node.value}
                     onCheck={this.onCheck}
