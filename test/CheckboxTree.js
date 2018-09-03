@@ -313,7 +313,7 @@ describe('<CheckboxTree />', () => {
 
     describe('showExpandAll', () => {
         it('should render the expand all/collapse all buttons', () => {
-            const wrapper = mount(
+            const wrapper = shallow(
                 <CheckboxTree
                     nodes={[{ value: 'jupiter', label: 'Jupiter' }]}
                     showExpandAll
@@ -327,7 +327,7 @@ describe('<CheckboxTree />', () => {
         describe('expandAll', () => {
             it('should add all parent nodes to the `expanded` array', () => {
                 let actualExpanded = null;
-                const wrapper = mount(
+                const wrapper = shallow(
                     <CheckboxTree
                         nodes={[
                             {
@@ -366,7 +366,7 @@ describe('<CheckboxTree />', () => {
         describe('collapseAll', () => {
             it('should remove all nodes from the `expanded` array', () => {
                 let actualExpanded = null;
-                const wrapper = mount(
+                const wrapper = shallow(
                     <CheckboxTree
                         expanded={['mars', 'jupiter']}
                         nodes={[
@@ -518,7 +518,7 @@ describe('<CheckboxTree />', () => {
                 />,
             );
 
-            wrapper.find('TreeNode .rct-collapse-btn').simulate('click');
+            wrapper.find('TreeNode Button.rct-collapse-btn').simulate('click');
             assert.equal('jupiter', actualNode.value);
         });
     });

@@ -133,7 +133,7 @@ describe('<TreeNode />', () => {
                 <TreeNode {...baseProps} expandDisabled rawChildren={[{ value: 'europa', label: 'Europa' }]} />,
             );
 
-            assert.isTrue(wrapper.find('button.rct-collapse-btn[disabled]').exists());
+            assert.isTrue(wrapper.find('Button.rct-collapse-btn[disabled]').exists());
         });
     });
 
