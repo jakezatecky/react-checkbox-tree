@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import nanoid from 'nanoid';
 
+import Button from './Button';
 import TreeNode from './TreeNode';
 import iconsShape from './iconsShape';
 import listShape from './listShape';
@@ -332,24 +333,20 @@ class CheckboxTree extends React.Component {
 
         return (
             <div className="rct-options">
-                <button
-                    aria-label="Expand all"
+                <Button
                     className="rct-option rct-option-expand-all"
                     title="Expand all"
-                    type="button"
                     onClick={this.onExpandAll}
                 >
                     {expandAll}
-                </button>
-                <button
-                    aria-label="Expand all"
+                </Button>
+                <Button
                     className="rct-option rct-option-collapse-all"
                     title="Collapse all"
-                    type="button"
                     onClick={this.onCollapseAll}
                 >
                     {collapseAll}
-                </button>
+                </Button>
             </div>
         );
     }

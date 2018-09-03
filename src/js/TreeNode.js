@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 
+import Button from './Button';
 import NativeCheckbox from './NativeCheckbox';
 import iconsShape from './iconsShape';
 import nodeShape from './nodeShape';
@@ -120,16 +121,14 @@ class TreeNode extends React.Component {
         }
 
         return (
-            <button
-                aria-label="Toggle"
+            <Button
                 className="rct-collapse rct-collapse-btn"
                 disabled={expandDisabled}
                 title="Toggle"
-                type="button"
                 onClick={this.onExpand}
             >
                 {this.renderCollapseIcon()}
-            </button>
+            </Button>
         );
     }
 
