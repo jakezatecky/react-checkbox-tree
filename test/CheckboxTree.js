@@ -86,6 +86,20 @@ describe('<CheckboxTree />', () => {
         });
     });
 
+    describe('lang', () => {
+        it('should override default language values', () => {
+            const wrapper = shallow(
+                <CheckboxTree
+                    lang={{ expandAll: 'Expand it', collapseAll: 'Collapse it' }}
+                    nodes={[]}
+                    showExpandAll
+                />,
+            );
+
+            assert.equal('Expand it', wrapper.find('.rct-option-expand-all').prop('title'));
+        });
+    });
+
     describe('nativeCheckboxes', () => {
         it('should add the class rct-native-display to the root', () => {
             const wrapper = shallow(

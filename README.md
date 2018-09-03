@@ -122,6 +122,7 @@ Note that you can override as many or as little icons as you like.
 | `expandOnClick`      | bool     | If true, nodes will be expanded by clicking on labels. Requires a non-empty `onClick` function.                        | `false`     |
 | `icons`              | object   | An object containing the mappings for the various icons and their components. See **Changing the Default Icons**.      | { ... }     |
 | `expanded`           | array    | An array of expanded node values.                                                                                      | `[]`        |
+| `lang`               | object   | An object containing the language mappings for the various text elements.                                              | { ... }     |
 | `name`               | string   | Optional name for the hidden `<input>` element.                                                                        | `undefined` |
 | `nameAsArray`        | bool     | If true, the hidden `<input>` will encode its values as an array rather than a joined string.                          | `false`     |
 | `nativeCheckboxes`   | bool     | If true, native browser checkboxes will be used instead of pseudo-checkbox icons.                                      | `false`     |

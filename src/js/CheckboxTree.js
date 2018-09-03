@@ -7,6 +7,7 @@ import nanoid from 'nanoid';
 import Button from './Button';
 import TreeNode from './TreeNode';
 import iconsShape from './iconsShape';
+import languageShape from './languageShape';
 import listShape from './listShape';
 import nodeShape from './nodeShape';
 
@@ -20,6 +21,7 @@ class CheckboxTree extends React.Component {
         expandOnClick: PropTypes.bool,
         expanded: listShape,
         icons: iconsShape,
+        lang: languageShape,
         name: PropTypes.string,
         nameAsArray: PropTypes.bool,
         nativeCheckboxes: PropTypes.bool,
@@ -51,6 +53,11 @@ class CheckboxTree extends React.Component {
             parentClose: <span className="rct-icon rct-icon-parent-close" />,
             parentOpen: <span className="rct-icon rct-icon-parent-open" />,
             leaf: <span className="rct-icon rct-icon-leaf" />,
+        },
+        lang: {
+            collapseAll: 'Collapse all',
+            expandAll: 'Expand all',
+            toggle: 'Toggle',
         },
         name: undefined,
         nameAsArray: false,
@@ -264,6 +271,7 @@ class CheckboxTree extends React.Component {
             expandDisabled,
             expandOnClick,
             icons,
+            lang,
             noCascade,
             onlyLeafCheckboxes,
             optimisticToggle,
@@ -293,6 +301,7 @@ class CheckboxTree extends React.Component {
                     icon={node.icon}
                     icons={{ ...defaultIcons, ...icons }}
                     label={node.label}
+                    lang={lang}
                     optimisticToggle={optimisticToggle}
                     rawChildren={node.children}
                     showCheckbox={showCheckbox}
@@ -325,7 +334,7 @@ class CheckboxTree extends React.Component {
     }
 
     renderExpandAll() {
-        const { icons: { expandAll, collapseAll }, showExpandAll } = this.props;
+        const { icons: { expandAll, collapseAll }, lang, showExpandAll } = this.props;
 
         if (!showExpandAll) {
             return null;
@@ -335,14 +344,14 @@ class CheckboxTree extends React.Component {
             <div className="rct-options">
                 <Button
                     className="rct-option rct-option-expand-all"
-                    title="Expand all"
+                    title={lang.expandAll}
                     onClick={this.onExpandAll}
                 >
                     {expandAll}
                 </Button>
                 <Button
                     className="rct-option rct-option-collapse-all"
-                    title="Collapse all"
+                    title={lang.collapseAll}
                     onClick={this.onCollapseAll}
                 >
                     {collapseAll}

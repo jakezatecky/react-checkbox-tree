@@ -9,6 +9,9 @@ const baseProps = {
     disabled: false,
     expandDisabled: false,
     expanded: false,
+    lang: {
+        toggle: 'Toggle',
+    },
     icons: {
         check: <span className="rct-icon rct-icon-check" />,
         uncheck: <span className="rct-icon rct-icon-uncheck" />,

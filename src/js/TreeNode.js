@@ -5,6 +5,7 @@ import React from 'react';
 import Button from './Button';
 import NativeCheckbox from './NativeCheckbox';
 import iconsShape from './iconsShape';
+import languageShape from './languageShape';
 import nodeShape from './nodeShape';
 
 class TreeNode extends React.Component {
@@ -15,6 +16,7 @@ class TreeNode extends React.Component {
         expanded: PropTypes.bool.isRequired,
         icons: iconsShape.isRequired,
         label: PropTypes.node.isRequired,
+        lang: languageShape.isRequired,
         optimisticToggle: PropTypes.bool.isRequired,
         showNodeIcon: PropTypes.bool.isRequired,
         treeId: PropTypes.string.isRequired,
@@ -110,7 +112,7 @@ class TreeNode extends React.Component {
     }
 
     renderCollapseButton() {
-        const { expandDisabled } = this.props;
+        const { expandDisabled, lang } = this.props;
 
         if (!this.hasChildren()) {
             return (
@@ -124,7 +126,7 @@ class TreeNode extends React.Component {
             <Button
                 className="rct-collapse rct-collapse-btn"
                 disabled={expandDisabled}
-                title="Toggle"
+                title={lang.toggle}
                 onClick={this.onExpand}
             >
                 {this.renderCollapseIcon()}
