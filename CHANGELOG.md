@@ -4,6 +4,7 @@
 
 ### New Features
 
+* [#79]: Add the ability to expand or collapse all nodes in the tree
 * [#102]: Add `icons` property to allow specification of icon components
 * [#103]: Add `title` node property and `showNodeTitle` tree property
 

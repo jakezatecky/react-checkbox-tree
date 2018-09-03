@@ -297,6 +297,99 @@ describe('<CheckboxTree />', () => {
         });
     });
 
+    describe('showExpandAll', () => {
+        it('should render the expand all/collapse all buttons', () => {
+            const wrapper = mount(
+                <CheckboxTree
+                    nodes={[{ value: 'jupiter', label: 'Jupiter' }]}
+                    showExpandAll
+                />,
+            );
+
+            assert.isTrue(wrapper.find('.rct-options .rct-option-expand-all').exists());
+            assert.isTrue(wrapper.find('.rct-options .rct-option-collapse-all').exists());
+        });
+
+        describe('expandAll', () => {
+            it('should add all parent nodes to the `expanded` array', () => {
+                let actualExpanded = null;
+                const wrapper = mount(
+                    <CheckboxTree
+                        nodes={[
+                            {
+                                value: 'mercury',
+                                label: 'Mercury',
+                            },
+                            {
+                                value: 'mars',
+                                label: 'Mars',
+                                children: [
+                                    { value: 'phobos', label: 'Phobos' },
+                                    { value: 'deimos', label: 'Deimos' },
+                                ],
+                            },
+                            {
+                                value: 'jupiter',
+                                label: 'Jupiter',
+                                children: [
+                                    { value: 'io', label: 'Io' },
+                                    { value: 'europa', label: 'Europa' },
+                                ],
+                            },
+                        ]}
+                        showExpandAll
+                        onExpand={(expanded) => {
+                            actualExpanded = expanded;
+                        }}
+                    />,
+                );
+
+                wrapper.find('.rct-option-expand-all').simulate('click');
+                assert.deepEqual(['mars', 'jupiter'], actualExpanded);
+            });
+        });
+
+        describe('collapseAll', () => {
+            it('should remove all nodes from the `expanded` array', () => {
+                let actualExpanded = null;
+                const wrapper = mount(
+                    <CheckboxTree
+                        expanded={['mars', 'jupiter']}
+                        nodes={[
+                            {
+                                value: 'mercury',
+                                label: 'Mercury',
+                            },
+                            {
+                                value: 'mars',
+                                label: 'Mars',
+                                children: [
+                                    { value: 'phobos', label: 'Phobos' },
+                                    { value: 'deimos', label: 'Deimos' },
+                                ],
+                            },
+                            {
+                                value: 'jupiter',
+                                label: 'Jupiter',
+                                children: [
+                                    { value: 'io', label: 'Io' },
+                                    { value: 'europa', label: 'Europa' },
+                                ],
+                            },
+                        ]}
+                        showExpandAll
+                        onExpand={(expanded) => {
+                            actualExpanded = expanded;
+                        }}
+                    />,
+                );
+
+                wrapper.find('.rct-option-collapse-all').simulate('click');
+                assert.deepEqual([], actualExpanded);
+            });
+        });
+    });
+
     describe('showNodeTitle', () => {
         it('should add `title` properties to a TreeNode from the `label` property when set', () => {
             const wrapper = shallow(

@@ -5,7 +5,13 @@
 @rct-clickable-focus: rgba(red(@rct-icon-color), green(@rct-icon-color), blue(@rct-icon-color), .2);
 
 .react-checkbox-tree {
+  display: flex;
+  flex-direction: row-reverse;
   font-size: 16px;
+
+  > ol {
+    flex: 1 1 auto;
+  }
 
   ol {
     margin: 0;
@@ -79,6 +85,29 @@
 .rct-text {
   display: flex;
   align-items: center;
+}
+
+.rct-options {
+  flex: 0 0 auto;
+  margin-left: .5rem;
+  text-align: right;
+}
+
+.rct-option {
+  opacity: .75;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  padding: 0 4px;
+  font-size: 18px;
+
+  &:hover {
+    opacity: 1;
+  }
+
+  + .rct-option {
+    margin-left: 2px;
+  }
 }
 
 .rct-collapse,
@@ -171,4 +200,12 @@
 
 .rct-icon-parent-close::before {
   content: "\f114";
+}
+
+.rct-icon-expand-all::before {
+  content: "\f0fe";
+}
+
+.rct-icon-collapse-all::before {
+  content: "\f146";
 }

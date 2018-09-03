@@ -104,6 +104,7 @@ All node objects **must** have a unique `value`. This value is serialized into t
 | `noCascade`          | bool     | If true, toggling a parent node will **not** cascade its check state to its children.                                  | `false`     |
 | `onlyLeafCheckboxes` | bool     | If true, checkboxes will only be shown for leaf nodes.                                                                 | `false`     |
 | `optimisticToggle`   | bool     | If true, toggling a partially-checked node will select all children. If false, it will deselect.                       | `true`      |
+| `showExpandAll`      | bool     | If true, buttons for expanding and collapsing all parent nodes will appear in the tree.                                | `false`     |
 | `showNodeIcon`       | bool     | If true, each node will show a parent or leaf icon.                                                                    | `true`      |
 | `showNodeTitle`      | bool     | If true, the `label` of each node will become the `title` of the resulting DOM node. Overridden by `node.title`.       | `false`     |
 | `onCheck`            | function | onCheck handler: `function(checked) {}`                                                                                | `() => {}`  |
