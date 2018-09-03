@@ -4,9 +4,9 @@ import React from 'react';
 
 import Button from './Button';
 import NativeCheckbox from './NativeCheckbox';
-import iconsShape from './iconsShape';
-import languageShape from './languageShape';
-import nodeShape from './nodeShape';
+import iconsShape from './shapes/iconsShape';
+import languageShape from './shapes/languageShape';
+import nodeShape from './shapes/nodeShape';
 
 class TreeNode extends React.Component {
     static propTypes = {

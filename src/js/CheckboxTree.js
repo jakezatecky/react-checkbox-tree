@@ -6,10 +6,10 @@ import nanoid from 'nanoid';
 
 import Button from './Button';
 import TreeNode from './TreeNode';
-import iconsShape from './iconsShape';
-import languageShape from './languageShape';
-import listShape from './listShape';
-import nodeShape from './nodeShape';
+import iconsShape from './shapes/iconsShape';
+import languageShape from './shapes/languageShape';
+import listShape from './shapes/listShape';
+import nodeShape from './shapes/nodeShape';
 
 class CheckboxTree extends React.Component {
     static propTypes = {
