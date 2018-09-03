@@ -87,6 +87,30 @@ class Widget extends React.Component {
 
 All node objects **must** have a unique `value`. This value is serialized into the `checked` and `expanded` arrays and is also used for performance optimizations.
 
+#### Changing the Default Icons
+
+By default, **react-checkbox-tree** use Font Awesome for the various icons that appear in the tree. To change the defaults, simply pass in the `icons` property and override the defaults:
+
+``` jsx
+<CheckboxTree
+    ...
+    icons={{
+        check: <span className="rct-icon rct-icon-check" />,
+        uncheck: <span className="rct-icon rct-icon-uncheck" />,
+        halfCheck: <span className="rct-icon rct-icon-half-check" />,
+        expandClose: <span className="rct-icon rct-icon-expand-close" />,
+        expandOpen: <span className="rct-icon rct-icon-expand-open" />,
+        expandAll: <span className="rct-icon rct-icon-expand-all" />,
+        collapseAll: <span className="rct-icon rct-icon-collapse-all" />,
+        parentClose: <span className="rct-icon rct-icon-parent-close" />,
+        parentOpen: <span className="rct-icon rct-icon-parent-open" />,
+        leaf: <span className="rct-icon rct-icon-leaf" />,
+    }}
+/>
+```
+
+Note that you can override as many or as little icons as you like.
+
 ### Properties
 
 | Property             | Type     | Description                                                                                                            | Default     |
@@ -96,7 +120,7 @@ All node objects **must** have a unique `value`. This value is serialized into t
 | `disabled`           | bool     | If true, the component will be disabled and nodes cannot be checked.                                                   | `false`     |
 | `expandDisabled`     | bool     | If true, the ability to expand nodes will be disabled.                                                                 | `false`     |
 | `expandOnClick`      | bool     | If true, nodes will be expanded by clicking on labels. Requires a non-empty `onClick` function.                        | `false`     |
-| `icons`              | object   | Nodes for `check`, `uncheck`, `halfCheck`, `expandClose`, `expandOpen`, `parentClose`, `parentOpen`, and `leaf` icons. | { ... }     |
+| `icons`              | object   | An object containing the mappings for the various icons and their components. See **Changing the Default Icons**.      | { ... }     |
 | `expanded`           | array    | An array of expanded node values.                                                                                      | `[]`        |
 | `name`               | string   | Optional name for the hidden `<input>` element.                                                                        | `undefined` |
 | `nameAsArray`        | bool     | If true, the hidden `<input>` will encode its values as an array rather than a joined string.                          | `false`     |
