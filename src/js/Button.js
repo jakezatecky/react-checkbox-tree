@@ -4,7 +4,11 @@ import React from 'react';
 class Button extends React.PureComponent {
     static propTypes = {
         children: PropTypes.node.isRequired,
-        title: PropTypes.string.isRequired,
+        title: PropTypes.string,
+    };
+
+    static defaultProps = {
+        title: null,
     };
 
     render() {
