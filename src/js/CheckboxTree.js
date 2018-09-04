@@ -1,8 +1,8 @@
 import classNames from 'classnames';
 import isEqual from 'lodash/isEqual';
+import nanoid from 'nanoid';
 import PropTypes from 'prop-types';
 import React from 'react';
-import nanoid from 'nanoid';
 
 import Button from './Button';
 import TreeNode from './TreeNode';
@@ -80,7 +80,7 @@ class CheckboxTree extends React.Component {
         this.nodes = {};
 
         this.flattenNodes(props.nodes);
-        this.unserializeLists({
+        this.deserializeLists({
             checked: props.checked,
             expanded: props.expanded,
         });
@@ -96,7 +96,7 @@ class CheckboxTree extends React.Component {
             this.flattenNodes(nodes);
         }
 
-        this.unserializeLists({ checked, expanded });
+        this.deserializeLists({ checked, expanded });
     }
 
     onCheck(node) {
@@ -122,14 +122,16 @@ class CheckboxTree extends React.Component {
     }
 
     getFormattedNodes(nodes) {
+        const nodeMap = this.nodes;
+
         return nodes.map((node) => {
             const formatted = { ...node };
 
-            formatted.checked = this.nodes[node.value].checked;
-            formatted.expanded = this.nodes[node.value].expanded;
+            formatted.checked = nodeMap[node.value].checked;
+            formatted.expanded = nodeMap[node.value].expanded;
             formatted.showCheckbox = node.showCheckbox !== undefined ? node.showCheckbox : true;
 
-            if (this.nodes[node.value].isParent) {
+            if (nodeMap[node.value].isParent) {
                 formatted.children = this.getFormattedNodes(formatted.children);
             } else {
                 formatted.children = null;
@@ -215,7 +217,7 @@ class CheckboxTree extends React.Component {
         });
     }
 
-    unserializeLists(lists) {
+    deserializeLists(lists) {
         // Reset values to false
         Object.keys(this.nodes).forEach((value) => {
             Object.keys(lists).forEach((listKey) => {
@@ -223,7 +225,7 @@ class CheckboxTree extends React.Component {
             });
         });
 
-        // Unserialize values and set their nodes to true
+        // Deserialize values and set their nodes to true
         Object.keys(lists).forEach((listKey) => {
             lists[listKey].forEach((value) => {
                 if (this.nodes[value] !== undefined) {
@@ -375,26 +377,29 @@ class CheckboxTree extends React.Component {
     }
 
     renderArrayHiddenInput() {
-        return this.props.checked.map((value) => {
-            const name = `${this.props.name}[]`;
+        const { checked, name: inputName } = this.props;
+
+        return checked.map((value) => {
+            const name = `${inputName}[]`;
 
             return <input key={value} name={name} type="hidden" value={value} />;
         });
     }
 
     renderJoinedHiddenInput() {
-        const checked = this.props.checked.join(',');
+        const { checked, name } = this.props;
+        const inputValue = checked.join(',');
 
-        return <input name={this.props.name} type="hidden" value={checked} />;
+        return <input name={name} type="hidden" value={inputValue} />;
     }
 
     render() {
-        const nodes = this.getFormattedNodes(this.props.nodes);
-        const treeNodes = this.renderTreeNodes(nodes);
+        const { disabled, nodes, nativeCheckboxes } = this.props;
+        const treeNodes = this.renderTreeNodes(this.getFormattedNodes(nodes));
         const className = classNames({
             'react-checkbox-tree': true,
-            'rct-disabled': this.props.disabled,
-            'rct-native-display': this.props.nativeCheckboxes,
+            'rct-disabled': disabled,
+            'rct-native-display': nativeCheckboxes,
         });
 
         return (
