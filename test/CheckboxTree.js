@@ -153,6 +153,7 @@ describe('<CheckboxTree />', () => {
                             value: 'jupiter',
                             label: 'Jupiter',
                             children: [
+                                { value: 'io', label: 'Io' },
                                 { value: 'europa', label: 'Europa' },
                             ],
                         },
@@ -160,9 +161,10 @@ describe('<CheckboxTree />', () => {
                 />,
             );
 
-            const { value, label } = wrapper.find(TreeNode).prop('rawChildren')[0];
-
-            assert.deepEqual({ value: 'europa', label: 'Europa' }, { value, label });
+            assert.deepEqual(
+                wrapper.find(TreeNode).prop('children').props,
+                { children: [null, null] },
+            );
         });
     });
 
