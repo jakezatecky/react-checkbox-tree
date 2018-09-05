@@ -442,6 +442,58 @@ describe('<CheckboxTree />', () => {
     });
 
     describe('onCheck', () => {
+        it('should add all children of the checked parent to the checked array', () => {
+            let actualChecked = null;
+
+            const wrapper = mount(
+                <CheckboxTree
+                    checked={[]}
+                    nodes={[
+                        {
+                            value: 'jupiter',
+                            label: 'Jupiter',
+                            children: [
+                                { value: 'io', label: 'Io' },
+                                { value: 'europa', label: 'Europa' },
+                            ],
+                        },
+                    ]}
+                    onCheck={(checked) => {
+                        actualChecked = checked;
+                    }}
+                />,
+            );
+
+            wrapper.find('TreeNode input[type="checkbox"]').simulate('change');
+            assert.deepEqual(['io', 'europa'], actualChecked);
+        });
+
+        it('should not add disabled children to the checked array', () => {
+            let actualChecked = null;
+
+            const wrapper = mount(
+                <CheckboxTree
+                    checked={[]}
+                    nodes={[
+                        {
+                            value: 'jupiter',
+                            label: 'Jupiter',
+                            children: [
+                                { value: 'io', label: 'Io', disabled: true },
+                                { value: 'europa', label: 'Europa' },
+                            ],
+                        },
+                    ]}
+                    onCheck={(checked) => {
+                        actualChecked = checked;
+                    }}
+                />,
+            );
+
+            wrapper.find('TreeNode input[type="checkbox"]').simulate('change');
+            assert.deepEqual(['europa'], actualChecked);
+        });
+
         it('should pass the node toggled as the second parameter', () => {
             let actualNode = null;
 

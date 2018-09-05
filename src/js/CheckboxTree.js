@@ -173,7 +173,10 @@ class CheckboxTree extends React.Component {
         const flatNode = this.flatNodes[node.value];
 
         if (flatNode.isLeaf || noCascade) {
-            if (node.disabled) return;
+            if (node.disabled) {
+                return;
+            }
+
             // Set the check status of a leaf node or an uncoupled parent
             this.toggleNode(node.value, 'checked', isChecked);
         } else {
@@ -188,20 +191,23 @@ class CheckboxTree extends React.Component {
         this.flatNodes[nodeValue][key] = toggleValue;
     }
 
-    flattenNodes(nodes, parentNode = {}) {
+    flattenNodes(nodes, parent = {}) {
         if (!Array.isArray(nodes) || nodes.length === 0) {
             return;
         }
+
+        const { disabled, noCascade } = this.props;
 
         nodes.forEach((node) => {
             const isParent = this.nodeHasChildren(node);
 
             this.flatNodes[node.value] = {
+                self: node,
+                parent,
                 isParent,
                 isLeaf: !isParent,
-                parent: parentNode,
-                self: node,
                 showCheckbox: node.showCheckbox !== undefined ? node.showCheckbox : true,
+                disabled: this.getDisabledState(node, parent, disabled, noCascade),
             };
             this.flattenNodes(node.children, node);
         });
@@ -247,7 +253,6 @@ class CheckboxTree extends React.Component {
 
     renderTreeNodes(nodes, parent = {}) {
         const {
-            disabled,
             expandDisabled,
             expandOnClick,
             icons,
@@ -265,7 +270,6 @@ class CheckboxTree extends React.Component {
             const key = `${node.value}`;
             const flatNode = this.flatNodes[node.value];
             const children = flatNode.isParent ? this.renderTreeNodes(node.children, node) : null;
-            const nodeDisabled = this.getDisabledState(node, parent, disabled, noCascade);
 
             // Get the check state after all children check states are determined
             flatNode.checkState = this.getShallowCheckState(node, noCascade);
@@ -285,7 +289,7 @@ class CheckboxTree extends React.Component {
                     key={key}
                     checked={flatNode.checkState}
                     className={node.className}
-                    disabled={nodeDisabled}
+                    disabled={flatNode.disabled}
                     expandDisabled={expandDisabled}
                     expandOnClick={expandOnClick}
                     expanded={flatNode.expanded}

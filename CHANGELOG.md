@@ -9,6 +9,10 @@
 * [#103]: Add `title` node property and `showNodeTitle` tree property
 * [#108]: Add `lang` property for language customization
 
+### Bug Fixes
+
+* [#61]: Fix issue where disabled children would be checked if a parent node was checked
+
 ### Other
 
 * [#91]: Prevent disconnection between Sass and Less files on build
