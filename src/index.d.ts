@@ -9,6 +9,7 @@ declare module "react-checkbox-tree" {
         disabled?: boolean;
         icon?: JSX.Element;
         showCheckbox?: boolean;
+        title?: string;
     }
 
     interface Icons {

@@ -7,6 +7,7 @@ const nodeShape = {
         PropTypes.number,
     ]).isRequired,
 
+    disabled: PropTypes.bool,
     icon: PropTypes.node,
     showCheckbox: PropTypes.bool,
     title: PropTypes.string,
