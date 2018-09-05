@@ -1,5 +1,18 @@
 .react-checkbox-tree {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: reverse;
+      -ms-flex-direction: row-reverse;
+          flex-direction: row-reverse;
   font-size: 16px;
+}
+
+.react-checkbox-tree > ol {
+  -webkit-box-flex: 1;
+      -ms-flex: 1 1 auto;
+          flex: 1 1 auto;
 }
 
 .react-checkbox-tree ol {
@@ -75,6 +88,31 @@
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
+}
+
+.rct-options {
+  -webkit-box-flex: 0;
+      -ms-flex: 0 0 auto;
+          flex: 0 0 auto;
+  margin-left: .5rem;
+  text-align: right;
+}
+
+.rct-option {
+  opacity: .75;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  padding: 0 4px;
+  font-size: 18px;
+}
+
+.rct-option:hover {
+  opacity: 1;
+}
+
+.rct-option + .rct-option {
+  margin-left: 2px;
 }
 
 .rct-collapse,
@@ -167,6 +205,14 @@
 
 .rct-icon-parent-close::before {
   content: "\f114";
+}
+
+.rct-icon-expand-all::before {
+  content: "\f0fe";
+}
+
+.rct-icon-collapse-all::before {
+  content: "\f146";
 }
 
 * {
@@ -544,4 +590,8 @@ a:hover {
 
 .clickable-labels > * {
   width: 50%;
+}
+
+.expand-all-container {
+  max-width: 400px;
 }
