@@ -99,20 +99,20 @@ class CheckboxTree extends React.Component {
         this.deserializeLists({ checked, expanded });
     }
 
-    onCheck(node) {
-        // node is object from TreeNode
+    onCheck(nodeInfo) {
         const { noCascade, onCheck } = this.props;
+        const node = this.flatNodes[nodeInfo.value];
 
-        this.toggleChecked(node, node.checked, noCascade);
-        onCheck(this.serializeList('checked'), node);
+        this.toggleChecked(nodeInfo, nodeInfo.checked, noCascade);
+        onCheck(this.serializeList('checked'), { ...nodeInfo, children: node.self.children });
     }
 
-    onExpand(node) {
-        // node is object from TreeNode
+    onExpand(nodeInfo) {
         const { onExpand } = this.props;
+        const node = this.flatNodes[nodeInfo.value];
 
-        this.toggleNode('expanded', node, node.expanded);
-        onExpand(this.serializeList('expanded'), node);
+        this.toggleNode(nodeInfo.value, 'expanded', nodeInfo.expanded);
+        onExpand(this.serializeList('expanded'), { ...nodeInfo, children: node.self.children });
     }
 
     onExpandAll() {
@@ -124,18 +124,17 @@ class CheckboxTree extends React.Component {
     }
 
     getShallowCheckState(node, noCascade) {
-        // node is from props.nodes
         const flatNode = this.flatNodes[node.value];
 
         if (flatNode.isLeaf || noCascade) {
             return flatNode.checked ? 1 : 0;
         }
 
-        if (node.children.every(child => (this.flatNodes[child.value].checkState === 1))) {
+        if (this.isEveryChildChecked(node)) {
             return 1;
         }
 
-        if (node.children.some(child => (this.flatNodes[child.value].checkState > 0))) {
+        if (this.isSomeChildChecked(node)) {
             return 2;
         }
 
@@ -143,7 +142,6 @@ class CheckboxTree extends React.Component {
     }
 
     getDisabledState(node, parent, disabledProp, noCascade) {
-        // node is from props.nodes
         if (disabledProp) {
             return true;
         }
@@ -172,27 +170,24 @@ class CheckboxTree extends React.Component {
     }
 
     toggleChecked(node, isChecked, noCascade) {
-        // node is object from TreeNode
         const flatNode = this.flatNodes[node.value];
 
         if (flatNode.isLeaf || noCascade) {
             // Set the check status of a leaf node or an uncoupled parent
-            this.toggleNode('checked', node, isChecked);
+            this.toggleNode(node.value, 'checked', isChecked);
         } else {
-            const { children } = flatNode.self;
             // Percolate check status down to all children
-            children.forEach((child) => {
+            flatNode.self.children.forEach((child) => {
                 this.toggleChecked(child, isChecked, noCascade);
             });
         }
     }
 
-    toggleNode(key, node, toggleValue) {
-        this.flatNodes[node.value][key] = toggleValue;
+    toggleNode(nodeValue, key, toggleValue) {
+        this.flatNodes[nodeValue][key] = toggleValue;
     }
 
     flattenNodes(nodes, parentNode = {}) {
-        // nodes are from props.nodes
         if (!Array.isArray(nodes) || nodes.length === 0) {
             return;
         }
@@ -241,8 +236,15 @@ class CheckboxTree extends React.Component {
         return list;
     }
 
+    isEveryChildChecked(node) {
+        return node.children.every(child => this.flatNodes[child.value].checkState === 1);
+    }
+
+    isSomeChildChecked(node) {
+        return node.children.some(child => this.flatNodes[child.value].checkState > 0);
+    }
+
     renderTreeNodes(nodes, parent = {}) {
-        // nodes are props.nodes
         const {
             disabled,
             expandDisabled,
@@ -260,57 +262,51 @@ class CheckboxTree extends React.Component {
 
         const treeNodes = nodes.map((node) => {
             const key = `${node.value}`;
-
             const flatNode = this.flatNodes[node.value];
-
-            let children = null;
-            if (!flatNode.isLeaf) {
-                children = this.renderTreeNodes(node.children, node);
-            }
-
-            // set checkState here
-            // this can be "shallow" because checkState is updated for all
-            // nested children in the recursive call to renderTreeNodes above
-            flatNode.checkState = this.getShallowCheckState(node, noCascade);
-
+            const children = flatNode.isParent ? this.renderTreeNodes(node.children, node) : null;
             const nodeDisabled = this.getDisabledState(node, parent, disabled, noCascade);
+
+            // Get the check state after all children check states are determined
+            flatNode.checkState = this.getShallowCheckState(node, noCascade);
 
             // Show checkbox only if this is a leaf node or showCheckbox is true
             const showCheckbox = onlyLeafCheckboxes ? flatNode.isLeaf : flatNode.showCheckbox;
 
-            // root of tree has no parent value and is expanded by default
+            // Render only if parent is expanded or if there is no root parent
             const parentExpanded = parent.value ? this.flatNodes[parent.value].expanded : true;
-            if (parentExpanded) {
-                return (
-                    <TreeNode
-                        key={key}
-                        checked={flatNode.checkState}
-                        className={node.className}
-                        disabled={nodeDisabled}
-                        expandDisabled={expandDisabled}
-                        expandOnClick={expandOnClick}
-                        expanded={flatNode.expanded}
-                        icon={node.icon}
-                        icons={{ ...defaultIcons, ...icons }}
-                        label={node.label}
-                        lang={lang}
-                        optimisticToggle={optimisticToggle}
-                        isLeaf={flatNode.isLeaf}
-                        showCheckbox={showCheckbox}
-                        showNodeIcon={showNodeIcon}
-                        title={showNodeTitle ? node.title || node.label : node.title}
-                        treeId={this.id}
-                        value={node.value}
-                        onCheck={this.onCheck}
-                        onClick={onClick}
-                        onExpand={this.onExpand}
-                    >
-                        {children}
-                    </TreeNode>
-                );
+
+            if (!parentExpanded) {
+                return null;
             }
 
-            return null;
+            return (
+                <TreeNode
+                    key={key}
+                    checked={flatNode.checkState}
+                    className={node.className}
+                    disabled={nodeDisabled}
+                    expandDisabled={expandDisabled}
+                    expandOnClick={expandOnClick}
+                    expanded={flatNode.expanded}
+                    icon={node.icon}
+                    icons={{ ...defaultIcons, ...icons }}
+                    label={node.label}
+                    lang={lang}
+                    optimisticToggle={optimisticToggle}
+                    isLeaf={flatNode.isLeaf}
+                    isParent={flatNode.isParent}
+                    showCheckbox={showCheckbox}
+                    showNodeIcon={showNodeIcon}
+                    title={showNodeTitle ? node.title || node.label : node.title}
+                    treeId={this.id}
+                    value={node.value}
+                    onCheck={this.onCheck}
+                    onClick={onClick}
+                    onExpand={this.onExpand}
+                >
+                    {children}
+                </TreeNode>
+            );
         });
 
         return (

@@ -12,6 +12,7 @@
 ### Other
 
 * [#91]: Prevent disconnection between Sass and Less files on build
+* [#97]: Some performance optimizations
 
 ## [v1.2.4](https://github.com/jakezatecky/react-checkbox-tree/compare/v1.2.3...v1.2.4) (2018-08-29)
 
