@@ -4,6 +4,7 @@
   "description": "A simple and elegant checkbox tree for React.",
   "author": "Jake Zatecky",
   "license": "MIT",
+  "types": "src/index.d.ts",
   "keywords": [
     "react",
     "checkbox",
