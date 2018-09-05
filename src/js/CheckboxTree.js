@@ -133,6 +133,7 @@ class CheckboxTree extends React.Component {
 
     toggleChecked(node, isChecked, noCascade) {
         if (node.children === null || noCascade) {
+            if (node.disabled) return;
             // Set the check status of a leaf node or an uncoupled parent
             this.toggleNode('checked', node, isChecked);
         } else {
