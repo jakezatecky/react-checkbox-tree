@@ -23,6 +23,7 @@ const baseProps = {
         leaf: <span className="rct-icon rct-icon-leaf" />,
     },
     isLeaf: true,
+    isParent: false,
     label: 'Jupiter',
     optimisticToggle: true,
     showNodeIcon: true,
