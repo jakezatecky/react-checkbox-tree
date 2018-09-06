@@ -16,7 +16,7 @@
 
 Install the library using your favorite dependency manager:
 
-``` shell
+```
 yarn add react-checkbox-tree
 ```
 
@@ -48,7 +48,7 @@ import 'react-checkbox-tree/lib/react-checkbox-tree.css';
 
 A quick usage example is included below. Note that the react-checkbox-tree component is [controlled](https://facebook.github.io/react/docs/forms.html#controlled-components). In other words, it is stateless. You must update its `checked` and `expanded` properties whenever a change occurs.
 
-``` javascript
+``` jsx
 import React from 'react';
 import CheckboxTree from 'react-checkbox-tree';
 
