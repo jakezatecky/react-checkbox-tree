@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [v1.3.1](https://github.com/jakezatecky/react-checkbox-tree/compare/v1.3.0...v1.3.1) (2018-09-06)
+
+### Bug Fixes
+
+* [#109]: Fix erroneous PropTypes check for `lang` property
+
 ## [v1.3.0](https://github.com/jakezatecky/react-checkbox-tree/compare/v1.2.4...v1.3.0) (2018-09-05)
 
 ### New Features
