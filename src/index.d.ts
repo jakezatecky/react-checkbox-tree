@@ -17,6 +17,7 @@ declare module "react-checkbox-tree" {
         uncheck?: JSX.Element;
         halfCheck?: JSX.Element;
         expandClose?: JSX.Element;
+        expandOpen?: JSX.Element;
         expandAll?: JSX.Element;
         collapseAll?: JSX.Element;
         parentClose?: JSX.Element;
