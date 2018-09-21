@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v.1.4.0 (TBA)
+
+### New Features
+
+* [#114]: Add `rct-node-expanded` and `rct-node-collapsed` classes to expanded and collapsed parent nodes
+
 ## [v1.3.1](https://github.com/jakezatecky/react-checkbox-tree/compare/v1.3.0...v1.3.1) (2018-09-06)
 
 ### Bug Fixes

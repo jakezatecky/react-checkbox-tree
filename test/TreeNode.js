@@ -177,6 +177,31 @@ describe('<TreeNode />', () => {
             assert.isTrue(wrapper.contains(<span className="rct-icon rct-icon-expand-close" />));
             assert.isTrue(wrapper.contains(<span className="rct-icon rct-icon-parent-close" />));
         });
+
+        it('should append the `rct-node-expanded` class to the node when set to true', () => {
+            const wrapper = shallow(
+                <TreeNode {...baseProps} expanded isLeaf={false} />,
+            );
+
+            assert.isTrue(wrapper.find('li').hasClass('rct-node-expanded'));
+        });
+
+        it('should append the `rct-node-collapsed` class to the node when set to true', () => {
+            const wrapper = shallow(
+                <TreeNode {...baseProps} expanded={false} isLeaf={false} />,
+            );
+
+            assert.isTrue(wrapper.find('li').hasClass('rct-node-collapsed'));
+        });
+
+        it('should not append any expanded/collapsed classes to the node when a leaf', () => {
+            const wrapper = shallow(
+                <TreeNode {...baseProps} expanded isLeaf />,
+            );
+
+            assert.isFalse(wrapper.find('li').hasClass('rct-node-expanded'));
+            assert.isFalse(wrapper.find('li').hasClass('rct-node-collapsed'));
+        });
     });
 
     describe('icon', () => {

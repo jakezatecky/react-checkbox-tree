@@ -275,11 +275,18 @@ class TreeNode extends React.Component {
     }
 
     render() {
-        const { className, disabled, isLeaf } = this.props;
+        const {
+            className,
+            disabled,
+            expanded,
+            isLeaf,
+        } = this.props;
         const nodeClass = classNames({
             'rct-node': true,
             'rct-node-leaf': isLeaf,
             'rct-node-parent': !isLeaf,
+            'rct-node-expanded': !isLeaf && expanded,
+            'rct-node-collapsed': !isLeaf && !expanded,
             'rct-disabled': disabled,
         }, className);
 
