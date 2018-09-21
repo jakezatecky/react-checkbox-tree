@@ -1,10 +1,14 @@
 # CHANGELOG
 
-## v.1.4.0 (TBA)
+## [v1.4.0](https://github.com/jakezatecky/react-checkbox-tree/compare/v1.3.1...v1.4.0) (2018-09-21)
 
 ### New Features
 
 * [#114]: Add `rct-node-expanded` and `rct-node-collapsed` classes to expanded and collapsed parent nodes
+
+### Bug Fixes
+
+* [#113]: Add missing `expandOpen` property from TypeScript declaration
 
 ## [v1.3.1](https://github.com/jakezatecky/react-checkbox-tree/compare/v1.3.0...v1.3.1) (2018-09-06)
 
