@@ -1,5 +1,6 @@
 import React from 'react';
 import CheckboxTree from 'react-checkbox-tree';
+import 'react-checkbox-tree/lib/react-checkbox-tree.css';
 
 const nodes = [
     {
@@ -81,31 +82,24 @@ const nodes = [
 ];
 
 class BasicExample extends React.Component {
-    constructor() {
-        super();
+    state = {
+        checked: [
+            '/app/Http/Controllers/WelcomeController.js',
+            '/app/Http/routes.js',
+            '/public/assets/style.css',
+            '/public/index.html',
+            '/.gitignore',
+        ],
+        expanded: [
+            '/app',
+        ],
+    };
 
-        this.state = {
-            checked: [
-                '/app/Http/Controllers/WelcomeController.js',
-                '/app/Http/routes.js',
-                '/public/assets/style.css',
-                '/public/index.html',
-                '/.gitignore',
-            ],
-            expanded: [
-                '/app',
-            ],
-        };
-
-        this.onCheck = this.onCheck.bind(this);
-        this.onExpand = this.onExpand.bind(this);
-    }
-
-    onCheck(checked) {
+    onCheck = (checked) => {
         this.setState({ checked });
     }
 
-    onExpand(expanded) {
+    onExpand = (expanded) => {
         this.setState({ expanded });
     }
 
