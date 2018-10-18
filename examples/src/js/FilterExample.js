@@ -97,7 +97,7 @@ class FilterExample extends React.Component {
             ],
             filterText: '',
             nodesFiltered: nodes,
-            nodes
+            nodes,
         };
 
         this.onCheck = this.onCheck.bind(this);
@@ -114,29 +114,33 @@ class FilterExample extends React.Component {
     onExpand(expanded) {
         this.setState({ expanded });
     }
-    
-    nodeFilter (node: Node) {
-        const children = (node.children || []).map(this.nodeFilter).filter(c => c !== null);
 
-        return node.label.indexOf(this.state.filterText) !== -1 || children.length ? {...node, children: children } : null;
+    setFilterText(e) {
+        this.setState({ filterText: e.target.value }, this.filterTree);
     }
 
-    filterTree () {
+    filterTree() {
         if (!this.state.filterText) {
-            return this.setState({
-                nodesFiltered: this.state.nodes
-            });
+            this.setState(prevState => ({
+                nodesFiltered: prevState.nodes,
+            }));
+
+            return;
         }
 
-        const nodesFiltered = this.state.nodes.map(this.nodeFilter).filter(n => n !== null);
+        const nodesFiltered = prevState => (
+            { nodesFiltered: prevState.nodes.map(this.nodeFilter).filter(n => n !== null) }
+        );
 
-        this.setState({
-            nodesFiltered: nodesFiltered
-        });
+        this.setState(nodesFiltered);
     }
-    
-    setFilterText(e) {
-        this.setState({filterText: e.target.value}, this.filterTree);
+
+    nodeFilter(node) {
+        const children = (node.children || []).map(this.nodeFilter).filter(c => c !== null);
+
+        return node.label.indexOf(this.state.filterText) !== -1 || children.length ?
+            { ...node, children } :
+            null;
     }
 
     render() {
@@ -144,7 +148,7 @@ class FilterExample extends React.Component {
 
         return (
             <div>
-                <input type='text' placeholder='Search' value={ this.state.filterText } onChange={ this.setFilterText } />
+                <input type='text' placeholder='Search' value={this.state.filterText} onChange={this.setFilterText} />
                 <CheckboxTree
                     checked={checked}
                     expanded={expanded}
