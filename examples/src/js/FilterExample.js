@@ -95,7 +95,7 @@ class FilterExample extends React.Component {
             expanded: [
                 '/app',
             ],
-            filterText: "",
+            filterText: '',
             nodes: nodes,
             nodesFiltered: nodes
         };
