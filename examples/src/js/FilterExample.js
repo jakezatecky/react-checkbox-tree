@@ -144,7 +144,7 @@ class FilterExample extends React.Component {
 
         return (
             <div>
-                <input type="text" placeholder="Search" value={ this.state.filterText } onChange={ this.setFilterText } />
+                <input type='text' placeholder='Search' value={ this.state.filterText } onChange={ this.setFilterText } />
                 <CheckboxTree
                     checked={checked}
                     expanded={expanded}
