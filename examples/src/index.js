@@ -10,6 +10,7 @@ import HiddenCheckboxesExample from './js/HiddenCheckboxesExample';
 import NoCascadeExample from './js/NoCascadeExample';
 import LargeDataExample from './js/LargeDataExample';
 import PessimisticToggleExample from './js/PessimisticToggleExample';
+import FilterExample from './js/FilterExample';
 
 ReactDOM.render(<BasicExample />, document.getElementById('basic-example'));
 ReactDOM.render(<CustomIconsExample />, document.getElementById('custom-icons-example'));
@@ -20,3 +21,4 @@ ReactDOM.render(<ClickableLabelsExample />, document.getElementById('clickable-l
 ReactDOM.render(<HiddenCheckboxesExample />, document.getElementById('hidden-checkboxes-example'));
 ReactDOM.render(<ExpandAllExample />, document.getElementById('expand-all-example'));
 ReactDOM.render(<LargeDataExample />, document.getElementById('large-data-example'));
+ReactDOM.render(<FilterExample />, document.getElementById('filter-example'));
