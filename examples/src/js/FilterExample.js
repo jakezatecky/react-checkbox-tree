@@ -96,8 +96,8 @@ class FilterExample extends React.Component {
                 '/app',
             ],
             filterText: '',
-            nodes: nodes,
-            nodesFiltered: nodes
+            nodesFiltered: nodes,
+            nodes
         };
 
         this.onCheck = this.onCheck.bind(this);
