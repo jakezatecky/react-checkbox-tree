@@ -95,16 +95,16 @@ class FilterExample extends React.Component {
             expanded: [
                 '/app',
             ],
-			filterText: "",
-			nodes: nodes,
-			nodesFiltered: nodes
+            filterText: "",
+            nodes: nodes,
+            nodesFiltered: nodes
         };
 
         this.onCheck = this.onCheck.bind(this);
         this.onExpand = this.onExpand.bind(this);
-		this.setFilterText = this.setFilterText.bind(this);
-		this.filterTree = this.filterTree.bind(this);
-		this.nodeFilter = this.nodeFilter.bind(this);
+        this.setFilterText = this.setFilterText.bind(this);
+        this.filterTree = this.filterTree.bind(this);
+        this.nodeFilter = this.nodeFilter.bind(this);
     }
 
     onCheck(checked) {
@@ -114,8 +114,8 @@ class FilterExample extends React.Component {
     onExpand(expanded) {
         this.setState({ expanded });
     }
-	
-	nodeFilter (node: Node) {
+    
+    nodeFilter (node: Node) {
         const children = (node.children || []).map(this.nodeFilter).filter(c => c !== null);
 
         return node.label.indexOf(this.state.filterText) !== -1 || children.length ? {...node, children: children } : null;
@@ -134,25 +134,25 @@ class FilterExample extends React.Component {
             nodesFiltered: nodesFiltered
         });
     }
-	
-	setFilterText(e) {
-		this.setState({filterText: e.target.value}, this.filterTree);
-	}
+    
+    setFilterText(e) {
+        this.setState({filterText: e.target.value}, this.filterTree);
+    }
 
     render() {
         const { checked, expanded } = this.state;
 
         return (
-			<div>
-				<input type="text" placeholder="Search" value={ this.state.filterText } onChange={ this.setFilterText } />
-				<CheckboxTree
-					checked={checked}
-					expanded={expanded}
-					nodes={this.state.nodesFiltered}
-					onCheck={this.onCheck}
-					onExpand={this.onExpand}
-				/>
-			</div>
+            <div>
+                <input type="text" placeholder="Search" value={ this.state.filterText } onChange={ this.setFilterText } />
+                <CheckboxTree
+                    checked={checked}
+                    expanded={expanded}
+                    nodes={this.state.nodesFiltered}
+                    onCheck={this.onCheck}
+                    onExpand={this.onExpand}
+                />
+            </div>
         );
     }
 }
