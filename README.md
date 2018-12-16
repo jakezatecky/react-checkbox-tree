@@ -89,7 +89,7 @@ All node objects **must** have a unique `value`. This value is serialized into t
 
 #### Changing the Default Icons
 
-By default, **react-checkbox-tree** use Font Awesome for the various icons that appear in the tree. To change the defaults, simply pass in the `icons` property and override the defaults:
+By default, **react-checkbox-tree** uses Font Awesome for the various icons that appear in the tree. To change the defaults, simply pass in the `icons` property and override the defaults:
 
 ``` jsx
 <CheckboxTree
