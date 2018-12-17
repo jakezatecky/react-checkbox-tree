@@ -34,7 +34,7 @@ function makeConfig(target) {
             rules: [
                 {
                     test: /\.js?$/,
-                    exclude: /(node_modules|bower_components|vender_modules)/,
+                    exclude: /(node_modules)/,
                     loader: 'babel-loader',
                 },
             ],
