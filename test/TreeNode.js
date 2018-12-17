@@ -10,6 +10,8 @@ const baseProps = {
     expandDisabled: false,
     expanded: false,
     lang: {
+        collapseAll: 'Collapse',
+        expandAll: 'Expand',
         toggle: 'Toggle',
     },
     icons: {

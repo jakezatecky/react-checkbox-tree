@@ -90,7 +90,11 @@ describe('<CheckboxTree />', () => {
         it('should override default language values', () => {
             const wrapper = shallow(
                 <CheckboxTree
-                    lang={{ expandAll: 'Expand it', collapseAll: 'Collapse it' }}
+                    lang={{
+                        expandAll: 'Expand it',
+                        collapseAll: 'Collapse it',
+                        toggle: 'Toggle it',
+                    }}
                     nodes={[]}
                     showExpandAll
                 />,
