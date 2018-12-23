@@ -23,7 +23,7 @@
     "examples": "gulp examples",
     "gh-deploy": "git subtree push --prefix examples/dist origin gh-pages",
     "prepublishOnly": "gulp build",
-    "test": "gulp test"
+    "test": "gulp test-script"
   },
   "peerDependencies": {
     "react": "^15.3.0 || ^16.0.0"
@@ -47,7 +47,7 @@
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jsx-a11y": "^6.0.2",
     "eslint-plugin-react": "^7.10.0",
-    "gulp": "^3.9.1",
+    "gulp": "^4.0.0",
     "gulp-autoprefixer": "^6.0.0",
     "gulp-clean-css": "^4.0.0",
     "gulp-eslint": "^5.0.0",

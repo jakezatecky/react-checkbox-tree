@@ -29,7 +29,7 @@ gulp.task('test-script-format', () => (
         .pipe(eslint.failOnError())
 ));
 
-gulp.task('test-mocha', ['test-script-format'], () => (
+gulp.task('test-script-mocha', () => (
     gulp.src(['./test/**/*.js'])
         .pipe(mocha({
             require: [
@@ -39,21 +39,21 @@ gulp.task('test-mocha', ['test-script-format'], () => (
         }))
 ));
 
-gulp.task('test', ['test-script-format', 'test-mocha']);
+gulp.task('test-script', gulp.series('test-script-format', 'test-script-mocha'));
 
-gulp.task('build-script', ['test'], () => (
+gulp.task('build-script', gulp.series('test-script', () => (
     gulp.src(['./src/index.js'])
         .pipe(webpackStream(webpackConfig('node'), webpack))
         .pipe(header(banner, { pkg }))
         .pipe(gulp.dest('./lib/'))
-));
+)));
 
-gulp.task('build-script-web', ['build-script'], () => (
+gulp.task('build-script-web', gulp.series('build-script', () => (
     gulp.src(['./src/index.js'])
         .pipe(webpackStream(webpackConfig('web'), webpack))
         .pipe(header(banner, { pkg }))
         .pipe(gulp.dest('./lib/'))
-));
+)));
 
 gulp.task('build-style', () => (
     gulp.src('./src/scss/**/*.scss')
@@ -80,11 +80,11 @@ gulp.task('build-style-less', () => (
         .pipe(gulp.dest('./.css-compare/less'))
 ));
 
-gulp.task('compare-css-output', ['build-style', 'build-style-less'], () => (
+gulp.task('compare-css-output', gulp.series(gulp.parallel('build-style', 'build-style-less', () => (
     run('cmp .css-compare/less/react-checkbox-tree.css .css-compare/scss/react-checkbox-tree.css').exec()
-));
+))));
 
-gulp.task('build', ['build-script-web', 'compare-css-output']);
+gulp.task('build', gulp.series('build-script-web', 'compare-css-output'));
 
 gulp.task('build-examples-style', () => (
     gulp.src('./examples/src/scss/**/*.scss')
@@ -113,12 +113,12 @@ gulp.task('build-examples-html', () => (
         .pipe(browserSync.stream())
 ));
 
-gulp.task('examples', ['build-examples-style', 'build-examples-script', 'build-examples-html'], () => {
+gulp.task('examples', gulp.series(gulp.parallel('build-examples-style', 'build-examples-script', 'build-examples-html'), () => {
     browserSync.init({ server: './examples/dist' });
 
-    gulp.watch(['./src/js/**/*.js', './examples/src/**/*.js'], ['build-examples-script']);
-    gulp.watch(['./src/scss/**/*.scss', './examples/src/**/*.scss'], ['build-examples-style']);
-    gulp.watch(['./examples/src/**/*.html'], ['build-examples-html']).on('change', browserSync.reload);
-});
+    gulp.watch(['./src/js/**/*.js', './examples/src/**/*.js']).on('change', gulp.series('build-examples-script'));
+    gulp.watch(['./src/scss/**/*.scss', './examples/src/**/*.scss']).on('change', gulp.series('build-examples-style'));
+    gulp.watch(['./examples/src/**/*.html']).on('change', gulp.series('build-examples-html', browserSync.reload));
+}));
 
-gulp.task('default', ['build']);
+gulp.task('default', gulp.series('build'));
