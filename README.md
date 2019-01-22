@@ -112,6 +112,10 @@ By default, **react-checkbox-tree** uses Font Awesome for the various icons that
 If you are using the [`react-fontawesome`](https://github.com/FortAwesome/react-fontawesome) library, you can also directly substitute those icons:
 
 ``` jsx
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
+...
+
 <CheckboxTree
     ...
     icons={{
