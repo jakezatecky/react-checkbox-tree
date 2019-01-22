@@ -220,6 +220,7 @@ class TreeNode extends React.Component {
                     id={inputId}
                     indeterminate={checked === 2}
                     onClick={this.onCheck}
+                    onChange={() => {}}
                 />
                 <span className="rct-checkbox">
                     {this.renderCheckboxIcon()}
