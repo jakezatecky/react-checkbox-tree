@@ -77,13 +77,17 @@ class CheckboxTree extends React.Component {
     constructor(props) {
         super();
 
-        this.id = `rct-${nanoid(7)}`;
-        this.model = new NodeModel(props);
-        this.model.flattenNodes(props.nodes);
-        this.model.deserializeLists({
+        const model = new NodeModel(props);
+        model.flattenNodes(props.nodes);
+        model.deserializeLists({
             checked: props.checked,
             expanded: props.expanded,
         });
+
+        this.state = {
+            id: `rct-${nanoid(7)}`,
+            model,
+        };
 
         this.onCheck = this.onCheck.bind(this);
         this.onExpand = this.onExpand.bind(this);
@@ -93,15 +97,15 @@ class CheckboxTree extends React.Component {
 
     componentWillReceiveProps({ nodes, checked, expanded }) {
         if (!isEqual(this.props.nodes, nodes)) {
-            this.model.flattenNodes(nodes);
+            this.state.model.flattenNodes(nodes);
         }
 
-        this.model.deserializeLists({ checked, expanded });
+        this.state.model.deserializeLists({ checked, expanded });
     }
 
     onCheck(nodeInfo) {
         const { noCascade, onCheck } = this.props;
-        const model = this.model.clone();
+        const model = this.state.model.clone();
         const node = model.getNode(nodeInfo.value);
 
         model.toggleChecked(nodeInfo, nodeInfo.checked, noCascade);
@@ -110,7 +114,7 @@ class CheckboxTree extends React.Component {
 
     onExpand(nodeInfo) {
         const { onExpand } = this.props;
-        const model = this.model.clone();
+        const model = this.state.model.clone();
         const node = model.getNode(nodeInfo.value);
 
         model.toggleNode(nodeInfo.value, 'expanded', nodeInfo.expanded);
@@ -126,7 +130,7 @@ class CheckboxTree extends React.Component {
     }
 
     getShallowCheckState(node, noCascade) {
-        const flatNode = this.model.getNode(node.value);
+        const flatNode = this.state.model.getNode(node.value);
 
         if (flatNode.isLeaf || noCascade) {
             return flatNode.checked ? 1 : 0;
@@ -147,18 +151,18 @@ class CheckboxTree extends React.Component {
         const { onExpand } = this.props;
 
         onExpand(
-            this.model.clone()
+            this.state.model.clone()
                 .expandAllNodes(expand)
                 .serializeList('expanded'),
         );
     }
 
     isEveryChildChecked(node) {
-        return node.children.every(child => this.model.getNode(child.value).checkState === 1);
+        return node.children.every(child => this.state.model.getNode(child.value).checkState === 1);
     }
 
     isSomeChildChecked(node) {
-        return node.children.some(child => this.model.getNode(child.value).checkState > 0);
+        return node.children.some(child => this.state.model.getNode(child.value).checkState > 0);
     }
 
     renderTreeNodes(nodes, parent = {}) {
@@ -174,11 +178,12 @@ class CheckboxTree extends React.Component {
             showNodeIcon,
             onClick,
         } = this.props;
+        const { id, model } = this.state;
         const { icons: defaultIcons } = CheckboxTree.defaultProps;
 
         const treeNodes = nodes.map((node) => {
             const key = `${node.value}`;
-            const flatNode = this.model.getNode(node.value);
+            const flatNode = model.getNode(node.value);
             const children = flatNode.isParent ? this.renderTreeNodes(node.children, node) : null;
 
             // Get the check state after all children check states have been determined
@@ -188,7 +193,7 @@ class CheckboxTree extends React.Component {
             const showCheckbox = onlyLeafCheckboxes ? flatNode.isLeaf : flatNode.showCheckbox;
 
             // Render only if parent is expanded or if there is no root parent
-            const parentExpanded = parent.value ? this.model.getNode(parent.value).expanded : true;
+            const parentExpanded = parent.value ? model.getNode(parent.value).expanded : true;
 
             if (!parentExpanded) {
                 return null;
@@ -213,7 +218,7 @@ class CheckboxTree extends React.Component {
                     showCheckbox={showCheckbox}
                     showNodeIcon={showNodeIcon}
                     title={showNodeTitle ? node.title || node.label : node.title}
-                    treeId={this.id}
+                    treeId={id}
                     value={node.value}
                     onCheck={this.onCheck}
                     onClick={onClick}
