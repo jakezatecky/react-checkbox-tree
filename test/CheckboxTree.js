@@ -86,6 +86,19 @@ describe('<CheckboxTree />', () => {
         });
     });
 
+    describe('id', () => {
+        it('should pass the property directly to tree nodes', () => {
+            const wrapper = shallow(
+                <CheckboxTree
+                    id="my-awesome-id"
+                    nodes={[{ value: 'jupiter', label: 'Jupiter' }]}
+                />,
+            );
+
+            assert.equal('my-awesome-id', wrapper.find(TreeNode).prop('treeId'));
+        });
+    });
+
     describe('lang', () => {
         it('should override default language values', () => {
             const wrapper = shallow(

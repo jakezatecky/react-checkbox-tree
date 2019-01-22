@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v1.4.2 (TBA)
+
+### New Features
+
+* [#123]: Add `id` property
+
 ## [v1.4.1](https://github.com/jakezatecky/react-checkbox-tree/compare/v1.4.0...v1.4.1) (2018-09-21)
 
 ### Bug Fixes

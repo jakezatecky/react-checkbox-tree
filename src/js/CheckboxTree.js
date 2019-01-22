@@ -22,6 +22,7 @@ class CheckboxTree extends React.Component {
         expandOnClick: PropTypes.bool,
         expanded: listShape,
         icons: iconsShape,
+        id: PropTypes.string,
         lang: languageShape,
         name: PropTypes.string,
         nameAsArray: PropTypes.bool,
@@ -55,6 +56,7 @@ class CheckboxTree extends React.Component {
             parentOpen: <span className="rct-icon rct-icon-parent-open" />,
             leaf: <span className="rct-icon rct-icon-leaf" />,
         },
+        id: null,
         lang: {
             collapseAll: 'Collapse all',
             expandAll: 'Expand all',
@@ -85,8 +87,9 @@ class CheckboxTree extends React.Component {
         });
 
         this.state = {
-            id: `rct-${nanoid(7)}`,
+            id: props.id || `rct-${nanoid(7)}`,
             model,
+            prevProps: props,
         };
 
         this.onCheck = this.onCheck.bind(this);
@@ -95,18 +98,27 @@ class CheckboxTree extends React.Component {
         this.onCollapseAll = this.onCollapseAll.bind(this);
     }
 
-    shouldComponentUpdate({ nodes, checked, expanded }) {
-        // Since flattening nodes is an expensive task, only update the state when there is a change
-        if (!isEqual(this.props.nodes, nodes)) {
-            this.state.model.flattenNodes(nodes);
+    // eslint-disable-next-line react/sort-comp
+    static getDerivedStateFromProps(newProps, prevState) {
+        const { model, prevProps } = prevState;
+        const { id, nodes } = newProps;
+        let newState = { ...prevState, prevProps: newProps };
+
+        // Since flattening nodes is an expensive task, only update when there is a change
+        if (!isEqual(prevProps.nodes, nodes)) {
+            model.flattenNodes(nodes);
         }
 
-        this.state.model.deserializeLists({ checked, expanded });
+        if (id !== null) {
+            newState = { ...newState, id };
+        }
 
-        // Always update. We are hijacking this method to act as a hybrid between
-        // getDerivedStateFromProps and legacy componentWillReceiveProps, updating the internals
-        // of a state variable.
-        return true;
+        model.deserializeLists({
+            checked: newProps.checked,
+            expanded: newProps.expanded,
+        });
+
+        return newState;
     }
 
     onCheck(nodeInfo) {

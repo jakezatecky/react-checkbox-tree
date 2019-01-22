@@ -60,15 +60,17 @@ class NodeModel {
     }
 
     deserializeLists(lists) {
+        const listKeys = ['checked', 'expanded'];
+
         // Reset values to false
         Object.keys(this.flatNodes).forEach((value) => {
-            Object.keys(lists).forEach((listKey) => {
+            listKeys.forEach((listKey) => {
                 this.flatNodes[value][listKey] = false;
             });
         });
 
         // Deserialize values and set their nodes to true
-        Object.keys(lists).forEach((listKey) => {
+        listKeys.forEach((listKey) => {
             lists[listKey].forEach((value) => {
                 if (this.flatNodes[value] !== undefined) {
                     this.flatNodes[value][listKey] = true;

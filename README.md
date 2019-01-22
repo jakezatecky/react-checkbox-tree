@@ -121,6 +121,7 @@ Note that you can override as many or as little icons as you like.
 | `expandDisabled`     | bool     | If true, the ability to expand nodes will be disabled.                                                                 | `false`     |
 | `expandOnClick`      | bool     | If true, nodes will be expanded by clicking on labels. Requires a non-empty `onClick` function.                        | `false`     |
 | `icons`              | object   | An object containing the mappings for the various icons and their components. See **Changing the Default Icons**.      | `{ ... }`   |
+| `id`                 | string   | A string to be used for the HTML IDs of the rendered tree nodes.                                                       | `null`      |
 | `expanded`           | array    | An array of expanded node values.                                                                                      | `[]`        |
 | `lang`               | object   | An object containing the language mappings for the various text elements.                                              | `{ ... }`   |
 | `name`               | string   | Optional name for the hidden `<input>` element.                                                                        | `undefined` |
