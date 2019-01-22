@@ -4,7 +4,7 @@
 
 ### New Features
 
-* [#123]: Add `id` property
+* [#116]: Add `id` property
 
 ### Bug Fixes
 
