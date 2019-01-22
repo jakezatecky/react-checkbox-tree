@@ -330,7 +330,7 @@ describe('<TreeNode />', () => {
                 />,
             );
 
-            wrapper.find('NativeCheckbox').simulate('change');
+            wrapper.find('NativeCheckbox').simulate('click');
 
             assert.equal('jupiter', actual.value);
         });
@@ -349,7 +349,7 @@ describe('<TreeNode />', () => {
                 />,
             );
 
-            wrapper.find('NativeCheckbox').simulate('change');
+            wrapper.find('NativeCheckbox').simulate('click');
 
             assert.isTrue(actual.checked);
         });
@@ -368,7 +368,7 @@ describe('<TreeNode />', () => {
                 />,
             );
 
-            wrapper.find('NativeCheckbox').simulate('change');
+            wrapper.find('NativeCheckbox').simulate('click');
 
             assert.isFalse(actual.checked);
         });
@@ -387,7 +387,7 @@ describe('<TreeNode />', () => {
                 />,
             );
 
-            wrapper.find('NativeCheckbox').simulate('change');
+            wrapper.find('NativeCheckbox').simulate('click');
 
             assert.isTrue(actual.checked);
         });
@@ -408,7 +408,7 @@ describe('<TreeNode />', () => {
                     />,
                 );
 
-                wrapper.find('NativeCheckbox').simulate('change');
+                wrapper.find('NativeCheckbox').simulate('click');
 
                 assert.isFalse(actual.checked);
             });

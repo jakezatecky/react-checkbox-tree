@@ -47,8 +47,8 @@ class TreeNode extends React.Component {
         onClick: () => {},
     };
 
-    constructor(props) {
-        super(props);
+    constructor() {
+        super();
 
         this.onCheck = this.onCheck.bind(this);
         this.onClick = this.onClick.bind(this);
@@ -219,7 +219,7 @@ class TreeNode extends React.Component {
                     disabled={disabled}
                     id={inputId}
                     indeterminate={checked === 2}
-                    onChange={this.onCheck}
+                    onClick={this.onCheck}
                 />
                 <span className="rct-checkbox">
                     {this.renderCheckboxIcon()}

@@ -209,7 +209,7 @@ describe('<CheckboxTree />', () => {
                 />,
             );
 
-            wrapper.find('TreeNode input[type="checkbox"]').simulate('change');
+            wrapper.find('TreeNode input[type="checkbox"]').simulate('click');
             assert.deepEqual(['jupiter'], actual);
         });
 
@@ -235,7 +235,7 @@ describe('<CheckboxTree />', () => {
                 />,
             );
 
-            wrapper.find('TreeNode input[type="checkbox"]').simulate('change');
+            wrapper.find('TreeNode input[type="checkbox"]').simulate('click');
             assert.deepEqual(['io', 'europa'], actual);
         });
     });
@@ -481,7 +481,7 @@ describe('<CheckboxTree />', () => {
                 />,
             );
 
-            wrapper.find('TreeNode input[type="checkbox"]').simulate('change');
+            wrapper.find('TreeNode input[type="checkbox"]').simulate('click');
             assert.deepEqual(['io', 'europa'], actualChecked);
         });
 
@@ -507,7 +507,7 @@ describe('<CheckboxTree />', () => {
                 />,
             );
 
-            wrapper.find('TreeNode input[type="checkbox"]').simulate('change');
+            wrapper.find('TreeNode input[type="checkbox"]').simulate('click');
             assert.deepEqual(['europa'], actualChecked);
         });
 
@@ -533,7 +533,7 @@ describe('<CheckboxTree />', () => {
                 />,
             );
 
-            wrapper.find('TreeNode input[type="checkbox"]').simulate('change');
+            wrapper.find('TreeNode input[type="checkbox"]').simulate('click');
             assert.equal('jupiter', actualNode.value);
         });
     });

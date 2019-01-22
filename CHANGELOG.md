@@ -6,6 +6,10 @@
 
 * [#123]: Add `id` property
 
+### Bug Fixes
+
+* [#120]: Fix issue where Internet Explorer and Microsoft Edge browsers would fail to update check state when a parent was in a half-check or indeterminate state
+
 ## [v1.4.1](https://github.com/jakezatecky/react-checkbox-tree/compare/v1.4.0...v1.4.1) (2018-09-21)
 
 ### Bug Fixes
