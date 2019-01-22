@@ -89,7 +89,7 @@ All node objects **must** have a unique `value`. This value is serialized into t
 
 #### Changing the Default Icons
 
-By default, **react-checkbox-tree** uses Font Awesome for the various icons that appear in the tree. To change the defaults, simply pass in the `icons` property and override the defaults:
+By default, **react-checkbox-tree** uses Font Awesome for the various icons that appear in the tree. To change the defaults, simply pass in the `icons` property and override the defaults. Note that you can override as many or as little icons as you like:
 
 ``` jsx
 <CheckboxTree
@@ -109,7 +109,25 @@ By default, **react-checkbox-tree** uses Font Awesome for the various icons that
 />
 ```
 
-Note that you can override as many or as little icons as you like.
+If you are using the [`react-fontawesome`](https://github.com/FortAwesome/react-fontawesome) library, you can also directly substitute those icons:
+
+``` jsx
+<CheckboxTree
+    ...
+    icons={{
+        check: <FontAwesomeIcon className='rct-icon rct-icon-check' icon='check-square' />,
+        uncheck: <FontAwesomeIcon className='rct-icon rct-icon-uncheck' icon={['far', 'square']} />,
+        halfCheck: <FontAwesomeIcon className='rct-icon rct-icon-half-check' icon='check-square' />,
+        expandClose: <FontAwesomeIcon className='rct-icon rct-icon-expand-close' icon='chevron-right' />,
+        expandOpen: <FontAwesomeIcon className='rct-icon rct-icon-expand-close' icon='chevron-down' />,
+        expandAll: <FontAwesomeIcon className='rct-icon rct-icon-expand-close' icon='plus-square' />,
+        collapseAll: <FontAwesomeIcon className='rct-icon rct-icon-expand-close' icon='minus-square' />,
+        parentClose: <FontAwesomeIcon className='rct-icon rct-icon-expand-close' icon='folder' />,
+        parentOpen: <FontAwesomeIcon className='rct-icon rct-icon-expand-close' icon='folder-open' />,
+        leaf: <FontAwesomeIcon className='rct-icon rct-icon-expand-close' icon='file' />
+    }}
+/>
+```
 
 ### Properties
 
