@@ -10,4 +10,4 @@ before_script:
   - rvm install ruby --latest
   - gem install sass scss_lint
 script:
-  - npm run build
+  - npm run build-no-css-compare

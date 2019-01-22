@@ -86,6 +86,8 @@ gulp.task('compare-css-output', gulp.series(gulp.parallel('build-style', 'build-
 
 gulp.task('build', gulp.series('build-script-web', 'compare-css-output'));
 
+gulp.task('build-no-css-compare', gulp.series('build-script-web'));
+
 gulp.task('build-examples-style', () => (
     gulp.src('./examples/src/scss/**/*.scss')
         .pipe(scsslint())
