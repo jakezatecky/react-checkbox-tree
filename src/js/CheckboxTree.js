@@ -95,12 +95,18 @@ class CheckboxTree extends React.Component {
         this.onCollapseAll = this.onCollapseAll.bind(this);
     }
 
-    componentWillReceiveProps({ nodes, checked, expanded }) {
+    shouldComponentUpdate({ nodes, checked, expanded }) {
+        // Since flattening nodes is an expensive task, only update the state when there is a change
         if (!isEqual(this.props.nodes, nodes)) {
             this.state.model.flattenNodes(nodes);
         }
 
         this.state.model.deserializeLists({ checked, expanded });
+
+        // Always update. We are hijacking this method to act as a hybrid between
+        // getDerivedStateFromProps and legacy componentWillReceiveProps, updating the internals
+        // of a state variable.
+        return true;
     }
 
     onCheck(nodeInfo) {
