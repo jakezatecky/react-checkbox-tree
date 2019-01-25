@@ -90,8 +90,14 @@ gulp.task('build', gulp.series('build-script-web', 'compare-css-output'));
 
 gulp.task('build-no-css-compare', gulp.series('build-script-web'));
 
-gulp.task('build-examples-style', () => (
-    gulp.src('./examples/src/scss/**/*.scss')
+function buildExamplesScript(mode = 'development') {
+    return gulp.src(['./examples/src/index.js'])
+        .pipe(webpackStream({ ...testWebpackConfig, mode }, webpack))
+        .pipe(gulp.dest('./examples/dist/'));
+}
+
+function buildExamplesStyle(minifyStyles = false) {
+    let stream = gulp.src('./examples/src/scss/**/*.scss')
         .pipe(scsslint())
         .pipe(scsslint.failReporter())
         .pipe(sass({
@@ -99,16 +105,29 @@ gulp.task('build-examples-style', () => (
         }).on('error', sass.logError))
         .pipe(autoprefixer({
             browsers: ['last 2 versions'],
-        }))
-        .pipe(gulp.dest('./examples/dist'))
-        .pipe(browserSync.stream())
-));
+        }));
+
+    if (minifyStyles) {
+        stream = stream.pipe(minify());
+    }
+
+    return stream.pipe(gulp.dest('./examples/dist'));
+}
 
 gulp.task('build-examples-script', () => (
-    gulp.src(['./examples/src/index.js'])
-        .pipe(webpackStream(testWebpackConfig, webpack))
-        .pipe(gulp.dest('./examples/dist/'))
-        .pipe(browserSync.stream())
+    buildExamplesScript().pipe(browserSync.stream())
+));
+
+gulp.task('build-examples-script-prod', () => (
+    buildExamplesScript('production')
+));
+
+gulp.task('build-examples-style', () => (
+    buildExamplesStyle().pipe(browserSync.stream())
+));
+
+gulp.task('build-examples-style-prod', () => (
+    buildExamplesStyle(true)
 ));
 
 gulp.task('build-examples-html', () => (
@@ -126,3 +145,4 @@ gulp.task('examples', gulp.series(gulp.parallel('build-examples-style', 'build-e
 }));
 
 gulp.task('default', gulp.series('build'));
+gulp.task('build-gh-pages', gulp.parallel('build-examples-style-prod', 'build-examples-script-prod', 'build-examples-html'));

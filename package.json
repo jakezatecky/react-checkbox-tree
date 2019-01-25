@@ -21,7 +21,9 @@
   "scripts": {
     "build": "gulp build-no-css-compare",
     "examples": "gulp examples",
-    "gh-deploy": "git subtree push --prefix examples/dist origin gh-pages",
+    "gh-build": "gulp build-gh-pages",
+    "gh-check-diff": "git diff-index --quiet HEAD --",
+    "gh-deploy": "npm run gh-build && npm run gh-check-diff && git subtree push --prefix examples/dist origin gh-pages",
     "prepublishOnly": "gulp build",
     "test": "gulp test-script"
   },
