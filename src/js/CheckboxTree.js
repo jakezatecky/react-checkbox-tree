@@ -77,7 +77,7 @@ class CheckboxTree extends React.Component {
     };
 
     constructor(props) {
-        super();
+        super(props);
 
         const model = new NodeModel(props);
         model.flattenNodes(props.nodes);

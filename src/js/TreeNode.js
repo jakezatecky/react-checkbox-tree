@@ -47,8 +47,8 @@ class TreeNode extends React.Component {
         onClick: () => {},
     };
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
 
         this.onCheck = this.onCheck.bind(this);
         this.onClick = this.onClick.bind(this);
@@ -203,7 +203,6 @@ class TreeNode extends React.Component {
         const {
             checked,
             disabled,
-            label,
             title,
             treeId,
             value,
