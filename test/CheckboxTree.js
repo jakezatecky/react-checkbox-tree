@@ -297,6 +297,29 @@ describe('<CheckboxTree />', () => {
 
                 assert.isFalse(wrapper.find('TreeNode[value="europa"]').prop('disabled'));
             });
+
+            // https://github.com/jakezatecky/react-checkbox-tree/issues/119
+            it('should be able to change disabled state after the initial render', () => {
+                const wrapper = shallow(
+                    <CheckboxTree
+                        disabled
+                        expanded={['jupiter']}
+                        nodes={[
+                            {
+                                value: 'jupiter',
+                                label: 'Jupiter',
+                                children: [
+                                    { value: 'europa', label: 'Europa' },
+                                ],
+                            },
+                        ]}
+                    />,
+                );
+
+                wrapper.setProps({ disabled: false });
+
+                assert.isFalse(wrapper.find('TreeNode[value="europa"]').prop('disabled'));
+            });
         });
     });
 

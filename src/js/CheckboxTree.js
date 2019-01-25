@@ -102,11 +102,14 @@ class CheckboxTree extends React.Component {
     // eslint-disable-next-line react/sort-comp
     static getDerivedStateFromProps(newProps, prevState) {
         const { model, prevProps } = prevState;
-        const { id, nodes } = newProps;
+        const { disabled, id, nodes } = newProps;
         let newState = { ...prevState, prevProps: newProps };
 
-        // Since flattening nodes is an expensive task, only update when there is a change
-        if (!isEqual(prevProps.nodes, nodes)) {
+        // Apply new properties to model
+        model.setProps(newProps);
+
+        // Since flattening nodes is an expensive task, only update when there is a node change
+        if (!isEqual(prevProps.nodes, nodes) || prevProps.disabled !== disabled) {
             model.flattenNodes(nodes);
         }
 

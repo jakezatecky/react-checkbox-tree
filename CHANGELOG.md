@@ -9,6 +9,7 @@
 
 ### Bug Fixes
 
+* [#119]: Fix issue where an initially disabled tree could not be enabled after the initial render
 * [#120]: Fix issue where Internet Explorer and Microsoft Edge browsers would fail to update check state when a parent was in a half-check or indeterminate state
 * [#125]: Fix misalignment of TreeNode's `label` property between PropType and TypeScript definitions
 

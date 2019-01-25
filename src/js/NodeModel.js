@@ -4,6 +4,10 @@ class NodeModel {
         this.flatNodes = nodes;
     }
 
+    setProps(props) {
+        this.props = props;
+    }
+
     clone() {
         const clonedNodes = {};
 
