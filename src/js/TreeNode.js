@@ -56,56 +56,52 @@ class TreeNode extends React.Component {
     }
 
     onCheck() {
-        let isChecked = false;
+        const { value, onCheck } = this.props;
 
-        // Toggle off state to checked
-        if (this.props.checked === 0) {
-            isChecked = true;
-        }
-
-        // Toggle partial state based on cascade model
-        if (this.props.checked === 2) {
-            isChecked = this.props.optimisticToggle;
-        }
-
-        this.props.onCheck({
-            value: this.props.value,
-            checked: isChecked,
-        });
+        onCheck({ value, checked: this.getCheckState({ toggle: true }) });
     }
 
     onClick() {
         const {
-            checked,
             expandOnClick,
             isParent,
-            optimisticToggle,
             value,
             onClick,
         } = this.props;
-        let isChecked = false;
-
-        if (checked === 1) {
-            isChecked = true;
-        }
-
-        // Get partial state based on cascade model
-        if (checked === 2) {
-            isChecked = optimisticToggle;
-        }
 
         // Auto expand if enabled
         if (isParent && expandOnClick) {
             this.onExpand();
         }
 
-        onClick({ value, checked: isChecked });
+        onClick({ value, checked: this.getCheckState({ toggle: false }) });
     }
 
     onExpand() {
         const { expanded, value, onExpand } = this.props;
 
         onExpand({ value, expanded: !expanded });
+    }
+
+    getCheckState({ toggle }) {
+        const { checked, optimisticToggle } = this.props;
+
+        // Toggle off state to checked
+        if (checked === 0 && toggle) {
+            return true;
+        }
+
+        // Node is already checked and we are not toggling
+        if (checked === 1 && !toggle) {
+            return true;
+        }
+
+        // Get/toggle partial state based on cascade model
+        if (checked === 2) {
+            return optimisticToggle;
+        }
+
+        return false;
     }
 
     renderCollapseButton() {
