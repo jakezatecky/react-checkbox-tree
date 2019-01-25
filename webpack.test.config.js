@@ -1,7 +1,7 @@
 const path = require('path');
 
 module.exports = {
-    mode: 'production',
+    mode: 'development',
     output: {
         filename: 'index.js',
         libraryTarget: 'umd',
