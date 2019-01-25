@@ -567,6 +567,31 @@ describe('<CheckboxTree />', () => {
     });
 
     describe('onExpand', () => {
+        it('should toggle the expansion state of the target node', () => {
+            let actualExpanded = null;
+
+            const wrapper = mount(
+                <CheckboxTree
+                    nodes={[
+                        {
+                            value: 'jupiter',
+                            label: 'Jupiter',
+                            children: [
+                                { value: 'io', label: 'Io' },
+                                { value: 'europa', label: 'Europa' },
+                            ],
+                        },
+                    ]}
+                    onExpand={(expanded) => {
+                        actualExpanded = expanded;
+                    }}
+                />,
+            );
+
+            wrapper.find('TreeNode Button.rct-collapse-btn').simulate('click');
+            assert.deepEqual(['jupiter'], actualExpanded);
+        });
+
         it('should pass the node toggled as the second parameter', () => {
             let actualNode = null;
 
