@@ -10,8 +10,6 @@ describe('<CheckboxTree />', () => {
         it('should render the react-checkbox-tree container', () => {
             const wrapper = shallow(
                 <CheckboxTree
-                    checked={[]}
-                    expanded={[]}
                     nodes={[]}
                     onCheck={() => {}}
                     onExpand={() => {}}
@@ -191,7 +189,6 @@ describe('<CheckboxTree />', () => {
 
             const wrapper = mount(
                 <CheckboxTree
-                    checked={[]}
                     noCascade
                     nodes={[
                         {
@@ -218,7 +215,6 @@ describe('<CheckboxTree />', () => {
 
             const wrapper = mount(
                 <CheckboxTree
-                    checked={[]}
                     nodes={[
                         {
                             value: 'jupiter',
@@ -308,7 +304,6 @@ describe('<CheckboxTree />', () => {
         it('should only render show checkboxes for leaf nodes', () => {
             const wrapper = mount(
                 <CheckboxTree
-                    checked={[]}
                     expanded={['jupiter']}
                     nodes={[
                         {
@@ -464,7 +459,6 @@ describe('<CheckboxTree />', () => {
 
             const wrapper = mount(
                 <CheckboxTree
-                    checked={[]}
                     nodes={[
                         {
                             value: 'jupiter',
@@ -490,7 +484,6 @@ describe('<CheckboxTree />', () => {
 
             const wrapper = mount(
                 <CheckboxTree
-                    checked={[]}
                     nodes={[
                         {
                             value: 'jupiter',
@@ -516,7 +509,6 @@ describe('<CheckboxTree />', () => {
 
             const wrapper = mount(
                 <CheckboxTree
-                    checked={[]}
                     nodes={[
                         {
                             value: 'jupiter',
@@ -544,7 +536,6 @@ describe('<CheckboxTree />', () => {
 
             const wrapper = mount(
                 <CheckboxTree
-                    checked={[]}
                     nodes={[
                         {
                             value: 'jupiter',
@@ -597,7 +588,6 @@ describe('<CheckboxTree />', () => {
 
             const wrapper = mount(
                 <CheckboxTree
-                    checked={[]}
                     nodes={[
                         {
                             value: 'jupiter',
@@ -649,7 +639,6 @@ describe('<CheckboxTree />', () => {
             const wrapper = mount(
                 <CheckboxTree
                     expanded={['jupiter']}
-                    checked={[]}
                     nodes={[
                         {
                             value: 'jupiter',
