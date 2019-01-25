@@ -438,6 +438,30 @@ describe('<TreeNode />', () => {
     });
 
     describe('onClick', () => {
+        it('should render the label inside of the DOM label when null', () => {
+            const wrapper = shallow(
+                <TreeNode
+                    {...baseProps}
+                    value="jupiter"
+                    onClick={null}
+                />,
+            );
+
+            assert.isTrue(wrapper.find('label .rct-title').exists());
+        });
+
+        it('should render the label outside of the DOM label when NOT null', () => {
+            const wrapper = shallow(
+                <TreeNode
+                    {...baseProps}
+                    value="jupiter"
+                    onClick={() => {}}
+                />,
+            );
+
+            assert.isFalse(wrapper.find('label .rct-title').exists());
+        });
+
         it('should pass the current node\'s value', () => {
             let actual = {};
 

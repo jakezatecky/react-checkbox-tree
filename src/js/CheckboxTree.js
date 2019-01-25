@@ -72,7 +72,7 @@ class CheckboxTree extends React.Component {
         showNodeIcon: true,
         showNodeTitle: false,
         onCheck: () => {},
-        onClick: () => {},
+        onClick: null,
         onExpand: () => {},
     };
 
@@ -113,7 +113,6 @@ class CheckboxTree extends React.Component {
         if (id !== null) {
             newState = { ...newState, id };
         }
-
         model.deserializeLists({
             checked: newProps.checked,
             expanded: newProps.expanded,
@@ -199,6 +198,7 @@ class CheckboxTree extends React.Component {
             icons,
             lang,
             noCascade,
+            onClick,
             onlyLeafCheckboxes,
             optimisticToggle,
             showNodeTitle,
@@ -247,7 +247,7 @@ class CheckboxTree extends React.Component {
                     treeId={id}
                     value={node.value}
                     onCheck={this.onCheck}
-                    onClick={this.onNodeClick}
+                    onClick={onClick && this.onNodeClick}
                     onExpand={this.onExpand}
                 >
                     {children}

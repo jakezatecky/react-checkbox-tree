@@ -176,7 +176,7 @@ class TreeNode extends React.Component {
 
     renderBareLabel(children) {
         const { onClick, title } = this.props;
-        const clickable = onClick.toString() !== TreeNode.defaultProps.onClick.toString();
+        const clickable = onClick !== null;
 
         return (
             <span className="rct-bare-label" title={title}>
@@ -204,7 +204,7 @@ class TreeNode extends React.Component {
             value,
             onClick,
         } = this.props;
-        const clickable = onClick.toString() !== TreeNode.defaultProps.onClick.toString();
+        const clickable = onClick !== null;
         const inputId = `${treeId}-${String(value).split(' ').join('_')}`;
 
         const render = [(
