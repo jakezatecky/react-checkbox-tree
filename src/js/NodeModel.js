@@ -20,7 +20,7 @@ class NodeModel {
         return this.flatNodes[value];
     }
 
-    flattenNodes(nodes, parent = {}) {
+    flattenNodes(nodes, parent = {}, depth = 0) {
         if (!Array.isArray(nodes) || nodes.length === 0) {
             return;
         }
@@ -28,18 +28,22 @@ class NodeModel {
         const { disabled, noCascade } = this.props;
 
         // Flatten the `node` property for internal lookups
-        nodes.forEach((node) => {
+        nodes.forEach((node, index) => {
             const isParent = this.nodeHasChildren(node);
 
             this.flatNodes[node.value] = {
-                self: node,
+                label: node.label,
+                value: node.value,
+                children: node.children,
                 parent,
                 isParent,
                 isLeaf: !isParent,
                 showCheckbox: node.showCheckbox !== undefined ? node.showCheckbox : true,
                 disabled: this.getDisabledState(node, parent, disabled, noCascade),
+                treeDepth: depth,
+                index,
             };
-            this.flattenNodes(node.children, node);
+            this.flattenNodes(node.children, node, depth + 1);
         });
     }
 
@@ -113,7 +117,7 @@ class NodeModel {
             this.toggleNode(node.value, 'checked', isChecked);
         } else {
             // Percolate check status down to all children
-            flatNode.self.children.forEach((child) => {
+            flatNode.children.forEach((child) => {
                 this.toggleChecked(child, isChecked, noCascade);
             });
         }

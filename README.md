@@ -156,9 +156,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 | `showExpandAll`      | bool     | If true, buttons for expanding and collapsing all parent nodes will appear in the tree.                                | `false`     |
 | `showNodeIcon`       | bool     | If true, each node will show a parent or leaf icon.                                                                    | `true`      |
 | `showNodeTitle`      | bool     | If true, the `label` of each node will become the `title` of the resulting DOM node. Overridden by `node.title`.       | `false`     |
-| `onCheck`            | function | onCheck handler: `function(checked) {}`                                                                                | `() => {}`  |
-| `onClick`            | function | onClick handler: `function(clicked) {}`. If set, it will be called when clicked on a node label.                       | `() => {}`  |
-| `onExpand`           | function | onExpand handler: `function(expanded) {}`                                                                              | `() => {}`  |
+| `onCheck`            | function | onCheck handler: `function(checked, targetNode) {}`                                                                    | `() => {}`  |
+| `onClick`            | function | onClick handler: `function(targetNode) {}`. If set, `onClick` will be called when a node's label has been clicked.     | `() => {}`  |
+| `onExpand`           | function | onExpand handler: `function(expanded, targetNode) {}`                                                                  | `() => {}`  |
+
+#### `onCheck` and `onExpand`
 
 #### Node Properties
 

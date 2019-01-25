@@ -94,6 +94,7 @@ class CheckboxTree extends React.Component {
 
         this.onCheck = this.onCheck.bind(this);
         this.onExpand = this.onExpand.bind(this);
+        this.onNodeClick = this.onNodeClick.bind(this);
         this.onExpandAll = this.onExpandAll.bind(this);
         this.onCollapseAll = this.onCollapseAll.bind(this);
     }
@@ -127,7 +128,7 @@ class CheckboxTree extends React.Component {
         const node = model.getNode(nodeInfo.value);
 
         model.toggleChecked(nodeInfo, nodeInfo.checked, noCascade);
-        onCheck(model.serializeList('checked'), { ...nodeInfo, children: node.self.children });
+        onCheck(model.serializeList('checked'), { ...node, ...nodeInfo });
     }
 
     onExpand(nodeInfo) {
@@ -136,7 +137,15 @@ class CheckboxTree extends React.Component {
         const node = model.getNode(nodeInfo.value);
 
         model.toggleNode(nodeInfo.value, 'expanded', nodeInfo.expanded);
-        onExpand(model.serializeList('expanded'), { ...nodeInfo, children: node.self.children });
+        onExpand(model.serializeList('expanded'), { ...node, ...nodeInfo });
+    }
+
+    onNodeClick(nodeInfo) {
+        const { onClick } = this.props;
+        const { model } = this.state;
+        const node = model.getNode(nodeInfo.value);
+
+        onClick({ ...node, ...nodeInfo });
     }
 
     onExpandAll() {
@@ -194,7 +203,6 @@ class CheckboxTree extends React.Component {
             optimisticToggle,
             showNodeTitle,
             showNodeIcon,
-            onClick,
         } = this.props;
         const { id, model } = this.state;
         const { icons: defaultIcons } = CheckboxTree.defaultProps;
@@ -239,7 +247,7 @@ class CheckboxTree extends React.Component {
                     treeId={id}
                     value={node.value}
                     onCheck={this.onCheck}
-                    onClick={onClick}
+                    onClick={this.onNodeClick}
                     onExpand={this.onExpand}
                 >
                     {children}

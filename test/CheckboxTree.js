@@ -593,4 +593,89 @@ describe('<CheckboxTree />', () => {
             assert.equal('jupiter', actualNode.value);
         });
     });
+
+    describe('handler.targetNode', () => {
+        it('should supply a variety of metadata relating to the target node', () => {
+            let checkNode = null;
+            let expandNode = null;
+            let clickNode = null;
+
+            const getNodeMetadata = (node) => {
+                const {
+                    value,
+                    label,
+                    isLeaf,
+                    isParent,
+                    treeDepth,
+                    index,
+                    parent: { value: parentValue },
+                } = node;
+
+                return {
+                    value,
+                    label,
+                    isLeaf,
+                    isParent,
+                    treeDepth,
+                    index,
+                    parentValue,
+                };
+            };
+            const wrapper = mount(
+                <CheckboxTree
+                    expanded={['jupiter']}
+                    checked={[]}
+                    nodes={[
+                        {
+                            value: 'jupiter',
+                            label: 'Jupiter',
+                            children: [
+                                { value: 'io', label: 'Io' },
+                                { value: 'europa', label: 'Europa' },
+                            ],
+                        },
+                    ]}
+                    onCheck={(checked, node) => {
+                        checkNode = node;
+                    }}
+                    onClick={(node) => {
+                        clickNode = node;
+                    }}
+                    onExpand={(expanded, node) => {
+                        expandNode = node;
+                    }}
+                />,
+            );
+            const expectedLeafMetadata = {
+                value: 'io',
+                label: 'Io',
+                isLeaf: true,
+                isParent: false,
+                treeDepth: 1,
+                index: 0,
+                parentValue: 'jupiter',
+            };
+            const expectedParentMetadata = {
+                value: 'jupiter',
+                label: 'Jupiter',
+                isLeaf: false,
+                isParent: true,
+                treeDepth: 0,
+                index: 0,
+                parentValue: undefined,
+            };
+
+            // onCheck
+            wrapper.find('TreeNode').at(1).find('input[type="checkbox"]').simulate('click');
+            assert.deepEqual(expectedLeafMetadata, getNodeMetadata(checkNode));
+
+            // onClick
+            wrapper.find('TreeNode').at(1).find('.rct-node-clickable').simulate('click');
+            assert.deepEqual(expectedLeafMetadata, getNodeMetadata(clickNode));
+
+            // onExpand
+            wrapper.find('TreeNode').at(0).find('Button.rct-collapse-btn').simulate('click');
+            assert.deepEqual(expectedParentMetadata, getNodeMetadata(expandNode));
+        });
+    });
 });

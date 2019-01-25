@@ -4,7 +4,8 @@
 
 ### New Features
 
-* [#116]: Add `id` property
+* [#116]: Add `id` property to specify the DOM ID for the generated tree nodes
+* [#122]: Add `label`, `isLeaf`, `isParent`, `parent`, `treeDepth`, and `level` metadata to the target node of `onCheck`, `onClick`, and `onExpand` handlers
 
 ### Bug Fixes
 
