@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## v1.4.2 (TBA)
+## v1.5.0 (TBA)
 
 ### New Features
 
