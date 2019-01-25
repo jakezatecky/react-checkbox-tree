@@ -8,7 +8,7 @@ const scsslint = require('gulp-scss-lint');
 const sass = require('gulp-sass');
 const less = require('gulp-less');
 const minify = require('gulp-clean-css');
-const run = require('gulp-run');
+const exec = require('gulp-exec');
 const autoprefixer = require('gulp-autoprefixer');
 const browserSync = require('browser-sync').create();
 const pkg = require('./package.json');
@@ -81,7 +81,9 @@ gulp.task('build-style-less', () => (
 ));
 
 gulp.task('compare-css-output', gulp.series(gulp.parallel('build-style', 'build-style-less', () => (
-    run('cmp .css-compare/less/react-checkbox-tree.css .css-compare/scss/react-checkbox-tree.css').exec()
+    gulp.src('./gulpfile.js')
+        .pipe(exec('cmp .css-compare/less/react-checkbox-tree.css .css-compare/scss/react-checkbox-tree.css'))
+        .pipe(exec.reporter())
 ))));
 
 gulp.task('build', gulp.series('build-script-web', 'compare-css-output'));
