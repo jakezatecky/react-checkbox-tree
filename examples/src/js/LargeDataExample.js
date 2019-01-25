@@ -27,13 +27,13 @@ const nodes = [{
 }];
 
 class LargeDataExample extends React.Component {
-    constructor() {
-        super();
+    state = {
+        checked: [],
+        expanded: [],
+    };
 
-        this.state = {
-            checked: [],
-            expanded: [],
-        };
+    constructor(props) {
+        super(props);
 
         this.onCheck = this.onCheck.bind(this);
         this.onExpand = this.onExpand.bind(this);

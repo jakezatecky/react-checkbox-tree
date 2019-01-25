@@ -42,15 +42,15 @@ const nodes = [
 ];
 
 class CustomIconsExamples extends React.Component {
-    constructor() {
-        super();
+    state = {
+        checked: [],
+        expanded: [
+            'Documents',
+        ],
+    };
 
-        this.state = {
-            checked: [],
-            expanded: [
-                'Documents',
-            ],
-        };
+    constructor(props) {
+        super(props);
 
         this.onCheck = this.onCheck.bind(this);
         this.onExpand = this.onExpand.bind(this);

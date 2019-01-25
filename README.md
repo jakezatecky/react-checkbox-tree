@@ -63,14 +63,10 @@ const nodes = [{
 }];
 
 class Widget extends React.Component {
-    constructor() {
-        super();
-
-        this.state = {
-            checked: [],
-            expanded: [],
-        };
-    }
+    state = {
+        checked: [],
+        expanded: [],
+    };
 
     render() {
         return (

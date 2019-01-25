@@ -81,21 +81,21 @@ const nodes = [
 ];
 
 class DisabledExample extends React.Component {
-    constructor() {
-        super();
+    state = {
+        checked: [
+            '/app/Http/Controllers/WelcomeController.js',
+            '/app/Http/routes.js',
+            '/public/assets/style.css',
+            '/public/index.html',
+            '/.gitignore',
+        ],
+        expanded: [
+            '/app',
+        ],
+    };
 
-        this.state = {
-            checked: [
-                '/app/Http/Controllers/WelcomeController.js',
-                '/app/Http/routes.js',
-                '/public/assets/style.css',
-                '/public/index.html',
-                '/.gitignore',
-            ],
-            expanded: [
-                '/app',
-            ],
-        };
+    constructor(props) {
+        super(props);
 
         this.onCheck = this.onCheck.bind(this);
         this.onExpand = this.onExpand.bind(this);

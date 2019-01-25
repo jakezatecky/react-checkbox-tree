@@ -82,22 +82,22 @@ const nodes = [
 
 /* eslint-disable react/jsx-one-expression-per-line */
 class ClickExample extends React.Component {
-    constructor() {
-        super();
+    state = {
+        checked: [
+            '/app/Http/Controllers/WelcomeController.js',
+            '/app/Http/routes.js',
+            '/public/assets/style.css',
+            '/public/index.html',
+            '/.gitignore',
+        ],
+        expanded: [
+            '/app',
+        ],
+        clicked: {},
+    };
 
-        this.state = {
-            checked: [
-                '/app/Http/Controllers/WelcomeController.js',
-                '/app/Http/routes.js',
-                '/public/assets/style.css',
-                '/public/index.html',
-                '/.gitignore',
-            ],
-            expanded: [
-                '/app',
-            ],
-            clicked: {},
-        };
+    constructor(props) {
+        super(props);
 
         this.onCheck = this.onCheck.bind(this);
         this.onClick = this.onClick.bind(this);

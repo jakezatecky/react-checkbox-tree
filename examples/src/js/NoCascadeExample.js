@@ -81,22 +81,22 @@ const nodes = [
 ];
 
 class NoCascadeExample extends React.Component {
-    constructor() {
-        super();
+    state = {
+        checked: [
+            '/app/Http/Controllers/WelcomeController.js',
+            '/app/Http/routes.js',
+            '/public/assets/style.css',
+            '/public/index.html',
+            '/.gitignore',
+        ],
+        expanded: [
+            '/app',
+            '/app/Http',
+        ],
+    };
 
-        this.state = {
-            checked: [
-                '/app/Http/Controllers/WelcomeController.js',
-                '/app/Http/routes.js',
-                '/public/assets/style.css',
-                '/public/index.html',
-                '/.gitignore',
-            ],
-            expanded: [
-                '/app',
-                '/app/Http',
-            ],
-        };
+    constructor(props) {
+        super(props);
 
         this.onCheck = this.onCheck.bind(this);
         this.onExpand = this.onExpand.bind(this);

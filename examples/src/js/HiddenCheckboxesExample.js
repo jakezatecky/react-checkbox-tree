@@ -85,23 +85,23 @@ const nodes = [
 ];
 
 class HiddenCheckboxesExample extends React.Component {
-    constructor() {
-        super();
+    state = {
+        checked: [
+            'persian',
+            'spqr',
+            'byzantine',
+            'holy-roman',
+            'inca',
+        ],
+        expanded: [
+            'favorite-empires',
+            'classical-era',
+            'medieval-era',
+        ],
+    };
 
-        this.state = {
-            checked: [
-                'persian',
-                'spqr',
-                'byzantine',
-                'holy-roman',
-                'inca',
-            ],
-            expanded: [
-                'favorite-empires',
-                'classical-era',
-                'medieval-era',
-            ],
-        };
+    constructor(props) {
+        super(props);
 
         this.onCheck = this.onCheck.bind(this);
         this.onExpand = this.onExpand.bind(this);
