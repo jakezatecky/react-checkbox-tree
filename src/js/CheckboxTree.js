@@ -155,7 +155,17 @@ class CheckboxTree extends React.Component {
         this.expandAllNodes(false);
     }
 
-    getShallowCheckState(node, noCascade) {
+    expandAllNodes(expand = true) {
+        const { onExpand } = this.props;
+
+        onExpand(
+            this.state.model.clone()
+                .expandAllNodes(expand)
+                .serializeList('expanded'),
+        );
+    }
+
+    determineShallowCheckState(node, noCascade) {
         const flatNode = this.state.model.getNode(node.value);
 
         if (flatNode.isLeaf || noCascade) {
@@ -171,16 +181,6 @@ class CheckboxTree extends React.Component {
         }
 
         return 0;
-    }
-
-    expandAllNodes(expand = true) {
-        const { onExpand } = this.props;
-
-        onExpand(
-            this.state.model.clone()
-                .expandAllNodes(expand)
-                .serializeList('expanded'),
-        );
     }
 
     isEveryChildChecked(node) {
@@ -208,12 +208,14 @@ class CheckboxTree extends React.Component {
         const { icons: defaultIcons } = CheckboxTree.defaultProps;
 
         const treeNodes = nodes.map((node) => {
-            const key = `${node.value}`;
+            const key = node.value;
             const flatNode = model.getNode(node.value);
             const children = flatNode.isParent ? this.renderTreeNodes(node.children, node) : null;
 
-            // Get the check state after all children check states have been determined
-            flatNode.checkState = this.getShallowCheckState(node, noCascade);
+            // Determine the check state after all children check states have been determined
+            // This is done during rendering as to avoid an additional loop during the
+            // deserialization of the `checked` property
+            flatNode.checkState = this.determineShallowCheckState(node, noCascade);
 
             // Show checkbox only if this is a leaf node or showCheckbox is true
             const showCheckbox = onlyLeafCheckboxes ? flatNode.isLeaf : flatNode.showCheckbox;
