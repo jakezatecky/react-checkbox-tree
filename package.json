@@ -19,7 +19,7 @@
   "main": "lib/index.js",
   "browser": "lib/index.browser.js",
   "scripts": {
-    "build": "gulp build-no-css-compare",
+    "build": "gulp build",
     "examples": "gulp examples",
     "gh-deploy": "gulp build-gh-pages && bash ./gh-deploy.sh",
     "prepublishOnly": "gulp build",

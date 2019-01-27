@@ -82,15 +82,13 @@ gulp.task('build-style-less', () => (
         .pipe(gulp.dest('./.css-compare/less'))
 ));
 
-gulp.task('compare-css-output', gulp.series(gulp.parallel('build-style', 'build-style-less', () => (
+gulp.task('compare-css-output', gulp.series(gulp.parallel('build-style', 'build-style-less'), () => (
     gulp.src('./gulpfile.js')
         .pipe(exec('cmp .css-compare/less/react-checkbox-tree.css .css-compare/scss/react-checkbox-tree.css'))
         .pipe(exec.reporter())
-))));
+)));
 
 gulp.task('build', gulp.series('build-script-web', 'compare-css-output'));
-
-gulp.task('build-no-css-compare', gulp.series('build-script-web'));
 
 function buildExamplesScript(mode = 'development') {
     return gulp.src(['./examples/src/index.js'])
