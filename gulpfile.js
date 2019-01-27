@@ -1,21 +1,23 @@
-const gulp = require('gulp');
+const autoprefixer = require('gulp-autoprefixer');
+const browserSyncImport = require('browser-sync');
+const cleanCss = require('gulp-clean-css');
 const eslint = require('gulp-eslint');
-const mocha = require('gulp-mocha');
+const exec = require('gulp-exec');
+const gulp = require('gulp');
 const header = require('gulp-header');
+const less = require('gulp-less');
+const mocha = require('gulp-mocha');
+const sass = require('gulp-sass');
+const scsslint = require('gulp-scss-lint');
 const webpack = require('webpack');
 const webpackStream = require('webpack-stream');
-const scsslint = require('gulp-scss-lint');
-const sass = require('gulp-sass');
-const less = require('gulp-less');
-const minify = require('gulp-clean-css');
-const exec = require('gulp-exec');
-const autoprefixer = require('gulp-autoprefixer');
-const browserSync = require('browser-sync').create();
+
 const pkg = require('./package.json');
-const webpackConfig = require('./webpack.config');
 const testWebpackConfig = require('./webpack.test.config');
+const webpackConfig = require('./webpack.config');
 
 const banner = '/*! <%= pkg.name %> - v<%= pkg.version %> | <%= new Date().getFullYear() %> */\n';
+const browserSync = browserSyncImport.create();
 
 gulp.task('test-script-format', () => (
     gulp.src([
@@ -66,7 +68,7 @@ gulp.task('build-style', () => (
             browsers: ['last 2 versions'],
         }))
         .pipe(gulp.dest('./lib'))
-        .pipe(minify())
+        .pipe(cleanCss())
         .pipe(gulp.dest('./.css-compare/scss'))
 ));
 
@@ -76,7 +78,7 @@ gulp.task('build-style-less', () => (
         .pipe(autoprefixer({
             browsers: ['last 2 versions'],
         }))
-        .pipe(minify())
+        .pipe(cleanCss())
         .pipe(gulp.dest('./.css-compare/less'))
 ));
 
@@ -108,7 +110,7 @@ function buildExamplesStyle(minifyStyles = false) {
         }));
 
     if (minifyStyles) {
-        stream = stream.pipe(minify());
+        stream = stream.pipe(cleanCss());
     }
 
     return stream.pipe(gulp.dest('./examples/dist'));
