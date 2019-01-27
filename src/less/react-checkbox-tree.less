@@ -62,8 +62,13 @@
   }
 
   .rct-icon {
-    font-family: "FontAwesome";
+    display: inline-block;
+    text-align: center;
+    text-rendering: auto;
+    font-family: "Font Awesome 5 Free", "FontAwesome", sans-serif;
+    font-weight: normal;
     font-style: normal;
+    font-variant: normal;
   }
 }
 
@@ -169,43 +174,92 @@
   padding: 0 5px;
 }
 
-.rct-icon-expand-close::before {
-  content: "\f054";
+// Font Awesome 4 style
+.rct-icons-fa4 {
+  .rct-icon-expand-close::before {
+    content: "\f054";
+  }
+
+  .rct-icon-expand-open::before {
+    content: "\f078";
+  }
+
+  .rct-icon-uncheck::before {
+    content: "\f096";
+  }
+
+  .rct-icon-check::before {
+    content: "\f046";
+  }
+
+  .rct-icon-half-check::before {
+    opacity: .5;
+    content: "\f046";
+  }
+
+  .rct-icon-leaf::before {
+    content: "\f016";
+  }
+
+  .rct-icon-parent-open::before {
+    content: "\f115";
+  }
+
+  .rct-icon-parent-close::before {
+    content: "\f114";
+  }
+
+  .rct-icon-expand-all::before {
+    content: "\f0fe";
+  }
+
+  .rct-icon-collapse-all::before {
+    content: "\f146";
+  }
 }
 
-.rct-icon-expand-open::before {
-  content: "\f078";
-}
+// Font Awesome 5 style
+.rct-icons-fa5 {
+  .rct-icon-expand-close::before {
+    font-weight: 900;
+    content: "\f054";
+  }
 
-.rct-icon-uncheck::before {
-  content: "\f096";
-}
+  .rct-icon-expand-open::before {
+    font-weight: 900;
+    content: "\f078";
+  }
 
-.rct-icon-check::before {
-  content: "\f046";
-}
+  .rct-icon-uncheck::before {
+    content: "\f0c8";
+  }
 
-.rct-icon-half-check::before {
-  opacity: .5;
-  content: "\f046";
-}
+  .rct-icon-check::before {
+    content: "\f14a";
+  }
 
-.rct-icon-leaf::before {
-  content: "\f016";
-}
+  .rct-icon-half-check::before {
+    opacity: .5;
+    content: "\f14a";
+  }
 
-.rct-icon-parent-open::before {
-  content: "\f115";
-}
+  .rct-icon-leaf::before {
+    content: "\f15b";
+  }
 
-.rct-icon-parent-close::before {
-  content: "\f114";
-}
+  .rct-icon-parent-open::before {
+    content: "\f07c";
+  }
 
-.rct-icon-expand-all::before {
-  content: "\f0fe";
-}
+  .rct-icon-parent-close::before {
+    content: "\f07b";
+  }
 
-.rct-icon-collapse-all::before {
-  content: "\f146";
+  .rct-icon-expand-all::before {
+    content: "\f0fe";
+  }
+
+  .rct-icon-collapse-all::before {
+    content: "\f146";
+  }
 }

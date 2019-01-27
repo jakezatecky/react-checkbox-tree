@@ -86,7 +86,16 @@ All node objects **must** have a unique `value`. This value is serialized into t
 
 #### Changing the Default Icons
 
-By default, **react-checkbox-tree** uses Font Awesome for the various icons that appear in the tree. To change the defaults, simply pass in the `icons` property and override the defaults. Note that you can override as many or as little icons as you like:
+By default, **react-checkbox-tree** uses Font Awesome 4 for the various icons that appear in the tree. To utilize Font Awesome 5 icons, simply pass in `iconsClass="fa5"`:
+
+``` jsx
+<CheckboxTree
+    ...
+    iconsClass="fa5"
+/>
+```
+
+To change the rendered icons entirely, simply pass in the `icons` property and override the defaults. Note that you can override as many or as little icons as you like:
 
 ``` jsx
 <CheckboxTree
@@ -140,6 +149,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 | `expandDisabled`     | bool     | If true, the ability to expand nodes will be disabled.                                                                 | `false`     |
 | `expandOnClick`      | bool     | If true, nodes will be expanded by clicking on labels. Requires a non-empty `onClick` function.                        | `false`     |
 | `icons`              | object   | An object containing the mappings for the various icons and their components. See **Changing the Default Icons**.      | `{ ... }`   |
+| `iconsClass`         | string   | A string that specifies which icons class to utilize. Currently, `'fa4'` and `'fa5'` are supported.                    | `'fa4'`     |
 | `id`                 | string   | A string to be used for the HTML ID of the rendered tree and its nodes.                                                | `null`      |
 | `expanded`           | array    | An array of expanded node values.                                                                                      | `[]`        |
 | `lang`               | object   | An object containing the language mappings for the various text elements.                                              | `{ ... }`   |

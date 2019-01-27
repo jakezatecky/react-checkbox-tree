@@ -9,17 +9,17 @@ const nodes = [
             {
                 value: 'Employee Evaluations.zip',
                 label: 'Employee Evaluations.zip',
-                icon: <i className="fa fa-file-archive-o" />,
+                icon: <i className="far fa-file-archive" />,
             },
             {
                 value: 'Expense Report.pdf',
                 label: 'Expense Report.pdf',
-                icon: <i className="fa fa-file-pdf-o" />,
+                icon: <i className="far fa-file-pdf" />,
             },
             {
                 value: 'notes.txt',
                 label: 'notes.txt',
-                icon: <i className="fa fa-file-text-o" />,
+                icon: <i className="far fa-file-alt" />,
             },
         ],
     },
@@ -71,6 +71,7 @@ class CustomIconsExamples extends React.Component {
             <CheckboxTree
                 checked={checked}
                 expanded={expanded}
+                iconsClass="fa5"
                 nodes={nodes}
                 onCheck={this.onCheck}
                 onExpand={this.onExpand}

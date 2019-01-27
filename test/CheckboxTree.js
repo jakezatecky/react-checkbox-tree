@@ -84,6 +84,19 @@ describe('<CheckboxTree />', () => {
         });
     });
 
+    describe('iconsClass', () => {
+        it('should apply the specified icon style to the tree', () => {
+            const wrapper = shallow(
+                <CheckboxTree
+                    iconsClass="some-class"
+                    nodes={[{ value: 'jupiter', label: 'Jupiter' }]}
+                />,
+            );
+
+            assert.isTrue(wrapper.hasClass('rct-icons-some-class'));
+        });
+    });
+
     describe('id', () => {
         it('should pass the property directly to tree nodes', () => {
             const wrapper = shallow(

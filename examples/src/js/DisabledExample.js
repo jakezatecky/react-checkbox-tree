@@ -117,6 +117,7 @@ class DisabledExample extends React.Component {
                 checked={checked}
                 disabled
                 expanded={expanded}
+                iconsClass="fa5"
                 nodes={nodes}
                 onCheck={this.onCheck}
                 onExpand={this.onExpand}

@@ -116,6 +116,7 @@ class PessimisticToggleExample extends React.Component {
             <CheckboxTree
                 checked={checked}
                 expanded={expanded}
+                iconsClass="fa5"
                 nodes={nodes}
                 optimisticToggle={false}
                 onCheck={this.onCheck}

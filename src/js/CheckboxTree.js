@@ -22,6 +22,7 @@ class CheckboxTree extends React.Component {
         expandOnClick: PropTypes.bool,
         expanded: listShape,
         icons: iconsShape,
+        iconsClass: PropTypes.string,
         id: PropTypes.string,
         lang: languageShape,
         name: PropTypes.string,
@@ -56,6 +57,7 @@ class CheckboxTree extends React.Component {
             parentOpen: <span className="rct-icon rct-icon-parent-open" />,
             leaf: <span className="rct-icon rct-icon-leaf" />,
         },
+        iconsClass: 'default',
         id: null,
         lang: {
             collapseAll: 'Collapse all',
@@ -326,12 +328,18 @@ class CheckboxTree extends React.Component {
     }
 
     render() {
-        const { disabled, nodes, nativeCheckboxes } = this.props;
+        const {
+            disabled,
+            iconsClass,
+            nodes,
+            nativeCheckboxes,
+        } = this.props;
         const treeNodes = this.renderTreeNodes(nodes);
 
         const className = classNames({
             'react-checkbox-tree': true,
             'rct-disabled': disabled,
+            [`rct-icons-${iconsClass}`]: true,
             'rct-native-display': nativeCheckboxes,
         });
 
