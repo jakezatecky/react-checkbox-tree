@@ -28,7 +28,7 @@ const nodes = [
                 value: '/app/Providers',
                 label: 'Providers',
                 children: [{
-                    value: '/app/Http/Providers/EventServiceProvider.js',
+                    value: '/app/Providers/EventServiceProvider.js',
                     label: 'EventServiceProvider.js',
                 }],
             },
