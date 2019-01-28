@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import Button from './Button';
+import constants from './constants';
 import NodeModel from './NodeModel';
 import TreeNode from './TreeNode';
 import iconsShape from './shapes/iconsShape';
@@ -16,6 +17,7 @@ class CheckboxTree extends React.Component {
     static propTypes = {
         nodes: PropTypes.arrayOf(nodeShape).isRequired,
 
+        checkModel: PropTypes.oneOf([constants.CheckModel.LEAF, constants.CheckModel.ALL]),
         checked: listShape,
         disabled: PropTypes.bool,
         expandDisabled: PropTypes.bool,
@@ -40,6 +42,7 @@ class CheckboxTree extends React.Component {
     };
 
     static defaultProps = {
+        checkModel: constants.CheckModel.LEAF,
         checked: [],
         disabled: false,
         expandDisabled: false,
@@ -127,11 +130,11 @@ class CheckboxTree extends React.Component {
     }
 
     onCheck(nodeInfo) {
-        const { noCascade, onCheck } = this.props;
+        const { checkModel, noCascade, onCheck } = this.props;
         const model = this.state.model.clone();
         const node = model.getNode(nodeInfo.value);
 
-        model.toggleChecked(nodeInfo, nodeInfo.checked, noCascade);
+        model.toggleChecked(nodeInfo, nodeInfo.checked, checkModel, noCascade);
         onCheck(model.serializeList('checked'), { ...node, ...nodeInfo });
     }
 

@@ -20,6 +20,125 @@ describe('<CheckboxTree />', () => {
         });
     });
 
+    describe('checkModel', () => {
+        describe('all', () => {
+            it('should record checked parent and leaf nodes', () => {
+                let actual = null;
+
+                const wrapper = mount(
+                    <CheckboxTree
+                        checkModel="all"
+                        nodes={[
+                            {
+                                value: 'jupiter',
+                                label: 'Jupiter',
+                                children: [
+                                    { value: 'io', label: 'Io' },
+                                    { value: 'europa', label: 'Europa' },
+                                ],
+                            },
+                        ]}
+                        onCheck={(checked) => {
+                            actual = checked;
+                        }}
+                    />,
+                );
+
+                wrapper.find('TreeNode input[type="checkbox"]').simulate('click');
+                assert.deepEqual(['jupiter', 'io', 'europa'], actual);
+            });
+
+            it('should percolate `checked` to all parents and grandparents if all leaves are checked', () => {
+                let actual = null;
+
+                const wrapper = mount(
+                    <CheckboxTree
+                        checkModel="all"
+                        checked={['mercury', 'io']}
+                        expanded={['sol', 'jupiter']}
+                        nodes={[
+                            {
+                                value: 'sol',
+                                label: 'Sol System',
+                                children: [
+                                    { value: 'mercury', label: 'Mercury' },
+                                    {
+                                        value: 'jupiter',
+                                        label: 'Jupiter',
+                                        children: [
+                                            { value: 'io', label: 'Io' },
+                                            { value: 'europa', label: 'Europa' },
+                                        ],
+                                    },
+                                ],
+                            },
+                        ]}
+                        onCheck={(checked) => {
+                            actual = checked;
+                        }}
+                    />,
+                );
+
+                wrapper.find('TreeNode[value="europa"] input[type="checkbox"]').simulate('click');
+                assert.deepEqual(['sol', 'mercury', 'jupiter', 'io', 'europa'], actual);
+            });
+
+            it('should NOT percolate `checked` to the parent if not all leaves are checked', () => {
+                let actual = null;
+
+                const wrapper = mount(
+                    <CheckboxTree
+                        checkModel="all"
+                        expanded={['jupiter']}
+                        nodes={[
+                            {
+                                value: 'jupiter',
+                                label: 'Jupiter',
+                                children: [
+                                    { value: 'io', label: 'Io' },
+                                    { value: 'europa', label: 'Europa' },
+                                ],
+                            },
+                        ]}
+                        onCheck={(checked) => {
+                            actual = checked;
+                        }}
+                    />,
+                );
+
+                wrapper.find('TreeNode[value="europa"] input[type="checkbox"]').simulate('click');
+                assert.deepEqual(['europa'], actual);
+            });
+        });
+
+        describe('leaf', () => {
+            it('should only record leaf nodes in the checked array', () => {
+                let actual = null;
+
+                const wrapper = mount(
+                    <CheckboxTree
+                        nodes={[
+                            {
+                                value: 'jupiter',
+                                label: 'Jupiter',
+                                children: [
+                                    { value: 'io', label: 'Io' },
+                                    { value: 'europa', label: 'Europa' },
+                                ],
+                            },
+                        ]}
+                        onCheck={(checked) => {
+                            actual = checked;
+                        }}
+                    />,
+                );
+
+                wrapper.find('TreeNode input[type="checkbox"]').simulate('click');
+                assert.deepEqual(['io', 'europa'], actual);
+            });
+        });
+    });
+
     describe('checked', () => {
         it('should not throw an exception if it contains values that are not in the `nodes` property', () => {
             const wrapper = shallow(
@@ -337,7 +456,7 @@ describe('<CheckboxTree />', () => {
     });
 
     describe('onlyLeafCheckboxes', () => {
-        it('should only render show checkboxes for leaf nodes', () => {
+        it('should only render checkboxes for leaf nodes', () => {
             const wrapper = mount(
                 <CheckboxTree
                     expanded={['jupiter']}

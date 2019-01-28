@@ -1,3 +1,7 @@
+import constants from './constants';
+
+const { CheckModel } = constants;
+
 class NodeModel {
     constructor(props, nodes = {}) {
         this.props = props;
@@ -40,6 +44,7 @@ class NodeModel {
                 value: node.value,
                 children: node.children,
                 parent,
+                isChild: parent.value !== undefined,
                 isParent,
                 isLeaf: !isParent,
                 showCheckbox: node.showCheckbox !== undefined ? node.showCheckbox : true,
@@ -109,24 +114,56 @@ class NodeModel {
         return this;
     }
 
-    toggleChecked(node, isChecked, noCascade) {
+    toggleChecked(node, isChecked, checkModel, noCascade, percolateUpward = true) {
         const flatNode = this.flatNodes[node.value];
+        const modelHasParents = [CheckModel.PARENT, CheckModel.ALL].indexOf(checkModel) > -1;
+        const modelHasLeaves = [CheckModel.LEAF, CheckModel.ALL].indexOf(checkModel) > -1;
 
         if (flatNode.isLeaf || noCascade) {
             if (node.disabled) {
                 return this;
             }
 
-            // Set the check status of a leaf node or an uncoupled parent
             this.toggleNode(node.value, 'checked', isChecked);
         } else {
-            // Percolate check status down to all children
-            flatNode.children.forEach((child) => {
-                this.toggleChecked(child, isChecked, noCascade);
-            });
+            if (modelHasParents) {
+                this.toggleNode(node.value, 'checked', isChecked);
+            }
+
+            if (modelHasLeaves) {
+                // Percolate check status down to all children
+                flatNode.children.forEach((child) => {
+                    this.toggleChecked(child, isChecked, checkModel, noCascade, false);
+                });
+            }
+        }
+
+        // Percolate check status up to parent
+        // The check model must include parent nodes and we must not have already covered the
+        // parent (relevant only when percolating through children)
+        if (percolateUpward && !noCascade && flatNode.isChild && modelHasParents) {
+            this.toggleParentStatus(flatNode.parent, checkModel);
         }
 
         return this;
+    }
+
+    toggleParentStatus(node, checkModel) {
+        const flatNode = this.flatNodes[node.value];
+
+        if (flatNode.isChild) {
+            if (checkModel === CheckModel.ALL) {
+                this.toggleNode(node.value, 'checked', this.isEveryChildChecked(flatNode));
+            }
+
+            this.toggleParentStatus(flatNode.parent, checkModel);
+        } else {
+            this.toggleNode(node.value, 'checked', this.isEveryChildChecked(flatNode));
+        }
+    }
+
+    isEveryChildChecked(node) {
+        return node.children.every(child => this.getNode(child.value).checked);
     }
 
     toggleNode(nodeValue, key, toggleValue) {
