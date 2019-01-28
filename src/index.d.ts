@@ -2,7 +2,7 @@ import * as React from 'react';
 
 declare module "react-checkbox-tree" {
     interface Node {
-        label: JSX.Element;
+        label: React.ReactNode;
         value: string;
         children?: Array<Node>;
         className?: string;
