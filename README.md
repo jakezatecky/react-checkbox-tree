@@ -144,15 +144,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 | Property             | Type     | Description                                                                                                            | Default     |
 | -------------------- | -------- | ---------------------------------------------------------------------------------------------------------------------- | ----------- |
 | `nodes`              | array    | **Required**. Specifies the tree nodes and their children.                                                             |             |
-| `checked`            | array    | An array of checked node values.                                                                                       | `[]`        |
 | `checkModel`         | bool     | Specifies which nodes should be stored in the `checked` array. Accepts `'leaf'` or `'all'`.                            | `'leaf'`    |
+| `checked`            | array    | An array of checked node values.                                                                                       | `[]`        |
 | `disabled`           | bool     | If true, the component will be disabled and nodes cannot be checked.                                                   | `false`     |
 | `expandDisabled`     | bool     | If true, the ability to expand nodes will be disabled.                                                                 | `false`     |
 | `expandOnClick`      | bool     | If true, nodes will be expanded by clicking on labels. Requires a non-empty `onClick` function.                        | `false`     |
+| `expanded`           | array    | An array of expanded node values.                                                                                      | `[]`        |
 | `icons`              | object   | An object containing the mappings for the various icons and their components. See **Changing the Default Icons**.      | `{ ... }`   |
 | `iconsClass`         | string   | A string that specifies which icons class to utilize. Currently, `'fa4'` and `'fa5'` are supported.                    | `'fa4'`     |
 | `id`                 | string   | A string to be used for the HTML ID of the rendered tree and its nodes.                                                | `null`      |
-| `expanded`           | array    | An array of expanded node values.                                                                                      | `[]`        |
 | `lang`               | object   | An object containing the language mappings for the various text elements.                                              | `{ ... }`   |
 | `name`               | string   | Optional name for the hidden `<input>` element.                                                                        | `undefined` |
 | `nameAsArray`        | bool     | If true, the hidden `<input>` will encode its values as an array rather than a joined string.                          | `false`     |
