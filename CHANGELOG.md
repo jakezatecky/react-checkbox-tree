@@ -5,6 +5,11 @@
 ### New Features
 
 * [#13]: Add `checkModel` property to specify which nodes should be stored in the `checked` array
+* [#126]: Add `iconsClass` property and allow `'fa5'` to fully support Font Awesome 5 icons
+
+### Bug Fixes
+
+* [#127]: Change TypeScript definition of TreeNode's `label` property to `React.ReactNode` to better align with the PropType
 
 ## [v1.5.0](https://github.com/jakezatecky/react-checkbox-tree/compare/v1.4.1...v1.5.0) (2019-01-25)
 
