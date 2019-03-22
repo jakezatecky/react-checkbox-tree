@@ -35,6 +35,7 @@ class TreeNode extends React.Component {
         showCheckbox: PropTypes.bool,
         title: PropTypes.string,
         onClick: PropTypes.func,
+        useTopNode: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -56,8 +57,9 @@ class TreeNode extends React.Component {
     }
 
     onCheck() {
-        const { value, onCheck } = this.props;
+        const { value, onCheck, checked, useTopNode } = this.props;
 
+        if (checked === 2 && useTopNode) return;
         onCheck({ value, checked: this.getCheckState({ toggle: true }) });
     }
 

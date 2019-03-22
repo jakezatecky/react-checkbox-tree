@@ -280,6 +280,7 @@ class CheckboxTree extends React.Component {
                     onCheck={this.onCheck}
                     onClick={onClick && this.onNodeClick}
                     onExpand={this.onExpand}
+                    useTopNode={useTopNode}
                 >
                     {children}
                 </TreeNode>

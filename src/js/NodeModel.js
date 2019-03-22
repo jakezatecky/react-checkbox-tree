@@ -125,7 +125,7 @@ class NodeModel {
             }
             // Percolate check status down to all children
             flatNode.children.forEach((child) => {
-                this.toggleChecked(child, useTopNode ? false : isChecked, noCascade);
+                this.toggleChecked(child, useTopNode ? false : isChecked, noCascade, useTopNode);
             });
         }
 
