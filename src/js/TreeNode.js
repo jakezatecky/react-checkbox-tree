@@ -34,8 +34,8 @@ class TreeNode extends React.Component {
         icon: PropTypes.node,
         showCheckbox: PropTypes.bool,
         title: PropTypes.string,
-        onClick: PropTypes.func,
         useTopNode: PropTypes.bool,
+        onClick: PropTypes.func,
     };
 
     static defaultProps = {
@@ -45,7 +45,8 @@ class TreeNode extends React.Component {
         icon: null,
         showCheckbox: true,
         title: null,
-        onClick: () => {},
+        useTopNode: false,
+        onClick: () => { },
     };
 
     constructor(props) {
@@ -57,9 +58,16 @@ class TreeNode extends React.Component {
     }
 
     onCheck() {
-        const { value, onCheck, checked, useTopNode } = this.props;
+        const {
+            value,
+            onCheck,
+            checked,
+            useTopNode,
+        } = this.props;
 
-        if (checked === 2 && useTopNode) return;
+        if (checked === 2 && useTopNode) {
+            return;
+        }
         onCheck({ value, checked: this.getCheckState({ toggle: true }) });
     }
 
@@ -217,7 +225,7 @@ class TreeNode extends React.Component {
                     id={inputId}
                     indeterminate={checked === 2}
                     onClick={this.onCheck}
-                    onChange={() => {}}
+                    onChange={() => { }}
                 />
                 <span className="rct-checkbox">
                     {this.renderCheckboxIcon()}
