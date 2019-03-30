@@ -57,7 +57,7 @@
     "gulp-mocha": "^6.0.0",
     "gulp-sass": "^4.0.1",
     "gulp-scss-lint": "^1.0.0",
-    "jsdom": "^13.1.0",
+    "jsdom": "^14.0.0",
     "mocha": "^6.0.0",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
