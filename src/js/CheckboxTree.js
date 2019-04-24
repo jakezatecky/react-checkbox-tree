@@ -60,7 +60,7 @@ class CheckboxTree extends React.Component {
             parentOpen: <span className="rct-icon rct-icon-parent-open" />,
             leaf: <span className="rct-icon rct-icon-leaf" />,
         },
-        iconsClass: 'default',
+        iconsClass: 'fa4',
         id: null,
         lang: {
             collapseAll: 'Collapse all',
