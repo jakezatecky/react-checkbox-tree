@@ -1,10 +1,11 @@
 import React from 'react';
 import CheckboxTree from 'react-checkbox-tree';
 
-const nodes = [
+const initialNodes = [
     {
         value: '/app',
         label: 'app',
+        expanded: true,
         children: [
             {
                 value: '/app/Http',
@@ -16,11 +17,13 @@ const nodes = [
                         children: [{
                             value: '/app/Http/Controllers/WelcomeController.js',
                             label: 'WelcomeController.js',
+                            checked: true,
                         }],
                     },
                     {
                         value: '/app/Http/routes.js',
                         label: 'routes.js',
+                        checked: true,
                     },
                 ],
             },
@@ -58,11 +61,13 @@ const nodes = [
                 children: [{
                     value: '/public/assets/style.css',
                     label: 'style.css',
+                    checked: true,
                 }],
             },
             {
                 value: '/public/index.html',
                 label: 'index.html',
+                checked: true,
             },
         ],
     },
@@ -73,6 +78,7 @@ const nodes = [
     {
         value: '/.gitignore',
         label: '.gitignore',
+        checked: true,
     },
     {
         value: '/README.md',
@@ -82,41 +88,23 @@ const nodes = [
 
 class ExpandAllExample extends React.Component {
     state = {
-        checked: [
-            '/app/Http/Controllers/WelcomeController.js',
-            '/app/Http/routes.js',
-            '/public/assets/style.css',
-            '/public/index.html',
-            '/.gitignore',
-        ],
-        expanded: [
-            '/app',
-        ],
+        nodes: initialNodes,
     };
 
-    constructor(props) {
-        super(props);
-
-        this.onCheck = this.onCheck.bind(this);
-        this.onExpand = this.onExpand.bind(this);
+    onCheck = (node, nodes) => {
+        this.setState({ nodes });
     }
 
-    onCheck(checked) {
-        this.setState({ checked });
-    }
-
-    onExpand(expanded) {
-        this.setState({ expanded });
+    onExpand = (node, nodes) => {
+        this.setState({ nodes });
     }
 
     render() {
-        const { checked, expanded } = this.state;
+        const { nodes } = this.state;
 
         return (
             <div className="expand-all-container">
                 <CheckboxTree
-                    checked={checked}
-                    expanded={expanded}
                     iconsClass="fa5"
                     nodes={nodes}
                     showExpandAll

@@ -20,7 +20,7 @@ for (let i = 0; i < 100; i += 1) {
     });
 }
 
-const nodes = [{
+const initialNodes = [{
     value: 'node-0',
     label: 'Node 0',
     children: parents,
@@ -28,32 +28,22 @@ const nodes = [{
 
 class LargeDataExample extends React.Component {
     state = {
-        checked: [],
-        expanded: [],
+        nodes: initialNodes,
     };
 
-    constructor(props) {
-        super(props);
-
-        this.onCheck = this.onCheck.bind(this);
-        this.onExpand = this.onExpand.bind(this);
+    onCheck = (node, nodes) => {
+        this.setState({ nodes });
     }
 
-    onCheck(checked) {
-        this.setState({ checked });
-    }
-
-    onExpand(expanded) {
-        this.setState({ expanded });
+    onExpand = (node, nodes) => {
+        this.setState({ nodes });
     }
 
     render() {
-        const { checked, expanded } = this.state;
+        const { nodes } = this.state;
 
         return (
             <CheckboxTree
-                checked={checked}
-                expanded={expanded}
                 iconsClass="fa5"
                 nodes={nodes}
                 onCheck={this.onCheck}

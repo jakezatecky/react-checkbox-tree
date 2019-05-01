@@ -1,3 +1,4 @@
+
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -6,6 +7,8 @@ import Button from './Button';
 import NativeCheckbox from './NativeCheckbox';
 import iconsShape from './shapes/iconsShape';
 import languageShape from './shapes/languageShape';
+import nodeShape from './shapes/nodeShape';
+
 
 class TreeNode extends React.Component {
     static propTypes = {
@@ -18,6 +21,7 @@ class TreeNode extends React.Component {
         isParent: PropTypes.bool.isRequired,
         label: PropTypes.node.isRequired,
         lang: languageShape.isRequired,
+        node: nodeShape.isRequired,
         optimisticToggle: PropTypes.bool.isRequired,
         showNodeIcon: PropTypes.bool.isRequired,
         treeId: PropTypes.string.isRequired,
@@ -32,6 +36,9 @@ class TreeNode extends React.Component {
         className: PropTypes.string,
         expandOnClick: PropTypes.bool,
         icon: PropTypes.node,
+        isRadioGroup: PropTypes.bool,
+        isRadioNode: PropTypes.bool,
+        noCascade: PropTypes.bool,
         showCheckbox: PropTypes.bool,
         title: PropTypes.string,
         onClick: PropTypes.func,
@@ -42,66 +49,86 @@ class TreeNode extends React.Component {
         className: null,
         expandOnClick: false,
         icon: null,
+        isRadioGroup: false,
+        isRadioNode: false,
+        noCascade: false,
         showCheckbox: true,
         title: null,
         onClick: () => {},
     };
 
-    constructor(props) {
-        super(props);
-
-        this.onCheck = this.onCheck.bind(this);
-        this.onClick = this.onClick.bind(this);
-        this.onExpand = this.onExpand.bind(this);
+    onCheck = () => {
+        const { node, onCheck, isRadioNode } = this.props;
+        let newNode;
+        if (isRadioNode) {
+            newNode = { ...node, checked: !node.checked };
+        } else {
+            newNode = this.toggleChecked(node);
+        }
+        onCheck(newNode);
     }
 
-    onCheck() {
-        const { value, onCheck } = this.props;
-
-        onCheck({ value, checked: this.getCheckState({ toggle: true }) });
-    }
-
-    onClick() {
+    onClick = () => {
         const {
-            expandOnClick,
+            node,
             isParent,
-            value,
+            expandOnClick,
             onClick,
         } = this.props;
 
+        let newNode = node;
         // Auto expand if enabled
-        if (isParent && expandOnClick) {
-            this.onExpand();
+        if (expandOnClick && isParent && !node.expanded) {
+            newNode = this.onExpand();
         }
 
-        onClick({ value, checked: this.getCheckState({ toggle: false }) });
+        onClick(newNode);
     }
 
-    onExpand() {
-        const { expanded, value, onExpand } = this.props;
-
-        onExpand({ value, expanded: !expanded });
+    onExpand = () => {
+        const { node, onExpand } = this.props;
+        const newNode = { ...node, expanded: !node.expanded };
+        onExpand(newNode);
+        return newNode;
     }
 
-    getCheckState({ toggle }) {
-        const { checked, optimisticToggle } = this.props;
-
-        // Toggle off state to checked
-        if (checked === 0 && toggle) {
-            return true;
+    shouldComponentUpdate = (nextProps) => {
+        const keys = Object.keys(nextProps);
+        for (let i = 0, ii = keys.length; i < ii; i += 1) {
+            const key = keys[i];
+            if (key !== 'children') {
+                if (nextProps[key] !== this.props[key]) {
+                    return true;
+                }
+            }
         }
-
-        // Node is already checked and we are not toggling
-        if (checked === 1 && !toggle) {
-            return true;
-        }
-
-        // Get/toggle partial state based on cascade model
-        if (checked === 2) {
-            return optimisticToggle;
-        }
-
         return false;
+    }
+
+    toggleChecked = (node, checkState) => {
+        const {
+            checked,
+            isRadioGroup,
+            noCascade,
+            optimisticToggle,
+        } = this.props;
+
+        let newCheckState;
+        if (checkState === undefined) {
+            if (isRadioGroup) {
+                newCheckState = !checked;
+            } else {
+                newCheckState = (checked === 2) ? optimisticToggle : !checked;
+            }
+        } else {
+            newCheckState = checkState;
+        }
+
+        if (!noCascade && (node.children && node.children.length > 0) && !isRadioGroup) {
+            const newChildren = node.children.map(child => this.toggleChecked(child, newCheckState));
+            return { ...node, children: newChildren };
+        }
+        return { ...node, checked: newCheckState };
     }
 
     renderCollapseButton() {
@@ -138,14 +165,24 @@ class TreeNode extends React.Component {
     }
 
     renderCheckboxIcon() {
-        const { checked, icons: { uncheck, check, halfCheck } } = this.props;
+        const {
+            checked,
+            icons: {
+                uncheck,
+                check,
+                halfCheck,
+                radioOff,
+                radioOn,
+            },
+            isRadioNode,
+        } = this.props;
 
         if (checked === 0) {
-            return uncheck;
+            return isRadioNode ? radioOff : uncheck;
         }
 
         if (checked === 1) {
-            return check;
+            return isRadioNode ? radioOn : check;
         }
 
         return halfCheck;
@@ -199,6 +236,7 @@ class TreeNode extends React.Component {
         const {
             checked,
             disabled,
+            isRadioNode,
             title,
             treeId,
             value,
@@ -214,6 +252,7 @@ class TreeNode extends React.Component {
                     disabled={disabled}
                     id={inputId}
                     indeterminate={checked === 2}
+                    isRadioNode={isRadioNode}
                     onClick={this.onCheck}
                     onChange={() => {}}
                 />

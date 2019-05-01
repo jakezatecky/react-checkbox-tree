@@ -1,7 +1,7 @@
 import React from 'react';
 import CheckboxTree from 'react-checkbox-tree';
 
-const nodes = [
+const initialNodes = [
     {
         value: '/app',
         label: 'app',
@@ -82,41 +82,22 @@ const nodes = [
 
 class NoCascadeExample extends React.Component {
     state = {
-        checked: [
-            '/app/Http/Controllers/WelcomeController.js',
-            '/app/Http/routes.js',
-            '/public/assets/style.css',
-            '/public/index.html',
-            '/.gitignore',
-        ],
-        expanded: [
-            '/app',
-            '/app/Http',
-        ],
+        nodes: initialNodes,
     };
 
-    constructor(props) {
-        super(props);
-
-        this.onCheck = this.onCheck.bind(this);
-        this.onExpand = this.onExpand.bind(this);
+    onCheck = (node, nodes) => {
+        this.setState({ nodes });
     }
 
-    onCheck(checked) {
-        this.setState({ checked });
-    }
-
-    onExpand(expanded) {
-        this.setState({ expanded });
+    onExpand = (node, nodes) => {
+        this.setState({ nodes });
     }
 
     render() {
-        const { checked, expanded } = this.state;
+        const { nodes } = this.state;
 
         return (
             <CheckboxTree
-                checked={checked}
-                expanded={expanded}
                 iconsClass="fa5"
                 noCascade
                 nodes={nodes}

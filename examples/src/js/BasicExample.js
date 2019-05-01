@@ -1,21 +1,25 @@
 import React from 'react';
 import CheckboxTree from 'react-checkbox-tree';
 
-const nodes = [
+const initialNodes = [
     {
         value: '/app',
         label: 'app',
+        expanded: true,
         children: [
             {
                 value: '/app/Http',
                 label: 'Http',
+                expanded: true,
                 children: [
                     {
                         value: '/app/Http/Controllers',
                         label: 'Controllers',
+                        expanded: true,
                         children: [{
                             value: '/app/Http/Controllers/WelcomeController.js',
                             label: 'WelcomeController.js',
+                            checked: true,
                         }],
                     },
                     {
@@ -31,6 +35,55 @@ const nodes = [
                     value: '/app/Providers/EventServiceProvider.js',
                     label: 'EventServiceProvider.js',
                 }],
+            },
+        ],
+    },
+    {
+        value: '/radioGroup',
+        label: 'RadioTest',
+        expanded: true,
+        radioGroup: true,
+        children: [
+            {
+                value: 'radio1',
+                label: 'radio1',
+            },
+            {
+                value: 'radio2',
+                label: 'radio2',
+                children: [
+                    {
+                        value: 'radio2-1',
+                        label: 'radio2',
+                    },
+                    {
+                        value: 'radio2-2',
+                        label: 'radio2-2',
+                    },
+                    {
+                        value: 'radio2-3',
+                        label: 'radio2-3',
+                    },
+                ],
+            },
+            {
+                value: 'radio3',
+                label: 'radio3',
+                radioGroup: true,
+                children: [
+                    {
+                        value: 'radio3-1',
+                        label: 'radio3',
+                    },
+                    {
+                        value: 'radio3-2',
+                        label: 'radio3-2',
+                    },
+                    {
+                        value: 'radio3-3',
+                        label: 'radio3-3',
+                    },
+                ],
             },
         ],
     },
@@ -82,40 +135,24 @@ const nodes = [
 
 class BasicExample extends React.Component {
     state = {
-        checked: [
-            '/app/Http/Controllers/WelcomeController.js',
-            '/app/Http/routes.js',
-            '/public/assets/style.css',
-            '/public/index.html',
-            '/.gitignore',
-        ],
-        expanded: [
-            '/app',
-        ],
+        nodes: initialNodes,
     };
 
-    constructor(props) {
-        super(props);
-
-        this.onCheck = this.onCheck.bind(this);
-        this.onExpand = this.onExpand.bind(this);
+    onCheck = (node, nodes) => {
+        this.setState({ nodes });
     }
 
-    onCheck(checked) {
-        this.setState({ checked });
-    }
-
-    onExpand(expanded) {
-        this.setState({ expanded });
+    onExpand = (node, nodes) => {
+        this.setState({ nodes });
     }
 
     render() {
-        const { checked, expanded } = this.state;
+        const { nodes } = this.state;
 
         return (
             <CheckboxTree
-                checked={checked}
-                expanded={expanded}
+                style={{ flex: '1' }}
+                checkModel="all"
                 iconsClass="fa5"
                 nodes={nodes}
                 onCheck={this.onCheck}

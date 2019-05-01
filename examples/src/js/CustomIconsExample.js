@@ -1,7 +1,7 @@
 import React from 'react';
 import CheckboxTree from 'react-checkbox-tree';
 
-const nodes = [
+const initialNodes = [
     {
         value: 'Documents',
         label: 'Documents',
@@ -30,12 +30,12 @@ const nodes = [
             {
                 value: 'nyan-cat.gif',
                 label: 'nyan-cat.gif',
-                icon: <i className="fa fa-file-image-o" />,
+                icon: <i className="far fa-file-image" />,
             },
             {
                 value: 'SpaceX Falcon9 liftoff.jpg',
                 label: 'SpaceX Falcon9 liftoff.jpg',
-                icon: <i className="fa fa-file-image-o" />,
+                icon: <i className="far fa-file-image" />,
             },
         ],
     },
@@ -43,34 +43,24 @@ const nodes = [
 
 class CustomIconsExamples extends React.Component {
     state = {
-        checked: [],
-        expanded: [
-            'Documents',
-        ],
+        nodes: initialNodes,
     };
 
-    constructor(props) {
-        super(props);
 
-        this.onCheck = this.onCheck.bind(this);
-        this.onExpand = this.onExpand.bind(this);
+    onCheck = (node, nodes) => {
+        this.setState({ nodes });
     }
 
-    onCheck(checked) {
-        this.setState({ checked });
-    }
-
-    onExpand(expanded) {
-        this.setState({ expanded });
+    onExpand = (node, nodes) => {
+        this.setState({ nodes });
     }
 
     render() {
-        const { checked, expanded } = this.state;
+        const { nodes } = this.state;
 
         return (
             <CheckboxTree
-                checked={checked}
-                expanded={expanded}
+                id="CustomIconsExamples-customID"
                 iconsClass="fa5"
                 nodes={nodes}
                 onCheck={this.onCheck}

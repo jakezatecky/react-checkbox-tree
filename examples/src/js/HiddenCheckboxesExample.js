@@ -1,18 +1,21 @@
 import React from 'react';
 import CheckboxTree from 'react-checkbox-tree';
 
-const nodes = [
+const initialNodes = [
     {
         value: 'favorite-empires',
         label: 'Favorite Empires',
+        expanded: true,
         children: [
             {
                 value: 'classical-era',
                 label: 'Classical Era',
+                expanded: true,
                 children: [
                     {
                         value: 'persian',
                         label: 'First Persian Empire',
+                        checked: true,
                     },
                     {
                         value: 'qin',
@@ -21,12 +24,14 @@ const nodes = [
                     {
                         value: 'spqr',
                         label: 'Roman Empire',
+                        checked: true,
                     },
                 ],
             },
             {
                 value: 'medieval-era',
                 label: 'Medieval Era',
+                expanded: true,
                 children: [
                     {
                         value: 'abbasid',
@@ -35,10 +40,12 @@ const nodes = [
                     {
                         value: 'byzantine',
                         label: 'Byzantine Empire',
+                        checked: true,
                     },
                     {
                         value: 'holy-roman',
                         label: 'Holy Roman Empire',
+                        checked: true,
                     },
                     {
                         value: 'ming',
@@ -65,10 +72,12 @@ const nodes = [
                     {
                         value: 'inca',
                         label: 'Inca Empire',
+                        checked: true,
                     },
                     {
                         value: 'qing',
                         label: 'Qing Dynasty',
+                        showCheckbox: false,
                     },
                     {
                         value: 'russian',
@@ -86,42 +95,22 @@ const nodes = [
 
 class HiddenCheckboxesExample extends React.Component {
     state = {
-        checked: [
-            'persian',
-            'spqr',
-            'byzantine',
-            'holy-roman',
-            'inca',
-        ],
-        expanded: [
-            'favorite-empires',
-            'classical-era',
-            'medieval-era',
-        ],
+        nodes: initialNodes,
     };
 
-    constructor(props) {
-        super(props);
-
-        this.onCheck = this.onCheck.bind(this);
-        this.onExpand = this.onExpand.bind(this);
+    onCheck = (node, nodes) => {
+        this.setState({ nodes });
     }
 
-    onCheck(checked) {
-        this.setState({ checked });
-    }
-
-    onExpand(expanded) {
-        this.setState({ expanded });
+    onExpand = (node, nodes) => {
+        this.setState({ nodes });
     }
 
     render() {
-        const { checked, expanded } = this.state;
+        const { nodes } = this.state;
 
         return (
             <CheckboxTree
-                checked={checked}
-                expanded={expanded}
                 iconsClass="fa5"
                 nodes={nodes}
                 onlyLeafCheckboxes

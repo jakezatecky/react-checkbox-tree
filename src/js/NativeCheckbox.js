@@ -4,6 +4,7 @@ import React from 'react';
 class NativeCheckbox extends React.PureComponent {
     static propTypes = {
         indeterminate: PropTypes.bool,
+        isRadioNode: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -27,10 +28,14 @@ class NativeCheckbox extends React.PureComponent {
     render() {
         const props = { ...this.props };
 
+        const { isRadioNode } = props;
+        const type = isRadioNode ? "radio" : "checkbox";
+
         // Remove property that does not exist in HTML
         delete props.indeterminate;
+        delete props.isRadioNode;
 
-        return <input {...props} ref={(c) => { this.checkbox = c; }} type="checkbox" />;
+        return <input {...props} ref={(c) => { this.checkbox = c; }} type={type} />;
     }
 }
 

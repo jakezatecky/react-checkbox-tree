@@ -1,7 +1,7 @@
 import React from 'react';
 import CheckboxTree from 'react-checkbox-tree';
 
-const nodes = [
+const initialNodes = [
     {
         value: '/app',
         label: 'app',
@@ -83,48 +83,29 @@ const nodes = [
 /* eslint-disable react/jsx-one-expression-per-line */
 class ClickExample extends React.Component {
     state = {
-        checked: [
-            '/app/Http/Controllers/WelcomeController.js',
-            '/app/Http/routes.js',
-            '/public/assets/style.css',
-            '/public/index.html',
-            '/.gitignore',
-        ],
-        expanded: [
-            '/app',
-        ],
+        nodes: initialNodes,
         clicked: {},
     };
 
-    constructor(props) {
-        super(props);
-
-        this.onCheck = this.onCheck.bind(this);
-        this.onClick = this.onClick.bind(this);
-        this.onExpand = this.onExpand.bind(this);
+    onCheck = (node, nodes) => {
+        this.setState({ nodes });
     }
 
-    onCheck(checked) {
-        this.setState({ checked });
-    }
-
-    onClick(clicked) {
+    onClick = (clicked) => {
         this.setState({ clicked });
     }
 
-    onExpand(expanded) {
-        this.setState({ expanded });
+    onExpand = (node, nodes) => {
+        this.setState({ nodes });
     }
 
     render() {
-        const { checked, expanded, clicked } = this.state;
+        const { nodes, clicked } = this.state;
         const notClickedText = '(none)';
 
         return (
             <div className="clickable-labels">
                 <CheckboxTree
-                    checked={checked}
-                    expanded={expanded}
                     iconsClass="fa5"
                     nodes={nodes}
                     expandOnClick
