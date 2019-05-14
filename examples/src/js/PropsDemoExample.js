@@ -286,6 +286,9 @@ const initialParams = [
 
 class PropsDemoExample extends React.Component {
     state = {
+        clicked: {
+            value: 'nothing yet',
+        },
         nodes: initialNodes,
         checkboxParams: initialParams,
     };
@@ -295,7 +298,8 @@ class PropsDemoExample extends React.Component {
     }
 
     onClick = (clicked) => {
-        console.log(`clicked = ${clicked.value}`);
+        // console.log(`clicked = ${clicked.value}`);
+        this.setState({ clicked });
     }
 
     onExpand = (node, nodes) => {
@@ -304,10 +308,6 @@ class PropsDemoExample extends React.Component {
 
     onParameterChange = (param, params) => {
         this.setState({ checkboxParams: params });
-    }
-
-    onUpdate = (checkedArray) => {
-        this.setState({ checked: checkedArray });
     }
 
     getParams = () => {
@@ -349,6 +349,7 @@ class PropsDemoExample extends React.Component {
     render() {
         const {
             checkboxParams,
+            clicked,
             nodes,
         } = this.state;
 
@@ -367,8 +368,8 @@ class PropsDemoExample extends React.Component {
             clickHandler = this.onClick;
         }
 
-        console.log(params);
-        console.log('------------------------------------------------');
+        // console.log(params);
+        // console.log('------------------------------------------------');
 
         return (
             <div style={{ display: 'flex' }}>
@@ -381,6 +382,12 @@ class PropsDemoExample extends React.Component {
                         onClick={clickHandler}
                         onExpand={this.onExpand}
                     />
+                </div>
+                <div style={style3}>
+                    <p>
+                        Clicked:
+                        {clicked.value}
+                    </p>
                 </div>
                 <div style={style3}>
                     <p>

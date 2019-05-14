@@ -9,6 +9,7 @@ class NativeCheckbox extends React.PureComponent {
 
     static defaultProps = {
         indeterminate: false,
+        isRadioNode: false,
     };
 
     componentDidMount() {
@@ -29,7 +30,7 @@ class NativeCheckbox extends React.PureComponent {
         const props = { ...this.props };
 
         const { isRadioNode } = props;
-        const type = isRadioNode ? "radio" : "checkbox";
+        const type = isRadioNode ? 'radio' : 'checkbox';
 
         // Remove property that does not exist in HTML
         delete props.indeterminate;

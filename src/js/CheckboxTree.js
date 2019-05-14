@@ -24,7 +24,7 @@ class CheckboxTree extends React.Component {
         expandOnClick: PropTypes.bool,
         icons: iconsShape,
         iconsClass: PropTypes.string,
-        id: PropTypes.string,
+        // id: PropTypes.string,
         lang: languageShape,
         name: PropTypes.string,
         nameAsArray: PropTypes.bool,
@@ -60,7 +60,7 @@ class CheckboxTree extends React.Component {
             radioOn: <span className="rct-icon rct-icon-radio-on" />,
         },
         iconsClass: 'fa4',
-        id: null,
+        // id: null,
         lang: {
             collapseAll: 'Collapse all',
             expandAll: 'Expand all',
@@ -248,6 +248,7 @@ class CheckboxTree extends React.Component {
             const isRadioGroup = !!node.radioGroup;
             const isRadioNode = !!parent.radioGroup;
 
+            /*
             //---------------------------------------------------------------
             // this checks for multiple checked === true nodes in a RadioGroup
             // This fixes the problem by mutating the prop!
@@ -263,6 +264,7 @@ class CheckboxTree extends React.Component {
                 }
             }
             //---------------------------------------------------------------
+            */
 
             // determine if node needs to be disabled
             let nodeDisabled = disabled || node.disabled || forceDisabled;

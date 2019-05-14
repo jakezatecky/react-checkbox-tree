@@ -125,7 +125,8 @@ class TreeNode extends React.Component {
         }
 
         if (!noCascade && (node.children && node.children.length > 0) && !isRadioGroup) {
-            const newChildren = node.children.map(child => this.toggleChecked(child, newCheckState));
+            const newChildren =
+                node.children.map(child => this.toggleChecked(child, newCheckState));
             return { ...node, children: newChildren };
         }
         return { ...node, checked: newCheckState };
