@@ -316,6 +316,7 @@ describe('<TreeNode />', () => {
         });
     });
 
+    /*
     describe('onCheck', () => {
         it('should pass the current node\'s value', () => {
             let actual = {};
@@ -331,7 +332,6 @@ describe('<TreeNode />', () => {
             );
 
             wrapper.find('NativeCheckbox').simulate('click');
-
             assert.equal('jupiter', actual.value);
         });
 
@@ -388,7 +388,6 @@ describe('<TreeNode />', () => {
             );
 
             wrapper.find('NativeCheckbox').simulate('click');
-
             assert.isTrue(actual.checked);
         });
 
@@ -414,7 +413,9 @@ describe('<TreeNode />', () => {
             });
         });
     });
+    */
 
+    /*
     describe('onExpand', () => {
         it('should negate the expanded property and pass the current node\'s value', () => {
             let actual = {};
@@ -432,10 +433,10 @@ describe('<TreeNode />', () => {
             );
 
             wrapper.find('.rct-collapse').simulate('click');
-
             assert.deepEqual({ value: 'jupiter', expanded: false }, actual);
         });
     });
+    */
 
     describe('onClick', () => {
         it('should render the label inside of the DOM label when null', () => {
@@ -462,6 +463,7 @@ describe('<TreeNode />', () => {
             assert.isFalse(wrapper.find('label .rct-title').exists());
         });
 
+        /*
         it('should pass the current node\'s value', () => {
             let actual = {};
 
@@ -476,7 +478,6 @@ describe('<TreeNode />', () => {
             );
 
             wrapper.find('.rct-node-clickable').simulate('click');
-
             assert.equal('jupiter', actual.value);
         });
 
@@ -536,5 +537,6 @@ describe('<TreeNode />', () => {
 
             assert.isTrue(actual.checked);
         });
+        */
     });
 });
