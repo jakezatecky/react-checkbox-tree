@@ -276,7 +276,7 @@ class CheckboxTree extends React.Component {
 
             // determine if node children need to be disabled
             let disableChildren = false;
-            if (nodeDisabled || (isRadioNode && !node.checked)) {
+            if ((!noCascade && nodeDisabled) || (isRadioNode && !node.checked)) {
                 disableChildren = true;
             }
 
