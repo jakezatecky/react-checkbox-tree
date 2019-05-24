@@ -163,8 +163,9 @@ class FilterExample extends React.Component {
         return (
             <div className="filter-container">
                 <input
+                    className="filter-text"
+                    placeholder="Search..."
                     type="text"
-                    placeholder="Search"
                     value={filterText}
                     onChange={this.onFilterChange}
                 />
