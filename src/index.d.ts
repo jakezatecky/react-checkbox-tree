@@ -42,6 +42,7 @@ declare module "react-checkbox-tree" {
         expandDisabled?: boolean;
         expandOnClick?: boolean;
         icons?: Icons;
+        id?: string;
         lang?: Language;
         name?: string;
         nameAsArray?: boolean;
@@ -51,7 +52,7 @@ declare module "react-checkbox-tree" {
         optimisticToggle?: boolean;
         showExpandAll?: boolean;
         showNodeIcon?: boolean;
-        showNodeTitles?: boolean;
+        showNodeTitle?: boolean;
         onClick?: (event: { checked: boolean, value: any }) => void;
     }
 
