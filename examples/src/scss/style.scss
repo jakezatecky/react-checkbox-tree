@@ -3,6 +3,7 @@ $header-bg-color-secondary: #2c3e50;
 $section-headings-color: #3498db;
 $rct-color: #444;
 $rct-border-color: #ccc;
+$input-border-color: #ced4da;
 
 @import "../../../src/scss/react-checkbox-tree";
 @import "cayman";
@@ -22,4 +23,15 @@ $rct-border-color: #ccc;
 
 .expand-all-container {
   max-width: 400px;
+}
+
+.filter-container > .filter-text {
+  display: block;
+  margin-bottom: .75rem;
+  border: 1px solid $input-border-color;
+  border-radius: .25rem;
+  background-clip: padding-box;
+  padding: .375rem .75rem;
+  line-height: 1.5;
+  font-size: 1rem;
 }
