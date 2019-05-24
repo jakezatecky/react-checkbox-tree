@@ -81,30 +81,30 @@ const nodes = [
 ];
 
 class FilterExample extends React.Component {
-    constructor() {
-        super();
+    state = {
+        checked: [
+            '/app/Http/Controllers/WelcomeController.js',
+            '/app/Http/routes.js',
+            '/public/assets/style.css',
+            '/public/index.html',
+            '/.gitignore',
+        ],
+        expanded: [
+            '/app',
+        ],
+        filterText: '',
+        nodesFiltered: nodes,
+        nodes,
+    };
 
-        this.state = {
-            checked: [
-                '/app/Http/Controllers/WelcomeController.js',
-                '/app/Http/routes.js',
-                '/public/assets/style.css',
-                '/public/index.html',
-                '/.gitignore',
-            ],
-            expanded: [
-                '/app',
-            ],
-            filterText: '',
-            nodesFiltered: nodes,
-            nodes,
-        };
+    constructor(props) {
+        super(props);
 
         this.onCheck = this.onCheck.bind(this);
         this.onExpand = this.onExpand.bind(this);
-        this.setFilterText = this.setFilterText.bind(this);
+        this.onFilterChange = this.onFilterChange.bind(this);
         this.filterTree = this.filterTree.bind(this);
-        this.nodeFilter = this.nodeFilter.bind(this);
+        this.filterNodes = this.filterNodes.bind(this);
     }
 
     onCheck(checked) {
@@ -115,11 +115,12 @@ class FilterExample extends React.Component {
         this.setState({ expanded });
     }
 
-    setFilterText(e) {
+    onFilterChange(e) {
         this.setState({ filterText: e.target.value }, this.filterTree);
     }
 
     filterTree() {
+        // Reset nodes back to unfiltered state
         if (!this.state.filterText) {
             this.setState(prevState => ({
                 nodesFiltered: prevState.nodes,
@@ -129,30 +130,48 @@ class FilterExample extends React.Component {
         }
 
         const nodesFiltered = prevState => (
-            { nodesFiltered: prevState.nodes.map(this.nodeFilter).filter(n => n !== null) }
+            { nodesFiltered: prevState.nodes.reduce(this.filterNodes, []) }
         );
 
         this.setState(nodesFiltered);
     }
 
-    nodeFilter(node) {
-        const children = (node.children || []).map(this.nodeFilter).filter(c => c !== null);
+    filterNodes(filtered, node) {
+        const { filterText } = this.state;
+        const children = (node.children || []).reduce(this.filterNodes, []);
 
-        return node.label.indexOf(this.state.filterText) !== -1 || children.length ?
-            { ...node, children } :
-            null;
+        if (
+            // Node's label matches the search string
+            node.label.toLocaleLowerCase().indexOf(filterText.toLocaleLowerCase()) > -1 ||
+            // Or a children has a matching node
+            children.length
+        ) {
+            filtered.push({ ...node, children });
+        }
+
+        return filtered;
     }
 
     render() {
-        const { checked, expanded } = this.state;
+        const {
+            checked,
+            expanded,
+            filterText,
+            nodesFiltered,
+        } = this.state;
 
         return (
-            <div>
-                <input type='text' placeholder='Search' value={this.state.filterText} onChange={this.setFilterText} />
+            <div className="filter-container">
+                <input
+                    type="text"
+                    placeholder="Search"
+                    value={filterText}
+                    onChange={this.onFilterChange}
+                />
                 <CheckboxTree
                     checked={checked}
                     expanded={expanded}
-                    nodes={this.state.nodesFiltered}
+                    nodes={nodesFiltered}
                     onCheck={this.onCheck}
                     onExpand={this.onExpand}
                 />
