@@ -121,6 +121,7 @@ class CheckboxTree extends React.Component {
         if (id !== null) {
             newState = { ...newState, id };
         }
+
         model.deserializeLists({
             checked: newProps.checked,
             expanded: newProps.expanded,
