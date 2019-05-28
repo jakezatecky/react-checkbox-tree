@@ -9,7 +9,6 @@ import iconsShape from './shapes/iconsShape';
 import languageShape from './shapes/languageShape';
 import nodeShape from './shapes/nodeShape';
 
-
 class TreeNode extends React.Component {
     static propTypes = {
         checked: PropTypes.number.isRequired,

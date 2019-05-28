@@ -140,18 +140,17 @@ class BasicExample extends React.Component {
 
     onCheck = (node, nodes) => {
         this.setState({ nodes });
-    }
+    };
 
     onExpand = (node, nodes) => {
         this.setState({ nodes });
-    }
+    };
 
     render() {
         const { nodes } = this.state;
 
         return (
             <CheckboxTree
-                style={{ flex: '1' }}
                 checkModel="all"
                 iconsClass="fa5"
                 nodes={nodes}
