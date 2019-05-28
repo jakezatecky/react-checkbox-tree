@@ -44,10 +44,9 @@ Either include one of these files in your stylesheets or utilize a CSS loader:
 import 'react-checkbox-tree/lib/react-checkbox-tree.css';
 ```
 
-
 ### Render Component
 
-A quick usage example is included below. Note that the react-checkbox-tree component is [controlled](https://facebook.github.io/react/docs/forms.html#controlled-components). In other words, as a stateless component, you must update its `checked` and `expanded` properties whenever a change occurs.
+A quick usage example is included below. Note that the react-checkbox-tree component is [controlled](https://facebook.github.io/react/docs/forms.html#controlled-components). In other words, you must update its `checked` and `expanded` properties whenever a change occurs.
 
 ``` jsx
 import React from 'react';
