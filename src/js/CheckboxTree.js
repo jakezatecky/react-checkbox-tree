@@ -24,7 +24,7 @@ class CheckboxTree extends React.Component {
         expandOnClick: PropTypes.bool,
         icons: iconsShape,
         iconsClass: PropTypes.string,
-        id: PropTypes.string,
+        // id: PropTypes.string, // removed to pass eslint
         lang: languageShape,
         name: PropTypes.string,
         nameAsArray: PropTypes.bool,
@@ -60,7 +60,7 @@ class CheckboxTree extends React.Component {
             radioOn: <span className="rct-icon rct-icon-radio-on" />,
         },
         iconsClass: 'fa4',
-        id: null,
+        // id: null, // removed to pass eslint
         lang: {
             collapseAll: 'Collapse all',
             expandAll: 'Expand all',
