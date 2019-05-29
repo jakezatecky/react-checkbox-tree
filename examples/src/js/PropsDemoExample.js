@@ -122,6 +122,10 @@ const initialNodes = [
         label: 'public',
         children: [
             {
+                value: '/public/test.html',
+                label: 'test.html',
+            },
+            {
                 value: '/public/assets/',
                 label: 'assets',
                 children: [{

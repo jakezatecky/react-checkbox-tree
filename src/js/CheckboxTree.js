@@ -24,7 +24,7 @@ class CheckboxTree extends React.Component {
         expandOnClick: PropTypes.bool,
         icons: iconsShape,
         iconsClass: PropTypes.string,
-        // id: PropTypes.string,
+        id: PropTypes.string,
         lang: languageShape,
         name: PropTypes.string,
         nameAsArray: PropTypes.bool,
@@ -60,7 +60,7 @@ class CheckboxTree extends React.Component {
             radioOn: <span className="rct-icon rct-icon-radio-on" />,
         },
         iconsClass: 'fa4',
-        // id: null,
+        id: null,
         lang: {
             collapseAll: 'Collapse all',
             expandAll: 'Expand all',
@@ -238,8 +238,10 @@ class CheckboxTree extends React.Component {
 
         const { icons, id } = this.state;
 
-        let state1counter = 0;
-        let state2counter = 0;
+        // These two variables will be in the Object returned by this function
+        // as numFullcheck and numPartialCheck. See recursive call below.
+        let state1counter = 0; // number of nodes in the nodes array with checkState === 1
+        let state2counter = 0;// number of nodes in the nodes array with checkState === 2
         const treeNodes = nodes.map((node) => {
             this.parents[node.value] = parent;
 
@@ -268,30 +270,32 @@ class CheckboxTree extends React.Component {
 
             // determine if node needs to be disabled
             let nodeDisabled = disabled || node.disabled || forceDisabled;
-            if ((!noCascade && parent.disabled) ||
-                (isRadioNode && !parent.checked)
-            ) {
+            if (isRadioNode && !onlyLeafCheckboxes && !parent.checked) {
+                nodeDisabled = true;
+            } else if (!noCascade && parent.disabled) {
                 nodeDisabled = true;
             }
 
-            // determine if node children need to be disabled
+            // determine if node's children need to be disabled
             let disableChildren = false;
             if ((!noCascade && nodeDisabled) || (isRadioNode && !node.checked)) {
                 disableChildren = true;
             }
 
-            let children;
-            let numFullcheck;
-            let numPartialCheck;
             // process chidren first so checkState calculation will know the
             // number of chidren checked
+            // numFullcheck is the number of children with checkstate === 1
+            // numPartialCheck is the number of children with checkstate === 1
+            let children; // rendered children TreeNodes
+            let numFullcheck; // the number of children with checkstate === 1
+            let numPartialCheck; // the number of children with checkstate === 1
             if (isParent) {
-                ({ numFullcheck, numPartialCheck, children } =
+                ({ children, numFullcheck, numPartialCheck } =
                     this.renderTreeNodes(node.children, node, checkedArray, disableChildren));
             }
 
             // calculate checkState for this node and
-            // increment appropriate counter for the nodes.map() loop
+            // increment appropriate checkState counter for the nodes.map() loop
             let checkState;
             if (!isParent || noCascade || isRadioGroup || isRadioNode) {
                 checkState = node.checked ? 1 : 0;
@@ -330,7 +334,9 @@ class CheckboxTree extends React.Component {
             // NOTE: variables calculated below here are not needed if node is not rendered
 
             let { showCheckbox } = node; // if undefined, TreeNode.defaultProps will be used
-            if (onlyLeafCheckboxes) { // overrides node.showCheckbox
+            if (parent.radioGroup) {
+                showCheckbox = true;
+            } else if (onlyLeafCheckboxes) { // overrides node.showCheckbox
                 showCheckbox = !isParent;
             }
 
