@@ -269,17 +269,24 @@ class CheckboxTree extends React.Component {
             */
 
             // determine if node needs to be disabled
-            let nodeDisabled = disabled || node.disabled || forceDisabled;
-            if (isRadioNode && !onlyLeafCheckboxes && !parent.checked) {
-                nodeDisabled = true;
-            } else if (!noCascade && parent.disabled) {
+            // node.disabled defaults to false here if undefined
+            let nodeDisabled = disabled || forceDisabled || !!node.disabled;
+
+            // handle the case where there are onlyLeafCheckboxes
+            // or a radioGroup node has no checkbox
+            if (isRadioNode &&
+                !parent.checked &&
+                (!onlyLeafCheckboxes || parent.showCheckbox)
+            ) {
                 nodeDisabled = true;
             }
 
             // determine if node's children need to be disabled
-            let disableChildren = false;
-            if ((!noCascade && nodeDisabled) || (isRadioNode && !node.checked)) {
-                disableChildren = true;
+            // disableChildren is passed as the 4th argument to renderTreeNodes
+            // in the recursive call below
+            let disableChildren = forceDisabled || (nodeDisabled && !noCascade);
+            if (isRadioNode) {
+                disableChildren = !node.checked || nodeDisabled;
             }
 
             // process chidren first so checkState calculation will know the
