@@ -297,9 +297,11 @@ class PropsDemoExample extends React.Component {
         checkboxParams: initialParams,
     };
 
-    onCheck = (node, nodes) => {
+    onCheck = (node, nodes, getCheckedArray) => {
         this.setState({ nodes });
+        console.log(getCheckedArray(nodes));
     }
+
 
     onClick = (clicked) => {
         // console.log(`clicked = ${clicked.value}`);
