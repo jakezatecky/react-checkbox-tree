@@ -31,175 +31,72 @@ const initialNodes = [
             {
                 value: '/app/Providers',
                 label: 'Providers',
-                disabled: true,
-                children: [
-                    {
-                        value: '/app/Providers/EventServiceProvider.js',
-                        label: 'EventServiceProvider.js',
-                    },
-                    {
-                        value: '/radioGroup',
-                        label: 'RadioGroup Test',
-                        expanded: true,
-                        radioGroup: true,
-                        children: [
-                            {
-                                value: 'radio1',
-                                label: 'radio1',
-                            },
-                            {
-                                value: 'radio2',
-                                label: 'radio2',
-                                children: [
-                                    {
-                                        value: 'radio2-1',
-                                        label: 'radio2-1',
-                                        expanded: true,
-                                        children: [
-                                            {
-                                                value: 'radio2-1-1',
-                                                label: 'radio2-1-1',
-                                            },
-                                            {
-                                                value: 'radio2-1-2',
-                                                label: 'radio2-1-2',
-                                            },
-                                            {
-                                                value: 'radio2-1-3',
-                                                label: 'radio2-1-3',
-                                            },
-                                        ],
-                                    },
-                                    {
-                                        value: 'radio2-2',
-                                        label: 'radio2-2',
-                                    },
-                                    {
-                                        value: 'radio2-3',
-                                        label: 'radio2-3',
-                                    },
-                                ],
-                            },
-                            {
-                                value: 'radio3',
-                                label: 'radio3',
-                                radioGroup: true,
-                                children: [
-                                    {
-                                        value: 'radio3-1',
-                                        label: 'radio3-1',
-                                    },
-                                    {
-                                        value: 'radio3-2',
-                                        label: 'radio3-2',
-                                    },
-                                    {
-                                        value: 'radio3-3',
-                                        label: 'radio3-3',
-                                    },
-                                ],
-                            },
-                        ],
-                    },
-                ],
+                children: [{
+                    value: '/app/Providers/EventServiceProvider.js',
+                    label: 'EventServiceProvider.js',
+                }],
             },
         ],
     },
     {
-        value: '/radioGroupTest',
+        value: '/radioGroup',
         label: 'RadioGroup Test',
         expanded: true,
         radioGroup: true,
         children: [
             {
-                value: 'radio10',
-                label: 'radio10',
+                value: 'radio1',
+                label: 'radio1',
             },
             {
-                value: 'radio20',
-                label: 'radio20',
+                value: 'radio2',
+                label: 'radio2',
                 children: [
                     {
-                        value: 'radio20-1',
-                        label: 'radio20-1',
+                        value: 'radio2-1',
+                        label: 'radio2-1',
                         expanded: true,
                         children: [
                             {
-                                value: 'radio20-1-1',
-                                label: 'radio20-1-1',
+                                value: 'radio2-1-1',
+                                label: 'radio2-1-1',
                             },
                             {
-                                value: 'radio20-1-2',
-                                label: 'radio20-1-2',
+                                value: 'radio2-1-2',
+                                label: 'radio2-1-2',
                             },
                             {
-                                value: 'radio20-1-3',
-                                label: 'radio20-1-3',
+                                value: 'radio2-1-3',
+                                label: 'radio2-1-3',
                             },
                         ],
                     },
                     {
-                        value: 'radio20-2',
-                        label: 'radio20-2',
+                        value: 'radio2-2',
+                        label: 'radio2-2',
                     },
                     {
-                        value: 'radio20-3',
-                        label: 'radio20-3',
-                    },
-                ],
-            },
-            {
-                value: 'radio30',
-                label: 'radio30',
-                radioGroup: true,
-                children: [
-                    {
-                        value: 'radio30-1',
-                        label: 'radio30-1',
-                    },
-                    {
-                        value: 'radio30-2',
-                        label: 'radio30-2',
-                    },
-                    {
-                        value: 'radio30-3',
-                        label: 'radio30-3',
+                        value: 'radio2-3',
+                        label: 'radio2-3',
                     },
                 ],
             },
-        ],
-    },
-    {
-        value: '/radioGroup_noCheckbox',
-        label: 'RadioGroup showCheckbox false',
-        expanded: true,
-        radioGroup: true,
-        showCheckbox: false,
-        children: [
             {
-                value: 'radioA',
-                label: 'radio A',
-            },
-            {
-                value: 'radioB',
-                label: 'radio B',
-            },
-            {
-                value: 'radioC',
-                label: 'radio C',
+                value: 'radio3',
+                label: 'radio3',
                 radioGroup: true,
                 children: [
                     {
-                        value: 'radioC-1',
-                        label: 'radio C-1',
+                        value: 'radio3-1',
+                        label: 'radio3-1',
                     },
                     {
-                        value: 'radioC-2',
-                        label: 'radio C-2',
+                        value: 'radio3-2',
+                        label: 'radio3-2',
                     },
                     {
-                        value: 'radioC-3',
-                        label: 'radio C-3',
+                        value: 'radio3-3',
+                        label: 'radio3-3',
                     },
                 ],
             },

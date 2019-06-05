@@ -291,9 +291,11 @@ class CheckboxTree extends React.Component {
 
             // process chidren first so checkState calculation will know the
             // number of chidren checked
+            // numFullcheck is the number of children with checkstate === 1
+            // numPartialCheck is the number of children with checkstate === 1
             let children; // rendered children TreeNodes
             let numFullcheck; // the number of children with checkstate === 1
-            let numPartialCheck; // the number of children with checkstate === 2
+            let numPartialCheck; // the number of children with checkstate === 1
             if (isParent) {
                 ({ children, numFullcheck, numPartialCheck } =
                     this.renderTreeNodes(node.children, node, checkedArray, disableChildren));
