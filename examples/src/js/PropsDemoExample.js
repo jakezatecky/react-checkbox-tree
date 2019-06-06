@@ -295,11 +295,14 @@ class PropsDemoExample extends React.Component {
         },
         nodes: initialNodes,
         checkboxParams: initialParams,
+        checkedArray: [
+            'not populated yet',
+            'check something',
+        ],
     };
 
-    onCheck = (node, nodes, getCheckedArray) => {
-        this.setState({ nodes });
-        console.log(getCheckedArray(nodes));
+    onCheck = (node, nodes, checkedArray) => {
+        this.setState({ nodes, checkedArray });
     }
 
 
@@ -357,6 +360,7 @@ class PropsDemoExample extends React.Component {
             checkboxParams,
             clicked,
             nodes,
+            checkedArray,
         } = this.state;
 
         const style3 = {
@@ -374,8 +378,16 @@ class PropsDemoExample extends React.Component {
             clickHandler = this.onClick;
         }
 
-        // console.log(params);
-        // console.log('------------------------------------------------');
+        const checkedItems = checkedArray.map(item => (
+            <span
+                key={item}
+                style={{ fontSize: ' 12px' }}
+            >
+                {item}
+                ,
+                <br />
+            </span>
+        ));
 
         return (
             <div style={{ display: 'flex' }}>
@@ -391,8 +403,14 @@ class PropsDemoExample extends React.Component {
                 </div>
                 <div style={style3}>
                     <p>
-                        Clicked:
+                        Clicked:&nbsp;
                         {clicked.value}
+                    </p>
+                    <p>
+                    checked = [
+                        <br />
+                        {checkedItems}
+                    ]
                     </p>
                 </div>
                 <div style={style3}>

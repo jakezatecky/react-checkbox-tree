@@ -143,9 +143,9 @@ class BasicExampleObject extends React.Component {
         nodes: initialNodes,
     };
 
-    onCheck = (node, nodes, getCheckedArray) => {
+    onCheck = (node, nodes, checkedArray) => {
         this.setState({ nodes });
-        console.log(getCheckedArray(nodes));
+        console.log(checkedArray);
     }
 
     onExpand = (node, nodes) => {
