@@ -310,7 +310,7 @@ class PropsDemoExample extends React.Component {
     onCheck = (node, nodes, checkedArray) => {
         // checkedArray will be undefined if useCheckedArray === false
         this.setState({ nodes, checkedArray });
-        console.log(checkedArray);
+        // console.log(checkedArray);
     }
 
 
