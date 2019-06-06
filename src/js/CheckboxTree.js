@@ -35,6 +35,7 @@ class CheckboxTree extends React.Component {
         showExpandAll: PropTypes.bool,
         showNodeIcon: PropTypes.bool,
         showNodeTitle: PropTypes.bool,
+        useCheckedArray: PropTypes.bool,
         onCheck: PropTypes.func,
         onClick: PropTypes.func,
         onExpand: PropTypes.func,
@@ -75,6 +76,7 @@ class CheckboxTree extends React.Component {
         showExpandAll: false,
         showNodeIcon: true,
         showNodeTitle: false,
+        useCheckedArray: false,
         onCheck: () => {},
         onClick: null,
         onExpand: () => {},
@@ -157,7 +159,7 @@ class CheckboxTree extends React.Component {
     }
 
     onCheck = (node) => {
-        const { nodes, onCheck } = this.props;
+        const { nodes, onCheck, useCheckedArray } = this.props;
         const parent = this.parents[node.value];
 
         if (parent.radioGroup) {
@@ -166,9 +168,7 @@ class CheckboxTree extends React.Component {
 
         const root = this.updateParentNodes(node);
 
-        const useCheckedArray = true;
         let checkedArray;
-
         if (useCheckedArray) {
             ({ checkedArray } = this.processNodes(
                 root.children, root, undefined, undefined, false,

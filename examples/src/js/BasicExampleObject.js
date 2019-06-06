@@ -161,6 +161,7 @@ class BasicExampleObject extends React.Component {
                 checkModel="all"
                 iconsClass="fa5"
                 nodes={nodes}
+                useCheckedArray
                 onCheck={this.onCheck}
                 onExpand={this.onExpand}
             />
