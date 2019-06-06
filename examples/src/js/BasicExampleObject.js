@@ -143,9 +143,8 @@ class BasicExampleObject extends React.Component {
         nodes: initialNodes,
     };
 
-    onCheck = (node, nodes, checkedArray) => {
+    onCheck = (node, nodes) => {
         this.setState({ nodes });
-        // console.log(checkedArray);
     }
 
     onExpand = (node, nodes) => {
@@ -161,7 +160,6 @@ class BasicExampleObject extends React.Component {
                 checkModel="all"
                 iconsClass="fa5"
                 nodes={nodes}
-                useCheckedArray
                 onCheck={this.onCheck}
                 onExpand={this.onExpand}
             />
