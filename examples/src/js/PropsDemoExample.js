@@ -286,6 +286,12 @@ const initialParams = [
         checked: false,
         default: false,
     },
+    {
+        label: 'useCheckedArray',
+        value: 'useCheckedArray',
+        checked: true,
+        default: true,
+    },
 ];
 
 class PropsDemoExample extends React.Component {
@@ -295,11 +301,18 @@ class PropsDemoExample extends React.Component {
         },
         nodes: initialNodes,
         checkboxParams: initialParams,
+        checkedArray: [
+            'checked not populated yet',
+            'click a checkbox',
+        ],
     };
 
-    onCheck = (node, nodes) => {
-        this.setState({ nodes });
+    onCheck = (node, nodes, checkedArray) => {
+        // checkedArray will be undefined if useCheckedArray === false
+        this.setState({ nodes, checkedArray });
+        console.log(checkedArray);
     }
+
 
     onClick = (clicked) => {
         // console.log(`clicked = ${clicked.value}`);
@@ -311,7 +324,25 @@ class PropsDemoExample extends React.Component {
     }
 
     onParameterChange = (param, params) => {
-        this.setState({ checkboxParams: params });
+        const { nodes, checkedArray } = this.state;
+
+        let newNodes;
+        if (Array.isArray(nodes)) {
+            newNodes = [...nodes];
+        } else {
+            newNodes = { ...nodes };
+        }
+
+        let newCheckedArray;
+        if (checkedArray) {
+            // checkedArray will be undefined if useCheckedArray === false
+            newCheckedArray = [...checkedArray];
+        }
+        this.setState({
+            checkboxParams: params,
+            nodes: newNodes,
+            checkedArray: newCheckedArray,
+        });
     }
 
     getParams = () => {
@@ -355,6 +386,7 @@ class PropsDemoExample extends React.Component {
             checkboxParams,
             clicked,
             nodes,
+            checkedArray,
         } = this.state;
 
         const style3 = {
@@ -372,8 +404,19 @@ class PropsDemoExample extends React.Component {
             clickHandler = this.onClick;
         }
 
-        // console.log(params);
-        // console.log('------------------------------------------------');
+        let checkedItems;
+        if (checkedArray) {
+            checkedItems = checkedArray.map(item => (
+                <span
+                    key={item}
+                    style={{ fontSize: ' 12px' }}
+                >
+                    {item}
+                    ,
+                    <br />
+                </span>
+            ));
+        }
 
         return (
             <div style={{ display: 'flex' }}>
@@ -388,9 +431,23 @@ class PropsDemoExample extends React.Component {
                     />
                 </div>
                 <div style={style3}>
+                    <p style={{ fontSize: ' 12px' }}>
+                        Clicked responds when expandOnClick is checked.
+                    </p>
                     <p>
-                        Clicked:
+                        Clicked:&nbsp;
                         {clicked.value}
+                    </p>
+                    <p style={{ fontSize: ' 12px' }}>
+                        The checked array only works when useCheckedArray is
+                        checked. It changes only when items
+                        are checked or unchecked.
+                    </p>
+                    <p>
+                        checked = [
+                        <br />
+                        {checkedItems}
+                        ]
                     </p>
                 </div>
                 <div style={style3}>
