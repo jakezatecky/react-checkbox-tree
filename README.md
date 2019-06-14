@@ -117,7 +117,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
     ...
     icons={{
         check: <FontAwesomeIcon className="rct-icon rct-icon-check" icon="check-square" />,
-        uncheck: <FontAwesomeIcon className="rct-icon rct-icon-uncheck" icon={['far', 'square']} />,
+        uncheck: <FontAwesomeIcon className="rct-icon rct-icon-uncheck" icon={['fas', 'square']} />,
         halfCheck: <FontAwesomeIcon className="rct-icon rct-icon-half-check" icon="check-square" />,
         expandClose: <FontAwesomeIcon className="rct-icon rct-icon-expand-close" icon="chevron-right" />,
         expandOpen: <FontAwesomeIcon className="rct-icon rct-icon-expand-open" icon="chevron-down" />,
