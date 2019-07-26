@@ -244,6 +244,7 @@ class CheckboxTree extends React.Component {
                     label={node.label}
                     lang={lang}
                     optimisticToggle={optimisticToggle}
+                    isHtml={node.isHtml}
                     isLeaf={flatNode.isLeaf}
                     isParent={flatNode.isParent}
                     showCheckbox={showCheckbox}
