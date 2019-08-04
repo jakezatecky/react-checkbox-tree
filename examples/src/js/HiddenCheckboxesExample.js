@@ -120,6 +120,7 @@ class HiddenCheckboxesExample extends React.Component {
 
         return (
             <CheckboxTree
+                aria-label='Hide Checkboxes Example'
                 checked={checked}
                 expanded={expanded}
                 nodes={nodes}

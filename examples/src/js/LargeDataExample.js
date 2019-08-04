@@ -52,6 +52,7 @@ class LargeDataExample extends React.Component {
 
         return (
             <CheckboxTree
+                aria-label='Large Data Example'
                 checked={checked}
                 expanded={expanded}
                 nodes={nodes}

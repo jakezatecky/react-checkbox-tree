@@ -71,6 +71,7 @@ class Widget extends React.Component {
     render() {
         return (
             <CheckboxTree
+                aria-label='Moons'
                 nodes={nodes}
                 checked={this.state.checked}
                 expanded={this.state.expanded}
@@ -135,6 +136,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 | Property             | Type     | Description                                                                                                            | Default     |
 | -------------------- | -------- | ---------------------------------------------------------------------------------------------------------------------- | ----------- |
 | `nodes`              | array    | **Required**. Specifies the tree nodes and their children.                                                             |             |
+| `aria-label`         | string   | a short label that describes the purpose of the tree                                                                   | `null`      |
 | `checked`            | array    | An array of checked node values.                                                                                       | `[]`        |
 | `disabled`           | bool     | If true, the component will be disabled and nodes cannot be checked.                                                   | `false`     |
 | `expandDisabled`     | bool     | If true, the ability to expand nodes will be disabled.                                                                 | `false`     |

@@ -114,6 +114,7 @@ class DisabledExample extends React.Component {
 
         return (
             <CheckboxTree
+                aria-label='Disabled Example'
                 checked={checked}
                 disabled
                 expanded={expanded}

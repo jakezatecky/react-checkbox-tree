@@ -170,6 +170,7 @@ class FilterExample extends React.Component {
                     onChange={this.onFilterChange}
                 />
                 <CheckboxTree
+                    aria-label='Filter Example'
                     checked={checked}
                     expanded={expanded}
                     nodes={nodesFiltered}

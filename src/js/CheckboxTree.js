@@ -30,6 +30,7 @@ class CheckboxTree extends React.Component {
     static propTypes = {
         nodes: PropTypes.arrayOf(nodeShape).isRequired,
 
+        'aria-label': PropTypes.string,
         checked: listShape,
         disabled: PropTypes.bool,
         expandDisabled: PropTypes.bool,
@@ -53,6 +54,7 @@ class CheckboxTree extends React.Component {
     };
 
     static defaultProps = {
+        'aria-label': null,
         checked: [],
         disabled: false,
         expandDisabled: false,
@@ -450,6 +452,7 @@ class CheckboxTree extends React.Component {
                 {this.renderExpandAll()}
                 {this.renderHiddenInput()}
                 <div
+                    aria-label={this.props['aria-label']}
                     onFocus={this.onFocus}
                     onKeyDown={this.onKeyDown}
                     role="tree"
