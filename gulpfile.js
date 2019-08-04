@@ -8,7 +8,7 @@ const header = require('gulp-header');
 const less = require('gulp-less');
 const mocha = require('gulp-mocha');
 const sass = require('gulp-sass');
-const scsslint = require('gulp-scss-lint');
+// const scsslint = require('gulp-scss-lint');
 const webpack = require('webpack');
 const webpackStream = require('webpack-stream');
 
@@ -59,8 +59,8 @@ gulp.task('build-script-web', gulp.series('build-script', () => (
 
 gulp.task('build-style', () => (
     gulp.src('./src/scss/**/*.scss')
-        .pipe(scsslint())
-        .pipe(scsslint.failReporter())
+        // .pipe(scsslint())
+        // .pipe(scsslint.failReporter())
         .pipe(sass({
             outputStyle: 'expanded',
         }).on('error', sass.logError))
@@ -98,8 +98,8 @@ function buildExamplesScript(mode = 'development') {
 
 function buildExamplesStyle(minifyStyles = false) {
     let stream = gulp.src('./examples/src/scss/**/*.scss')
-        .pipe(scsslint())
-        .pipe(scsslint.failReporter())
+        // .pipe(scsslint())
+        // .pipe(scsslint.failReporter())
         .pipe(sass({
             outputStyle: 'expanded',
         }).on('error', sass.logError))
