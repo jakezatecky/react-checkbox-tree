@@ -5,8 +5,12 @@ $rct-clickable-hover: rgba($rct-icon-color, .1) !default;
 $rct-clickable-focus: rgba($rct-icon-color, .2) !default;
 
 .react-checkbox-tree {
+  // Unsure why these 2 lines cause the tree items to not render visually, once I added a div with role="tree" to wrap the tree
+  // would appreciate help to fix
+  /*
   display: flex;
   flex-direction: row-reverse;
+  */
   font-size: 16px;
 
   > ol {

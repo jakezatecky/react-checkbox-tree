@@ -178,7 +178,7 @@ describe('<CheckboxTree />', () => {
 
             assert.deepEqual(
                 wrapper.find(TreeNode).prop('children').props,
-                { children: [null, null] },
+                { children: [null, null], role: 'presentation' },
             );
         });
     });

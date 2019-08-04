@@ -12,6 +12,20 @@ import languageShape from './shapes/languageShape';
 import listShape from './shapes/listShape';
 import nodeShape from './shapes/nodeShape';
 
+const SUPPORTED_KEYS = [
+    'ArrowUp',
+    'ArrowDown',
+    'ArrowLeft',
+    'ArrowRight',
+    'End',
+    'Home',
+    'Enter',
+    ' ',
+];
+
+// Clamp a number so that it is within the range [min, max]
+const clamp = (n, min, max) => Math.min(Math.max(n, min), max);
+
 class CheckboxTree extends React.Component {
     static propTypes = {
         nodes: PropTypes.arrayOf(nodeShape).isRequired,
@@ -87,6 +101,7 @@ class CheckboxTree extends React.Component {
         });
 
         this.state = {
+            focusedNodeIndex: null,
             id: props.id || `rct-${nanoid(7)}`,
             model,
             prevProps: props,
@@ -97,6 +112,8 @@ class CheckboxTree extends React.Component {
         this.onNodeClick = this.onNodeClick.bind(this);
         this.onExpandAll = this.onExpandAll.bind(this);
         this.onCollapseAll = this.onCollapseAll.bind(this);
+        this.onFocus = this.onFocus.bind(this);
+        this.onKeyDown = this.onKeyDown.bind(this);
     }
 
     // eslint-disable-next-line react/sort-comp
@@ -158,6 +175,92 @@ class CheckboxTree extends React.Component {
         this.expandAllNodes(false);
     }
 
+    onFocus() {
+        const isFirstFocus = this.state.focusedNodeIndex === null;
+        if (isFirstFocus) {
+            this.setState({ focusedNodeIndex: 0 });
+        }
+    }
+
+    onKeyDown(e) {
+        const keyEligibleForFirstLetterNavigation = e.key.length === 1 &&
+            !e.ctrlKey && !e.metaKey && !e.altKey;
+        // abort early so that we don't try to intercept common browser keystrokes like alt+d
+        if (!SUPPORTED_KEYS.includes(e.key) && !keyEligibleForFirstLetterNavigation) {
+            return;
+        }
+
+        const { focusedNodeIndex, model } = this.state;
+        const currentlyFocusedNode = model.getNode(this.visibleNodes[focusedNodeIndex || 0]);
+        let newFocusedNodeIndex = focusedNodeIndex || 0;
+        const isExpandingEnabled = !this.props.expandDisabled && !this.props.disabled;
+
+        e.preventDefault(); // disable built-in scrolling
+        switch (e.key) {
+            case 'ArrowDown':
+                newFocusedNodeIndex += 1;
+                break;
+            case 'ArrowUp':
+                newFocusedNodeIndex -= 1;
+                break;
+            case 'Home':
+                newFocusedNodeIndex = 0;
+                break;
+            case 'End':
+                newFocusedNodeIndex = this.visibleNodes.length - 1;
+                break;
+            case 'ArrowRight':
+                if (currentlyFocusedNode && currentlyFocusedNode.isParent) {
+                    if (currentlyFocusedNode.expanded) {
+                        // we can increment focused index to get the first child
+                        // because visibleNodes is an pre-order traversal of the tree
+                        newFocusedNodeIndex += 1;
+                    } else if (isExpandingEnabled) {
+                        // expand the currently focused node
+                        this.onExpand({ value: currentlyFocusedNode.value, expanded: true });
+                    }
+                }
+                break;
+            case 'ArrowLeft':
+                if (!currentlyFocusedNode) {
+                    return;
+                }
+                if (currentlyFocusedNode.isParent && currentlyFocusedNode.expanded &&
+                    isExpandingEnabled) {
+                    // collapse the currently focused node
+                    this.onExpand({ value: currentlyFocusedNode.value, expanded: false });
+                } else {
+                    // Move focus to the parent of the current node, if any
+                    // parent is the first element to the left of the currently focused element
+                    // with a lower tree depth since visibleNodes is an pre-order traversal
+                    const parent = this.visibleNodes.slice(0, focusedNodeIndex)
+                        .reverse()
+                        .find(val => model.getNode(val).treeDepth < currentlyFocusedNode.treeDepth);
+                    if (parent) {
+                        newFocusedNodeIndex = this.visibleNodes.indexOf(parent);
+                    }
+                }
+                break;
+            default:
+                if (keyEligibleForFirstLetterNavigation) {
+                    const next = this.visibleNodes.slice((focusedNodeIndex || 0) + 1)
+                        .find((val) => {
+                            const { label } = model.getNode(val);
+                            // for now, we only support first-letter nav to
+                            // nodes with string labels, not jsx elements
+                            return label.startsWith ? label.startsWith(e.key) : false;
+                        });
+                    if (next) {
+                        newFocusedNodeIndex = this.visibleNodes.indexOf(next);
+                    }
+                }
+                break;
+        }
+
+        newFocusedNodeIndex = clamp(newFocusedNodeIndex, 0, this.visibleNodes.length - 1);
+        this.setState({ focusedNodeIndex: newFocusedNodeIndex });
+    }
+
     expandAllNodes(expand = true) {
         const { onExpand } = this.props;
 
@@ -207,10 +310,15 @@ class CheckboxTree extends React.Component {
             showNodeTitle,
             showNodeIcon,
         } = this.props;
-        const { id, model } = this.state;
+        const { focusedNodeIndex, id, model } = this.state;
         const { icons: defaultIcons } = CheckboxTree.defaultProps;
 
         const treeNodes = nodes.map((node) => {
+            const parentExpanded = parent.value ? model.getNode(parent.value).expanded : true;
+            if (parentExpanded) {
+                // visible only if parent is expanded or if there is no root parent
+                this.visibleNodes.push(node.value);
+            }
             const key = node.value;
             const flatNode = model.getNode(node.value);
             const children = flatNode.isParent ? this.renderTreeNodes(node.children, node) : null;
@@ -224,8 +332,6 @@ class CheckboxTree extends React.Component {
             const showCheckbox = onlyLeafCheckboxes ? flatNode.isLeaf : flatNode.showCheckbox;
 
             // Render only if parent is expanded or if there is no root parent
-            const parentExpanded = parent.value ? model.getNode(parent.value).expanded : true;
-
             if (!parentExpanded) {
                 return null;
             }
@@ -239,6 +345,7 @@ class CheckboxTree extends React.Component {
                     expandDisabled={expandDisabled}
                     expandOnClick={expandOnClick}
                     expanded={flatNode.expanded}
+                    hasFocus={this.visibleNodes[focusedNodeIndex] === node.value}
                     icon={node.icon}
                     icons={{ ...defaultIcons, ...icons }}
                     label={node.label}
@@ -261,7 +368,7 @@ class CheckboxTree extends React.Component {
         });
 
         return (
-            <ol>
+            <ol role="presentation">
                 {treeNodes}
             </ol>
         );
@@ -327,6 +434,9 @@ class CheckboxTree extends React.Component {
 
     render() {
         const { disabled, nodes, nativeCheckboxes } = this.props;
+        const { focusedNodeIndex } = this.state;
+        const isFirstFocus = focusedNodeIndex === null;
+        this.visibleNodes = []; // an pre-order traversal of the tree for keyboard support
         const treeNodes = this.renderTreeNodes(nodes);
 
         const className = classNames({
@@ -339,7 +449,15 @@ class CheckboxTree extends React.Component {
             <div className={className}>
                 {this.renderExpandAll()}
                 {this.renderHiddenInput()}
-                {treeNodes}
+                <div
+                    onFocus={this.onFocus}
+                    onKeyDown={this.onKeyDown}
+                    role="tree"
+                    // Only include top-level node in tab order if it has never gained focus before
+                    tabIndex={isFirstFocus ? 0 : -1}
+                >
+                    {treeNodes}
+                </div>
             </div>
         );
     }
