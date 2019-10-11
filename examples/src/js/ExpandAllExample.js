@@ -115,6 +115,7 @@ class ExpandAllExample extends React.Component {
         return (
             <div className="expand-all-container">
                 <CheckboxTree
+                    aria-label='Expand All/Collapse All Example'
                     checked={checked}
                     expanded={expanded}
                     nodes={nodes}

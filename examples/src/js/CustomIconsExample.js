@@ -69,6 +69,7 @@ class CustomIconsExamples extends React.Component {
 
         return (
             <CheckboxTree
+                aria-label='Custom Icons Example'
                 checked={checked}
                 expanded={expanded}
                 nodes={nodes}

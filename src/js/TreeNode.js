@@ -13,6 +13,7 @@ class TreeNode extends React.Component {
         disabled: PropTypes.bool.isRequired,
         expandDisabled: PropTypes.bool.isRequired,
         expanded: PropTypes.bool.isRequired,
+        hasFocus: PropTypes.bool.isRequired,
         icons: iconsShape.isRequired,
         isLeaf: PropTypes.bool.isRequired,
         isParent: PropTypes.bool.isRequired,
@@ -50,9 +51,21 @@ class TreeNode extends React.Component {
     constructor(props) {
         super(props);
 
+        this.nodeRef = React.createRef();
+
+        this.componentDidUpdate = this.componentDidUpdate.bind(this);
         this.onCheck = this.onCheck.bind(this);
         this.onClick = this.onClick.bind(this);
+        this.onKeyDown = this.onKeyDown.bind(this);
         this.onExpand = this.onExpand.bind(this);
+    }
+
+    componentDidUpdate(prevProps) {
+        // Move focus for keyboard users
+        const isReceivingFocus = this.props.hasFocus && !prevProps.hasFocus;
+        if (isReceivingFocus) {
+            this.nodeRef.current.focus();
+        }
     }
 
     onCheck() {
@@ -75,6 +88,16 @@ class TreeNode extends React.Component {
         }
 
         onClick({ value, checked: this.getCheckState({ toggle: false }) });
+    }
+
+    onKeyDown(e) {
+        if (e.key === ' ') {
+            e.preventDefault(); // prevent scrolling
+            e.stopPropagation(); // prevent parent nodes from toggling their checked state
+            if (!this.props.disabled) {
+                this.onCheck();
+            }
+        }
     }
 
     onExpand() {
@@ -117,10 +140,13 @@ class TreeNode extends React.Component {
 
         return (
             <Button
+                // hide this button from the accessibility tree, as there is full keyboard control
+                aria-hidden
                 className="rct-collapse rct-collapse-btn"
                 disabled={expandDisabled}
                 title={lang.toggle}
                 onClick={this.onExpand}
+                tabIndex={-1}
             >
                 {this.renderCollapseIcon()}
             </Button>
@@ -178,21 +204,24 @@ class TreeNode extends React.Component {
         const { onClick, title } = this.props;
         const clickable = onClick !== null;
 
+        // Disable the lints about this control not being accessible
+        // We already provide full keyboard control, so this is clickable for mouse users
+        // eslint-disable-next-line max-len
+        /* eslint-disable jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */
         return (
             <span className="rct-bare-label" title={title}>
                 {clickable ? (
                     <span
                         className="rct-node-clickable"
                         onClick={this.onClick}
-                        onKeyPress={this.onClick}
-                        role="button"
-                        tabIndex={0}
                     >
                         {children}
                     </span>
                 ) : children}
             </span>
         );
+        // eslint-disable-next-line max-len
+        /* eslint-enable jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */
     }
 
     renderCheckboxLabel(children) {
@@ -226,13 +255,13 @@ class TreeNode extends React.Component {
 
         if (clickable) {
             render.push((
+                // We can disable the lint here, since keyboard functionality is already provided
+                // eslint-disable-next-line jsx-a11y/no-static-element-interactions
                 <span
                     key={1}
                     className="rct-node-clickable"
                     onClick={this.onClick}
                     onKeyPress={this.onClick}
-                    role="link"
-                    tabIndex={0}
                 >
                     {children}
                 </span>
@@ -267,11 +296,18 @@ class TreeNode extends React.Component {
             return null;
         }
 
-        return this.props.children;
+        return this.props.isParent ? (
+            <div role="group">
+                {this.props.children}
+            </div>
+        ) : (
+            this.props.children
+        );
     }
 
     render() {
         const {
+            checked,
             className,
             disabled,
             expanded,
@@ -285,9 +321,22 @@ class TreeNode extends React.Component {
             'rct-node-collapsed': !isLeaf && !expanded,
             'rct-disabled': disabled,
         }, className);
+        let ariaChecked = checked === 1 ? 'true' : 'false';
+        if (checked === 2) {
+            ariaChecked = 'mixed';
+        }
 
         return (
-            <li className={nodeClass}>
+            <li
+                aria-checked={ariaChecked}
+                aria-disabled={disabled}
+                aria-expanded={this.props.isParent ? expanded || false : null}
+                className={nodeClass}
+                onKeyDown={this.onKeyDown}
+                ref={this.nodeRef}
+                role="treeitem"
+                tabIndex={this.props.hasFocus ? 0 : -1}
+            >
                 <span className="rct-text">
                     {this.renderCollapseButton()}
                     {this.renderLabel()}

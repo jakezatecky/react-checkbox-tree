@@ -123,6 +123,7 @@ class ClickExample extends React.Component {
         return (
             <div className="clickable-labels">
                 <CheckboxTree
+                    aria-label='Clickable Labels Example'
                     checked={checked}
                     expanded={expanded}
                     nodes={nodes}

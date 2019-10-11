@@ -114,6 +114,7 @@ class BasicExample extends React.Component {
 
         return (
             <CheckboxTree
+                aria-label='Basic Example'
                 checked={checked}
                 expanded={expanded}
                 nodes={nodes}

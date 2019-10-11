@@ -115,6 +115,7 @@ class NoCascadeExample extends React.Component {
 
         return (
             <CheckboxTree
+                aria-label='No Cascading Example'
                 checked={checked}
                 expanded={expanded}
                 noCascade

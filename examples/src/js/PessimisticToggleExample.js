@@ -114,6 +114,7 @@ class PessimisticToggleExample extends React.Component {
 
         return (
             <CheckboxTree
+                aria-label='Pessimistic Toggle Example'
                 checked={checked}
                 expanded={expanded}
                 nodes={nodes}

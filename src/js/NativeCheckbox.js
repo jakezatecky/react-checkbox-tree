@@ -30,7 +30,10 @@ class NativeCheckbox extends React.PureComponent {
         // Remove property that does not exist in HTML
         delete props.indeterminate;
 
-        return <input {...props} ref={(c) => { this.checkbox = c; }} type="checkbox" />;
+        // Since we already implement space toggling selection,
+        // the native checkbox no longer needs to be in the accessibility tree and in tab order
+        // I.e, this is purely for visual rendering
+        return <input {...props} ref={(c) => { this.checkbox = c; }} type="checkbox" aria-hidden tabIndex={-1} />;
     }
 }
 
