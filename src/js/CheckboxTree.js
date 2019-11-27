@@ -187,11 +187,15 @@ class CheckboxTree extends React.Component {
     }
 
     isEveryChildChecked(node) {
-        return node.children.every(child => this.state.model.getNode(child.value).checkState === 1);
+        return node.children.every(
+            (child) => this.state.model.getNode(child.value).checkState === 1,
+        );
     }
 
     isSomeChildChecked(node) {
-        return node.children.some(child => this.state.model.getNode(child.value).checkState > 0);
+        return node.children.some(
+            (child) => this.state.model.getNode(child.value).checkState > 0,
+        );
     }
 
     renderTreeNodes(nodes, parent = {}) {
