@@ -181,6 +181,56 @@ describe('<CheckboxTree />', () => {
                 { children: [null, null] },
             );
         });
+
+        it('should render a node with no "children" array as a leaf', () => {
+            const wrapper = shallow(
+                <CheckboxTree
+                    nodes={[
+                        { value: 'jupiter', label: 'Jupiter' },
+                    ]}
+                />,
+            );
+
+            assert.equal(false, wrapper.find(TreeNode).prop('isParent'));
+            assert.equal(true, wrapper.find(TreeNode).prop('isLeaf'));
+        });
+
+        it('should render a node with an empty "children" array as a parent', () => {
+            const wrapper = shallow(
+                <CheckboxTree
+                    nodes={[
+                        {
+                            value: 'jupiter',
+                            label: 'Jupiter',
+                            children: [],
+                        },
+                    ]}
+                />,
+            );
+
+            assert.equal(true, wrapper.find(TreeNode).prop('isParent'));
+            assert.equal(false, wrapper.find(TreeNode).prop('isLeaf'));
+        });
+
+        it('should render a node with a non-empty "children" array as a parent', () => {
+            const wrapper = shallow(
+                <CheckboxTree
+                    nodes={[
+                        {
+                            value: 'jupiter',
+                            label: 'Jupiter',
+                            children: [
+                                { value: 'io', label: 'Io' },
+                                { value: 'europa', label: 'Europa' },
+                            ],
+                        },
+                    ]}
+                />,
+            );
+
+            assert.equal(true, wrapper.find(TreeNode).prop('isParent'));
+            assert.equal(false, wrapper.find(TreeNode).prop('isLeaf'));
+        });
     });
 
     describe('noCascade', () => {
