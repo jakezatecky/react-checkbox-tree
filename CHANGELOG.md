@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## v1.6.0 (TBA)
+## [v1.6.0](https://github.com/jakezatecky/react-checkbox-tree/compare/v1.5.0...v1.6.0) (2019-12-11)
 
 ### New Features
 
