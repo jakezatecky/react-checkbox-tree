@@ -33,6 +33,7 @@ class CheckboxTree extends React.Component {
         showExpandAll: PropTypes.bool,
         showNodeIcon: PropTypes.bool,
         showNodeTitle: PropTypes.bool,
+        useTopNode: PropTypes.bool,
         onCheck: PropTypes.func,
         onClick: PropTypes.func,
         onExpand: PropTypes.func,
@@ -71,9 +72,10 @@ class CheckboxTree extends React.Component {
         showExpandAll: false,
         showNodeIcon: true,
         showNodeTitle: false,
-        onCheck: () => {},
+        onCheck: () => { },
         onClick: null,
-        onExpand: () => {},
+        onExpand: () => { },
+        useTopNode: false,
     };
 
     constructor(props) {
@@ -125,11 +127,11 @@ class CheckboxTree extends React.Component {
     }
 
     onCheck(nodeInfo) {
-        const { noCascade, onCheck } = this.props;
+        const { noCascade, onCheck, useTopNode } = this.props;
         const model = this.state.model.clone();
         const node = model.getNode(nodeInfo.value);
 
-        model.toggleChecked(nodeInfo, nodeInfo.checked, noCascade);
+        model.toggleChecked(nodeInfo, nodeInfo.checked, noCascade, useTopNode);
         onCheck(model.serializeList('checked'), { ...node, ...nodeInfo });
     }
 
@@ -169,9 +171,14 @@ class CheckboxTree extends React.Component {
     }
 
     determineShallowCheckState(node, noCascade) {
+        const { useTopNode } = this.props;
         const flatNode = this.state.model.getNode(node.value);
 
-        if (flatNode.isLeaf || noCascade) {
+        if (useTopNode && this.isAnyParentChecked(flatNode)) {
+            return 2;
+        }
+
+        if (useTopNode || flatNode.isLeaf || noCascade) {
             return flatNode.checked ? 1 : 0;
         }
 
@@ -184,6 +191,17 @@ class CheckboxTree extends React.Component {
         }
 
         return 0;
+    }
+
+    isAnyParentChecked(node) {
+        if (Object.entries(node.parent).length === 0 && node.parent.constructor === Object) {
+            return false;
+        }
+        const parent = this.state.model.getNode(node.parent.value);
+        if (parent.checkState === 1) {
+            return true;
+        }
+        return this.isAnyParentChecked(parent);
     }
 
     isEveryChildChecked(node) {
@@ -210,6 +228,7 @@ class CheckboxTree extends React.Component {
             optimisticToggle,
             showNodeTitle,
             showNodeIcon,
+            useTopNode,
         } = this.props;
         const { id, model } = this.state;
         const { icons: defaultIcons } = CheckboxTree.defaultProps;
@@ -217,6 +236,11 @@ class CheckboxTree extends React.Component {
         const treeNodes = nodes.map((node) => {
             const key = node.value;
             const flatNode = model.getNode(node.value);
+
+            // Get checkState before traversing tree depth-first
+            if (useTopNode) {
+                flatNode.checkState = flatNode.checked ? 1 : 0;
+            }
             const children = flatNode.isParent ? this.renderTreeNodes(node.children, node) : null;
 
             // Determine the check state after all children check states have been determined
@@ -258,6 +282,7 @@ class CheckboxTree extends React.Component {
                     onCheck={this.onCheck}
                     onClick={onClick && this.onNodeClick}
                     onExpand={this.onExpand}
+                    useTopNode={useTopNode}
                 >
                     {children}
                 </TreeNode>
