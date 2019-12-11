@@ -7,22 +7,22 @@ declare module "react-checkbox-tree" {
         children?: Array<Node>;
         className?: string;
         disabled?: boolean;
-        icon?: JSX.Element;
+        icon?: React.ReactNode;
         showCheckbox?: boolean;
         title?: string;
     }
 
     interface Icons {
-        check?: JSX.Element;
-        uncheck?: JSX.Element;
-        halfCheck?: JSX.Element;
-        expandOpen?: JSX.Element;
-        expandClose?: JSX.Element;
-        expandAll?: JSX.Element;
-        collapseAll?: JSX.Element;
-        parentClose?: JSX.Element;
-        parentOpen?: JSX.Element;
-        leaf?: JSX.Element;
+        check?: React.ReactNode;
+        uncheck?: React.ReactNode;
+        halfCheck?: React.ReactNode;
+        expandOpen?: React.ReactNode;
+        expandClose?: React.ReactNode;
+        expandAll?: React.ReactNode;
+        collapseAll?: React.ReactNode;
+        parentClose?: React.ReactNode;
+        parentOpen?: React.ReactNode;
+        leaf?: React.ReactNode;
     }
 
     interface Language {
@@ -42,6 +42,7 @@ declare module "react-checkbox-tree" {
         expanded?: Array<string>;
         icons?: Icons;
         iconsClass?: string;
+        id?: string;
         lang?: Language;
         name?: string;
         nameAsArray?: boolean;

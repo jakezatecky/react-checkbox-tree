@@ -64,9 +64,7 @@ gulp.task('build-style', () => (
         .pipe(sass({
             outputStyle: 'expanded',
         }).on('error', sass.logError))
-        .pipe(autoprefixer({
-            browsers: ['last 2 versions'],
-        }))
+        .pipe(autoprefixer())
         .pipe(gulp.dest('./lib'))
         .pipe(cleanCss())
         .pipe(gulp.dest('./.css-compare/scss'))
@@ -75,9 +73,7 @@ gulp.task('build-style', () => (
 gulp.task('build-style-less', () => (
     gulp.src('./src/less/**/*.less')
         .pipe(less())
-        .pipe(autoprefixer({
-            browsers: ['last 2 versions'],
-        }))
+        .pipe(autoprefixer())
         .pipe(cleanCss())
         .pipe(gulp.dest('./.css-compare/less'))
 ));
