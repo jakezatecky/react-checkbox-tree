@@ -342,6 +342,7 @@ class CheckboxTree extends React.Component {
             nodes,
             nativeCheckboxes,
         } = this.props;
+        const { id } = this.state;
         const treeNodes = this.renderTreeNodes(nodes);
 
         const className = classNames({
@@ -352,7 +353,7 @@ class CheckboxTree extends React.Component {
         });
 
         return (
-            <div className={className}>
+            <div className={className} id={id}>
                 {this.renderExpandAll()}
                 {this.renderHiddenInput()}
                 {treeNodes}

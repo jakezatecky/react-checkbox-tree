@@ -217,7 +217,18 @@ describe('<CheckboxTree />', () => {
     });
 
     describe('id', () => {
-        it('should pass the property directly to tree nodes', () => {
+        it('should pass the id to the top-level DOM node', () => {
+            const wrapper = shallow(
+                <CheckboxTree
+                    id="my-awesome-id"
+                    nodes={[{ value: 'jupiter', label: 'Jupiter' }]}
+                />,
+            );
+
+            assert.equal('my-awesome-id', wrapper.prop('id'));
+        });
+
+        it('should pass the id as a property directly to tree nodes', () => {
             const wrapper = shallow(
                 <CheckboxTree
                     id="my-awesome-id"

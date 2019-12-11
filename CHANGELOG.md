@@ -12,6 +12,7 @@
 
 * [#127]: Change TypeScript definition of TreeNode's `label` property to `React.ReactNode` to better align with the PropType
 * [#145]: Fix alignment of many React properties to TypeScript typings
+* [#180]: Fix issue where the `id` property did not apply to the top-level CheckboxTree container
 
 ## [v1.5.0](https://github.com/jakezatecky/react-checkbox-tree/compare/v1.4.1...v1.5.0) (2019-01-25)
 
