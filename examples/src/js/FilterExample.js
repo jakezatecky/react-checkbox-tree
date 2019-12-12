@@ -172,6 +172,7 @@ class FilterExample extends React.Component {
                 <CheckboxTree
                     checked={checked}
                     expanded={expanded}
+                    iconsClass="fa5"
                     nodes={nodesFiltered}
                     onCheck={this.onCheck}
                     onExpand={this.onExpand}
