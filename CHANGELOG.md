@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v1.7.0 (TBA)
+
+### New Features
+
+* [#182]: Add `direction` property to support RTL languages
+
 ## [v1.6.0](https://github.com/jakezatecky/react-checkbox-tree/compare/v1.5.0...v1.6.0) (2019-12-11)
 
 ### New Features

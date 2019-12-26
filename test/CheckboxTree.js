@@ -152,6 +152,16 @@ describe('<CheckboxTree />', () => {
         });
     });
 
+    describe('direction', () => {
+        it('should add the class rct-direction-rtl to the root when set to `rtl`', () => {
+            const wrapper = shallow(
+                <CheckboxTree direction="rtl" nodes={[]} />,
+            );
+
+            assert.isTrue(wrapper.find('.react-checkbox-tree.rct-direction-rtl').exists());
+        });
+    });
+
     describe('disabled', () => {
         it('should add the class rct-disabled to the root', () => {
             const wrapper = shallow(

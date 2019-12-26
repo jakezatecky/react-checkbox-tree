@@ -145,6 +145,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 | `nodes`              | array    | **Required**. Specifies the tree nodes and their children.                                                             |             |
 | `checkModel`         | bool     | Specifies which checked nodes should be stored in the `checked` array. Accepts `'leaf'` or `'all'`.                    | `'leaf'`    |
 | `checked`            | array    | An array of checked node values.                                                                                       | `[]`        |
+| `direction`          | string   | A string that specify whether the direction of the component is left-to-right (`'ltr'`) or right-to-left (`'rtl'`).    | `'ltr'`     |
 | `disabled`           | bool     | If true, the component will be disabled and nodes cannot be checked.                                                   | `false`     |
 | `expandDisabled`     | bool     | If true, the ability to expand nodes will be disabled.                                                                 | `false`     |
 | `expandOnClick`      | bool     | If true, nodes will be expanded by clicking on labels. Requires a non-empty `onClick` function.                        | `false`     |

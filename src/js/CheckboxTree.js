@@ -19,6 +19,7 @@ class CheckboxTree extends React.Component {
 
         checkModel: PropTypes.oneOf([constants.CheckModel.LEAF, constants.CheckModel.ALL]),
         checked: listShape,
+        direction: PropTypes.string,
         disabled: PropTypes.bool,
         expandDisabled: PropTypes.bool,
         expandOnClick: PropTypes.bool,
@@ -44,6 +45,7 @@ class CheckboxTree extends React.Component {
     static defaultProps = {
         checkModel: constants.CheckModel.LEAF,
         checked: [],
+        direction: 'ltr',
         disabled: false,
         expandDisabled: false,
         expandOnClick: false,
@@ -337,6 +339,7 @@ class CheckboxTree extends React.Component {
 
     render() {
         const {
+            direction,
             disabled,
             iconsClass,
             nodes,
@@ -350,6 +353,7 @@ class CheckboxTree extends React.Component {
             'rct-disabled': disabled,
             [`rct-icons-${iconsClass}`]: true,
             'rct-native-display': nativeCheckboxes,
+            'rct-direction-rtl': direction === 'rtl',
         });
 
         return (

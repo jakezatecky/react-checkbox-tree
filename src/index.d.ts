@@ -36,6 +36,7 @@ declare module "react-checkbox-tree" {
 
         checkModel?: string;
         checked?: Array<string>;
+        direction?: string;
         disabled?: boolean;
         expandDisabled?: boolean;
         expandOnClick?: boolean;
@@ -58,5 +59,5 @@ declare module "react-checkbox-tree" {
         onExpand?: (expanded: Array<string>) => void;
     }
 
-    export default class CheckboxTree extends React.Component<CheckboxProps> { }
+    export default class CheckboxTree extends React.Component<CheckboxProps> {}
 }

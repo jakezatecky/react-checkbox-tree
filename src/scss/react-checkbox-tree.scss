@@ -263,3 +263,21 @@ $rct-clickable-focus: rgba($rct-icon-color, .2) !default;
     content: "\f146";
   }
 }
+
+// RTL support
+.rct-direction-rtl {
+  direction: rtl;
+
+  ol ol {
+    padding-right: 24px;
+    padding-left: 0;
+  }
+
+  &.rct-icons-fa4 .rct-icon-expand-close::before {
+    content: "\f105";
+  }
+
+  &.rct-icons-fa5 .rct-icon-expand-close::before {
+    content: "\f053";
+  }
+}
