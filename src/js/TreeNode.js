@@ -13,6 +13,7 @@ class TreeNode extends React.Component {
         disabled: PropTypes.bool.isRequired,
         expandDisabled: PropTypes.bool.isRequired,
         expanded: PropTypes.bool.isRequired,
+        expanderRight: PropTypes.bool.isRequired,
         icons: iconsShape.isRequired,
         isLeaf: PropTypes.bool.isRequired,
         isParent: PropTypes.bool.isRequired,
@@ -105,7 +106,9 @@ class TreeNode extends React.Component {
     }
 
     renderCollapseButton() {
-        const { expandDisabled, isLeaf, lang } = this.props;
+        const {
+            expandDisabled, isLeaf, lang, expanderRight,
+        } = this.props;
 
         if (isLeaf) {
             return (
@@ -117,7 +120,7 @@ class TreeNode extends React.Component {
 
         return (
             <Button
-                className="rct-collapse rct-collapse-btn"
+                className={`rct-collapse rct-collapse-btn ${expanderRight ? 'rct-collapse-right' : ''}`}
                 disabled={expandDisabled}
                 title={lang.toggle}
                 onClick={this.onExpand}
@@ -275,6 +278,7 @@ class TreeNode extends React.Component {
             className,
             disabled,
             expanded,
+            expanderRight,
             isLeaf,
         } = this.props;
         const nodeClass = classNames({
@@ -289,8 +293,9 @@ class TreeNode extends React.Component {
         return (
             <li className={nodeClass}>
                 <span className="rct-text">
-                    {this.renderCollapseButton()}
+                    {expanderRight ? null : this.renderCollapseButton() }
                     {this.renderLabel()}
+                    {expanderRight ? this.renderCollapseButton() : null }
                 </span>
                 {this.renderChildren()}
             </li>
