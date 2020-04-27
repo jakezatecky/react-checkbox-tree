@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import isEqual from 'lodash/isEqual';
-import nanoid from 'nanoid';
+import { nanoid } from 'nanoid';
 import PropTypes from 'prop-types';
 import React from 'react';
 
