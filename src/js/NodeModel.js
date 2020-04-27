@@ -57,7 +57,7 @@ class NodeModel {
     }
 
     nodeHasChildren(node) {
-        return Array.isArray(node.children);
+        return Array.isArray(node.children) && node.children.length > 0;
     }
 
     getDisabledState(node, parent, disabledProp, noCascade) {
@@ -163,6 +163,10 @@ class NodeModel {
     }
 
     isEveryChildChecked(node) {
+        if (!node.children || node.children.length === 0) {
+            return this.getNode(node.value).checked;
+        }
+
         return node.children.every((child) => this.getNode(child.value).checked);
     }
 
