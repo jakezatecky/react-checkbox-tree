@@ -351,8 +351,8 @@ describe('<CheckboxTree />', () => {
                 />,
             );
 
-            assert.equal(true, wrapper.find(TreeNode).prop('isParent'));
-            assert.equal(false, wrapper.find(TreeNode).prop('isLeaf'));
+            assert.equal(false, wrapper.find(TreeNode).prop('isParent'));
+            assert.equal(true, wrapper.find(TreeNode).prop('isLeaf'));
         });
 
         it('should render a node with a non-empty "children" array as a parent', () => {
