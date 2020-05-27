@@ -117,6 +117,7 @@ class CheckboxTree extends React.Component {
 
         // Since flattening nodes is an expensive task, only update when there is a node change
         if (!isEqual(prevProps.nodes, nodes) || prevProps.disabled !== disabled) {
+            model.reset();
             model.flattenNodes(nodes);
         }
 

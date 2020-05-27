@@ -3,6 +3,7 @@ import { shallow, mount } from 'enzyme';
 import { assert } from 'chai';
 
 import CheckboxTree from '../src/js/CheckboxTree';
+import CheckboxTreeError from '../src/js/CheckboxTreeError';
 import TreeNode from '../src/js/TreeNode';
 
 describe('<CheckboxTree />', () => {
@@ -383,6 +384,34 @@ describe('<CheckboxTree />', () => {
 
             assert.equal(true, wrapper.find(TreeNode).prop('isParent'));
             assert.equal(false, wrapper.find(TreeNode).prop('isLeaf'));
+        });
+
+        it('should throw an error when duplicate values are used', () => {
+            let errorMessage = null;
+
+            try {
+                shallow(
+                    <CheckboxTree
+                        nodes={[
+                            {
+                                value: 'jupiter',
+                                label: 'Jupiter',
+                                children: [
+                                    { value: 'jupiter', label: 'Jupiter' },
+                                ],
+                            },
+                        ]}
+                    />,
+                );
+            } catch (e) {
+                if (e instanceof CheckboxTreeError) {
+                    errorMessage = e.message;
+                } else {
+                    throw e;
+                }
+            }
+
+            assert.equal("Duplicate value 'jupiter' detected. All node values must be unique.", errorMessage);
         });
     });
 

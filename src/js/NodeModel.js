@@ -1,3 +1,4 @@
+import CheckboxTreeError from './CheckboxTreeError';
 import constants from './constants';
 
 const { CheckModel } = constants;
@@ -28,6 +29,10 @@ class NodeModel {
         return this.flatNodes[value];
     }
 
+    reset() {
+        this.flatNodes = {};
+    }
+
     flattenNodes(nodes, parent = {}, depth = 0) {
         if (!Array.isArray(nodes) || nodes.length === 0) {
             return;
@@ -38,6 +43,13 @@ class NodeModel {
         // Flatten the `node` property for internal lookups
         nodes.forEach((node, index) => {
             const isParent = this.nodeHasChildren(node);
+
+            // Protect against duplicate node values
+            if (this.flatNodes[node.value] !== undefined) {
+                throw new CheckboxTreeError(
+                    `Duplicate value '${node.value}' detected. All node values must be unique.`,
+                );
+            }
 
             this.flatNodes[node.value] = {
                 label: node.label,
