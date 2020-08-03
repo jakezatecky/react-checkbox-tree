@@ -147,6 +147,10 @@ $rct-clickable-focus: rgba($rct-icon-color, .2) !default;
   }
 }
 
+.rct-collapse-right {
+  margin-left: auto;
+}
+
 .rct-checkbox {
   .rct-native-display & {
     display: none;

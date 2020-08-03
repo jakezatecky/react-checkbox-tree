@@ -11,6 +11,7 @@ import NoCascadeExample from './js/NoCascadeExample';
 import LargeDataExample from './js/LargeDataExample';
 import PessimisticToggleExample from './js/PessimisticToggleExample';
 import FilterExample from './js/FilterExample';
+import ExpanderRightExample from './js/ExpanderRightExample';
 
 ReactDOM.render(<BasicExample />, document.getElementById('basic-example'));
 ReactDOM.render(<CustomIconsExample />, document.getElementById('custom-icons-example'));
@@ -22,3 +23,4 @@ ReactDOM.render(<HiddenCheckboxesExample />, document.getElementById('hidden-che
 ReactDOM.render(<ExpandAllExample />, document.getElementById('expand-all-example'));
 ReactDOM.render(<LargeDataExample />, document.getElementById('large-data-example'));
 ReactDOM.render(<FilterExample />, document.getElementById('filter-example'));
+ReactDOM.render(<ExpanderRightExample />, document.getElementById('expander-right-example'));
