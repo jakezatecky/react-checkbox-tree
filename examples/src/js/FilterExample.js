@@ -146,7 +146,7 @@ class FilterExample extends React.Component {
             // Or a children has a matching node
             children.length
         ) {
-            filtered.push({ ...node, children });
+            filtered.push({...node, ...children.length && {children}});
         }
 
         return filtered;
