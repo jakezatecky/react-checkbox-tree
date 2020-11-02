@@ -65,7 +65,7 @@
     "sass": "^1.28.0",
     "stylelint": "^13.7.2",
     "stylelint-config-takiyon": "^1.0.1",
-    "webpack": "^4.4.1",
+    "webpack": "^5.3.2",
     "webpack-stream": "^5.0.0"
   },
   "dependencies": {
