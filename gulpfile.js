@@ -106,9 +106,7 @@ function buildExamplesStyle(minifyStyles = false) {
         .pipe(sass({
             outputStyle: 'expanded',
         }).on('error', sass.logError))
-        .pipe(autoprefixer({
-            browsers: ['last 2 versions'],
-        }));
+        .pipe(autoprefixer());
 
     if (minifyStyles) {
         stream = stream.pipe(cleanCss());
