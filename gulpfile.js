@@ -133,7 +133,7 @@ gulp.task('build-examples-style-prod', () => (
 
 gulp.task('build-examples-html', () => (
     gulp.src('./examples/src/index.html')
-        .pipe(gulp.dest('./examples/dist/'))
+        .pipe(gulp.dest('./examples/dist'))
         .pipe(browserSync.stream())
 ));
 
