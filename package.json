@@ -58,7 +58,7 @@
     "gulp-sass": "^4.1.0",
     "gulp-stylelint": "^13.0.0",
     "jsdom": "^16.0.1",
-    "mocha": "^7.0.1",
+    "mocha": "^8.2.0",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
     "react-test-renderer": "^16.0.0",
