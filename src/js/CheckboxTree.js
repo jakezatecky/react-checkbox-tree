@@ -92,7 +92,7 @@ class CheckboxTree extends React.Component {
         });
 
         this.state = {
-            id: props.id || `rct-${nanoid(7)}`,
+            id: props.id || `rct-${nanoid()}`,
             model,
             prevProps: props,
         };
