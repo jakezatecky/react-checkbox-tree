@@ -30,12 +30,12 @@ const nodes = [
             {
                 value: 'nyan-cat.gif',
                 label: 'nyan-cat.gif',
-                icon: <i className="fa fa-file-image-o" />,
+                icon: <i className="far fa-file-image" />,
             },
             {
                 value: 'SpaceX Falcon9 liftoff.jpg',
                 label: 'SpaceX Falcon9 liftoff.jpg',
-                icon: <i className="fa fa-file-image-o" />,
+                icon: <i className="far fa-file-image" />,
             },
         ],
     },
