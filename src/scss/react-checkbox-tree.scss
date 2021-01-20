@@ -277,10 +277,10 @@ $rct-clickable-focus: rgba($rct-icon-color, .2) !default;
   }
 
   &.rct-icons-fa4 .rct-icon-expand-close::before {
-    content: "\f105";
+    content: unicode("f105");
   }
 
   &.rct-icons-fa5 .rct-icon-expand-close::before {
-    content: "\f053";
+    content: unicode("f053");
   }
 }
