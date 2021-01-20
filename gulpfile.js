@@ -7,7 +7,7 @@ const gulp = require('gulp');
 const header = require('gulp-header');
 const less = require('gulp-less');
 const mocha = require('gulp-mocha');
-const sass = require('gulp-sass');
+const sass = require('gulp-dart-sass');
 const styleLint = require('gulp-stylelint');
 const webpack = require('webpack');
 const webpackStream = require('webpack-stream');
@@ -18,7 +18,6 @@ const webpackConfig = require('./webpack.config');
 
 const banner = '/*! <%= pkg.name %> - v<%= pkg.version %> | <%= new Date().getFullYear() %> */\n';
 const browserSync = browserSyncImport.create();
-sass.compiler = require('sass');
 
 gulp.task('test-script-format', () => (
     gulp.src([
