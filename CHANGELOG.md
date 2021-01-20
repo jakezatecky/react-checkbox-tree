@@ -8,6 +8,10 @@
 * [#211]: Throw an error when nodes have duplicate values
 * [#244]: Add `expandNodesToLevel` utility
 
+### Bug Fixes
+
+* [#208]: Add missing `onCheck` argument in TypeScript definition
+
 ## [v1.6.0](https://github.com/jakezatecky/react-checkbox-tree/compare/v1.5.0...v1.6.0) (2019-12-11)
 
 ### New Features
