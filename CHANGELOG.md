@@ -6,6 +6,7 @@
 
 * [#182]: Add `direction` property to support RTL languages
 * [#211]: Throw an error when nodes have duplicate values
+* [#244]: Add `expandNodesToLevel` utility
 
 ## [v1.6.0](https://github.com/jakezatecky/react-checkbox-tree/compare/v1.5.0...v1.6.0) (2019-12-11)
 

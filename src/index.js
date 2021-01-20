@@ -1,2 +1,7 @@
-// Export default to provide support for non-ES6 solutions
-module.exports = require('./js/CheckboxTree').default;
+const tree = require('./js/CheckboxTree').default;
+const utils = require('./js/utils');
+
+module.exports = {
+    default: tree,
+    ...utils,
+};

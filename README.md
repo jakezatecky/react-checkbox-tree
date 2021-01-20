@@ -135,6 +135,23 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 />
 ```
 
+### Utility Functions
+
+In addition to the `CheckboxTree` component, additional utility functions are available to set the initial state of the tree.
+
+#### `expandNodesToLevel(nodes, targetLevel)`
+
+Creates a list of all parent node keys until `targetLevel`.
+
+Arguments:
+
+* `nodes` (`Array`): The same array of nodes passed into the main `CheckboxTree` component
+* `targetLevel` (`number`): The maximum expansion depth. Use `Infinity` for maximum depth.
+
+Returns:
+
+* `Array`: A list of node keys.
+
 ### Properties
 
 | Property             | Type     | Description                                                                                                            | Default     |
