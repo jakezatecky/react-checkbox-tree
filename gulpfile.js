@@ -8,7 +8,7 @@ const header = require('gulp-header');
 const less = require('gulp-less');
 const mocha = require('gulp-mocha');
 const sass = require('gulp-sass');
-const scsslint = require('gulp-scss-lint');
+const styleLint = require('gulp-stylelint');
 const webpack = require('webpack');
 const webpackStream = require('webpack-stream');
 
@@ -18,6 +18,7 @@ const webpackConfig = require('./webpack.config');
 
 const banner = '/*! <%= pkg.name %> - v<%= pkg.version %> | <%= new Date().getFullYear() %> */\n';
 const browserSync = browserSyncImport.create();
+sass.compiler = require('sass');
 
 gulp.task('test-script-format', () => (
     gulp.src([
@@ -41,7 +42,7 @@ gulp.task('test-script-mocha', () => (
         }))
 ));
 
-gulp.task('test-script', gulp.series('test-script-format', 'test-script-mocha'));
+gulp.task('test-script', gulp.series(gulp.parallel('test-script-format', 'test-script-mocha')));
 
 gulp.task('build-script', gulp.series('test-script', () => (
     gulp.src(['./src/index.js'])
@@ -59,8 +60,11 @@ gulp.task('build-script-web', gulp.series('build-script', () => (
 
 gulp.task('build-style', () => (
     gulp.src('./src/scss/**/*.scss')
-        .pipe(scsslint())
-        .pipe(scsslint.failReporter())
+        .pipe(styleLint({
+            reporters: [
+                { formatter: 'string', console: true },
+            ],
+        }))
         .pipe(sass({
             outputStyle: 'expanded',
         }).on('error', sass.logError))
@@ -94,14 +98,15 @@ function buildExamplesScript(mode = 'development') {
 
 function buildExamplesStyle(minifyStyles = false) {
     let stream = gulp.src('./examples/src/scss/**/*.scss')
-        .pipe(scsslint())
-        .pipe(scsslint.failReporter())
+        .pipe(styleLint({
+            reporters: [
+                { formatter: 'string', console: true },
+            ],
+        }))
         .pipe(sass({
             outputStyle: 'expanded',
         }).on('error', sass.logError))
-        .pipe(autoprefixer({
-            browsers: ['last 2 versions'],
-        }));
+        .pipe(autoprefixer());
 
     if (minifyStyles) {
         stream = stream.pipe(cleanCss());
@@ -128,7 +133,7 @@ gulp.task('build-examples-style-prod', () => (
 
 gulp.task('build-examples-html', () => (
     gulp.src('./examples/src/index.html')
-        .pipe(gulp.dest('./examples/dist/'))
+        .pipe(gulp.dest('./examples/dist'))
         .pipe(browserSync.stream())
 ));
 

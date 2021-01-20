@@ -2,9 +2,6 @@
 
 [![npm](https://img.shields.io/npm/v/react-checkbox-tree.svg?style=flat-square)](https://www.npmjs.com/package/react-checkbox-tree)
 [![Build Status](https://img.shields.io/travis/jakezatecky/react-checkbox-tree/master.svg?style=flat-square)](https://travis-ci.org/jakezatecky/react-checkbox-tree)
-[![Dependency Status](https://img.shields.io/david/jakezatecky/react-checkbox-tree.svg?style=flat-square)](https://david-dm.org/jakezatecky/react-checkbox-tree)
-[![devDependency Status](https://david-dm.org/jakezatecky/react-checkbox-tree/dev-status.svg?style=flat-square)](https://david-dm.org/jakezatecky/react-checkbox-tree?type=dev)
-[![Greenkeeper badge](https://badges.greenkeeper.io/jakezatecky/react-checkbox-tree.svg?style=flat-square)](https://greenkeeper.io/)
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://raw.githubusercontent.com/jakezatecky/react-checkbox-tree/master/LICENSE.txt)
 
 > A simple and elegant checkbox tree for React.
@@ -143,7 +140,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 | Property             | Type     | Description                                                                                                            | Default     |
 | -------------------- | -------- | ---------------------------------------------------------------------------------------------------------------------- | ----------- |
 | `nodes`              | array    | **Required**. Specifies the tree nodes and their children.                                                             |             |
-| `checkModel`         | bool     | Specifies which checked nodes should be stored in the `checked` array. Accepts `'leaf'` or `'all'`.                    | `'leaf'`    |
+| `checkModel`         | string   | Specifies which checked nodes should be stored in the `checked` array. Accepts `'leaf'` or `'all'`.                    | `'leaf'`    |
 | `checked`            | array    | An array of checked node values.                                                                                       | `[]`        |
 | `direction`          | string   | A string that specify whether the direction of the component is left-to-right (`'ltr'`) or right-to-left (`'rtl'`).    | `'ltr'`     |
 | `disabled`           | bool     | If true, the component will be disabled and nodes cannot be checked.                                                   | `false`     |

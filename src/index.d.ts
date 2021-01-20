@@ -12,6 +12,10 @@ declare module "react-checkbox-tree" {
         title?: string;
     }
 
+    interface OnCheckNode extends Node {
+      checked: boolean;
+    }
+
     interface Icons {
         check?: React.ReactNode;
         uncheck?: React.ReactNode;
@@ -54,7 +58,7 @@ declare module "react-checkbox-tree" {
         showExpandAll?: boolean;
         showNodeIcon?: boolean;
         showNodeTitles?: boolean;
-        onCheck?: (checked: Array<string>) => void;
+        onCheck?: (checked: Array<string>, node: OnCheckNode) => void;
         onClick?: (event: { checked: boolean, value: any }) => void;
         onExpand?: (expanded: Array<string>) => void;
     }
