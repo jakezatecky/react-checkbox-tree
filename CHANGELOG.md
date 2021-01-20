@@ -11,6 +11,7 @@
 ### Bug Fixes
 
 * [#208]: Add missing `onCheck` argument in TypeScript definition
+* [#248]: Add missing `onExpand` argument in TypeScript definition
 
 ## [v1.6.0](https://github.com/jakezatecky/react-checkbox-tree/compare/v1.5.0...v1.6.0) (2019-12-11)
 
