@@ -40,7 +40,7 @@ describe('utils', () => {
         it('should recursively traverse a tree of nodes and return the key values of parents from the level specified', () => {
             const expected = ['0', '0-1'];
 
-            assert.equal(expected, expandNodesToLevel(nestedTree, 1));
+            assert.deepEqual(expected, expandNodesToLevel(nestedTree, 1));
         });
     });
 });
