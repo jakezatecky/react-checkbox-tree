@@ -7,7 +7,7 @@ import NativeCheckbox from './NativeCheckbox';
 import iconsShape from './shapes/iconsShape';
 import languageShape from './shapes/languageShape';
 
-class TreeNode extends React.Component {
+class TreeNode extends React.PureComponent {
     static propTypes = {
         checked: PropTypes.number.isRequired,
         disabled: PropTypes.bool.isRequired,

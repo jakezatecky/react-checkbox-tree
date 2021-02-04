@@ -12,6 +12,7 @@ import iconsShape from './shapes/iconsShape';
 import languageShape from './shapes/languageShape';
 import listShape from './shapes/listShape';
 import nodeShape from './shapes/nodeShape';
+import { memoize } from 'lodash';
 
 class CheckboxTree extends React.Component {
     static propTypes = {
@@ -102,6 +103,8 @@ class CheckboxTree extends React.Component {
         this.onNodeClick = this.onNodeClick.bind(this);
         this.onExpandAll = this.onExpandAll.bind(this);
         this.onCollapseAll = this.onCollapseAll.bind(this);
+
+        this.combineMemorized = memoize((icons1, icons2) => ({...icons1, ...icons2})).bind(this)
     }
 
     // eslint-disable-next-line react/sort-comp
@@ -250,7 +253,7 @@ class CheckboxTree extends React.Component {
                     expandOnClick={expandOnClick}
                     expanded={flatNode.expanded}
                     icon={node.icon}
-                    icons={{ ...defaultIcons, ...icons }}
+                    icons={this.combineMemorized(defaultIcons, icons)}
                     label={node.label}
                     lang={lang}
                     optimisticToggle={optimisticToggle}
