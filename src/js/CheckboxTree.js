@@ -1,5 +1,6 @@
 import classNames from 'classnames';
 import isEqual from 'lodash/isEqual';
+import memoize from 'lodash/memoize';
 import { nanoid } from 'nanoid';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -12,7 +13,6 @@ import iconsShape from './shapes/iconsShape';
 import languageShape from './shapes/languageShape';
 import listShape from './shapes/listShape';
 import nodeShape from './shapes/nodeShape';
-import { memoize } from 'lodash';
 
 class CheckboxTree extends React.Component {
     static propTypes = {
@@ -104,7 +104,7 @@ class CheckboxTree extends React.Component {
         this.onExpandAll = this.onExpandAll.bind(this);
         this.onCollapseAll = this.onCollapseAll.bind(this);
 
-        this.combineMemorized = memoize((icons1, icons2) => ({...icons1, ...icons2})).bind(this)
+        this.combineMemorized = memoize((icons1, icons2) => ({ ...icons1, ...icons2 })).bind(this);
     }
 
     // eslint-disable-next-line react/sort-comp
