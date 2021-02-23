@@ -61,7 +61,7 @@
     "mocha": "^8.2.0",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
-    "react-test-renderer": "^16.0.0",
+    "react-test-renderer": "^17.0.1",
     "sass": "^1.28.0",
     "stylelint": "^13.7.2",
     "stylelint-config-takiyon": "^1.0.1",
