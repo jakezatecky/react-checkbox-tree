@@ -55,13 +55,13 @@ class TreeNode extends React.PureComponent {
         this.onExpand = this.onExpand.bind(this);
     }
 
-    onCheck() {
+    onCheck(event) {
         const { value, onCheck } = this.props;
 
-        onCheck({ value, checked: this.getCheckState({ toggle: true }) });
+        onCheck({ value, checked: this.getCheckState({ toggle: true }) }, event);
     }
 
-    onClick() {
+    onClick(event) {
         const {
             expandOnClick,
             isParent,
@@ -71,16 +71,16 @@ class TreeNode extends React.PureComponent {
 
         // Auto expand if enabled
         if (isParent && expandOnClick) {
-            this.onExpand();
+            this.onExpand(event);
         }
 
-        onClick({ value, checked: this.getCheckState({ toggle: false }) });
+        onClick({ value, checked: this.getCheckState({ toggle: false }) }, event);
     }
 
-    onExpand() {
+    onExpand(event) {
         const { expanded, value, onExpand } = this.props;
 
-        onExpand({ value, expanded: !expanded });
+        onExpand({ value, expanded: !expanded }, event);
     }
 
     getCheckState({ toggle }) {
