@@ -4,12 +4,14 @@ module.exports = {
     mode: 'development',
     output: {
         filename: 'index.js',
-        libraryTarget: 'umd',
-        library: 'ReactCheckboxTree',
+        library: {
+            name: 'ReactCheckboxTree',
+            type: 'umd',
+        },
     },
     resolve: {
         alias: {
-            'react-checkbox-tree': path.resolve(__dirname, 'src/js/CheckboxTree'),
+            'react-checkbox-tree': path.resolve(__dirname, 'src/index.js'),
         },
     },
     module: {

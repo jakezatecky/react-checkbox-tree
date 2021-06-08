@@ -1,7 +1,4 @@
-const tree = require('./js/CheckboxTree').default;
-const utils = require('./js/utils');
+import CheckboxTree from './js/CheckboxTree';
 
-module.exports = {
-    default: tree,
-    ...utils,
-};
+export default CheckboxTree;
+export * from './js/utils';

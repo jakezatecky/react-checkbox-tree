@@ -9,8 +9,10 @@ function makeConfig(target) {
         target,
         output: {
             filename: fileMap[target],
-            libraryTarget: 'umd',
-            library: 'ReactCheckboxTree',
+            library: {
+                name: 'ReactCheckboxTree',
+                type: 'umd',
+            },
         },
         externals: [
             {

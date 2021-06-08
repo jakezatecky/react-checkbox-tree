@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [v1.7.1](https://github.com/jakezatecky/react-checkbox-tree/compare/v1.7.0...v1.7.1) (2021-06-08)
+
+### Build
+
+* Fix build issues for default exports
+
 ## [v1.7.0](https://github.com/jakezatecky/react-checkbox-tree/compare/v1.6.0...v1.7.0) (2021-06-08)
 
 ### New Features
