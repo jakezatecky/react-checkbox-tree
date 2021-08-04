@@ -136,47 +136,48 @@ class CheckboxTree extends React.Component {
         return newState;
     }
 
-    onCheck(nodeInfo) {
+    onCheck(nodeInfo, event) {
         const { checkModel, noCascade, onCheck } = this.props;
         const model = this.state.model.clone();
         const node = model.getNode(nodeInfo.value);
 
         model.toggleChecked(nodeInfo, nodeInfo.checked, checkModel, noCascade);
-        onCheck(model.serializeList('checked'), { ...node, ...nodeInfo });
+        onCheck(model.serializeList('checked'), { ...node, ...nodeInfo }, event);
     }
 
-    onExpand(nodeInfo) {
+    onExpand(nodeInfo, event) {
         const { onExpand } = this.props;
         const model = this.state.model.clone();
         const node = model.getNode(nodeInfo.value);
 
         model.toggleNode(nodeInfo.value, 'expanded', nodeInfo.expanded);
-        onExpand(model.serializeList('expanded'), { ...node, ...nodeInfo });
+        onExpand(model.serializeList('expanded'), { ...node, ...nodeInfo }, event);
     }
 
-    onNodeClick(nodeInfo) {
+    onNodeClick(nodeInfo, event) {
         const { onClick } = this.props;
         const { model } = this.state;
         const node = model.getNode(nodeInfo.value);
 
-        onClick({ ...node, ...nodeInfo });
+        onClick({ ...node, ...nodeInfo }, event);
     }
 
-    onExpandAll() {
-        this.expandAllNodes();
+    onExpandAll(event) {
+        this.expandAllNodes(event);
     }
 
-    onCollapseAll() {
-        this.expandAllNodes(false);
+    onCollapseAll(event) {
+        this.expandAllNodes(false, event);
     }
 
-    expandAllNodes(expand = true) {
+    expandAllNodes(expand = true, event) {
         const { onExpand } = this.props;
 
         onExpand(
             this.state.model.clone()
                 .expandAllNodes(expand)
                 .serializeList('expanded'),
+            event,
         );
     }
 
