@@ -28,10 +28,6 @@
     line-height: normal;
     color: inherit;
 
-    &:focus {
-      outline: none;
-    }
-
     &:disabled {
       cursor: not-allowed;
     }
@@ -49,7 +45,8 @@
       background: @rct-label-hover;
     }
 
-    &:active {
+    &:active,
+    &:focus {
       background: @rct-label-active;
     }
   }
@@ -127,6 +124,7 @@
 }
 
 .rct-collapse {
+  align-self: stretch;
   border: 0;
   background: none;
   line-height: normal;

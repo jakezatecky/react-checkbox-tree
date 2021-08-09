@@ -51,6 +51,8 @@ class TreeNode extends React.PureComponent {
         super(props);
 
         this.onCheck = this.onCheck.bind(this);
+        this.onCheckboxKeyPress = this.onCheckboxKeyPress.bind(this);
+        this.onCheckboxKeyUp = this.onCheckboxKeyUp.bind(this);
         this.onClick = this.onClick.bind(this);
         this.onExpand = this.onExpand.bind(this);
     }
@@ -59,6 +61,23 @@ class TreeNode extends React.PureComponent {
         const { value, onCheck } = this.props;
 
         onCheck({ value, checked: this.getCheckState({ toggle: true }) });
+    }
+
+    onCheckboxKeyPress(event) {
+        const { which } = event;
+
+        // Prevent browser scroll when pressing space on the checkbox
+        if (which === 32) {
+            event.preventDefault();
+        }
+    }
+
+    onCheckboxKeyUp(event) {
+        const { keyCode } = event;
+
+        if ([13, 32].includes(keyCode)) {
+            this.onCheck();
+        }
     }
 
     onClick() {
@@ -217,7 +236,15 @@ class TreeNode extends React.PureComponent {
                     onClick={this.onCheck}
                     onChange={() => {}}
                 />
-                <span className="rct-checkbox">
+                <span
+                    aria-checked={checked === 1}
+                    aria-disabled={disabled}
+                    className="rct-checkbox"
+                    role="checkbox"
+                    tabIndex={0}
+                    onKeyPress={this.onCheckboxKeyPress}
+                    onKeyUp={this.onCheckboxKeyUp}
+                >
                     {this.renderCheckboxIcon()}
                 </span>
                 {!clickable ? children : null}

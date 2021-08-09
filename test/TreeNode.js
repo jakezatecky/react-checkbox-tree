@@ -226,10 +226,8 @@ describe('<TreeNode />', () => {
                 <TreeNode {...baseProps} icons={{ uncheck: <span className="other-uncheck" /> }} />,
             );
 
-            assert.isTrue(wrapper.contains(
-                <span className="rct-checkbox">
-                    <span className="other-uncheck" />
-                </span>,
+            assert.isTrue(wrapper.find('.rct-checkbox').contains(
+                <span className="other-uncheck" />,
             ));
         });
     });
@@ -254,10 +252,8 @@ describe('<TreeNode />', () => {
                 <TreeNode {...baseProps} />,
             );
 
-            assert.isTrue(wrapper.contains(
-                <span className="rct-checkbox">
-                    <span className="rct-icon rct-icon-uncheck" />
-                </span>,
+            assert.isTrue(wrapper.find('.rct-checkbox').contains(
+                <span className="rct-icon rct-icon-uncheck" />,
             ));
         });
 
@@ -388,6 +384,25 @@ describe('<TreeNode />', () => {
             );
 
             wrapper.find('NativeCheckbox').simulate('click');
+
+            assert.isTrue(actual.checked);
+        });
+
+        it('should trigger on key press', () => {
+            let actual = {};
+
+            const wrapper = shallow(
+                <TreeNode
+                    {...baseProps}
+                    checked={2}
+                    value="jupiter"
+                    onCheck={(node) => {
+                        actual = node;
+                    }}
+                />,
+            );
+
+            wrapper.find('.rct-checkbox').simulate('keyup', { keyCode: 32 });
 
             assert.isTrue(actual.checked);
         });

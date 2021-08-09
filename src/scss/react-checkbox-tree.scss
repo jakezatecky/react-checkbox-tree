@@ -34,10 +34,6 @@ $rct-clickable-focus: rgba($rct-icon-color, .2) !default;
     line-height: normal;
     color: inherit;
 
-    &:focus {
-      outline: none;
-    }
-
     &:disabled {
       cursor: not-allowed;
     }
@@ -55,7 +51,8 @@ $rct-clickable-focus: rgba($rct-icon-color, .2) !default;
       background: $rct-label-hover;
     }
 
-    &:active {
+    &:active,
+    &:focus {
       background: $rct-label-active;
     }
   }
@@ -133,6 +130,7 @@ $rct-clickable-focus: rgba($rct-icon-color, .2) !default;
 }
 
 .rct-collapse {
+  align-self: stretch;
   border: 0;
   background: none;
   line-height: normal;
