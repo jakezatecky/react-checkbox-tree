@@ -5,6 +5,7 @@
 ### Bug Fixes
 
 * [#281]: Fix accessibility issues with checkbox nodes
+* [#288]: Fix issue with custom checkbox icons appearing when `nativeCheckboxes={true}`
 
 ## [v1.7.1](https://github.com/jakezatecky/react-checkbox-tree/compare/v1.7.0...v1.7.1) (2021-06-08)
 
