@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v1.8.0 (TBA)
+
+### Bug Fixes
+
+* [#258]: Fix check behavior on nodes with an empty `children` array
+
 ## [v1.7.2](https://github.com/jakezatecky/react-checkbox-tree/compare/v1.7.1...v1.7.2) (2021-08-09)
 
 ### Bug Fixes

@@ -336,7 +336,7 @@ describe('<CheckboxTree />', () => {
             );
         });
 
-        it('should render a node with no "children" array as a leaf', () => {
+        it('should render a node with no `children` array as a leaf', () => {
             const wrapper = shallow(
                 <CheckboxTree
                     nodes={[
@@ -349,7 +349,7 @@ describe('<CheckboxTree />', () => {
             assert.equal(true, wrapper.find(TreeNode).prop('isLeaf'));
         });
 
-        it('should render a node with an empty "children" array as a parent', () => {
+        it('should render a node with an empty `children` array as a parent', () => {
             const wrapper = shallow(
                 <CheckboxTree
                     nodes={[
@@ -366,7 +366,24 @@ describe('<CheckboxTree />', () => {
             assert.equal(false, wrapper.find(TreeNode).prop('isLeaf'));
         });
 
-        it('should render a node with a non-empty "children" array as a parent', () => {
+        // https://github.com/jakezatecky/react-checkbox-tree/issues/258
+        it('should render a node with an empty `children` array as unchecked by default', () => {
+            const wrapper = shallow(
+                <CheckboxTree
+                    nodes={[
+                        {
+                            value: 'jupiter',
+                            label: 'Jupiter',
+                            children: [],
+                        },
+                    ]}
+                />,
+            );
+
+            assert.equal(false, wrapper.find(TreeNode).prop('checked'));
+        });
+
+        it('should render a node with a non-empty `children` array as a parent', () => {
             const wrapper = shallow(
                 <CheckboxTree
                     nodes={[
@@ -732,6 +749,38 @@ describe('<CheckboxTree />', () => {
 
             wrapper.find('TreeNode input[type="checkbox"]').simulate('click');
             assert.deepEqual(['io', 'europa'], actualChecked);
+        });
+
+        // https://github.com/jakezatecky/react-checkbox-tree/issues/258
+        it('should toggle a node with an empty `children` array', () => {
+            let actualChecked = {};
+            const makeEmptyParentNode = (checked) => (
+                mount(
+                    <CheckboxTree
+                        nodes={[
+                            {
+                                value: 'jupiter',
+                                label: 'Jupiter',
+                                children: [],
+                            },
+                        ]}
+                        checked={checked}
+                        onCheck={(node) => {
+                            actualChecked = node;
+                        }}
+                    />,
+                )
+            );
+
+            // Unchecked to checked
+            let wrapper = makeEmptyParentNode([]);
+            wrapper.find('TreeNode input[type="checkbox"]').simulate('click');
+            assert.deepEqual(['jupiter'], actualChecked);
+
+            // Checked to unchecked
+            wrapper = makeEmptyParentNode(['jupiter']);
+            wrapper.find('TreeNode input[type="checkbox"]').simulate('click');
+            assert.deepEqual([], actualChecked);
         });
 
         it('should not add disabled children to the checked array', () => {
