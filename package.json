@@ -67,7 +67,7 @@
     "stylelint": "^13.7.2",
     "stylelint-config-takiyon": "^1.0.1",
     "webpack": "^5.3.2",
-    "webpack-stream": "^6.1.0"
+    "webpack-stream": "^7.0.0"
   },
   "dependencies": {
     "classnames": "^2.2.5",
