@@ -41,7 +41,7 @@
     "browser-sync": "^2.18.6",
     "chai": "^4.0.0",
     "enzyme": "^3.0.0",
-    "eslint": "^7.12.1",
+    "eslint": "^8.0.1",
     "eslint-config-takiyon-react": "^1.0.0",
     "eslint-import-resolver-webpack": "^0.13.0",
     "eslint-plugin-import": "^2.2.0",
