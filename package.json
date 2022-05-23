@@ -74,5 +74,8 @@
     "lodash": "^4.17.10",
     "nanoid": "^3.0.0",
     "prop-types": "^15.5.8"
+  },
+  "overrides": {
+    "cheerio": "=1.0.0-rc.3"
   }
 }
