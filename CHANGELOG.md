@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## v1.8.0 (TBA)
+## [v1.7.3](https://github.com/jakezatecky/react-checkbox-tree/compare/v1.7.2...v1.7.3) (2020-05-23)
 
 ### Bug Fixes
 
