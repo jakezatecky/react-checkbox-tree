@@ -138,7 +138,8 @@ class NodeModel {
 
             this.toggleNode(node.value, 'checked', isChecked);
         } else {
-            if (modelHasParents) {
+            // Toggle parent check status if the model tracks this OR if it is an empty parent
+            if (modelHasParents || flatNode.children.length === 0) {
                 this.toggleNode(node.value, 'checked', isChecked);
             }
 

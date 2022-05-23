@@ -183,7 +183,8 @@ class CheckboxTree extends React.Component {
     determineShallowCheckState(node, noCascade) {
         const flatNode = this.state.model.getNode(node.value);
 
-        if (flatNode.isLeaf || noCascade) {
+        if (flatNode.isLeaf || noCascade || node.children.length === 0) {
+            // Note that an empty parent node tracks its own state
             return flatNode.checked ? 1 : 0;
         }
 
