@@ -35,7 +35,7 @@
     "@babel/preset-env": "^7.0.0",
     "@babel/preset-react": "^7.0.0",
     "@babel/register": "^7.0.0",
-    "@types/react": "^17.0.9",
+    "@types/react": "^18.0.16",
     "@wojtekmaj/enzyme-adapter-react-17": "^0.6.1",
     "babel-loader": "^8.0.0",
     "browser-sync": "^2.18.6",
