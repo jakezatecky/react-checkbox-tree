@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## [v1.8.0](https://github.com/jakezatecky/react-checkbox-tree/compare/v1.7.3...v1.8.0) (2020-08-06)
+## [v1.8.0](https://github.com/jakezatecky/react-checkbox-tree/compare/v1.7.3...v1.8.0) (2020-09-06)
 
 ### Other
 
