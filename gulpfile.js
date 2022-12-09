@@ -45,12 +45,12 @@ gulp.task('test-script-mocha', () => (
 
 gulp.task('test-script', gulp.series(gulp.parallel('test-script-format', 'test-script-mocha')));
 
-gulp.task('build-script', gulp.series('test-script', () => (
+gulp.task('build-script', () => (
     gulp.src(['./src/index.js'])
         .pipe(webpackStream(webpackConfig('node'), webpack))
         .pipe(header(banner, { pkg }))
         .pipe(gulp.dest('./lib/'))
-)));
+));
 
 gulp.task('build-script-web', gulp.series('build-script', () => (
     gulp.src(['./src/index.js'])

@@ -116,6 +116,7 @@ class BasicExample extends React.Component {
             <CheckboxTree
                 checked={checked}
                 expanded={expanded}
+                noCascade={Boolean(true)}
                 iconsClass="fa5"
                 nodes={nodes}
                 onCheck={this.onCheck}
