@@ -1,7 +1,5 @@
 import CheckboxTreeError from './CheckboxTreeError';
-import constants from './constants';
-
-const { CheckModel } = constants;
+import { CHECK_MODEL } from './constants';
 
 class NodeModel {
     constructor(props, nodes = {}) {
@@ -128,8 +126,8 @@ class NodeModel {
 
     toggleChecked(node, isChecked, checkModel, noCascade, percolateUpward = true) {
         const flatNode = this.flatNodes[node.value];
-        const modelHasParents = [CheckModel.PARENT, CheckModel.ALL].indexOf(checkModel) > -1;
-        const modelHasLeaves = [CheckModel.LEAF, CheckModel.ALL].indexOf(checkModel) > -1;
+        const modelHasParents = [CHECK_MODEL.PARENT, CHECK_MODEL.ALL].indexOf(checkModel) > -1;
+        const modelHasLeaves = [CHECK_MODEL.LEAF, CHECK_MODEL.ALL].indexOf(checkModel) > -1;
 
         if (flatNode.isLeaf || noCascade) {
             if (node.disabled) {
@@ -165,7 +163,7 @@ class NodeModel {
         const flatNode = this.flatNodes[node.value];
 
         if (flatNode.isChild) {
-            if (checkModel === CheckModel.ALL) {
+            if (checkModel === CHECK_MODEL.ALL) {
                 this.toggleNode(node.value, 'checked', this.isEveryChildChecked(flatNode));
             }
 

@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import Button from './Button';
-import constants from './constants';
+import { CHECK_MODEL } from './constants';
 import NodeModel from './NodeModel';
 import TreeNode from './TreeNode';
 import iconsShape from './shapes/iconsShape';
@@ -18,7 +18,7 @@ class CheckboxTree extends React.Component {
     static propTypes = {
         nodes: PropTypes.arrayOf(nodeShape).isRequired,
 
-        checkModel: PropTypes.oneOf([constants.CheckModel.LEAF, constants.CheckModel.ALL]),
+        checkModel: PropTypes.oneOf([CHECK_MODEL.LEAF, CHECK_MODEL.ALL]),
         checked: listShape,
         direction: PropTypes.string,
         disabled: PropTypes.bool,
@@ -44,7 +44,7 @@ class CheckboxTree extends React.Component {
     };
 
     static defaultProps = {
-        checkModel: constants.CheckModel.LEAF,
+        checkModel: CHECK_MODEL.LEAF,
         checked: [],
         direction: 'ltr',
         disabled: false,
