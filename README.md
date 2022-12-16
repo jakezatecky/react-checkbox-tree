@@ -1,7 +1,7 @@
 # react-checkbox-tree
 
 [![npm](https://img.shields.io/npm/v/react-checkbox-tree.svg?style=flat-square)](https://www.npmjs.com/package/react-checkbox-tree)
-[![Build Status](https://img.shields.io/github/workflow/status/jakezatecky/react-checkbox-tree/Build?style=flat-square)](https://github.com/jakezatecky/react-checkbox-tree/actions/workflows/main.yml)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/jakezatecky/react-checkbox-tree/main.yml?branch=master&style=flat-square)](https://github.com/jakezatecky/react-checkbox-tree/actions/workflows/main.yml)
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://raw.githubusercontent.com/jakezatecky/react-checkbox-tree/master/LICENSE.txt)
 
 > A simple and elegant checkbox tree for React.
