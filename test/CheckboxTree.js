@@ -947,8 +947,9 @@ describe('<CheckboxTree />', () => {
                         {
                             value: 'jupiter',
                             label: 'Jupiter',
+                            test1: '123',
                             children: [
-                                { value: 'io', label: 'Io' },
+                                { value: 'io', label: 'Io', test2: '456' },
                                 { value: 'europa', label: 'Europa' },
                             ],
                         },
@@ -972,6 +973,9 @@ describe('<CheckboxTree />', () => {
                 treeDepth: 1,
                 index: 0,
                 parentValue: 'jupiter',
+                extraKeys: {
+                    test2: '456',
+                },
             };
             const expectedParentMetadata = {
                 value: 'jupiter',
@@ -981,6 +985,9 @@ describe('<CheckboxTree />', () => {
                 treeDepth: 0,
                 index: 0,
                 parentValue: undefined,
+                extraKeys: {
+                    test1: '123',
+                },
             };
 
             // onCheck

@@ -61,6 +61,9 @@ class NodeModel {
                 disabled: this.getDisabledState(node, parent, disabled, noCascade),
                 treeDepth: depth,
                 index,
+                extraKeys: Object.entries(node)
+                    .filter(([key]) => !CheckModel.flatKeys.includes(key))
+                    .reduce((acc, [key, val]) => ({ ...acc, [key]: val }), {}),
             };
             this.flattenNodes(node.children, node, depth + 1);
         });
