@@ -6,10 +6,6 @@
   },
   "settings": {
     "import/resolver": {
-      // "Fixes Node resolution issues in ESLint v6
-      // https://github.com/benmosher/eslint-plugin-import/issues/1396
-      "node": {},
-
       "webpack": {
         "config": "webpack.test.config.js"
       }
