@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v2.0.0 (TBA)
+
+### Breaking Changes
+
+* The `iconsClass` property now defaults to `"fa5"` for Font Awesome 5/6 instead of Font Awesome 4
+
 ## [v1.8.0](https://github.com/jakezatecky/react-checkbox-tree/compare/v1.7.3...v1.8.0) (2020-09-06)
 
 ### Other

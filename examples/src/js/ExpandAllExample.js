@@ -117,7 +117,6 @@ class ExpandAllExample extends React.Component {
                 <CheckboxTree
                     checked={checked}
                     expanded={expanded}
-                    iconsClass="fa5"
                     nodes={nodes}
                     showExpandAll
                     onCheck={this.onCheck}

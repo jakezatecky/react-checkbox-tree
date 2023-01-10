@@ -83,12 +83,12 @@ All node objects **must** have a unique `value`. This value is serialized into t
 
 #### Changing the Default Icons
 
-By default, **react-checkbox-tree** uses Font Awesome 4 for the various icons that appear in the tree. To utilize Font Awesome 5 icons, simply pass in `iconsClass="fa5"`:
+By default, **react-checkbox-tree** uses Font Awesome 5/6 for the various icons that appear in the tree. To utilize Font Awesome 4 icons, simply pass in `iconsClass="fa4"`:
 
 ``` jsx
 <CheckboxTree
     ...
-    iconsClass="fa5"
+    iconsClass="fa4"
 />
 ```
 
@@ -166,7 +166,7 @@ Returns:
 | `expandOnClick`      | bool     | If true, nodes will be expanded by clicking on labels. Requires a non-empty `onClick` function.                        | `false`     |
 | `expanded`           | array    | An array of expanded node values.                                                                                      | `[]`        |
 | `icons`              | object   | An object containing the mappings for the various icons and their components. See **Changing the Default Icons**.      | `{ ... }`   |
-| `iconsClass`         | string   | A string that specifies which icons class to utilize. Currently, `'fa4'` and `'fa5'` are supported.                    | `'fa4'`     |
+| `iconsClass`         | string   | A string that specifies which icons class to utilize. Currently, `'fa4'` and `'fa5'` are supported.                    | `'fa5'`     |
 | `id`                 | string   | A string to be used for the HTML ID of the rendered tree and its nodes.                                                | `null`      |
 | `lang`               | object   | An object containing the language mappings for the various text elements.                                              | `{ ... }`   |
 | `name`               | string   | Optional name for the hidden `<input>` element.                                                                        | `undefined` |

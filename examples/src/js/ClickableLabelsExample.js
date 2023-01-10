@@ -125,7 +125,6 @@ class ClickExample extends React.Component {
                 <CheckboxTree
                     checked={checked}
                     expanded={expanded}
-                    iconsClass="fa5"
                     nodes={nodes}
                     expandOnClick
                     onCheck={this.onCheck}

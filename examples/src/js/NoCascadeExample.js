@@ -117,7 +117,6 @@ class NoCascadeExample extends React.Component {
             <CheckboxTree
                 checked={checked}
                 expanded={expanded}
-                iconsClass="fa5"
                 noCascade
                 nodes={nodes}
                 onCheck={this.onCheck}

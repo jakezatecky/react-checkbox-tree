@@ -122,7 +122,6 @@ class HiddenCheckboxesExample extends React.Component {
             <CheckboxTree
                 checked={checked}
                 expanded={expanded}
-                iconsClass="fa5"
                 nodes={nodes}
                 onlyLeafCheckboxes
                 onCheck={this.onCheck}
