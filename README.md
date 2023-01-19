@@ -44,38 +44,34 @@ import 'react-checkbox-tree/lib/react-checkbox-tree.css';
 
 ### Render Component
 
-A quick usage example is included below. Note that the react-checkbox-tree component is [controlled](https://facebook.github.io/react/docs/forms.html#controlled-components). In other words, you must update its `checked` and `expanded` properties whenever a change occurs.
+Below is a minimal example using [state hooks](https://reactjs.org/docs/hooks-state.html). Note that `CheckboxTree` is a [controlled](https://facebook.github.io/react/docs/forms.html#controlled-components) component, so you must update its `checked` and `expanded` properties whenever a change occurs.
 
 ``` jsx
-import React from 'react';
+import React, { useState } from 'react';
 import CheckboxTree from 'react-checkbox-tree';
 
 const nodes = [{
-    value: 'mars',
-    label: 'Mars',
-    children: [
-        { value: 'phobos', label: 'Phobos' },
-        { value: 'deimos', label: 'Deimos' },
-    ],
+  value: 'mars',
+  label: 'Mars',
+  children: [
+    { value: 'phobos', label: 'Phobos' },
+    { value: 'deimos', label: 'Deimos' },
+  ],
 }];
 
-class Widget extends React.Component {
-    state = {
-        checked: [],
-        expanded: [],
-    };
+function Widget() {
+  const [checked, setChecked] = useState([]);
+  const [expanded, setExpanded] = useState([]);
 
-    render() {
-        return (
-            <CheckboxTree
-                nodes={nodes}
-                checked={this.state.checked}
-                expanded={this.state.expanded}
-                onCheck={checked => this.setState({ checked })}
-                onExpand={expanded => this.setState({ expanded })}
-            />
-        );
-    }
+  return (
+    <CheckboxTree
+      nodes={nodes}
+      checked={checked}
+      expanded={expanded}
+      onCheck={(checked) => setChecked(checked)}
+      onExpand={(expanded) => setExpanded(expanded)}
+    />
+  );
 }
 ```
 
