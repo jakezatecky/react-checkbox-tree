@@ -68,4 +68,5 @@ declare module "react-checkbox-tree" {
     }
 
     export default class CheckboxTree extends React.Component<CheckboxProps> {}
+    function expandNodesToLevel (nodes: Array<Node>, targetLevel: number): Array<string>
 }
