@@ -24,7 +24,7 @@ Using npm:
 npm install react-checkbox-tree --save
 ```
 
-> **Note** &ndash; This library makes use of [Font Awesome](http://fontawesome.io/) styles and expects them to be loaded in the browser.
+> **Note** &ndash; By default, this library makes use of [Font Awesome](http://fontawesome.io/) styles and expects them to be loaded in the browser.
 
 > **Note** &ndash; Although **React 18** should work, our unit tests run against React 17 due to incompatibility with the unit testing tool (Enzyme).
 
@@ -75,7 +75,7 @@ function Widget() {
 }
 ```
 
-All node objects **must** have a unique `value`. This value is serialized into the `checked` and `expanded` arrays and is also used for performance optimizations.
+> **Note** &ndash; All node objects **must** have a unique `value`. This component serializes the values into the `checked` and `expanded` array for performance optimizations.
 
 #### Changing the Default Icons
 
