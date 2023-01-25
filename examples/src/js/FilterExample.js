@@ -120,8 +120,10 @@ class FilterExample extends React.Component {
     }
 
     filterTree() {
+        const { filterText } = this.state;
+
         // Reset nodes back to unfiltered state
-        if (!this.state.filterText) {
+        if (!filterText) {
             this.setState((prevState) => ({
                 nodesFiltered: prevState.nodes,
             }));

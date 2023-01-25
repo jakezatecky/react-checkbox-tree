@@ -757,6 +757,7 @@ describe('<CheckboxTree />', () => {
             const makeEmptyParentNode = (checked) => (
                 mount(
                     <CheckboxTree
+                        checked={checked}
                         nodes={[
                             {
                                 value: 'jupiter',
@@ -764,7 +765,6 @@ describe('<CheckboxTree />', () => {
                                 children: [],
                             },
                         ]}
-                        checked={checked}
                         onCheck={(node) => {
                             actualChecked = node;
                         }}

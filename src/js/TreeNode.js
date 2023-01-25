@@ -202,10 +202,10 @@ class TreeNode extends React.PureComponent {
                 {clickable ? (
                     <span
                         className="rct-node-clickable"
-                        onClick={this.onClick}
-                        onKeyPress={this.onClick}
                         role="button"
                         tabIndex={0}
+                        onClick={this.onClick}
+                        onKeyPress={this.onClick}
                     >
                         {children}
                     </span>
@@ -233,8 +233,8 @@ class TreeNode extends React.PureComponent {
                     disabled={disabled}
                     id={inputId}
                     indeterminate={checked === 2}
-                    onClick={this.onCheck}
                     onChange={() => {}}
+                    onClick={this.onCheck}
                 />
                 <span
                     aria-checked={checked === 1}
@@ -256,10 +256,10 @@ class TreeNode extends React.PureComponent {
                 <span
                     key={1}
                     className="rct-node-clickable"
-                    onClick={this.onClick}
-                    onKeyPress={this.onClick}
                     role="link"
                     tabIndex={0}
+                    onClick={this.onClick}
+                    onKeyPress={this.onClick}
                 >
                     {children}
                 </span>
@@ -290,11 +290,13 @@ class TreeNode extends React.PureComponent {
     }
 
     renderChildren() {
-        if (!this.props.expanded) {
+        const { children, expanded } = this.props;
+
+        if (!expanded) {
             return null;
         }
 
-        return this.props.children;
+        return children;
     }
 
     render() {

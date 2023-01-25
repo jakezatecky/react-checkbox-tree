@@ -124,9 +124,9 @@ class ClickExample extends React.Component {
             <div className="clickable-labels">
                 <CheckboxTree
                     checked={checked}
+                    expandOnClick
                     expanded={expanded}
                     nodes={nodes}
-                    expandOnClick
                     onCheck={this.onCheck}
                     onClick={this.onClick}
                     onExpand={this.onExpand}

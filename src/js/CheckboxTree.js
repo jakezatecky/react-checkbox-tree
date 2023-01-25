@@ -109,7 +109,6 @@ class CheckboxTree extends React.Component {
         this.combineMemorized = memoize((icons1, icons2) => ({ ...icons1, ...icons2 })).bind(this);
     }
 
-    // eslint-disable-next-line react/sort-comp
     static getDerivedStateFromProps(newProps, prevState) {
         const { model, prevProps } = prevState;
         const { disabled, id, nodes } = newProps;
@@ -138,20 +137,22 @@ class CheckboxTree extends React.Component {
 
     onCheck(nodeInfo) {
         const { checkModel, noCascade, onCheck } = this.props;
-        const model = this.state.model.clone();
-        const node = model.getNode(nodeInfo.value);
+        const { model } = this.state;
+        const newModel = model.clone();
+        const node = newModel.getNode(nodeInfo.value);
 
-        model.toggleChecked(nodeInfo, nodeInfo.checked, checkModel, noCascade);
-        onCheck(model.serializeList('checked'), { ...node, ...nodeInfo });
+        newModel.toggleChecked(nodeInfo, nodeInfo.checked, checkModel, noCascade);
+        onCheck(newModel.serializeList('checked'), { ...node, ...nodeInfo });
     }
 
     onExpand(nodeInfo) {
         const { onExpand } = this.props;
-        const model = this.state.model.clone();
-        const node = model.getNode(nodeInfo.value);
+        const { model } = this.state;
+        const newModel = model.clone();
+        const node = newModel.getNode(nodeInfo.value);
 
-        model.toggleNode(nodeInfo.value, 'expanded', nodeInfo.expanded);
-        onExpand(model.serializeList('expanded'), { ...node, ...nodeInfo });
+        newModel.toggleNode(nodeInfo.value, 'expanded', nodeInfo.expanded);
+        onExpand(newModel.serializeList('expanded'), { ...node, ...nodeInfo });
     }
 
     onNodeClick(nodeInfo) {
@@ -172,16 +173,18 @@ class CheckboxTree extends React.Component {
 
     expandAllNodes(expand = true) {
         const { onExpand } = this.props;
+        const { model } = this.state;
 
         onExpand(
-            this.state.model.clone()
+            model.clone()
                 .expandAllNodes(expand)
                 .serializeList('expanded'),
         );
     }
 
     determineShallowCheckState(node, noCascade) {
-        const flatNode = this.state.model.getNode(node.value);
+        const { model } = this.state;
+        const flatNode = model.getNode(node.value);
 
         if (flatNode.isLeaf || noCascade || node.children.length === 0) {
             // Note that an empty parent node tracks its own state
@@ -200,14 +203,18 @@ class CheckboxTree extends React.Component {
     }
 
     isEveryChildChecked(node) {
+        const { model } = this.state;
+
         return node.children.every(
-            (child) => this.state.model.getNode(child.value).checkState === 1,
+            (child) => model.getNode(child.value).checkState === 1,
         );
     }
 
     isSomeChildChecked(node) {
+        const { model } = this.state;
+
         return node.children.some(
-            (child) => this.state.model.getNode(child.value).checkState > 0,
+            (child) => model.getNode(child.value).checkState > 0,
         );
     }
 
@@ -258,11 +265,11 @@ class CheckboxTree extends React.Component {
                     expanded={flatNode.expanded}
                     icon={node.icon}
                     icons={this.combineMemorized(defaultIcons, icons)}
+                    isLeaf={flatNode.isLeaf}
+                    isParent={flatNode.isParent}
                     label={node.label}
                     lang={lang}
                     optimisticToggle={optimisticToggle}
-                    isLeaf={flatNode.isLeaf}
-                    isParent={flatNode.isParent}
                     showCheckbox={showCheckbox}
                     showNodeIcon={showNodeIcon}
                     title={showNodeTitle ? node.title || node.label : node.title}
