@@ -24,7 +24,7 @@ Using npm:
 npm install react-checkbox-tree --save
 ```
 
-> **Note** &ndash; By default, this library makes use of [Font Awesome](http://fontawesome.io/) styles and expects them to be loaded in the browser.
+> **Note** &ndash; By default, this library makes use of [Font Awesome](https://fontawesome.com) styles and expects them to be loaded in the browser.
 
 ### Include CSS
 
