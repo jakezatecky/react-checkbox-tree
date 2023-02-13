@@ -239,6 +239,7 @@ class TreeNode extends React.PureComponent {
                 <span
                     aria-checked={checked === 1}
                     aria-disabled={disabled}
+                    aria-hidden="true"
                     className="rct-checkbox"
                     role="checkbox"
                     tabIndex={0}
