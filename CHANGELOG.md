@@ -5,14 +5,15 @@
 ### Breaking Changes
 
 * The `iconsClass` property now defaults to `"fa5"` for Font Awesome 5/6 instead of Font Awesome 4
+* Hide the pseudo-checkbox from the accessibility tree
 
-## [v1.8.0](https://github.com/jakezatecky/react-checkbox-tree/compare/v1.7.3...v1.8.0) (2020-09-06)
+## [v1.8.0](https://github.com/jakezatecky/react-checkbox-tree/compare/v1.7.3...v1.8.0) (2022-09-06)
 
 ### Other
 
 * [#329] Add React 18 to the peer dependency list (**Note**: React 18 is not part of the automatic testing, but should work)
 
-## [v1.7.3](https://github.com/jakezatecky/react-checkbox-tree/compare/v1.7.2...v1.7.3) (2020-05-23)
+## [v1.7.3](https://github.com/jakezatecky/react-checkbox-tree/compare/v1.7.2...v1.7.3) (2022-05-23)
 
 ### Bug Fixes
 
