@@ -257,7 +257,7 @@ class TreeNode extends React.PureComponent {
                 <span
                     key={1}
                     className="rct-node-clickable"
-                    role="link"
+                    role="button"
                     tabIndex={0}
                     onClick={this.onClick}
                     onKeyPress={this.onClick}
