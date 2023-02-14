@@ -3,6 +3,9 @@
     "mocha": true
   },
   "rules": {
+    "no-console": ["warn", {
+      "allow": ["error"]
+    }],
     "react/jsx-props-no-spreading": "off"
   }
 }

@@ -1,39 +1,42 @@
 import React from 'react';
-import { shallow } from 'enzyme';
 import { assert } from 'chai';
+import { render, screen } from '@testing-library/react';
 
 import Button from '../src/js/Button';
 
 describe('<Button />', () => {
     describe('title', () => {
         it('should copy `title` to `aria-label`', () => {
-            const wrapper = shallow((
+            render((
                 <Button title="Collapse">
                     Collapse
                 </Button>
             ));
 
-            assert.equal('Collapse', wrapper.find('button').prop('aria-label'));
+            const button = screen.getByText('Collapse');
+            assert.equal(button.getAttribute('aria-label'), 'Collapse');
         });
 
         it('should set `type` to `button`', () => {
-            const wrapper = shallow((
+            render((
                 <Button>
                     Basic Button
                 </Button>
             ));
 
-            assert.equal('button', wrapper.find('button').prop('type'));
+            const button = screen.getByText('Basic Button');
+            assert.equal(button.type, 'button');
         });
 
         it('should pass extra properties to the base button', () => {
-            const wrapper = shallow((
+            render((
                 <Button className="btn">
                     Basic Button
                 </Button>
             ));
 
-            assert.equal('btn', wrapper.find('button').prop('className'));
+            const button = screen.getByText('Basic Button');
+            assert.equal(button.className, 'btn');
         });
     });
 });

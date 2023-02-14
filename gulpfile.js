@@ -37,7 +37,6 @@ gulp.task('test-script-mocha', () => (
             require: [
                 '@babel/register',
                 'global-jsdom/register',
-                './test/setup.js',
             ],
             exit: true,
         }))

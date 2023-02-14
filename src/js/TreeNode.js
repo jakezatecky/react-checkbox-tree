@@ -44,7 +44,7 @@ class TreeNode extends React.PureComponent {
         icon: null,
         showCheckbox: true,
         title: null,
-        onClick: () => {},
+        onClick: null,
     };
 
     constructor(props) {

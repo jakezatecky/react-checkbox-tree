@@ -1,15 +1,23 @@
 import React from 'react';
-import { shallow, mount } from 'enzyme';
 import { assert } from 'chai';
+import { render, screen } from '@testing-library/react';
+import { configure } from '@testing-library/dom';
+import userEvent from '@testing-library/user-event';
 
 import CheckboxTree from '../src/js/CheckboxTree';
 import CheckboxTreeError from '../src/js/CheckboxTreeError';
-import TreeNode from '../src/js/TreeNode';
+
+const consoleError = console.error;
+
+// Increase waitFor timeout to prevent unusual issues when there are many tests
+configure({
+    asyncUtilTimeout: 10000,
+});
 
 describe('<CheckboxTree />', () => {
     describe('component', () => {
         it('should render the react-checkbox-tree container', () => {
-            const wrapper = shallow(
+            const { container } = render(
                 <CheckboxTree
                     nodes={[]}
                     onCheck={() => {}}
@@ -17,16 +25,16 @@ describe('<CheckboxTree />', () => {
                 />,
             );
 
-            assert.isTrue(wrapper.find('.react-checkbox-tree').exists());
+            assert.isNotNull(container.querySelector('.react-checkbox-tree'));
         });
     });
 
     describe('checkModel', () => {
         describe('all', () => {
-            it('should record checked parent and leaf nodes', () => {
+            it('should record checked parent and leaf nodes', async () => {
                 let actual = null;
 
-                const wrapper = mount(
+                render(
                     <CheckboxTree
                         checkModel="all"
                         nodes={[
@@ -45,14 +53,16 @@ describe('<CheckboxTree />', () => {
                     />,
                 );
 
-                wrapper.find('TreeNode input[type="checkbox"]').simulate('click');
-                assert.deepEqual(['jupiter', 'io', 'europa'], actual);
+                const user = userEvent.setup();
+                await user.click(screen.getByLabelText('Jupiter'));
+
+                assert.deepEqual(actual, ['jupiter', 'io', 'europa']);
             });
 
-            it('should percolate `checked` to all parents and grandparents if all leaves are checked', () => {
+            it('should percolate `checked` to all parents and grandparents if all leaves are checked', async () => {
                 let actual = null;
 
-                const wrapper = mount(
+                render(
                     <CheckboxTree
                         checkModel="all"
                         checked={['mercury', 'io']}
@@ -80,14 +90,16 @@ describe('<CheckboxTree />', () => {
                     />,
                 );
 
-                wrapper.find('TreeNode[value="europa"] input[type="checkbox"]').simulate('click');
-                assert.deepEqual(['sol', 'mercury', 'jupiter', 'io', 'europa'], actual);
+                const user = userEvent.setup();
+                await user.click(screen.getByLabelText('Europa'));
+
+                assert.deepEqual(actual, ['sol', 'mercury', 'jupiter', 'io', 'europa']);
             });
 
-            it('should NOT percolate `checked` to the parent if not all leaves are checked', () => {
+            it('should NOT percolate `checked` to the parent if not all leaves are checked', async () => {
                 let actual = null;
 
-                const wrapper = mount(
+                render(
                     <CheckboxTree
                         checkModel="all"
                         expanded={['jupiter']}
@@ -107,16 +119,18 @@ describe('<CheckboxTree />', () => {
                     />,
                 );
 
-                wrapper.find('TreeNode[value="europa"] input[type="checkbox"]').simulate('click');
-                assert.deepEqual(['europa'], actual);
+                const user = userEvent.setup();
+                await user.click(screen.getByLabelText('Europa'));
+
+                assert.deepEqual(actual, ['europa']);
             });
         });
 
         describe('leaf', () => {
-            it('should only record leaf nodes in the checked array', () => {
+            it('should only record leaf nodes in the checked array', async () => {
                 let actual = null;
 
-                const wrapper = mount(
+                render(
                     <CheckboxTree
                         nodes={[
                             {
@@ -134,126 +148,127 @@ describe('<CheckboxTree />', () => {
                     />,
                 );
 
-                wrapper.find('TreeNode input[type="checkbox"]').simulate('click');
-                assert.deepEqual(['io', 'europa'], actual);
+                const user = userEvent.setup();
+                await user.click(screen.getByLabelText('Jupiter'));
+
+                assert.deepEqual(actual, ['io', 'europa']);
             });
         });
     });
 
     describe('checked', () => {
+        // https://github.com/jakezatecky/react-checkbox-tree/issues/69
         it('should not throw an exception if it contains values that are not in the `nodes` property', () => {
-            const wrapper = shallow(
+            const { container } = render(
                 <CheckboxTree
                     checked={['neptune']}
                     nodes={[{ value: 'jupiter', label: 'Jupiter' }]}
                 />,
             );
 
-            assert.isTrue(wrapper.find('.react-checkbox-tree').exists());
+            assert.isNotNull(container.querySelector('.react-checkbox-tree'));
         });
     });
 
     describe('direction', () => {
         it('should add the class rct-direction-rtl to the root when set to `rtl`', () => {
-            const wrapper = shallow(
+            const { container } = render(
                 <CheckboxTree direction="rtl" nodes={[]} />,
             );
 
-            assert.isTrue(wrapper.find('.react-checkbox-tree.rct-direction-rtl').exists());
+            assert.isNotNull(container.querySelector('.react-checkbox-tree.rct-direction-rtl'));
         });
     });
 
     describe('disabled', () => {
         it('should add the class rct-disabled to the root', () => {
-            const wrapper = shallow(
+            const { container } = render(
                 <CheckboxTree disabled nodes={[]} />,
             );
 
-            assert.isTrue(wrapper.find('.react-checkbox-tree.rct-disabled').exists());
+            assert.isNotNull(container.querySelector('.react-checkbox-tree.rct-disabled'));
         });
     });
 
     describe('expanded', () => {
+        // https://github.com/jakezatecky/react-checkbox-tree/issues/69
         it('should not throw an exception if it contains values that are not in the `nodes` property', () => {
-            const wrapper = shallow(
+            const { container } = render(
                 <CheckboxTree
                     expanded={['mars']}
                     nodes={[{ value: 'jupiter', label: 'Jupiter' }]}
                 />,
             );
 
-            assert.isTrue(wrapper.find('.react-checkbox-tree').exists());
+            assert.isNotNull(container.querySelector('.react-checkbox-tree'));
         });
     });
 
     describe('icons', () => {
         it('should pass the property directly to tree nodes', () => {
-            const wrapper = shallow(
+            const { container } = render(
                 <CheckboxTree
+                    checked={['jupiter']}
                     icons={{ check: <span className="other-check" /> }}
                     nodes={[{ value: 'jupiter', label: 'Jupiter' }]}
                 />,
             );
 
-            assert.equal('other-check', shallow(
-                wrapper.find(TreeNode).prop('icons').check,
-            ).prop('className'));
+            assert.isNotNull(container.querySelector('.rct-checkbox > .other-check'));
         });
 
         it('should be merged in with the defaults when keys are missing', () => {
-            const wrapper = shallow(
+            const { container } = render(
                 <CheckboxTree
                     icons={{ check: <span className="other-check" /> }}
                     nodes={[{ value: 'jupiter', label: 'Jupiter' }]}
                 />,
             );
 
-            assert.equal('rct-icon rct-icon-uncheck', shallow(
-                wrapper.find(TreeNode).prop('icons').uncheck,
-            ).prop('className'));
+            assert.isNotNull(container.querySelector('.rct-checkbox > .rct-icon-uncheck'));
         });
     });
 
     describe('iconsClass', () => {
         it('should apply the specified icon style to the tree', () => {
-            const wrapper = shallow(
+            const { container } = render(
                 <CheckboxTree
                     iconsClass="some-class"
                     nodes={[{ value: 'jupiter', label: 'Jupiter' }]}
                 />,
             );
 
-            assert.isTrue(wrapper.hasClass('rct-icons-some-class'));
+            assert.isTrue(container.querySelector('.react-checkbox-tree').classList.contains('rct-icons-some-class'));
         });
     });
 
     describe('id', () => {
         it('should pass the id to the top-level DOM node', () => {
-            const wrapper = shallow(
+            const { container } = render(
                 <CheckboxTree
                     id="my-awesome-id"
                     nodes={[{ value: 'jupiter', label: 'Jupiter' }]}
                 />,
             );
 
-            assert.equal('my-awesome-id', wrapper.prop('id'));
+            assert.equal(container.querySelector('.react-checkbox-tree').id, 'my-awesome-id');
         });
 
         it('should pass the id as a property directly to tree nodes', () => {
-            const wrapper = shallow(
+            render(
                 <CheckboxTree
                     id="my-awesome-id"
                     nodes={[{ value: 'jupiter', label: 'Jupiter' }]}
                 />,
             );
 
-            assert.equal('my-awesome-id', wrapper.find(TreeNode).prop('treeId'));
+            assert.equal(screen.getByRole('checkbox').id, 'my-awesome-id-jupiter');
         });
     });
 
     describe('lang', () => {
         it('should override default language values', () => {
-            const wrapper = shallow(
+            render(
                 <CheckboxTree
                     lang={{
                         expandAll: 'Expand it',
@@ -265,44 +280,51 @@ describe('<CheckboxTree />', () => {
                 />,
             );
 
-            assert.equal('Expand it', wrapper.find('.rct-option-expand-all').prop('title'));
+            assert.isNotNull(screen.queryByLabelText('Expand it'));
         });
     });
 
     describe('nativeCheckboxes', () => {
-        it('should add the class rct-native-display to the root', () => {
-            const wrapper = shallow(
+        it('should add the class `rct-native-display` to the root', () => {
+            const { container } = render(
                 <CheckboxTree nativeCheckboxes nodes={[]} />,
             );
 
-            assert.isTrue(wrapper.find('.react-checkbox-tree.rct-native-display').exists());
+            assert.isNotNull(container.querySelector('.react-checkbox-tree.rct-native-display'));
         });
     });
 
     describe('nodes', () => {
+        afterEach(() => {
+            // Restore console error
+            console.error = consoleError;
+        });
+
         it('should render the node\'s label', () => {
-            const wrapper = shallow(
+            render(
                 <CheckboxTree
                     nodes={[{ value: 'jupiter', label: 'Jupiter' }]}
                 />,
             );
 
-            assert.equal('Jupiter', wrapper.find(TreeNode).prop('label'));
+            assert.isNotNull(screen.queryByLabelText('Jupiter'));
         });
 
         it('should render the node\'s value', () => {
-            const wrapper = shallow(
+            render(
                 <CheckboxTree
+                    id="id"
                     nodes={[{ value: 'jupiter', label: 'Jupiter' }]}
                 />,
             );
 
-            assert.equal('jupiter', wrapper.find(TreeNode).prop('value'));
+            assert.equal(screen.getByRole('checkbox').id, 'id-jupiter');
         });
 
         it('should render multiple nodes', () => {
-            const wrapper = shallow(
+            render(
                 <CheckboxTree
+                    id="id"
                     nodes={[
                         { value: 'jupiter', label: 'Jupiter' },
                         { value: 'saturn', label: 'Saturn' },
@@ -310,13 +332,14 @@ describe('<CheckboxTree />', () => {
                 />,
             );
 
-            assert.equal('jupiter', wrapper.find(TreeNode).at(0).prop('value'));
-            assert.equal('saturn', wrapper.find(TreeNode).at(1).prop('value'));
+            assert.equal(screen.getByLabelText('Jupiter').id, 'id-jupiter');
+            assert.equal(screen.getByLabelText('Saturn').id, 'id-saturn');
         });
 
-        it('should render node children', () => {
-            const wrapper = shallow(
+        it('should render child nodes', () => {
+            render(
                 <CheckboxTree
+                    expanded={['jupiter']}
                     nodes={[
                         {
                             value: 'jupiter',
@@ -330,14 +353,12 @@ describe('<CheckboxTree />', () => {
                 />,
             );
 
-            assert.deepEqual(
-                wrapper.find(TreeNode).prop('children').props,
-                { children: [null, null] },
-            );
+            assert.isNotNull(screen.queryByLabelText('Io'));
+            assert.isNotNull(screen.queryByLabelText('Europa'));
         });
 
         it('should render a node with no `children` array as a leaf', () => {
-            const wrapper = shallow(
+            const { container } = render(
                 <CheckboxTree
                     nodes={[
                         { value: 'jupiter', label: 'Jupiter' },
@@ -345,12 +366,14 @@ describe('<CheckboxTree />', () => {
                 />,
             );
 
-            assert.equal(false, wrapper.find(TreeNode).prop('isParent'));
-            assert.equal(true, wrapper.find(TreeNode).prop('isLeaf'));
+            const { classList } = container.querySelector('.rct-node');
+
+            assert.isFalse(classList.contains('rct-node-parent'));
+            assert.isTrue(classList.contains('rct-node-leaf'));
         });
 
         it('should render a node with an empty `children` array as a parent', () => {
-            const wrapper = shallow(
+            const { container } = render(
                 <CheckboxTree
                     nodes={[
                         {
@@ -362,13 +385,15 @@ describe('<CheckboxTree />', () => {
                 />,
             );
 
-            assert.equal(true, wrapper.find(TreeNode).prop('isParent'));
-            assert.equal(false, wrapper.find(TreeNode).prop('isLeaf'));
+            const { classList } = container.querySelector('.rct-node');
+
+            assert.isTrue(classList.contains('rct-node-parent'));
+            assert.isFalse(classList.contains('rct-node-leaf'));
         });
 
         // https://github.com/jakezatecky/react-checkbox-tree/issues/258
         it('should render a node with an empty `children` array as unchecked by default', () => {
-            const wrapper = shallow(
+            render(
                 <CheckboxTree
                     nodes={[
                         {
@@ -380,34 +405,17 @@ describe('<CheckboxTree />', () => {
                 />,
             );
 
-            assert.equal(false, wrapper.find(TreeNode).prop('checked'));
+            assert.isFalse(screen.getByRole('checkbox').checked);
         });
 
-        it('should render a node with a non-empty `children` array as a parent', () => {
-            const wrapper = shallow(
-                <CheckboxTree
-                    nodes={[
-                        {
-                            value: 'jupiter',
-                            label: 'Jupiter',
-                            children: [
-                                { value: 'io', label: 'Io' },
-                                { value: 'europa', label: 'Europa' },
-                            ],
-                        },
-                    ]}
-                />,
-            );
+        it('should throw an error when duplicate values are used', async () => {
+            // Suppress caught errors from React
+            console.error = () => {};
 
-            assert.equal(true, wrapper.find(TreeNode).prop('isParent'));
-            assert.equal(false, wrapper.find(TreeNode).prop('isLeaf'));
-        });
-
-        it('should throw an error when duplicate values are used', () => {
-            let errorMessage = null;
+            let errorMessage = '';
 
             try {
-                shallow(
+                render(
                     <CheckboxTree
                         nodes={[
                             {
@@ -428,15 +436,15 @@ describe('<CheckboxTree />', () => {
                 }
             }
 
-            assert.equal("Duplicate value 'jupiter' detected. All node values must be unique.", errorMessage);
+            assert.equal(errorMessage, "Duplicate value 'jupiter' detected. All node values must be unique.");
         });
     });
 
     describe('noCascade', () => {
-        it('should not toggle the check state of children when set to true', () => {
+        it('should not toggle the check state of children when set to true', async () => {
             let actual = null;
 
-            const wrapper = mount(
+            render(
                 <CheckboxTree
                     noCascade
                     nodes={[
@@ -455,14 +463,16 @@ describe('<CheckboxTree />', () => {
                 />,
             );
 
-            wrapper.find('TreeNode input[type="checkbox"]').simulate('click');
-            assert.deepEqual(['jupiter'], actual);
+            const user = userEvent.setup();
+            await user.click(screen.getByLabelText('Jupiter'));
+
+            assert.deepEqual(actual, ['jupiter']);
         });
 
-        it('should toggle the check state of children when set to false', () => {
+        it('should toggle the check state of children when set to false', async () => {
             let actual = null;
 
-            const wrapper = mount(
+            render(
                 <CheckboxTree
                     nodes={[
                         {
@@ -480,15 +490,17 @@ describe('<CheckboxTree />', () => {
                 />,
             );
 
-            wrapper.find('TreeNode input[type="checkbox"]').simulate('click');
-            assert.deepEqual(['io', 'europa'], actual);
+            const user = userEvent.setup();
+            await user.click(screen.getByLabelText('Jupiter'));
+
+            assert.deepEqual(actual, ['io', 'europa']);
         });
     });
 
     describe('nodeProps', () => {
         describe('disabled', () => {
             it('should disable the target node when set to true', () => {
-                const wrapper = shallow(
+                render(
                     <CheckboxTree
                         nodes={[
                             {
@@ -503,11 +515,11 @@ describe('<CheckboxTree />', () => {
                     />,
                 );
 
-                assert.isTrue(wrapper.find(TreeNode).prop('disabled'));
+                assert.isTrue(screen.getByLabelText('Jupiter').disabled);
             });
 
             it('should disable the child nodes when `noCascade` is false', () => {
-                const wrapper = shallow(
+                render(
                     <CheckboxTree
                         expanded={['jupiter']}
                         nodes={[
@@ -523,11 +535,11 @@ describe('<CheckboxTree />', () => {
                     />,
                 );
 
-                assert.isTrue(wrapper.find('TreeNode[value="europa"]').prop('disabled'));
+                assert.isTrue(screen.getByLabelText('Europa').disabled);
             });
 
             it('should NOT disable the child nodes when `noCascade` is true', () => {
-                const wrapper = shallow(
+                render(
                     <CheckboxTree
                         expanded={['jupiter']}
                         noCascade
@@ -544,37 +556,43 @@ describe('<CheckboxTree />', () => {
                     />,
                 );
 
-                assert.isFalse(wrapper.find('TreeNode[value="europa"]').prop('disabled'));
+                assert.isFalse(screen.getByLabelText('Europa').disabled);
             });
 
             // https://github.com/jakezatecky/react-checkbox-tree/issues/119
             it('should be able to change disabled state after the initial render', () => {
-                const wrapper = shallow(
+                const nodes = [
+                    {
+                        value: 'jupiter',
+                        label: 'Jupiter',
+                        children: [
+                            { value: 'europa', label: 'Europa' },
+                        ],
+                    },
+                ];
+                const { rerender } = render(
                     <CheckboxTree
                         disabled
                         expanded={['jupiter']}
-                        nodes={[
-                            {
-                                value: 'jupiter',
-                                label: 'Jupiter',
-                                children: [
-                                    { value: 'europa', label: 'Europa' },
-                                ],
-                            },
-                        ]}
+                        nodes={nodes}
                     />,
                 );
 
-                wrapper.setProps({ disabled: false });
+                rerender(
+                    <CheckboxTree
+                        expanded={['jupiter']}
+                        nodes={nodes}
+                    />,
+                );
 
-                assert.isFalse(wrapper.find('TreeNode[value="europa"]').prop('disabled'));
+                assert.isFalse(screen.getByLabelText('Europa').disabled);
             });
         });
     });
 
     describe('onlyLeafCheckboxes', () => {
         it('should only render checkboxes for leaf nodes', () => {
-            const wrapper = mount(
+            render(
                 <CheckboxTree
                     expanded={['jupiter']}
                     nodes={[
@@ -591,29 +609,30 @@ describe('<CheckboxTree />', () => {
                 />,
             );
 
-            assert.isFalse(wrapper.find('TreeNode[value="jupiter"]').prop('showCheckbox'));
-            assert.isTrue(wrapper.find('TreeNode[value="io"]').prop('showCheckbox'));
-            assert.isTrue(wrapper.find('TreeNode[value="europa"]').prop('showCheckbox'));
+            assert.isNull(screen.queryByLabelText('Jupiter'));
+            assert.isNotNull(screen.queryByLabelText('Io'));
+            assert.isNotNull(screen.queryByLabelText('Europa'));
         });
     });
 
     describe('showExpandAll', () => {
         it('should render the expand all/collapse all buttons', () => {
-            const wrapper = shallow(
+            render(
                 <CheckboxTree
                     nodes={[{ value: 'jupiter', label: 'Jupiter' }]}
                     showExpandAll
                 />,
             );
 
-            assert.isTrue(wrapper.find('.rct-options .rct-option-expand-all').exists());
-            assert.isTrue(wrapper.find('.rct-options .rct-option-collapse-all').exists());
+            assert.isNotNull(screen.queryByLabelText('Expand all'));
+            assert.isNotNull(screen.queryByLabelText('Collapse all'));
         });
 
         describe('expandAll', () => {
-            it('should add all parent nodes to the `expanded` array', () => {
+            it('should add all parent nodes to the `expanded` array', async () => {
                 let actualExpanded = null;
-                const wrapper = shallow(
+
+                render(
                     <CheckboxTree
                         nodes={[
                             {
@@ -644,15 +663,18 @@ describe('<CheckboxTree />', () => {
                     />,
                 );
 
-                wrapper.find('.rct-option-expand-all').simulate('click');
-                assert.deepEqual(['mars', 'jupiter'], actualExpanded);
+                const user = userEvent.setup();
+                await user.click(screen.getByLabelText('Expand all'));
+
+                assert.deepEqual(actualExpanded, ['mars', 'jupiter']);
             });
         });
 
         describe('collapseAll', () => {
-            it('should remove all nodes from the `expanded` array', () => {
+            it('should remove all nodes from the `expanded` array', async () => {
                 let actualExpanded = null;
-                const wrapper = shallow(
+
+                render(
                     <CheckboxTree
                         expanded={['mars', 'jupiter']}
                         nodes={[
@@ -684,15 +706,17 @@ describe('<CheckboxTree />', () => {
                     />,
                 );
 
-                wrapper.find('.rct-option-collapse-all').simulate('click');
-                assert.deepEqual([], actualExpanded);
+                const user = userEvent.setup();
+                await user.click(screen.getByLabelText('Collapse all'));
+
+                assert.deepEqual(actualExpanded, []);
             });
         });
     });
 
     describe('showNodeTitle', () => {
         it('should add `title` properties to a TreeNode from the `label` property when set', () => {
-            const wrapper = shallow(
+            const { container } = render(
                 <CheckboxTree
                     nodes={[
                         {
@@ -704,11 +728,11 @@ describe('<CheckboxTree />', () => {
                 />,
             );
 
-            assert.equal('Jupiter', wrapper.find('TreeNode').prop('title'));
+            assert.equal(container.querySelector('label').title, 'Jupiter');
         });
 
         it('should prioritize the node `title` over the `label', () => {
-            const wrapper = shallow(
+            const { container } = render(
                 <CheckboxTree
                     nodes={[
                         {
@@ -721,15 +745,15 @@ describe('<CheckboxTree />', () => {
                 />,
             );
 
-            assert.equal('That Big Failed Star', wrapper.find('TreeNode').prop('title'));
+            assert.equal(container.querySelector('label').title, 'That Big Failed Star');
         });
     });
 
     describe('onCheck', () => {
-        it('should add all children of the checked parent to the checked array', () => {
+        it('should add all children of the checked parent to the checked array', async () => {
             let actualChecked = null;
 
-            const wrapper = mount(
+            render(
                 <CheckboxTree
                     nodes={[
                         {
@@ -747,46 +771,48 @@ describe('<CheckboxTree />', () => {
                 />,
             );
 
-            wrapper.find('TreeNode input[type="checkbox"]').simulate('click');
-            assert.deepEqual(['io', 'europa'], actualChecked);
+            const user = userEvent.setup();
+            await user.click(screen.getByLabelText('Jupiter'));
+
+            assert.deepEqual(actualChecked, ['io', 'europa']);
         });
 
         // https://github.com/jakezatecky/react-checkbox-tree/issues/258
-        it('should toggle a node with an empty `children` array', () => {
+        it('should toggle a node with an empty `children` array', async () => {
             let actualChecked = {};
             const makeEmptyParentNode = (checked) => (
-                mount(
-                    <CheckboxTree
-                        checked={checked}
-                        nodes={[
-                            {
-                                value: 'jupiter',
-                                label: 'Jupiter',
-                                children: [],
-                            },
-                        ]}
-                        onCheck={(node) => {
-                            actualChecked = node;
-                        }}
-                    />,
-                )
+                <CheckboxTree
+                    checked={checked}
+                    nodes={[
+                        {
+                            value: 'jupiter',
+                            label: 'Jupiter',
+                            children: [],
+                        },
+                    ]}
+                    onCheck={(node) => {
+                        actualChecked = node;
+                    }}
+                />
             );
 
+            const user = userEvent.setup();
+
             // Unchecked to checked
-            let wrapper = makeEmptyParentNode([]);
-            wrapper.find('TreeNode input[type="checkbox"]').simulate('click');
-            assert.deepEqual(['jupiter'], actualChecked);
+            const { rerender } = render(makeEmptyParentNode([]));
+            await user.click(screen.getByRole('checkbox'));
+            assert.deepEqual(actualChecked, ['jupiter']);
 
             // Checked to unchecked
-            wrapper = makeEmptyParentNode(['jupiter']);
-            wrapper.find('TreeNode input[type="checkbox"]').simulate('click');
-            assert.deepEqual([], actualChecked);
+            rerender(makeEmptyParentNode(['jupiter']));
+            await user.click(screen.getByRole('checkbox'));
+            assert.deepEqual(actualChecked, []);
         });
 
-        it('should not add disabled children to the checked array', () => {
+        it('should not add disabled children to the checked array', async () => {
             let actualChecked = null;
 
-            const wrapper = mount(
+            render(
                 <CheckboxTree
                     nodes={[
                         {
@@ -804,14 +830,16 @@ describe('<CheckboxTree />', () => {
                 />,
             );
 
-            wrapper.find('TreeNode input[type="checkbox"]').simulate('click');
-            assert.deepEqual(['europa'], actualChecked);
+            const user = userEvent.setup();
+            await user.click(screen.getByLabelText('Jupiter'));
+
+            assert.deepEqual(actualChecked, ['europa']);
         });
 
-        it('should pass the node toggled as the second parameter', () => {
+        it('should pass the node toggled as the second parameter', async () => {
             let actualNode = null;
 
-            const wrapper = mount(
+            render(
                 <CheckboxTree
                     nodes={[
                         {
@@ -829,16 +857,18 @@ describe('<CheckboxTree />', () => {
                 />,
             );
 
-            wrapper.find('TreeNode input[type="checkbox"]').simulate('click');
-            assert.equal('jupiter', actualNode.value);
+            const user = userEvent.setup();
+            await user.click(screen.getByLabelText('Jupiter'));
+
+            assert.equal(actualNode.value, 'jupiter');
         });
     });
 
     describe('onClick', () => {
-        it('should pass the node clicked as the first parameter', () => {
+        it('should pass the node clicked as the first parameter', async () => {
             let actualNode = null;
 
-            const wrapper = mount(
+            render(
                 <CheckboxTree
                     nodes={[
                         {
@@ -856,16 +886,18 @@ describe('<CheckboxTree />', () => {
                 />,
             );
 
-            wrapper.find('.rct-node-clickable').simulate('click');
-            assert.equal('jupiter', actualNode.value);
+            const user = userEvent.setup();
+            await user.click(screen.getByText('Jupiter'));
+
+            assert.equal(actualNode.value, 'jupiter');
         });
     });
 
     describe('onExpand', () => {
-        it('should toggle the expansion state of the target node', () => {
+        it('should toggle the expansion state of the target node', async () => {
             let actualExpanded = null;
 
-            const wrapper = mount(
+            render(
                 <CheckboxTree
                     nodes={[
                         {
@@ -883,14 +915,16 @@ describe('<CheckboxTree />', () => {
                 />,
             );
 
-            wrapper.find('TreeNode Button.rct-collapse-btn').simulate('click');
-            assert.deepEqual(['jupiter'], actualExpanded);
+            const user = userEvent.setup();
+            await user.click(screen.getByLabelText('Toggle'));
+
+            assert.deepEqual(actualExpanded, ['jupiter']);
         });
 
-        it('should pass the node toggled as the second parameter', () => {
+        it('should pass the node toggled as the second parameter', async () => {
             let actualNode = null;
 
-            const wrapper = mount(
+            render(
                 <CheckboxTree
                     nodes={[
                         {
@@ -908,13 +942,15 @@ describe('<CheckboxTree />', () => {
                 />,
             );
 
-            wrapper.find('TreeNode Button.rct-collapse-btn').simulate('click');
-            assert.equal('jupiter', actualNode.value);
+            const user = userEvent.setup();
+            await user.click(screen.getByLabelText('Toggle'));
+
+            assert.equal(actualNode.value, 'jupiter');
         });
     });
 
     describe('handler.targetNode', () => {
-        it('should supply a variety of metadata relating to the target node', () => {
+        it('should supply a variety of metadata relating to the target node', async () => {
             let checkNode = null;
             let expandNode = null;
             let clickNode = null;
@@ -940,7 +976,7 @@ describe('<CheckboxTree />', () => {
                     parentValue,
                 };
             };
-            const wrapper = mount(
+            render(
                 <CheckboxTree
                     expanded={['jupiter']}
                     nodes={[
@@ -948,7 +984,7 @@ describe('<CheckboxTree />', () => {
                             value: 'jupiter',
                             label: 'Jupiter',
                             children: [
-                                { value: 'io', label: 'Io' },
+                                { value: 'io', label: 'Io', title: 'Io' },
                                 { value: 'europa', label: 'Europa' },
                             ],
                         },
@@ -983,17 +1019,19 @@ describe('<CheckboxTree />', () => {
                 parentValue: undefined,
             };
 
+            const user = userEvent.setup();
+
             // onCheck
-            wrapper.find('TreeNode').at(1).find('input[type="checkbox"]').simulate('click');
-            assert.deepEqual(expectedLeafMetadata, getNodeMetadata(checkNode));
+            await user.click(screen.getByTitle('Io'));
+            assert.deepEqual(getNodeMetadata(checkNode), expectedLeafMetadata);
 
             // onClick
-            wrapper.find('TreeNode').at(1).find('.rct-node-clickable').simulate('click');
-            assert.deepEqual(expectedLeafMetadata, getNodeMetadata(clickNode));
+            await user.click(screen.getByText('Io'));
+            assert.deepEqual(getNodeMetadata(clickNode), expectedLeafMetadata);
 
             // onExpand
-            wrapper.find('TreeNode').at(0).find('Button.rct-collapse-btn').simulate('click');
-            assert.deepEqual(expectedParentMetadata, getNodeMetadata(expandNode));
+            await user.click(screen.getByLabelText('Toggle'));
+            assert.deepEqual(getNodeMetadata(expandNode), expectedParentMetadata);
         });
     });
 });

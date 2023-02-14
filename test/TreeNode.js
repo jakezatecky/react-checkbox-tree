@@ -1,6 +1,8 @@
 import React from 'react';
-import { shallow } from 'enzyme';
 import { assert } from 'chai';
+import { fireEvent } from '@testing-library/dom';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
 import TreeNode from '../src/js/TreeNode';
 
@@ -38,285 +40,268 @@ const baseProps = {
 describe('<TreeNode />', () => {
     describe('component', () => {
         it('should render the rct-node container', () => {
-            const wrapper = shallow(
+            const { container } = render(
                 <TreeNode {...baseProps} />,
             );
 
-            assert.isTrue(wrapper.find('.rct-node').exists());
+            assert.isNotNull(container.querySelector('.rct-node'));
         });
 
         it('should render a label associated with a checkbox', () => {
-            const wrapper = shallow(
-                <TreeNode {...baseProps} treeId="planets" value="jupiter" />,
+            render(
+                <TreeNode {...baseProps} value="jupiter" />,
             );
 
-            assert.equal('planets-jupiter', wrapper.find('label').prop('htmlFor'));
-            assert.equal('planets-jupiter', wrapper.find('label NativeCheckbox').prop('id'));
+            assert.equal(screen.getByLabelText('Jupiter').id, 'id-jupiter');
+            assert.equal(screen.getByRole('checkbox').id, 'id-jupiter');
         });
 
-        it('should render a label associated with a checkbox given integer value', () => {
-            const wrapper = shallow(
-                <TreeNode {...baseProps} treeId="planets" value={0} />,
+        it('should render an id based on an integer value', () => {
+            render(
+                <TreeNode {...baseProps} value={0} />,
             );
 
-            assert.equal('planets-0', wrapper.find('label').prop('htmlFor'));
-            assert.equal('planets-0', wrapper.find('label NativeCheckbox').prop('id'));
+            assert.equal(screen.getByLabelText('Jupiter').id, 'id-0');
         });
 
-        it('should render a label associated with a checkbox given float value', () => {
-            const wrapper = shallow(
-                <TreeNode {...baseProps} treeId="planets" value={0.25} />,
+        it('should render an id based on a float value', () => {
+            render(
+                <TreeNode {...baseProps} value={0.25} />,
             );
 
-            assert.equal('planets-0.25', wrapper.find('label').prop('htmlFor'));
-            assert.equal('planets-0.25', wrapper.find('label NativeCheckbox').prop('id'));
+            assert.equal(screen.getByLabelText('Jupiter').id, 'id-0.25');
         });
     });
 
     describe('checked', () => {
         it('should render icons associated with each check state', () => {
             const iconMap = {
-                0: <span className="rct-icon rct-icon-uncheck" />,
-                1: <span className="rct-icon rct-icon-check" />,
-                2: <span className="rct-icon rct-icon-half-check" />,
+                0: 'rct-icon-uncheck',
+                1: 'rct-icon-check',
+                2: 'rct-icon-half-check',
             };
 
             Object.keys(iconMap).forEach((state) => {
-                const wrapper = shallow(
+                const { container } = render(
                     <TreeNode {...baseProps} checked={parseInt(state, 10)} />,
                 );
 
-                assert.isTrue(wrapper.contains(iconMap[state]));
+                assert.isNotNull(container.querySelector(`.${iconMap[state]}`));
             });
         });
 
         it('should render an unchecked input element when not set to 1', () => {
-            const wrapper1 = shallow(
+            const { rerender } = render(
                 <TreeNode {...baseProps} checked={0} />,
             );
-            const wrapper2 = shallow(
+
+            assert.isFalse(screen.getByRole('checkbox').checked);
+
+            rerender(
                 <TreeNode {...baseProps} checked={2} />,
             );
 
-            assert.isFalse(wrapper1.find('NativeCheckbox').prop('checked'));
-            assert.isFalse(wrapper2.find('NativeCheckbox').prop('checked'));
+            assert.isFalse(screen.getByRole('checkbox').checked);
         });
 
         it('should render a checked input element when set to 1', () => {
-            const wrapper = shallow(
+            render(
                 <TreeNode {...baseProps} checked={1} />,
             );
 
-            assert.isTrue(wrapper.find('NativeCheckbox').prop('checked'));
+            assert.isTrue(screen.getByRole('checkbox').checked);
         });
     });
 
     describe('className', () => {
         it('should append the supplied className to <li> of the node', () => {
-            const wrapper = shallow(
+            const { container } = render(
                 <TreeNode {...baseProps} className="my-test-class" />,
             );
 
-            assert.isTrue(wrapper.find('.my-test-class').exists());
+            assert.isNotNull(container.querySelector('.my-test-class'));
         });
     });
 
     describe('disabled', () => {
         it('should disable the hidden <input> element', () => {
-            const wrapper = shallow(
+            render(
                 <TreeNode {...baseProps} disabled />,
             );
 
-            assert.isTrue(wrapper.find('NativeCheckbox[disabled]').exists());
+            assert.isTrue(screen.getByRole('checkbox').disabled);
         });
     });
 
     describe('expandDisabled', () => {
         it('should disable the expand <button>', () => {
-            const wrapper = shallow(
+            render(
                 <TreeNode {...baseProps} expandDisabled isLeaf={false} />,
             );
 
-            assert.isTrue(wrapper.find('Button.rct-collapse-btn[disabled]').exists());
+            assert.isTrue(screen.getByLabelText('Toggle').disabled);
         });
     });
 
     describe('expanded', () => {
-        it('should render children when set to true', () => {
-            const wrapper = shallow(
+        it('should render children when set to true', async () => {
+            render(
                 <TreeNode {...baseProps} expanded isLeaf={false}>
+                    <ol>
+                        <TreeNode {...baseProps} label="Europa" value="europa" />
+                    </ol>
+                </TreeNode>,
+            );
+
+            assert.isNotNull(await screen.queryByLabelText('Europa'));
+        });
+
+        it('should not render children when set to false', async () => {
+            render(
+                <TreeNode {...baseProps} expanded={false} isLeaf={false}>
                     <TreeNode {...baseProps} label="Europa" value="europa" />
                 </TreeNode>,
             );
 
-            assert.equal('europa', wrapper.find(TreeNode).prop('value'));
-        });
-
-        it('should not render children when set to false', () => {
-            const wrapper = shallow(
-                <TreeNode {...baseProps} expanded={false} isLeaf={false}>
-                    <TreeNode {...baseProps} />
-                </TreeNode>,
-            );
-
-            assert.isFalse(wrapper.find(TreeNode).exists());
+            assert.isNull(await screen.queryByLabelText('Europa'));
         });
 
         it('should render expanded icons when set to true', () => {
-            const wrapper = shallow(
+            const { container } = render(
                 <TreeNode {...baseProps} expanded isLeaf={false} />,
             );
 
-            assert.isTrue(wrapper.contains(<span className="rct-icon rct-icon-expand-open" />));
-            assert.isTrue(wrapper.contains(<span className="rct-icon rct-icon-parent-open" />));
+            assert.isNotNull(container.querySelector('.rct-icon-expand-open'));
+            assert.isNotNull(container.querySelector('.rct-icon-parent-open'));
         });
 
         it('should render collapsed icons when set to false', () => {
-            const wrapper = shallow(
+            const { container } = render(
                 <TreeNode {...baseProps} expanded={false} isLeaf={false} />,
             );
 
-            assert.isTrue(wrapper.contains(<span className="rct-icon rct-icon-expand-close" />));
-            assert.isTrue(wrapper.contains(<span className="rct-icon rct-icon-parent-close" />));
+            assert.isNotNull(container.querySelector('.rct-icon-expand-close'));
+            assert.isNotNull(container.querySelector('.rct-icon-parent-close'));
         });
 
         it('should append the `rct-node-expanded` class to the node when set to true', () => {
-            const wrapper = shallow(
+            render(
                 <TreeNode {...baseProps} expanded isLeaf={false} />,
             );
 
-            assert.isTrue(wrapper.find('li').hasClass('rct-node-expanded'));
+            assert.isTrue(screen.getByRole('listitem').classList.contains('rct-node-expanded'));
         });
 
         it('should append the `rct-node-collapsed` class to the node when set to true', () => {
-            const wrapper = shallow(
+            render(
                 <TreeNode {...baseProps} expanded={false} isLeaf={false} />,
             );
 
-            assert.isTrue(wrapper.find('li').hasClass('rct-node-collapsed'));
+            assert.isTrue(screen.getByRole('listitem').classList.contains('rct-node-collapsed'));
         });
 
         it('should not append any expanded/collapsed classes to the node when a leaf', () => {
-            const wrapper = shallow(
+            render(
                 <TreeNode {...baseProps} expanded isLeaf />,
             );
 
-            assert.isFalse(wrapper.find('li').hasClass('rct-node-expanded'));
-            assert.isFalse(wrapper.find('li').hasClass('rct-node-collapsed'));
+            const { classList } = screen.getByRole('listitem');
+
+            assert.isFalse(classList.contains('rct-node-expanded'));
+            assert.isFalse(classList.contains('rct-node-collapsed'));
         });
     });
 
     describe('icon', () => {
         it('should replace the node\'s icons with the supplied value', () => {
-            const wrapper = shallow(
+            const { container } = render(
                 <TreeNode {...baseProps} icon={<span className="fa fa-plus" />} />,
             );
 
-            assert.isTrue(wrapper.contains(
-                <span className="rct-node-icon">
-                    <span className="fa fa-plus" />
-                </span>,
-            ));
+            assert.isNotNull(container.querySelector('.rct-node-icon > .fa.fa-plus'));
         });
     });
 
     describe('icons', () => {
         it('should replace the default set of icons with the provided values', () => {
-            const wrapper = shallow(
+            const { container } = render(
                 <TreeNode {...baseProps} icons={{ uncheck: <span className="other-uncheck" /> }} />,
             );
 
-            assert.isTrue(wrapper.find('.rct-checkbox').contains(
-                <span className="other-uncheck" />,
-            ));
+            assert.isNotNull(container.querySelector('.rct-checkbox .other-uncheck'));
         });
     });
 
     describe('label', () => {
-        it('should render the node\'s label', () => {
-            const wrapper = shallow(
+        it('should render the node\'s label', async () => {
+            render(
                 <TreeNode {...baseProps} label="Europa" value="europa" />,
             );
 
-            assert.isTrue(wrapper.contains(
-                <span className="rct-title">
-                    Europa
-                </span>,
-            ));
+            assert.isNotNull(screen.queryByLabelText('Europa'));
         });
     });
 
     describe('showCheckbox', () => {
         it('should render a checkbox for the node when true', () => {
-            const wrapper = shallow(
+            const { container } = render(
                 <TreeNode {...baseProps} />,
             );
 
-            assert.isTrue(wrapper.find('.rct-checkbox').contains(
-                <span className="rct-icon rct-icon-uncheck" />,
-            ));
+            assert.isNotNull(container.querySelector('.rct-checkbox .rct-icon-uncheck'));
         });
 
-        it('should not render a checkbox or label for the node when false', () => {
-            const wrapper = shallow(
+        it('should not render a checkbox or label for the node when false', async () => {
+            const { container } = render(
                 <TreeNode {...baseProps} showCheckbox={false} />,
             );
 
-            assert.isFalse(wrapper.find('label').exists());
-            assert.isFalse(wrapper.find('.rct-checkbox').exists());
-            assert.isTrue(wrapper.find('.rct-bare-label').exists());
+            assert.isNull(await screen.queryByLabelText('Jupiter'));
+            assert.isNotNull(container.querySelector('.rct-bare-label'));
         });
     });
 
     describe('showNodeIcon', () => {
         it('should render the node icon when true', () => {
-            const wrapper = shallow(
+            const { container } = render(
                 <TreeNode {...baseProps} />,
             );
 
-            assert.isTrue(wrapper.contains(
-                <span className="rct-node-icon">
-                    <span className="rct-icon rct-icon-leaf" />
-                </span>,
-            ));
+            assert.isNotNull(container.querySelector('.rct-node-icon > .rct-icon-leaf'));
         });
 
         it('should not render the node icon when false', () => {
-            const wrapper = shallow(
+            const { container } = render(
                 <TreeNode {...baseProps} showNodeIcon={false} />,
             );
 
-            assert.isFalse(wrapper.contains(
-                <span className="rct-node-icon">
-                    <span className="rct-icon rct-icon-leaf" />
-                </span>,
-            ));
+            assert.isNull(container.querySelector('.rct-node-icon > .rct-icon-leaf'));
         });
     });
 
     describe('title', () => {
         it('should add the `title` property to the label when set', () => {
-            const wrapper = shallow(
+            const { container } = render(
                 <TreeNode {...baseProps} title="Some extra text" />,
             );
 
-            assert.equal('Some extra text', wrapper.find('label').prop('title'));
+            assert.equal(container.querySelector('label').title, 'Some extra text');
         });
 
         it('should add the `title` property to the bare label when set on a checkbox-less node', () => {
-            const wrapper = shallow(
+            const { container } = render(
                 <TreeNode {...baseProps} showCheckbox={false} title="Some extra text" />,
             );
 
-            assert.equal('Some extra text', wrapper.find('.rct-bare-label').prop('title'));
+            assert.equal(container.querySelector('.rct-bare-label').title, 'Some extra text');
         });
     });
 
     describe('onCheck', () => {
-        it('should pass the current node\'s value', () => {
+        it('should pass the current node\'s value', async () => {
             let actual = {};
 
-            const wrapper = shallow(
+            render(
                 <TreeNode
                     {...baseProps}
                     value="jupiter"
@@ -326,15 +311,16 @@ describe('<TreeNode />', () => {
                 />,
             );
 
-            wrapper.find('NativeCheckbox').simulate('click');
+            const user = userEvent.setup();
+            await user.click(screen.getByRole('checkbox'));
 
-            assert.equal('jupiter', actual.value);
+            assert.equal(actual.value, 'jupiter');
         });
 
-        it('should toggle an unchecked node to checked', () => {
+        it('should toggle an unchecked node to checked', async () => {
             let actual = {};
 
-            const wrapper = shallow(
+            render(
                 <TreeNode
                     {...baseProps}
                     checked={0}
@@ -345,15 +331,16 @@ describe('<TreeNode />', () => {
                 />,
             );
 
-            wrapper.find('NativeCheckbox').simulate('click');
+            const user = userEvent.setup();
+            await user.click(screen.getByRole('checkbox'));
 
             assert.isTrue(actual.checked);
         });
 
-        it('should toggle a checked node to unchecked', () => {
+        it('should toggle a checked node to unchecked', async () => {
             let actual = {};
 
-            const wrapper = shallow(
+            render(
                 <TreeNode
                     {...baseProps}
                     checked={1}
@@ -364,15 +351,16 @@ describe('<TreeNode />', () => {
                 />,
             );
 
-            wrapper.find('NativeCheckbox').simulate('click');
+            const user = userEvent.setup();
+            await user.click(screen.getByRole('checkbox'));
 
             assert.isFalse(actual.checked);
         });
 
-        it('should toggle a partially-checked node to checked', () => {
+        it('should toggle a partially-checked node to checked', async () => {
             let actual = {};
 
-            const wrapper = shallow(
+            render(
                 <TreeNode
                     {...baseProps}
                     checked={2}
@@ -383,15 +371,16 @@ describe('<TreeNode />', () => {
                 />,
             );
 
-            wrapper.find('NativeCheckbox').simulate('click');
+            const user = userEvent.setup();
+            await user.click(screen.getByRole('checkbox'));
 
             assert.isTrue(actual.checked);
         });
 
-        it('should trigger on key press', () => {
+        it('should trigger on key press', async () => {
             let actual = {};
 
-            const wrapper = shallow(
+            const { container } = render(
                 <TreeNode
                     {...baseProps}
                     checked={2}
@@ -402,16 +391,17 @@ describe('<TreeNode />', () => {
                 />,
             );
 
-            wrapper.find('.rct-checkbox').simulate('keyup', { keyCode: 32 });
+            // TODO: Replace with `user.type` when migrating away from `keyCode`
+            await fireEvent.keyUp(container.querySelector('.rct-checkbox'), { keyCode: 32 });
 
             assert.isTrue(actual.checked);
         });
 
         describe('optimisticToggle', () => {
-            it('should toggle a partially-checked node to unchecked', () => {
+            it('should toggle a partially-checked node to unchecked', async () => {
                 let actual = {};
 
-                const wrapper = shallow(
+                render(
                     <TreeNode
                         {...baseProps}
                         checked={2}
@@ -423,7 +413,8 @@ describe('<TreeNode />', () => {
                     />,
                 );
 
-                wrapper.find('NativeCheckbox').simulate('click');
+                const user = userEvent.setup();
+                await user.click(screen.getByRole('checkbox'));
 
                 assert.isFalse(actual.checked);
             });
@@ -431,10 +422,10 @@ describe('<TreeNode />', () => {
     });
 
     describe('onExpand', () => {
-        it('should negate the expanded property and pass the current node\'s value', () => {
+        it('should toggle the expanded property and pass the current node\'s value', async () => {
             let actual = {};
 
-            const wrapper = shallow(
+            render(
                 <TreeNode
                     {...baseProps}
                     expanded
@@ -446,15 +437,16 @@ describe('<TreeNode />', () => {
                 />,
             );
 
-            wrapper.find('.rct-collapse').simulate('click');
+            const user = userEvent.setup();
+            await user.click(screen.getByLabelText('Toggle'));
 
-            assert.deepEqual({ value: 'jupiter', expanded: false }, actual);
+            assert.deepEqual(actual, { value: 'jupiter', expanded: false });
         });
     });
 
     describe('onClick', () => {
-        it('should render the label inside of the DOM label when null', () => {
-            const wrapper = shallow(
+        it('should render the label inside of the DOM label when null', async () => {
+            render(
                 <TreeNode
                     {...baseProps}
                     value="jupiter"
@@ -462,11 +454,11 @@ describe('<TreeNode />', () => {
                 />,
             );
 
-            assert.isTrue(wrapper.find('label .rct-title').exists());
+            assert.isNotNull(await screen.queryByLabelText('Jupiter'));
         });
 
-        it('should render the label outside of the DOM label when NOT null', () => {
-            const wrapper = shallow(
+        it('should render the label outside of the DOM label when NOT null', async () => {
+            render(
                 <TreeNode
                     {...baseProps}
                     value="jupiter"
@@ -474,13 +466,13 @@ describe('<TreeNode />', () => {
                 />,
             );
 
-            assert.isFalse(wrapper.find('label .rct-title').exists());
+            assert.isNull(await screen.queryByLabelText('Jupiter'));
         });
 
-        it('should pass the current node\'s value', () => {
+        it('should pass the current node\'s value', async () => {
             let actual = {};
 
-            const wrapper = shallow(
+            render(
                 <TreeNode
                     {...baseProps}
                     value="jupiter"
@@ -490,15 +482,16 @@ describe('<TreeNode />', () => {
                 />,
             );
 
-            wrapper.find('.rct-node-clickable').simulate('click');
+            const user = userEvent.setup();
+            await user.click(screen.getByText('Jupiter'));
 
-            assert.equal('jupiter', actual.value);
+            assert.equal(actual.value, 'jupiter');
         });
 
-        it('should get the unchecked node as unchecked', () => {
+        it('should return the unchecked node as unchecked', async () => {
             let actual = {};
 
-            const wrapper = shallow(
+            render(
                 <TreeNode
                     {...baseProps}
                     checked={0}
@@ -509,15 +502,16 @@ describe('<TreeNode />', () => {
                 />,
             );
 
-            wrapper.find('.rct-node-clickable').simulate('click');
+            const user = userEvent.setup();
+            await user.click(screen.getByText('Jupiter'));
 
             assert.isFalse(actual.checked);
         });
 
-        it('should get the checked node as checked', () => {
+        it('should return the checked node as checked', async () => {
             let actual = {};
 
-            const wrapper = shallow(
+            render(
                 <TreeNode
                     {...baseProps}
                     checked={1}
@@ -528,15 +522,16 @@ describe('<TreeNode />', () => {
                 />,
             );
 
-            wrapper.find('.rct-node-clickable').simulate('click');
+            const user = userEvent.setup();
+            await user.click(screen.getByText('Jupiter'));
 
             assert.isTrue(actual.checked);
         });
 
-        it('should get the partially-checked node as checked', () => {
+        it('should get the partially-checked node as checked', async () => {
             let actual = {};
 
-            const wrapper = shallow(
+            render(
                 <TreeNode
                     {...baseProps}
                     checked={2}
@@ -547,7 +542,8 @@ describe('<TreeNode />', () => {
                 />,
             );
 
-            wrapper.find('.rct-node-clickable').simulate('click');
+            const user = userEvent.setup();
+            await user.click(screen.getByText('Jupiter'));
 
             assert.isTrue(actual.checked);
         });
