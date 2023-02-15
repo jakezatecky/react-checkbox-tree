@@ -1,4 +1,4 @@
-const path = require('path');
+const path = require('node:path');
 
 module.exports = {
     mode: 'development',
@@ -10,6 +10,7 @@ module.exports = {
         },
     },
     resolve: {
+        extensions: ['.js', '.jsx'],
         alias: {
             'react-checkbox-tree': path.resolve(__dirname, 'src/index.js'),
         },
@@ -17,7 +18,7 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.js?$/,
+                test: /\.jsx?$/,
                 exclude: /(node_modules)/,
                 loader: 'babel-loader',
             },

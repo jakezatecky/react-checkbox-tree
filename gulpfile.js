@@ -21,10 +21,10 @@ const browserSync = browserSyncImport.create();
 
 gulp.task('test-script-format', () => (
     gulp.src([
-        './examples/src/**/*.js',
-        './src/**/*.js',
-        './test/**/*.js',
-        './*.js',
+        './examples/src/**/*.{js,jsx}',
+        './src/**/*.{js,jsx}',
+        './test/**/*.{js,jsx}',
+        './*.{js,jsx}',
     ])
         .pipe(eslint())
         .pipe(eslint.format())
@@ -32,7 +32,7 @@ gulp.task('test-script-format', () => (
 ));
 
 gulp.task('test-script-mocha', () => (
-    gulp.src(['./test/**/*.js'])
+    gulp.src(['./test/**/*.{js,jsx}'])
         .pipe(mocha({
             require: [
                 '@babel/register',
@@ -91,7 +91,7 @@ gulp.task('compare-css-output', gulp.series(gulp.parallel('build-style', 'build-
 gulp.task('build', gulp.series('build-script-web', 'compare-css-output'));
 
 function buildExamplesScript(mode = 'development') {
-    return gulp.src(['./examples/src/index.js'])
+    return gulp.src(['./examples/src/index.jsx'])
         .pipe(webpackStream({ ...testWebpackConfig, mode }, webpack))
         .pipe(gulp.dest('./examples/dist/'));
 }
@@ -140,7 +140,7 @@ gulp.task('build-examples-html', () => (
 gulp.task('examples', gulp.series(gulp.parallel('build-examples-style', 'build-examples-script', 'build-examples-html'), () => {
     browserSync.init({ server: './examples/dist' });
 
-    gulp.watch(['./src/js/**/*.js', './examples/src/**/*.js']).on('change', gulp.series('build-examples-script'));
+    gulp.watch(['./src/js/**/*.{js,jsx}', './examples/src/**/*.{js,jsx}']).on('change', gulp.series('build-examples-script'));
     gulp.watch(['./src/scss/**/*.scss', './examples/src/**/*.scss']).on('change', gulp.series('build-examples-style'));
     gulp.watch(['./examples/src/**/*.html']).on('change', gulp.series('build-examples-html', browserSync.reload));
 }));

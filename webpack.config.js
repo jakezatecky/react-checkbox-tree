@@ -14,6 +14,9 @@ function makeConfig(target) {
                 type: 'umd',
             },
         },
+        resolve: {
+            extensions: ['.js', '.jsx'],
+        },
         externals: [
             {
                 react: {
@@ -35,7 +38,7 @@ function makeConfig(target) {
         module: {
             rules: [
                 {
-                    test: /\.js?$/,
+                    test: /\.jsx?$/,
                     exclude: /(node_modules)/,
                     loader: 'babel-loader',
                 },
