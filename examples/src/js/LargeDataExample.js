@@ -1,65 +1,56 @@
-import React from 'react';
+import React, { useState } from 'react';
 import CheckboxTree from 'react-checkbox-tree';
 
-const parents = [];
+function makeLargeDataSet() {
+    const parents = [];
 
-for (let i = 0; i < 100; i += 1) {
-    const children = [];
+    for (let i = 0; i < 100; i += 1) {
+        const children = [];
 
-    for (let j = 0; j < 200; j += 1) {
-        children.push({
-            value: `node-0-${i}-${j}`,
-            label: `Node 0-${i}-${j}`,
+        for (let j = 0; j < 200; j += 1) {
+            children.push({
+                value: `node-0-${i}-${j}`,
+                label: `Node 0-${i}-${j}`,
+            });
+        }
+
+        parents.push({
+            value: `node-0-${i}`,
+            label: `Node 0-${i}`,
+            children,
         });
     }
 
-    parents.push({
-        value: `node-0-${i}`,
-        label: `Node 0-${i}`,
-        children,
-    });
+    return [{
+        value: 'node-0',
+        label: 'Node 0',
+        children: parents,
+    }];
 }
 
-const nodes = [{
-    value: 'node-0',
-    label: 'Node 0',
-    children: parents,
-}];
+const nodes = makeLargeDataSet();
 
-class LargeDataExample extends React.Component {
-    state = {
-        checked: [],
-        expanded: [],
+function LargeDataExample() {
+    const [checked, setChecked] = useState([]);
+    const [expanded, setExpanded] = useState([]);
+
+    const onCheck = (value) => {
+        setChecked(value);
     };
 
-    constructor(props) {
-        super(props);
+    const onExpand = (value) => {
+        setExpanded(value);
+    };
 
-        this.onCheck = this.onCheck.bind(this);
-        this.onExpand = this.onExpand.bind(this);
-    }
-
-    onCheck(checked) {
-        this.setState({ checked });
-    }
-
-    onExpand(expanded) {
-        this.setState({ expanded });
-    }
-
-    render() {
-        const { checked, expanded } = this.state;
-
-        return (
-            <CheckboxTree
-                checked={checked}
-                expanded={expanded}
-                nodes={nodes}
-                onCheck={this.onCheck}
-                onExpand={this.onExpand}
-            />
-        );
-    }
+    return (
+        <CheckboxTree
+            checked={checked}
+            expanded={expanded}
+            nodes={nodes}
+            onCheck={onCheck}
+            onExpand={onExpand}
+        />
+    );
 }
 
 export default LargeDataExample;

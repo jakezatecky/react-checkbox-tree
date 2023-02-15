@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import CheckboxTree from 'react-checkbox-tree';
 
 const nodes = [
@@ -41,42 +41,27 @@ const nodes = [
     },
 ];
 
-class CustomIconsExamples extends React.Component {
-    state = {
-        checked: [],
-        expanded: [
-            'Documents',
-        ],
+function CustomIconsExamples() {
+    const [checked, setChecked] = useState([]);
+    const [expanded, setExpanded] = useState(['Documents']);
+
+    const onCheck = (value) => {
+        setChecked(value);
     };
 
-    constructor(props) {
-        super(props);
+    const onExpand = (value) => {
+        setExpanded(value);
+    };
 
-        this.onCheck = this.onCheck.bind(this);
-        this.onExpand = this.onExpand.bind(this);
-    }
-
-    onCheck(checked) {
-        this.setState({ checked });
-    }
-
-    onExpand(expanded) {
-        this.setState({ expanded });
-    }
-
-    render() {
-        const { checked, expanded } = this.state;
-
-        return (
-            <CheckboxTree
-                checked={checked}
-                expanded={expanded}
-                nodes={nodes}
-                onCheck={this.onCheck}
-                onExpand={this.onExpand}
-            />
-        );
-    }
+    return (
+        <CheckboxTree
+            checked={checked}
+            expanded={expanded}
+            nodes={nodes}
+            onCheck={onCheck}
+            onExpand={onExpand}
+        />
+    );
 }
 
 export default CustomIconsExamples;
