@@ -3,11 +3,6 @@
   "env": {
     "node": true
   },
-  "rules": {
-    "react/jsx-filename-extension": ["error", {
-      "allow": "as-needed"
-    }]
-  },
   "settings": {
     "import/resolver": {
       "webpack": {
