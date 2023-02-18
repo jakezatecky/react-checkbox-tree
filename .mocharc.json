@@ -1,0 +1,7 @@
+{
+  "require": [
+    "@babel/register",
+    "global-jsdom/register"
+  ],
+  "reporter": "spec"
+}
