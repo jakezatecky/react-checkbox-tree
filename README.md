@@ -24,7 +24,7 @@ Using npm:
 npm install react-checkbox-tree --save
 ```
 
-> **Note** &ndash; By default, this library makes use of [Font Awesome](https://fontawesome.com) styles and expects them to be loaded in the browser.
+> **Note** &ndash; By default, this library makes use of [Font Awesome][font-awesome] styles and expects them to be loaded in the browser.
 
 ### Include CSS
 
@@ -42,7 +42,7 @@ import 'react-checkbox-tree/lib/react-checkbox-tree.css';
 
 ### Render Component
 
-Below is a minimal example using [state hooks](https://reactjs.org/docs/hooks-state.html). Note that `CheckboxTree` is a [controlled](https://facebook.github.io/react/docs/forms.html#controlled-components) component, so you must update its `checked` and `expanded` properties whenever a change occurs.
+Below is a minimal example using [state hooks][docs-state-hooks]. Note that `CheckboxTree` is a [controlled][docs-controlled] component, so you must update its `checked` and `expanded` properties whenever a change occurs.
 
 ``` jsx
 import React, { useState } from 'react';
@@ -106,7 +106,7 @@ To change the rendered icons entirely, simply pass in the `icons` property and o
 />
 ```
 
-If you are using the [`react-fontawesome`](https://github.com/FortAwesome/react-fontawesome) library, you can also directly substitute those icons:
+If you are using the [`react-fontawesome`][react-fontawesome] library, you can also directly substitute those icons:
 
 ``` jsx
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -192,3 +192,8 @@ Individual nodes within the `nodes` property can have the following structure:
 | `icon`         | mixed  | A custom icon for the node.              | `null`  |
 | `showCheckbox` | bool   | Whether the node should show a checkbox. | `true`  |
 | `title`        | string | A custom `title` attribute for the node. | `null`  |
+
+[docs-controlled]: https://facebook.github.io/react/docs/forms.html#controlled-components
+[docs-state-hooks]: https://reactjs.org/docs/hooks-state.html
+[font-awesome]: https://fontawesome.com
+[react-fontawesome]: https://github.com/FortAwesome/react-fontawesome
