@@ -6,13 +6,14 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import Button from './Button';
-import { CHECK_MODEL, KEYS } from './constants';
 import NodeModel from './NodeModel';
 import TreeNode from './TreeNode';
+import defaultLang from './lang/default';
 import iconsShape from './shapes/iconsShape';
 import languageShape from './shapes/languageShape';
 import listShape from './shapes/listShape';
 import nodeShape from './shapes/nodeShape';
+import { CHECK_MODEL, KEYS } from './constants';
 
 class CheckboxTree extends React.Component {
     static propTypes = {
@@ -67,11 +68,7 @@ class CheckboxTree extends React.Component {
         },
         iconsClass: 'fa5',
         id: null,
-        lang: {
-            collapseAll: 'Collapse all',
-            expandAll: 'Expand all',
-            toggle: 'Toggle',
-        },
+        lang: defaultLang,
         name: undefined,
         nameAsArray: false,
         nativeCheckboxes: false,

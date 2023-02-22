@@ -163,7 +163,7 @@ Returns:
 | `icons`              | object   | An object containing the mappings for the various icons and their components. See **Changing the Default Icons**.      | `{ ... }`        |
 | `iconsClass`         | string   | A string that specifies which icons class to utilize. Currently, `'fa4'` and `'fa5'` are supported.                    | `'fa5'`          |
 | `id`                 | string   | A string to be used for the HTML ID of the rendered tree and its nodes.                                                | `null`           |
-| `lang`               | object   | An object containing the language mappings for the various text elements.                                              | `{ ... }`        |
+| `lang`               | object   | A key-value pairing of localized text. See [`src/js/lang/default.js`][lang-file] for a list of keys.                   | `{ ... }`        |
 | `name`               | string   | Optional name for the hidden `<input>` element.                                                                        | `undefined`      |
 | `nameAsArray`        | bool     | If true, the hidden `<input>` will encode its values as an array rather than a joined string.                          | `false`          |
 | `nativeCheckboxes`   | bool     | If true, native browser checkboxes will be used instead of pseudo-checkbox icons.                                      | `false`          |
@@ -197,5 +197,6 @@ Individual nodes within the `nodes` property can have the following structure:
 [docs-controlled]: https://facebook.github.io/react/docs/forms.html#controlled-components
 [docs-state-hooks]: https://reactjs.org/docs/hooks-state.html
 [font-awesome]: https://fontawesome.com
+[lang-file]: https://github.com/jakezatecky/react-dual-listbox/blob/master/src/js/lang/default.js
 [mdn-key]: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key
 [react-fontawesome]: https://github.com/FortAwesome/react-fontawesome
