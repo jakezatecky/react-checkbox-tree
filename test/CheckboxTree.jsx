@@ -1,7 +1,7 @@
 import React from 'react';
 import { assert } from 'chai';
 import { render, screen } from '@testing-library/react';
-import { configure } from '@testing-library/dom';
+import { configure, fireEvent } from '@testing-library/dom';
 import userEvent from '@testing-library/user-event';
 
 import CheckboxTree from '../src/js/CheckboxTree';
@@ -153,6 +153,27 @@ describe('<CheckboxTree />', () => {
 
                 assert.deepEqual(actual, ['io', 'europa']);
             });
+        });
+    });
+
+    describe('checkKeys', () => {
+        it('should trigger a check event when pressing one of the supplied values', async () => {
+            let actual = null;
+
+            const { container } = render(
+                <CheckboxTree
+                    checkKeys={['Shift']}
+                    checked={[]}
+                    nodes={[{ value: 'jupiter', label: 'Jupiter' }]}
+                    onCheck={(checked) => {
+                        actual = checked;
+                    }}
+                />,
+            );
+
+            await fireEvent.keyUp(container.querySelector('.rct-checkbox'), { key: 'Shift' });
+
+            assert.deepEqual(actual, ['jupiter']);
         });
     });
 

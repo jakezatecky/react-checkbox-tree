@@ -3,12 +3,14 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import Button from './Button';
+import { KEYS } from './constants';
 import NativeCheckbox from './NativeCheckbox';
 import iconsShape from './shapes/iconsShape';
 import languageShape from './shapes/languageShape';
 
 class TreeNode extends React.PureComponent {
     static propTypes = {
+        checkKeys: PropTypes.arrayOf(PropTypes.string).isRequired,
         checked: PropTypes.number.isRequired,
         disabled: PropTypes.bool.isRequired,
         expandDisabled: PropTypes.bool.isRequired,
@@ -60,22 +62,27 @@ class TreeNode extends React.PureComponent {
     onCheck() {
         const { value, onCheck } = this.props;
 
-        onCheck({ value, checked: this.getCheckState({ toggle: true }) });
+        onCheck({
+            value,
+            checked: this.getCheckState({ toggle: true }),
+        });
     }
 
     onCheckboxKeyPress(event) {
-        const { which } = event;
+        const { checkKeys } = this.props;
+        const { key } = event;
 
         // Prevent browser scroll when pressing space on the checkbox
-        if (which === 32) {
+        if (key === KEYS.SPACEBAR && checkKeys.includes(key)) {
             event.preventDefault();
         }
     }
 
     onCheckboxKeyUp(event) {
-        const { keyCode } = event;
+        const { checkKeys } = this.props;
+        const { key } = event;
 
-        if ([13, 32].includes(keyCode)) {
+        if (checkKeys.includes(key)) {
             this.onCheck();
         }
     }

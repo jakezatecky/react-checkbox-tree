@@ -4,5 +4,12 @@ const CHECK_MODEL = {
     LEAF: 'leaf',
 };
 
-// eslint-disable-next-line import/prefer-default-export
-export { CHECK_MODEL };
+const KEYS = {
+    SPACEBAR: ' ',
+    ENTER: 'Enter',
+};
+
+export {
+    CHECK_MODEL,
+    KEYS,
+};

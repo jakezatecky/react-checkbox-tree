@@ -7,6 +7,7 @@ import userEvent from '@testing-library/user-event';
 import TreeNode from '../src/js/TreeNode';
 
 const baseProps = {
+    checkKeys: [' ', 'Enter'],
     checked: 0,
     disabled: false,
     expandDisabled: false,
@@ -391,8 +392,7 @@ describe('<TreeNode />', () => {
                 />,
             );
 
-            // TODO: Replace with `user.type` when migrating away from `keyCode`
-            await fireEvent.keyUp(container.querySelector('.rct-checkbox'), { keyCode: 32 });
+            await fireEvent.keyUp(container.querySelector('.rct-checkbox'), { key: 'Enter' });
 
             assert.isTrue(actual.checked);
         });

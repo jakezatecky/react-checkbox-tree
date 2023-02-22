@@ -13,6 +13,10 @@
 * Hide the pseudo-checkbox from the accessibility tree
 * Change the clickable label from `role="link"` to `role="button"`
 
+### New Features
+
+* Add `checkKeys` property to allow specification of JavaScript keys to trigger check behavior
+
 ## [v1.8.0](https://github.com/jakezatecky/react-checkbox-tree/compare/v1.7.3...v1.8.0) (2022-09-06)
 
 ### Other
