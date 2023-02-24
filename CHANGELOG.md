@@ -9,9 +9,10 @@
 * Hide the pseudo-checkbox from the accessibility tree
 * Change the clickable label from `role="link"` to `role="button"`
 
-#### Language
+#### Properties
 
-* Replaced `toggle` key in `lang` property with `collapseNode` and `expandNode`
+* `id`: No longer generates a random UUID when empty
+* `lang`: Replaced `toggle` key with `collapseNode` and `expandNode`
 
 #### Styling
 

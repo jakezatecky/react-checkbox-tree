@@ -21,7 +21,6 @@ class TreeNode extends React.PureComponent {
         label: PropTypes.node.isRequired,
         optimisticToggle: PropTypes.bool.isRequired,
         showNodeIcon: PropTypes.bool.isRequired,
-        treeId: PropTypes.string.isRequired,
         value: PropTypes.oneOfType([
             PropTypes.string,
             PropTypes.number,
@@ -35,6 +34,7 @@ class TreeNode extends React.PureComponent {
         icon: PropTypes.node,
         showCheckbox: PropTypes.bool,
         title: PropTypes.string,
+        treeId: PropTypes.string,
         onClick: PropTypes.func,
     };
 
@@ -45,6 +45,7 @@ class TreeNode extends React.PureComponent {
         icon: null,
         showCheckbox: true,
         title: null,
+        treeId: null,
         onClick: null,
     };
 
@@ -211,7 +212,8 @@ class TreeNode extends React.PureComponent {
             onClick,
         } = this.props;
         const clickable = onClick !== null;
-        const inputId = `${treeId}-${String(value).split(' ').join('_')}`;
+        const valueId = String(value).split(' ').join('_');
+        const inputId = treeId ? `${treeId}-${valueId}` : null;
 
         const render = [(
             <label key={0} htmlFor={inputId} title={title}>

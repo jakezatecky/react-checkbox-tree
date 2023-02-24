@@ -1,7 +1,6 @@
 import classNames from 'classnames';
 import isEqual from 'lodash/isEqual';
 import memoize from 'lodash/memoize';
-import { nanoid } from 'nanoid';
 import PropTypes from 'prop-types';
 import React from 'react';
 
@@ -97,7 +96,6 @@ class CheckboxTree extends React.Component {
         });
 
         this.state = {
-            id: props.id || `rct-${nanoid()}`,
             model,
             prevProps: props,
         };
@@ -113,8 +111,8 @@ class CheckboxTree extends React.Component {
 
     static getDerivedStateFromProps(newProps, prevState) {
         const { model, prevProps } = prevState;
-        const { disabled, id, nodes } = newProps;
-        let newState = { ...prevState, prevProps: newProps };
+        const { disabled, nodes } = newProps;
+        const newState = { ...prevState, prevProps: newProps };
 
         // Apply new properties to model
         model.setProps(newProps);
@@ -123,10 +121,6 @@ class CheckboxTree extends React.Component {
         if (!isEqual(prevProps.nodes, nodes) || prevProps.disabled !== disabled) {
             model.reset();
             model.flattenNodes(nodes);
-        }
-
-        if (id !== null) {
-            newState = { ...newState, id };
         }
 
         model.deserializeLists({
@@ -225,6 +219,7 @@ class CheckboxTree extends React.Component {
             checkKeys,
             expandDisabled,
             expandOnClick,
+            id,
             noCascade,
             onClick,
             onlyLeafCheckboxes,
@@ -232,7 +227,7 @@ class CheckboxTree extends React.Component {
             showNodeTitle,
             showNodeIcon,
         } = this.props;
-        const { id, model } = this.state;
+        const { model } = this.state;
 
         const treeNodes = nodes.map((node) => {
             const key = node.value;
@@ -337,11 +332,11 @@ class CheckboxTree extends React.Component {
             disabled,
             icons,
             iconsClass,
+            id,
             lang,
             nodes,
             nativeCheckboxes,
         } = this.props;
-        const { id } = this.state;
         const mergedIcons = this.combineMemorized(defaultIcons, icons);
         const treeNodes = this.renderTreeNodes(nodes);
 
