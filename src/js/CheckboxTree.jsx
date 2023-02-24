@@ -16,6 +16,19 @@ import { CHECK_MODEL, KEYS } from './constants';
 import { IconContext, LanguageContext } from './contexts';
 import NodeModel from './NodeModel';
 
+const defaultIcons = {
+    check: <span className="rct-icon rct-icon-check" />,
+    uncheck: <span className="rct-icon rct-icon-uncheck" />,
+    halfCheck: <span className="rct-icon rct-icon-half-check" />,
+    expandClose: <span className="rct-icon rct-icon-expand-close" />,
+    expandOpen: <span className="rct-icon rct-icon-expand-open" />,
+    expandAll: <span className="rct-icon rct-icon-expand-all" />,
+    collapseAll: <span className="rct-icon rct-icon-collapse-all" />,
+    parentClose: <span className="rct-icon rct-icon-parent-close" />,
+    parentOpen: <span className="rct-icon rct-icon-parent-open" />,
+    leaf: <span className="rct-icon rct-icon-leaf" />,
+};
+
 class CheckboxTree extends React.Component {
     static propTypes = {
         nodes: PropTypes.arrayOf(nodeShape).isRequired,
@@ -55,18 +68,7 @@ class CheckboxTree extends React.Component {
         expandDisabled: false,
         expandOnClick: false,
         expanded: [],
-        icons: {
-            check: <span className="rct-icon rct-icon-check" />,
-            uncheck: <span className="rct-icon rct-icon-uncheck" />,
-            halfCheck: <span className="rct-icon rct-icon-half-check" />,
-            expandClose: <span className="rct-icon rct-icon-expand-close" />,
-            expandOpen: <span className="rct-icon rct-icon-expand-open" />,
-            expandAll: <span className="rct-icon rct-icon-expand-all" />,
-            collapseAll: <span className="rct-icon rct-icon-collapse-all" />,
-            parentClose: <span className="rct-icon rct-icon-parent-close" />,
-            parentOpen: <span className="rct-icon rct-icon-parent-open" />,
-            leaf: <span className="rct-icon rct-icon-leaf" />,
-        },
+        icons: defaultIcons,
         iconsClass: 'fa5',
         id: null,
         lang: defaultLang,
@@ -330,7 +332,6 @@ class CheckboxTree extends React.Component {
     }
 
     render() {
-        const { icons: defaultIcons } = CheckboxTree.defaultProps;
         const {
             direction,
             disabled,
