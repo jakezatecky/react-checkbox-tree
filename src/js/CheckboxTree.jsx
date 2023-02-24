@@ -289,19 +289,17 @@ class CheckboxTree extends React.Component {
     renderGlobalOptions() {
         const { showExpandAll } = this.props;
 
-        if (!showExpandAll) {
-            return null;
-        }
-
-        return <GlobalActions onCollapseAll={this.onCollapseAll} onExpandAll={this.onExpandAll} />;
+        return showExpandAll ? (
+            <GlobalActions onCollapseAll={this.onCollapseAll} onExpandAll={this.onExpandAll} />
+        ) : null;
     }
 
     renderHiddenInput() {
         const { checked, name, nameAsArray } = this.props;
 
-        return name === undefined ? null : (
+        return name !== undefined ? (
             <HiddenInput checked={checked} name={name} nameAsArray={nameAsArray} />
-        );
+        ) : null;
     }
 
     render() {
