@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import GlobalActions from './components/GlobalActions';
+import HiddenInput from './components/HiddenInput';
 import TreeNode from './components/TreeNode';
 import defaultLang from './lang/default';
 import iconsShape from './shapes/iconsShape';
@@ -296,34 +297,11 @@ class CheckboxTree extends React.Component {
     }
 
     renderHiddenInput() {
-        const { name, nameAsArray } = this.props;
+        const { checked, name, nameAsArray } = this.props;
 
-        if (name === undefined) {
-            return null;
-        }
-
-        if (nameAsArray) {
-            return this.renderArrayHiddenInput();
-        }
-
-        return this.renderJoinedHiddenInput();
-    }
-
-    renderArrayHiddenInput() {
-        const { checked, name: inputName } = this.props;
-
-        return checked.map((value) => {
-            const name = `${inputName}[]`;
-
-            return <input key={value} name={name} type="hidden" value={value} />;
-        });
-    }
-
-    renderJoinedHiddenInput() {
-        const { checked, name } = this.props;
-        const inputValue = checked.join(',');
-
-        return <input name={name} type="hidden" value={inputValue} />;
+        return name === undefined ? null : (
+            <HiddenInput checked={checked} name={name} nameAsArray={nameAsArray} />
+        );
     }
 
     render() {
