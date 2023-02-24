@@ -4,6 +4,10 @@
 
 ### Breaking Changes
 
+#### Language
+
+* Replaced `toggle` key in `lang` property with `collapseNode` and `expandNode`
+
 #### Styling
 
 * The `iconsClass` property now defaults to `"fa5"` for Font Awesome 5/6 instead of Font Awesome 4

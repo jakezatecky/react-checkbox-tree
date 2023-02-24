@@ -6,6 +6,7 @@ import userEvent from '@testing-library/user-event';
 
 import BaseTreeNode from '../src/js/components/TreeNode';
 import { IconContext, LanguageContext } from '../src/js/contexts';
+import lang from '../src/js/lang/default';
 
 const icons = {
     check: <span className="rct-icon rct-icon-check" />,
@@ -16,11 +17,6 @@ const icons = {
     parentClose: <span className="rct-icon rct-icon-parent-close" />,
     parentOpen: <span className="rct-icon rct-icon-parent-open" />,
     leaf: <span className="rct-icon rct-icon-leaf" />,
-};
-const lang = {
-    collapseAll: 'Collapse',
-    expandAll: 'Expand',
-    toggle: 'Toggle',
 };
 
 const baseProps = {
@@ -151,7 +147,7 @@ describe('<TreeNode />', () => {
                 <TreeNode {...baseProps} expandDisabled isLeaf={false} />,
             );
 
-            assert.isTrue(screen.getByLabelText('Toggle').disabled);
+            assert.isTrue(screen.getByLabelText('Expand').disabled);
         });
     });
 
@@ -439,7 +435,7 @@ describe('<TreeNode />', () => {
             );
 
             const user = userEvent.setup();
-            await user.click(screen.getByLabelText('Toggle'));
+            await user.click(screen.getByLabelText('Collapse'));
 
             assert.deepEqual(actual, { value: 'jupiter', expanded: false });
         });

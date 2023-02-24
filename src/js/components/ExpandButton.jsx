@@ -25,19 +25,19 @@ function ExpandButton({
         );
     }
 
-    const icons = useContext(IconContext);
-    const { toggle } = useContext(LanguageContext);
-    const { expandClose, expandOpen } = icons;
-    const collapseIcon = expanded ? expandOpen : expandClose;
+    const { expandClose, expandOpen } = useContext(IconContext);
+    const { collapseNode, expandNode } = useContext(LanguageContext);
+    const icon = expanded ? expandOpen : expandClose;
+    const title = expanded ? collapseNode : expandNode;
 
     return (
         <Button
             className="rct-collapse rct-collapse-btn"
             disabled={disabled}
-            title={toggle}
+            title={title}
             onClick={onClick}
         >
-            {collapseIcon}
+            {icon}
         </Button>
     );
 }
