@@ -5,15 +5,16 @@ import { nanoid } from 'nanoid';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import Button from './Button';
-import NodeModel from './NodeModel';
-import TreeNode from './TreeNode';
+import Button from './components/Button';
+import TreeNode from './components/TreeNode';
 import defaultLang from './lang/default';
 import iconsShape from './shapes/iconsShape';
 import languageShape from './shapes/languageShape';
 import listShape from './shapes/listShape';
 import nodeShape from './shapes/nodeShape';
 import { CHECK_MODEL, KEYS } from './constants';
+import { IconContext, LanguageContext } from './contexts';
+import NodeModel from './NodeModel';
 
 class CheckboxTree extends React.Component {
     static propTypes = {
@@ -222,8 +223,6 @@ class CheckboxTree extends React.Component {
             checkKeys,
             expandDisabled,
             expandOnClick,
-            icons,
-            lang,
             noCascade,
             onClick,
             onlyLeafCheckboxes,
@@ -232,7 +231,6 @@ class CheckboxTree extends React.Component {
             showNodeIcon,
         } = this.props;
         const { id, model } = this.state;
-        const { icons: defaultIcons } = CheckboxTree.defaultProps;
 
         const treeNodes = nodes.map((node) => {
             const key = node.value;
@@ -265,11 +263,9 @@ class CheckboxTree extends React.Component {
                     expandOnClick={expandOnClick}
                     expanded={flatNode.expanded}
                     icon={node.icon}
-                    icons={this.combineMemorized(defaultIcons, icons)}
                     isLeaf={flatNode.isLeaf}
                     isParent={flatNode.isParent}
                     label={node.label}
-                    lang={lang}
                     optimisticToggle={optimisticToggle}
                     showCheckbox={showCheckbox}
                     showNodeIcon={showNodeIcon}
@@ -293,7 +289,11 @@ class CheckboxTree extends React.Component {
     }
 
     renderExpandAll() {
-        const { icons: { expandAll, collapseAll }, lang, showExpandAll } = this.props;
+        const {
+            icons: { expandAll, collapseAll },
+            lang,
+            showExpandAll,
+        } = this.props;
 
         if (!showExpandAll) {
             return null;
@@ -351,14 +351,18 @@ class CheckboxTree extends React.Component {
     }
 
     render() {
+        const { icons: defaultIcons } = CheckboxTree.defaultProps;
         const {
             direction,
             disabled,
+            icons,
             iconsClass,
+            lang,
             nodes,
             nativeCheckboxes,
         } = this.props;
         const { id } = this.state;
+        const mergedIcons = this.combineMemorized(defaultIcons, icons);
         const treeNodes = this.renderTreeNodes(nodes);
 
         const className = classNames({
@@ -371,9 +375,13 @@ class CheckboxTree extends React.Component {
 
         return (
             <div className={className} id={id}>
-                {this.renderExpandAll()}
-                {this.renderHiddenInput()}
-                {treeNodes}
+                <LanguageContext.Provider value={lang}>
+                    <IconContext.Provider value={mergedIcons}>
+                        {this.renderExpandAll()}
+                        {this.renderHiddenInput()}
+                        {treeNodes}
+                    </IconContext.Provider>
+                </LanguageContext.Provider>
             </div>
         );
     }

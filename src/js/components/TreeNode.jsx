@@ -2,24 +2,23 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import Button from './Button';
-import { KEYS } from './constants';
+import { KEYS } from '../constants';
+import { IconContext } from '../contexts';
+import ExpandButton from './ExpandButton';
 import NativeCheckbox from './NativeCheckbox';
-import iconsShape from './shapes/iconsShape';
-import languageShape from './shapes/languageShape';
 
 class TreeNode extends React.PureComponent {
+    static contextType = IconContext;
+
     static propTypes = {
         checkKeys: PropTypes.arrayOf(PropTypes.string).isRequired,
         checked: PropTypes.number.isRequired,
         disabled: PropTypes.bool.isRequired,
         expandDisabled: PropTypes.bool.isRequired,
         expanded: PropTypes.bool.isRequired,
-        icons: iconsShape.isRequired,
         isLeaf: PropTypes.bool.isRequired,
         isParent: PropTypes.bool.isRequired,
         label: PropTypes.node.isRequired,
-        lang: languageShape.isRequired,
         optimisticToggle: PropTypes.bool.isRequired,
         showNodeIcon: PropTypes.bool.isRequired,
         treeId: PropTypes.string.isRequired,
@@ -130,41 +129,22 @@ class TreeNode extends React.PureComponent {
         return false;
     }
 
-    renderCollapseButton() {
-        const { expandDisabled, isLeaf, lang } = this.props;
-
-        if (isLeaf) {
-            return (
-                <span className="rct-collapse">
-                    <span className="rct-icon" />
-                </span>
-            );
-        }
+    renderExpandButton() {
+        const { expandDisabled, expanded, isLeaf } = this.props;
 
         return (
-            <Button
-                className="rct-collapse rct-collapse-btn"
+            <ExpandButton
                 disabled={expandDisabled}
-                title={lang.toggle}
+                expanded={expanded}
+                isLeaf={isLeaf}
                 onClick={this.onExpand}
-            >
-                {this.renderCollapseIcon()}
-            </Button>
+            />
         );
     }
 
-    renderCollapseIcon() {
-        const { expanded, icons: { expandClose, expandOpen } } = this.props;
-
-        if (!expanded) {
-            return expandClose;
-        }
-
-        return expandOpen;
-    }
-
     renderCheckboxIcon() {
-        const { checked, icons: { uncheck, check, halfCheck } } = this.props;
+        const { uncheck, check, halfCheck } = this.context;
+        const { checked } = this.props;
 
         if (checked === 0) {
             return uncheck;
@@ -178,10 +158,10 @@ class TreeNode extends React.PureComponent {
     }
 
     renderNodeIcon() {
+        const { leaf, parentClose, parentOpen } = this.context;
         const {
             expanded,
             icon,
-            icons: { leaf, parentClose, parentOpen },
             isLeaf,
         } = this.props;
 
@@ -326,7 +306,7 @@ class TreeNode extends React.PureComponent {
         return (
             <li className={nodeClass}>
                 <span className="rct-text">
-                    {this.renderCollapseButton()}
+                    {this.renderExpandButton()}
                     {this.renderLabel()}
                 </span>
                 {this.renderChildren()}

@@ -2,7 +2,7 @@ import React from 'react';
 import { assert } from 'chai';
 import { render, screen } from '@testing-library/react';
 
-import NativeCheckbox from '../src/js/NativeCheckbox';
+import NativeCheckbox from '../src/js/components/NativeCheckbox';
 
 describe('<NativeCheckbox />', () => {
     describe('indeterminate', () => {

@@ -4,7 +4,24 @@ import { fireEvent } from '@testing-library/dom';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import TreeNode from '../src/js/TreeNode';
+import BaseTreeNode from '../src/js/components/TreeNode';
+import { IconContext, LanguageContext } from '../src/js/contexts';
+
+const icons = {
+    check: <span className="rct-icon rct-icon-check" />,
+    uncheck: <span className="rct-icon rct-icon-uncheck" />,
+    halfCheck: <span className="rct-icon rct-icon-half-check" />,
+    expandClose: <span className="rct-icon rct-icon-expand-close" />,
+    expandOpen: <span className="rct-icon rct-icon-expand-open" />,
+    parentClose: <span className="rct-icon rct-icon-parent-close" />,
+    parentOpen: <span className="rct-icon rct-icon-parent-open" />,
+    leaf: <span className="rct-icon rct-icon-leaf" />,
+};
+const lang = {
+    collapseAll: 'Collapse',
+    expandAll: 'Expand',
+    toggle: 'Toggle',
+};
 
 const baseProps = {
     checkKeys: [' ', 'Enter'],
@@ -12,21 +29,6 @@ const baseProps = {
     disabled: false,
     expandDisabled: false,
     expanded: false,
-    lang: {
-        collapseAll: 'Collapse',
-        expandAll: 'Expand',
-        toggle: 'Toggle',
-    },
-    icons: {
-        check: <span className="rct-icon rct-icon-check" />,
-        uncheck: <span className="rct-icon rct-icon-uncheck" />,
-        halfCheck: <span className="rct-icon rct-icon-half-check" />,
-        expandClose: <span className="rct-icon rct-icon-expand-close" />,
-        expandOpen: <span className="rct-icon rct-icon-expand-open" />,
-        parentClose: <span className="rct-icon rct-icon-parent-close" />,
-        parentOpen: <span className="rct-icon rct-icon-parent-open" />,
-        leaf: <span className="rct-icon rct-icon-leaf" />,
-    },
     isLeaf: true,
     isParent: false,
     label: 'Jupiter',
@@ -37,6 +39,15 @@ const baseProps = {
     onCheck: () => {},
     onExpand: () => {},
 };
+function TreeNode(props) {
+    return (
+        <LanguageContext.Provider value={lang}>
+            <IconContext.Provider value={icons}>
+                <BaseTreeNode {...props} />
+            </IconContext.Provider>
+        </LanguageContext.Provider>
+    );
+}
 
 describe('<TreeNode />', () => {
     describe('component', () => {
@@ -220,16 +231,6 @@ describe('<TreeNode />', () => {
             );
 
             assert.isNotNull(container.querySelector('.rct-node-icon > .fa.fa-plus'));
-        });
-    });
-
-    describe('icons', () => {
-        it('should replace the default set of icons with the provided values', () => {
-            const { container } = render(
-                <TreeNode {...baseProps} icons={{ uncheck: <span className="other-uncheck" /> }} />,
-            );
-
-            assert.isNotNull(container.querySelector('.rct-checkbox .other-uncheck'));
         });
     });
 
