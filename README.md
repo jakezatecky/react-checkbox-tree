@@ -28,10 +28,9 @@ npm install react-checkbox-tree --save
 
 ### Include CSS
 
-For your convenience, the library's styles can be consumed utilizing one of the following files:
+The library's styles are available through one of the following files:
 
 * `node_modules/react-checkbox-tree/lib/react-checkbox-tree.css`
-* `node_modules/react-checkbox-tree/src/less/react-checkbox-tree.less`
 * `node_modules/react-checkbox-tree/src/scss/react-checkbox-tree.scss`
 
 Either include one of these files in your stylesheets or utilize a CSS loader:
@@ -47,6 +46,7 @@ Below is a minimal example using [state hooks][docs-state-hooks]. Note that `Che
 ``` jsx
 import React, { useState } from 'react';
 import CheckboxTree from 'react-checkbox-tree';
+import 'react-checkbox-tree/lib/react-checkbox-tree.css';
 
 const nodes = [{
   value: 'mars',

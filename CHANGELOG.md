@@ -16,6 +16,7 @@
 
 #### Styling
 
+* Drop support for Less.js styles
 * The `iconsClass` property now defaults to `"fa5"` for Font Awesome 5/6 instead of Font Awesome 4
 * The `rct-options` and `rct-option` CSS classes are now `rct-actions` and `rct-action`
 
