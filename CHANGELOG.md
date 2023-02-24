@@ -4,6 +4,11 @@
 
 ### Breaking Changes
 
+#### Accessibility
+
+* Hide the pseudo-checkbox from the accessibility tree
+* Change the clickable label from `role="link"` to `role="button"`
+
 #### Language
 
 * Replaced `toggle` key in `lang` property with `collapseNode` and `expandNode`
@@ -11,11 +16,7 @@
 #### Styling
 
 * The `iconsClass` property now defaults to `"fa5"` for Font Awesome 5/6 instead of Font Awesome 4
-
-#### Accessibility
-
-* Hide the pseudo-checkbox from the accessibility tree
-* Change the clickable label from `role="link"` to `role="button"`
+* The `rct-options` and `rct-option` CSS classes are now `rct-actions` and `rct-action`
 
 ### New Features
 

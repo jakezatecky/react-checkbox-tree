@@ -5,7 +5,7 @@ import { nanoid } from 'nanoid';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import Button from './components/Button';
+import GlobalActions from './components/GlobalActions';
 import TreeNode from './components/TreeNode';
 import defaultLang from './lang/default';
 import iconsShape from './shapes/iconsShape';
@@ -288,35 +288,14 @@ class CheckboxTree extends React.Component {
         );
     }
 
-    renderExpandAll() {
-        const {
-            icons: { expandAll, collapseAll },
-            lang,
-            showExpandAll,
-        } = this.props;
+    renderGlobalOptions() {
+        const { showExpandAll } = this.props;
 
         if (!showExpandAll) {
             return null;
         }
 
-        return (
-            <div className="rct-options">
-                <Button
-                    className="rct-option rct-option-expand-all"
-                    title={lang.expandAll}
-                    onClick={this.onExpandAll}
-                >
-                    {expandAll}
-                </Button>
-                <Button
-                    className="rct-option rct-option-collapse-all"
-                    title={lang.collapseAll}
-                    onClick={this.onCollapseAll}
-                >
-                    {collapseAll}
-                </Button>
-            </div>
-        );
+        return <GlobalActions onCollapseAll={this.onCollapseAll} onExpandAll={this.onExpandAll} />;
     }
 
     renderHiddenInput() {
@@ -377,7 +356,7 @@ class CheckboxTree extends React.Component {
             <div className={className} id={id}>
                 <LanguageContext.Provider value={lang}>
                     <IconContext.Provider value={mergedIcons}>
-                        {this.renderExpandAll()}
+                        {this.renderGlobalOptions()}
                         {this.renderHiddenInput()}
                         {treeNodes}
                     </IconContext.Provider>

@@ -94,13 +94,13 @@ $rct-clickable-focus: rgba($rct-icon-color, .2) !default;
   align-items: center;
 }
 
-.rct-options {
+.rct-actions {
   flex: 0 0 auto;
   margin-left: .5rem;
   text-align: right;
 }
 
-.rct-option {
+.rct-action {
   opacity: .75;
   border: 0;
   background: none;
@@ -112,7 +112,7 @@ $rct-clickable-focus: rgba($rct-icon-color, .2) !default;
     opacity: 1;
   }
 
-  + .rct-option {
+  + & {
     margin-left: 2px;
   }
 }
