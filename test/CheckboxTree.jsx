@@ -160,7 +160,7 @@ describe('<CheckboxTree />', () => {
         it('should trigger a check event when pressing one of the supplied values', async () => {
             let actual = null;
 
-            const { container } = render(
+            render(
                 <CheckboxTree
                     checkKeys={['Shift']}
                     checked={[]}
@@ -171,7 +171,7 @@ describe('<CheckboxTree />', () => {
                 />,
             );
 
-            await fireEvent.keyUp(container.querySelector('.rct-checkbox'), { key: 'Shift' });
+            await fireEvent.keyUp(screen.getByRole('checkbox'), { key: 'Shift' });
 
             assert.deepEqual(actual, ['jupiter']);
         });

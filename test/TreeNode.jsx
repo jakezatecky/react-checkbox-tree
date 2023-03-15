@@ -378,7 +378,7 @@ describe('<TreeNode />', () => {
         it('should trigger on key press', async () => {
             let actual = {};
 
-            const { container } = render(
+            render(
                 <TreeNode
                     {...baseProps}
                     checked={2}
@@ -389,7 +389,7 @@ describe('<TreeNode />', () => {
                 />,
             );
 
-            await fireEvent.keyUp(container.querySelector('.rct-checkbox'), { key: 'Enter' });
+            await fireEvent.keyUp(screen.getByRole('checkbox'), { key: 'Enter' });
 
             assert.isTrue(actual.checked);
         });

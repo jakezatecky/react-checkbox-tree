@@ -4,6 +4,11 @@ $rct-label-hover: rgba($rct-icon-color, .1) !default;
 $rct-label-active: rgba($rct-icon-color, .15) !default;
 $rct-clickable-hover: rgba($rct-icon-color, .1) !default;
 $rct-clickable-focus: rgba($rct-icon-color, .2) !default;
+$rct-checkbox-outline-offset: 2px !default;
+$rct-outline-color: rgba($rct-icon-color, .5) !default;
+$rct-outline-radius: 2px;
+$rct-outline-size: 2px !default;
+$rct-outline-offset: -2px !default;
 
 // Force ASCII output until Sass supports it
 // https://github.com/sass/dart-sass/issues/568
@@ -30,12 +35,28 @@ $rct-clickable-focus: rgba($rct-icon-color, .2) !default;
     }
   }
 
+  button,
+  input {
+    &:focus {
+      outline: $rct-outline-size solid $rct-outline-color;
+      border-radius: $rct-outline-radius;
+    }
+
+    &:not(:focus-visible) {
+      outline: none;
+    }
+  }
+
   button {
     line-height: normal;
     color: inherit;
 
     &:disabled {
       cursor: not-allowed;
+    }
+
+    &:focus {
+      outline-offset: $rct-outline-offset;
     }
   }
 
@@ -44,6 +65,8 @@ $rct-clickable-focus: rgba($rct-icon-color, .2) !default;
   }
 
   label {
+    display: flex;
+    align-items: center;
     margin-bottom: 0;
     cursor: pointer;
 
@@ -57,12 +80,32 @@ $rct-clickable-focus: rgba($rct-icon-color, .2) !default;
     }
   }
 
-  &:not(.rct-native-display) input {
-    display: none;
+  input {
+    margin: 0 5px;
+    cursor: pointer;
+
+    &:focus {
+      outline-offset: $rct-checkbox-outline-offset;
+    }
   }
 
-  &.rct-native-display input {
-    margin: 0 5px;
+  &:not(.rct-native-display) input {
+    // Hide the native checkbox (but keep in accessibility tree and accessible via touch)
+    position: absolute;
+    opacity: 0;
+
+    // Show focus effect on pseudo-checkbox
+    &:focus {
+      + .rct-checkbox {
+        outline: $rct-outline-size solid $rct-outline-color;
+        outline-offset: $rct-outline-offset;
+        border-radius: $rct-outline-radius;
+      }
+
+      &:not(:focus-visible) + .rct-checkbox {
+        outline: none;
+      }
+    }
   }
 
   .rct-icon {

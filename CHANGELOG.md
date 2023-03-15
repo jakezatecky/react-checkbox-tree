@@ -6,6 +6,7 @@
 
 #### Accessibility
 
+* Make the underlying checkbox accessible to screen readers and touch (#276)
 * Hide the pseudo-checkbox from the accessibility tree
 * Change the clickable label from `role="link"` to `role="button"`
 
