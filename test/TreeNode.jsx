@@ -147,7 +147,7 @@ describe('<TreeNode />', () => {
                 <TreeNode {...baseProps} expandDisabled isLeaf={false} />,
             );
 
-            assert.isTrue(screen.getByLabelText('Expand').disabled);
+            assert.isTrue(screen.getByLabelText('Expand node').disabled);
         });
     });
 
@@ -435,7 +435,7 @@ describe('<TreeNode />', () => {
             );
 
             const user = userEvent.setup();
-            await user.click(screen.getByLabelText('Collapse'));
+            await user.click(screen.getByLabelText('Collapse node'));
 
             assert.deepEqual(actual, { value: 'jupiter', expanded: false });
         });
