@@ -12,7 +12,7 @@
 #### Properties
 
 * `id`: No longer generates a random UUID when empty
-* `lang`: Replaced `toggle` key with `collapseNode` and `expandNode`
+* `lang`: Replaced `toggle` key with `collapseNode` and `expandNode` to better reflect state (#275)
 
 #### Styling
 
@@ -28,7 +28,7 @@
 
 ### Other
 
-* [#329] Add React 18 to the peer dependency list (**Note**: React 18 is not part of the automatic testing, but should work)
+* [#329]: Add React 18 to the peer dependency list (**Note**: React 18 is not part of the automatic testing, but should work)
 
 ## [v1.7.3](https://github.com/jakezatecky/react-checkbox-tree/compare/v1.7.2...v1.7.3) (2022-05-23)
 

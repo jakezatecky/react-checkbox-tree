@@ -1,6 +1,6 @@
 export default {
     collapseAll: 'Collapse all',
-    collapseNode: 'Collapse',
+    collapseNode: 'Collapse node',
     expandAll: 'Expand all',
-    expandNode: 'Expand',
+    expandNode: 'Expand node',
 };

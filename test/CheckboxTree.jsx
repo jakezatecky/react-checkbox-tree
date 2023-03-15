@@ -938,7 +938,7 @@ describe('<CheckboxTree />', () => {
             );
 
             const user = userEvent.setup();
-            await user.click(screen.getByLabelText('Expand'));
+            await user.click(screen.getByLabelText('Expand node'));
 
             assert.deepEqual(actualExpanded, ['jupiter']);
         });
@@ -965,7 +965,7 @@ describe('<CheckboxTree />', () => {
             );
 
             const user = userEvent.setup();
-            await user.click(screen.getByLabelText('Expand'));
+            await user.click(screen.getByLabelText('Expand node'));
 
             assert.equal(actualNode.value, 'jupiter');
         });
@@ -1052,7 +1052,7 @@ describe('<CheckboxTree />', () => {
             assert.deepEqual(getNodeMetadata(clickNode), expectedLeafMetadata);
 
             // onExpand
-            await user.click(screen.getByLabelText('Collapse'));
+            await user.click(screen.getByLabelText('Collapse node'));
             assert.deepEqual(getNodeMetadata(expandNode), expectedParentMetadata);
         });
     });
