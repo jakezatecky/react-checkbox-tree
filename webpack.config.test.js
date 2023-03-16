@@ -42,14 +42,14 @@ module.exports = {
     plugins: [
         new HtmlBundlerPlugin({
             entry: {
-              index: 'examples/src/index.html',
+                index: 'examples/src/index.html',
             },
             js: {
                 filename: '[name].[contenthash:8].js',
             },
             css: {
                 filename: '[name].[contenthash:8].css',
-            }
-          }),
+            },
+        }),
     ],
 };
