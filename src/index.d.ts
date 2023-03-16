@@ -43,9 +43,9 @@ declare module "react-checkbox-tree" {
     interface CheckboxProps {
         nodes: Array<Node>;
 
-        checkModel?: string;
+        checkModel?: 'leaf' | 'all';
         checked?: Array<string>;
-        direction?: string;
+        direction?: 'ltr' | 'rtl';
         disabled?: boolean;
         expandDisabled?: boolean;
         expandOnClick?: boolean;

@@ -1,17 +1,10 @@
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const HtmlBundlerPlugin = require('html-bundler-webpack-plugin');
 const path = require('node:path');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const RemoveEmptyScriptsPlugin = require('webpack-remove-empty-scripts');
 
 module.exports = {
     mode: 'development',
-    entry: {
-        index: path.join(__dirname, 'examples/src/index.jsx'),
-        style: path.join(__dirname, 'examples/src/scss/style.scss'),
-    },
     output: {
         path: path.join(__dirname, 'examples/dist'),
-        filename: '[name].js',
         library: {
             name: 'ReactCheckboxTree',
             type: 'umd',
@@ -33,7 +26,6 @@ module.exports = {
             {
                 test: /\.s[ac]ss$/i,
                 use: [
-                    MiniCssExtractPlugin.loader,
                     'css-loader',
                     'sass-loader',
                 ],
@@ -48,15 +40,16 @@ module.exports = {
         watchFiles: ['src/**/*', 'examples/src/**/*'],
     },
     plugins: [
-        new RemoveEmptyScriptsPlugin({}),
-        new MiniCssExtractPlugin({
-            filename: '[name].css',
-        }),
-        new HtmlWebpackPlugin({
-            template: 'examples/src/index.html',
-            filename: 'index.html',
-            inject: false,
-            minify: false,
+        new HtmlBundlerPlugin({
+            entry: {
+                index: 'examples/src/index.html',
+            },
+            js: {
+                filename: '[name].[contenthash:8].js',
+            },
+            css: {
+                filename: '[name].[contenthash:8].css',
+            },
         }),
     ],
 };
