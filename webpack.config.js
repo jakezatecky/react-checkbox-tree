@@ -7,15 +7,14 @@ ${pkg.name} - v${pkg.version}
 Copyright (c) ${pkg.author}
 Licensed under the ${pkg.license} License.
 `;
+const fileMap = {
+    node: 'index.js',
+    web: 'index.browser.js',
+};
 
 function makeConfig({ target }) {
-    const fileMap = {
-        node: 'index.js',
-        web: 'index.browser.js',
-    };
-
     return {
-        mode: 'production',
+        mode: 'none',
         target,
         entry: path.join(__dirname, 'src/index.js'),
         output: {
@@ -24,6 +23,7 @@ function makeConfig({ target }) {
             library: {
                 name: 'ReactCheckboxTree',
                 type: 'umd',
+                umdNamedDefine: true,
             },
         },
         resolve: {
