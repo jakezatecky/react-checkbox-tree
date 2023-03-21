@@ -241,7 +241,7 @@ class TreeNode extends React.PureComponent {
                 {showNodeIcon && (
                     <NodeIcon expanded={expanded} icon={icon} isLeaf={isLeaf} />
                 )}
-                <span className="rct-title">{label}</span>
+                <span className="rct-label">{label}</span>
             </>
         );
 
