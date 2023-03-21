@@ -6,6 +6,7 @@ import { KEYS } from '../constants';
 import { IconContext } from '../contexts';
 import ExpandButton from './ExpandButton';
 import NativeCheckbox from './NativeCheckbox';
+import NodeIcon from './NodeIcon';
 
 class TreeNode extends React.PureComponent {
     static contextType = IconContext;
@@ -152,29 +153,6 @@ class TreeNode extends React.PureComponent {
         return halfCheck;
     }
 
-    renderNodeIcon() {
-        const { leaf, parentClose, parentOpen } = this.context;
-        const {
-            expanded,
-            icon,
-            isLeaf,
-        } = this.props;
-
-        if (icon !== null) {
-            return icon;
-        }
-
-        if (isLeaf) {
-            return leaf;
-        }
-
-        if (!expanded) {
-            return parentClose;
-        }
-
-        return parentOpen;
-    }
-
     renderBareLabel(children) {
         const { onClick, title } = this.props;
         const clickable = onClick !== null;
@@ -250,17 +228,22 @@ class TreeNode extends React.PureComponent {
     }
 
     renderLabel() {
-        const { label, showCheckbox, showNodeIcon } = this.props;
-        const labelChildren = [
-            showNodeIcon ? (
-                <span key={0} className="rct-node-icon">
-                    {this.renderNodeIcon()}
-                </span>
-            ) : null,
-            <span key={1} className="rct-title">
-                {label}
-            </span>,
-        ];
+        const {
+            expanded,
+            icon,
+            isLeaf,
+            label,
+            showCheckbox,
+            showNodeIcon,
+        } = this.props;
+        const labelChildren = (
+            <>
+                {showNodeIcon && (
+                    <NodeIcon expanded={expanded} icon={icon} isLeaf={isLeaf} />
+                )}
+                <span className="rct-title">{label}</span>
+            </>
+        );
 
         if (!showCheckbox) {
             return this.renderBareLabel(labelChildren);
