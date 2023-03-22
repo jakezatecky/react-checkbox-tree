@@ -32,7 +32,9 @@ function NodeIcon({ expanded, icon, isLeaf }) {
         return parentOpen;
     }
 
-    return <span className="rct-node-icon">{getIcon()}</span>;
+    const nodeIcon = getIcon();
+
+    return nodeIcon && <span className="rct-node-icon">{nodeIcon}</span>;
 }
 
 NodeIcon.propTypes = propTypes;

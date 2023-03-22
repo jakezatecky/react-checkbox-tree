@@ -14,6 +14,7 @@
 
 * `id`: No longer generates a random UUID when empty
 * `lang`: Replaced `toggle` key with `collapseNode` and `expandNode` to better reflect state (#275)
+* `icons`: Setting a node icon to `null` will no longer render the wrapper element (#30)
 
 #### Styling
 

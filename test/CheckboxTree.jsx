@@ -248,6 +248,17 @@ describe('<CheckboxTree />', () => {
 
             assert.isNotNull(container.querySelector('.rct-checkbox > .rct-icon-uncheck'));
         });
+
+        it('should not render the wrapper element when an icon is set to null', () => {
+            const { container } = render(
+                <CheckboxTree
+                    icons={{ leaf: null }}
+                    nodes={[{ value: 'jupiter', label: 'Jupiter' }]}
+                />,
+            );
+
+            assert.isNull(container.querySelector('.rct-node-icon'));
+        });
     });
 
     describe('iconsClass', () => {
