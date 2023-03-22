@@ -56,6 +56,7 @@ class CheckboxTree extends React.Component {
         showNodeTitle: PropTypes.bool,
         onCheck: PropTypes.func,
         onClick: PropTypes.func,
+        onContextMenu: PropTypes.func,
         onExpand: PropTypes.func,
     };
 
@@ -83,6 +84,7 @@ class CheckboxTree extends React.Component {
         showNodeTitle: false,
         onCheck: () => {},
         onClick: null,
+        onContextMenu: null,
         onExpand: () => {},
     };
 
@@ -102,6 +104,7 @@ class CheckboxTree extends React.Component {
         };
 
         this.onCheck = this.onCheck.bind(this);
+        this.onContextMenu = this.onContextMenu.bind(this);
         this.onExpand = this.onExpand.bind(this);
         this.onNodeClick = this.onNodeClick.bind(this);
         this.onExpandAll = this.onExpandAll.bind(this);
@@ -130,6 +133,14 @@ class CheckboxTree extends React.Component {
         });
 
         return newState;
+    }
+
+    onContextMenu(node) {
+        const { onContextMenu } = this.props;
+
+        return (event) => {
+            onContextMenu(event, node);
+        };
     }
 
     onCheck(nodeInfo) {
@@ -250,6 +261,13 @@ class CheckboxTree extends React.Component {
                 return null;
             }
 
+            // Prepare node information for context menu usage
+            const nodeContext = {
+                ...node,
+                checked: flatNode.checkState,
+                expanded: flatNode.expanded,
+            };
+
             return (
                 <TreeNode
                     key={key}
@@ -272,6 +290,7 @@ class CheckboxTree extends React.Component {
                     value={node.value}
                     onCheck={this.onCheck}
                     onClick={onClick && this.onNodeClick}
+                    onContextMenu={this.onContextMenu(nodeContext)}
                     onExpand={this.onExpand}
                 >
                     {children}

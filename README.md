@@ -174,7 +174,8 @@ Returns:
 | `showNodeIcon`       | bool     | If true, each node will show a parent or leaf icon.                                                                    | `true`           |
 | `showNodeTitle`      | bool     | If true, the `label` of each node will become the `title` of the resulting DOM node. Overridden by `node.title`.       | `false`          |
 | `onCheck`            | function | onCheck handler: `function(checked, targetNode) {}`                                                                    | `() => {}`       |
-| `onClick`            | function | onClick handler: `function(targetNode) {}`. If set, `onClick` will be called when a node's label has been clicked.     | `() => {}`       |
+| `onClick`            | function | onClick handler: `function(targetNode) {}`. If set, `onClick` will be called when a node's label has been clicked.     | `null`           |
+| `onContextMenu`      | function | onContextMenu handler: `function(event, targetNode) {}`. Triggers when right-clicking a node element.                  | `null`           |
 | `onExpand`           | function | onExpand handler: `function(expanded, targetNode) {}`                                                                  | `() => {}`       |
 
 #### `onCheck` and `onExpand`

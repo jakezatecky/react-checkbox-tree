@@ -26,6 +26,7 @@
 ### New Features
 
 * Add `checkKeys` property to allow specification of JavaScript keys to trigger check behavior
+* Add `onContextMenu` property, which will trigger whenever a user right-clicks a node (#237)
 
 ## [v1.8.0](https://github.com/jakezatecky/react-checkbox-tree/compare/v1.7.3...v1.8.0) (2022-09-06)
 

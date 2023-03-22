@@ -37,6 +37,7 @@ class TreeNode extends React.PureComponent {
         title: PropTypes.string,
         treeId: PropTypes.string,
         onClick: PropTypes.func,
+        onContextMenu: PropTypes.func,
     };
 
     static defaultProps = {
@@ -48,6 +49,7 @@ class TreeNode extends React.PureComponent {
         title: null,
         treeId: null,
         onClick: null,
+        onContextMenu: null,
     };
 
     constructor(props) {
@@ -154,7 +156,7 @@ class TreeNode extends React.PureComponent {
     }
 
     renderBareLabel(children) {
-        const { onClick, title } = this.props;
+        const { title, onClick, onContextMenu } = this.props;
         const clickable = onClick !== null;
 
         return (
@@ -165,6 +167,7 @@ class TreeNode extends React.PureComponent {
                         role="button"
                         tabIndex={0}
                         onClick={this.onClick}
+                        onContextMenu={onContextMenu}
                         onKeyPress={this.onClick}
                     >
                         {children}
@@ -182,13 +185,14 @@ class TreeNode extends React.PureComponent {
             treeId,
             value,
             onClick,
+            onContextMenu,
         } = this.props;
         const clickable = onClick !== null;
         const valueId = String(value).split(' ').join('_');
         const inputId = treeId ? `${treeId}-${valueId}` : null;
 
         const render = [(
-            <label key={0} htmlFor={inputId} title={title}>
+            <label key={0} htmlFor={inputId} title={title} onContextMenu={onContextMenu}>
                 <NativeCheckbox
                     checked={checked === 1}
                     disabled={disabled}
@@ -217,6 +221,7 @@ class TreeNode extends React.PureComponent {
                     role="button"
                     tabIndex={0}
                     onClick={this.onClick}
+                    onContextMenu={onContextMenu}
                     onKeyPress={this.onClick}
                 >
                     {children}

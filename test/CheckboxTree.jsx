@@ -926,6 +926,39 @@ describe('<CheckboxTree />', () => {
         });
     });
 
+    describe('onContextMenu', () => {
+        it('should provide the target node\'s information when right-clicking a label', async () => {
+            let actualNode = null;
+
+            render(
+                <CheckboxTree
+                    nodes={[
+                        {
+                            value: 'jupiter',
+                            label: 'Jupiter',
+                            children: [
+                                { value: 'io', label: 'Io' },
+                                { value: 'europa', label: 'Europa' },
+                            ],
+                        },
+                    ]}
+                    onContextMenu={(event, node) => {
+                        actualNode = node;
+                    }}
+                />,
+            );
+
+            const user = userEvent.setup();
+            await user.pointer({
+                target: screen.getByText('Jupiter'),
+                keys: '[MouseRight]',
+            });
+
+            assert.equal(actualNode.value, 'jupiter');
+            assert.isFalse(actualNode.expanded);
+        });
+    });
+
     describe('onExpand', () => {
         it('should toggle the expansion state of the target node', async () => {
             let actualExpanded = null;
