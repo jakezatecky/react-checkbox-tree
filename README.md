@@ -195,8 +195,8 @@ Individual nodes within the `nodes` property can have the following structure:
 | `showCheckbox` | bool   | Whether the node should show a checkbox. | `true`  |
 | `title`        | string | A custom `title` attribute for the node. | `null`  |
 
-[docs-controlled]: https://facebook.github.io/react/docs/forms.html#controlled-components
-[docs-state-hooks]: https://reactjs.org/docs/hooks-state.html
+[docs-controlled]: https://react.dev/learn/sharing-state-between-components#controlled-and-uncontrolled-components
+[docs-state-hooks]: https://react.dev/reference/react/useState
 [font-awesome]: https://fontawesome.com
 [lang-file]: https://github.com/jakezatecky/react-dual-listbox/blob/master/src/js/lang/default.js
 [mdn-key]: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key
