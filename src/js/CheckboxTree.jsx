@@ -16,6 +16,8 @@ import { CHECK_MODEL, KEYS } from './constants';
 import { IconContext, LanguageContext } from './contexts';
 import NodeModel from './NodeModel';
 
+const combineMemoized = memoize((newValue, defaultValue) => ({ ...defaultValue, ...newValue }));
+
 const defaultIcons = {
     check: <span className="rct-icon rct-icon-check" />,
     uncheck: <span className="rct-icon rct-icon-uncheck" />,
@@ -109,8 +111,6 @@ class CheckboxTree extends React.Component {
         this.onNodeClick = this.onNodeClick.bind(this);
         this.onExpandAll = this.onExpandAll.bind(this);
         this.onCollapseAll = this.onCollapseAll.bind(this);
-
-        this.combineMemorized = memoize((icons1, icons2) => ({ ...icons1, ...icons2 })).bind(this);
     }
 
     static getDerivedStateFromProps(newProps, prevState) {
@@ -332,7 +332,8 @@ class CheckboxTree extends React.Component {
             nodes,
             nativeCheckboxes,
         } = this.props;
-        const mergedIcons = this.combineMemorized(defaultIcons, icons);
+        const mergedLang = combineMemoized(lang, defaultLang);
+        const mergedIcons = combineMemoized(icons, defaultIcons);
         const treeNodes = this.renderTreeNodes(nodes);
 
         const className = classNames({
@@ -344,15 +345,15 @@ class CheckboxTree extends React.Component {
         });
 
         return (
-            <div className={className} id={id}>
-                <LanguageContext.Provider value={lang}>
-                    <IconContext.Provider value={mergedIcons}>
+            <LanguageContext.Provider value={mergedLang}>
+                <IconContext.Provider value={mergedIcons}>
+                    <div className={className} id={id}>
                         {this.renderGlobalOptions()}
                         {this.renderHiddenInput()}
                         {treeNodes}
-                    </IconContext.Provider>
-                </LanguageContext.Provider>
-            </div>
+                    </div>
+                </IconContext.Provider>
+            </LanguageContext.Provider>
         );
     }
 }
