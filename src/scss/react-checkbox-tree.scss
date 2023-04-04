@@ -1,11 +1,11 @@
 $rct-icon-color: #33c !default;
 $rct-icon-font-family: "Font Awesome 5 Free", "FontAwesome", sans-serif;
-$rct-label-hover: rgba($rct-icon-color, .1) !default;
-$rct-label-active: rgba($rct-icon-color, .15) !default;
-$rct-clickable-hover: rgba($rct-icon-color, .1) !default;
-$rct-clickable-focus: rgba($rct-icon-color, .2) !default;
+$rct-label-hover: rgba($rct-icon-color, 0.1) !default;
+$rct-label-active: rgba($rct-icon-color, 0.15) !default;
+$rct-clickable-hover: rgba($rct-icon-color, 0.1) !default;
+$rct-clickable-focus: rgba($rct-icon-color, 0.2) !default;
 $rct-checkbox-outline-offset: 2px !default;
-$rct-outline-color: rgba($rct-icon-color, .5) !default;
+$rct-outline-color: rgba($rct-icon-color, 0.5) !default;
 $rct-outline-radius: 2px;
 $rct-outline-size: 2px !default;
 $rct-outline-offset: -2px !default;
@@ -13,7 +13,7 @@ $rct-outline-offset: -2px !default;
 // Force ASCII output until Sass supports it
 // https://github.com/sass/dart-sass/issues/568
 @function unicode($str) {
-  @return unquote("\"") + unquote(str-insert($str, "\\", 1)) + unquote("\"");
+  @return unquote('"') + unquote(str-insert($str, "\\", 1)) + unquote('"');
 }
 
 .react-checkbox-tree {
@@ -26,8 +26,8 @@ $rct-outline-offset: -2px !default;
   }
 
   ol {
-    margin: 0;
     padding-left: 0;
+    margin: 0;
     list-style-type: none;
 
     ol {
@@ -38,8 +38,8 @@ $rct-outline-offset: -2px !default;
   button,
   input {
     &:focus {
-      outline: $rct-outline-size solid $rct-outline-color;
       border-radius: $rct-outline-radius;
+      outline: $rct-outline-size solid $rct-outline-color;
     }
 
     &:not(:focus-visible) {
@@ -97,9 +97,9 @@ $rct-outline-offset: -2px !default;
     // Show focus effect on pseudo-checkbox
     &:focus {
       + .rct-checkbox {
+        border-radius: $rct-outline-radius;
         outline: $rct-outline-size solid $rct-outline-color;
         outline-offset: $rct-outline-offset;
-        border-radius: $rct-outline-radius;
       }
 
       &:not(:focus-visible) + .rct-checkbox {
@@ -110,18 +110,18 @@ $rct-outline-offset: -2px !default;
 
   .rct-icon {
     display: inline-block;
-    text-align: center;
-    text-rendering: auto;
     font-family: $rct-icon-font-family;
+    font-style: normal;
     font-weight: normal;
     font-variant: normal;
-    font-style: normal;
+    text-align: center;
+    text-rendering: auto;
   }
 }
 
 .rct-disabled > .rct-text > label {
-  opacity: .75;
   cursor: not-allowed;
+  opacity: 0.75;
 
   &:hover {
     background: transparent;
@@ -139,17 +139,17 @@ $rct-outline-offset: -2px !default;
 
 .rct-actions {
   flex: 0 0 auto;
-  margin-left: .5rem;
+  margin-left: 0.5rem;
   text-align: right;
 }
 
 .rct-action {
-  opacity: .75;
-  border: 0;
-  background: none;
-  cursor: pointer;
   padding: 0 4px;
   font-size: 18px;
+  cursor: pointer;
+  background: none;
+  border: 0;
+  opacity: 0.75;
 
   &:hover {
     opacity: 1;
@@ -167,25 +167,25 @@ $rct-outline-offset: -2px !default;
 
   * {
     display: inline-block;
-    margin: 0;
     width: 14px;
+    margin: 0;
   }
 }
 
 .rct-collapse {
   align-self: stretch;
-  border: 0;
-  background: none;
+  font-size: 12px;
   line-height: normal;
   color: inherit;
-  font-size: 12px;
+  background: none;
+  border: 0;
 
   &.rct-collapse-btn {
     cursor: pointer;
   }
 
   > .rct-icon-expand-close {
-    opacity: .5;
+    opacity: 0.5;
 
     &:hover {
       opacity: 1;
@@ -205,8 +205,8 @@ $rct-outline-offset: -2px !default;
   }
 
   &:focus {
-    outline: 0;
     background: $rct-clickable-focus;
+    outline: 0;
   }
 }
 
@@ -237,8 +237,8 @@ $rct-outline-offset: -2px !default;
   }
 
   .rct-icon-half-check::before {
-    opacity: .5;
     content: unicode("f046");
+    opacity: 0.5;
   }
 
   .rct-icon-leaf::before {
@@ -283,8 +283,8 @@ $rct-outline-offset: -2px !default;
   }
 
   .rct-icon-half-check::before {
-    opacity: .5;
     content: unicode("f14a");
+    opacity: 0.5;
   }
 
   .rct-icon-leaf::before {

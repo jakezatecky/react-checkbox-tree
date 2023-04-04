@@ -1,4 +1,4 @@
-// stylelint-disable
+// stylelint-disable value-keyword-case
 
 // Breakpoints
 $large-breakpoint: 64em;
@@ -10,12 +10,14 @@ $header-bg-color: #159957 !default;
 $header-bg-color-secondary: #155799 !default;
 
 // Text
+$font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif !default;
 $section-headings-color: #159957 !default;
 $body-text-color: #606c71 !default;
 $body-link-color: #1e6bb8 !default;
 $blockquote-text-color: #819198 !default;
 
 // Code
+$font-family-code: Consolas, "Liberation Mono", Menlo, Courier, monospace !default;
 $code-bg-color: #f3f6fa !default;
 $code-text-color: #567482 !default;
 
@@ -49,7 +51,7 @@ $hr-border-color: #eff0f1 !default;
 body {
   padding: 0;
   margin: 0;
-  font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: $font-family;
   font-size: 16px;
   line-height: 1.5;
   color: $body-text-color;
@@ -65,27 +67,6 @@ a {
 }
 
 .btn {
-  display: inline-block;
-  margin-bottom: 1rem;
-  color: rgba(255, 255, 255, 0.7);
-  background-color: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.2);
-  border-style: solid;
-  border-width: 1px;
-  border-radius: 0.3rem;
-  transition: color 0.2s, background-color 0.2s, border-color 0.2s;
-
-  &:hover {
-    color: rgba(255, 255, 255, 0.8);
-    text-decoration: none;
-    background-color: rgba(255, 255, 255, 0.2);
-    border-color: rgba(255, 255, 255, 0.3);
-  }
-
-  + .btn {
-    margin-left: 1rem;
-  }
-
   @include large {
     padding: 0.75rem 1rem;
   }
@@ -106,14 +87,30 @@ a {
       margin-left: 0;
     }
   }
+
+  display: inline-block;
+  margin-bottom: 1rem;
+  color: rgba(255, 255, 255, 0.7);
+  background-color: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.2);
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 0.3rem;
+  transition: color 0.2s, background-color 0.2s, border-color 0.2s;
+
+  &:hover {
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.3);
+  }
+
+  + .btn {
+    margin-left: 1rem;
+  }
 }
 
 .page-header {
-  color: $header-heading-color;
-  text-align: center;
-  background-color: $header-bg-color;
-  background-image: linear-gradient(120deg, $header-bg-color-secondary, $header-bg-color);
-
   @include large {
     padding: 5rem 6rem;
   }
@@ -125,12 +122,18 @@ a {
   @include small {
     padding: 2rem 1rem;
   }
+
+  color: $header-heading-color;
+  text-align: center;
+  background-color: $header-bg-color;
+  background-image: linear-gradient(
+    120deg,
+    $header-bg-color-secondary,
+    $header-bg-color
+  );
 }
 
 .project-name {
-  margin-top: 0;
-  margin-bottom: 0.1rem;
-
   @include large {
     font-size: 3.25rem;
   }
@@ -142,13 +145,12 @@ a {
   @include small {
     font-size: 1.75rem;
   }
+
+  margin-top: 0;
+  margin-bottom: 0.1rem;
 }
 
 .project-tagline {
-  margin-bottom: 2rem;
-  font-weight: normal;
-  opacity: 0.7;
-
   @include large {
     font-size: 1.25rem;
   }
@@ -160,15 +162,13 @@ a {
   @include small {
     font-size: 1rem;
   }
+
+  margin-bottom: 2rem;
+  font-weight: normal;
+  opacity: 0.7;
 }
 
 .main-content {
-  word-wrap: break-word;
-
-  :first-child {
-    margin-top: 0;
-  }
-
   @include large {
     max-width: 64rem;
     padding: 2rem 6rem;
@@ -184,6 +184,12 @@ a {
   @include small {
     padding: 2rem 1rem;
     font-size: 1rem;
+  }
+
+  word-wrap: break-word;
+
+  :first-child {
+    margin-top: 0;
   }
 
   img {
@@ -208,7 +214,7 @@ a {
 
   code {
     padding: 2px 4px;
-    font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+    font-family: $font-family-code;
     font-size: 0.9rem;
     color: $code-text-color;
     background-color: $code-bg-color;
@@ -219,7 +225,7 @@ a {
     padding: 0.8rem;
     margin-top: 0;
     margin-bottom: 1rem;
-    font: 1rem Consolas, "Liberation Mono", Menlo, Courier, monospace;
+    font: 1rem $font-family-code;
     color: $code-text-color;
     word-wrap: normal;
     background-color: $code-bg-color;
@@ -269,8 +275,8 @@ a {
     background-color: transparent;
     border: 0;
 
-    &:before,
-    &:after {
+    &::before,
+    &::after {
       content: normal;
     }
   }
@@ -300,8 +306,6 @@ a {
     width: 100%;
     overflow: auto;
     word-break: normal;
-    word-break: keep-all; // For Firefox to horizontally scroll wider tables.
-    -webkit-overflow-scrolling: touch;
 
     th {
       font-weight: bold;
@@ -340,10 +344,6 @@ a {
 }
 
 .site-footer {
-  padding-top: 2rem;
-  margin-top: 2rem;
-  border-top: solid 1px $hr-border-color;
-
   @include large {
     font-size: 1rem;
   }
@@ -355,6 +355,10 @@ a {
   @include small {
     font-size: 0.9rem;
   }
+
+  padding-top: 2rem;
+  margin-top: 2rem;
+  border-top: solid 1px $hr-border-color;
 }
 
 .site-footer-owner {
