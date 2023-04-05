@@ -25,6 +25,10 @@
 * The `rct-options` and `rct-option` CSS classes are now `rct-actions` and `rct-action` respectively
 * The `rct-title` CSS class is now `rct-label`
 
+#### Other
+
+* Drop support for React before v16.8
+
 ### New Features
 
 * Add `checkKeys` property to allow specification of JavaScript keys to trigger check behavior

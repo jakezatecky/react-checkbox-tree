@@ -40,7 +40,7 @@
     "test:style-format": "prettier --check src/scss/**/*.scss examples/src/scss/**/*.scss"
   },
   "peerDependencies": {
-    "react": "^15.3.0 || ^16.0.0 || ^17.0.0 || ^18.0.0"
+    "react": "^16.8.0 || ^17.0.0 || ^18.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",
