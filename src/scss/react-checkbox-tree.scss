@@ -10,12 +10,6 @@ $rct-outline-radius: 2px;
 $rct-outline-size: 2px !default;
 $rct-outline-offset: -2px !default;
 
-// Force ASCII output until Sass supports it
-// https://github.com/sass/dart-sass/issues/568
-@function unicode($str) {
-  @return unquote('"') + unquote(str-insert($str, "\\", 1)) + unquote('"');
-}
-
 .react-checkbox-tree {
   display: flex;
   flex-direction: row-reverse;
@@ -221,44 +215,44 @@ $rct-outline-offset: -2px !default;
 // Font Awesome 4 style
 .rct-icons-fa4 {
   .rct-icon-expand-close::before {
-    content: unicode("f054");
+    content: "\f054";
   }
 
   .rct-icon-expand-open::before {
-    content: unicode("f078");
+    content: "\f078";
   }
 
   .rct-icon-uncheck::before {
-    content: unicode("f096");
+    content: "\f096";
   }
 
   .rct-icon-check::before {
-    content: unicode("f046");
+    content: "\f046";
   }
 
   .rct-icon-half-check::before {
-    content: unicode("f046");
+    content: "\f046";
     opacity: 0.5;
   }
 
   .rct-icon-leaf::before {
-    content: unicode("f016");
+    content: "\f016";
   }
 
   .rct-icon-parent-open::before {
-    content: unicode("f115");
+    content: "\f115";
   }
 
   .rct-icon-parent-close::before {
-    content: unicode("f114");
+    content: "\f114";
   }
 
   .rct-icon-expand-all::before {
-    content: unicode("f0fe");
+    content: "\f0fe";
   }
 
   .rct-icon-collapse-all::before {
-    content: unicode("f146");
+    content: "\f146";
   }
 }
 
@@ -266,45 +260,45 @@ $rct-outline-offset: -2px !default;
 .rct-icons-fa5 {
   .rct-icon-expand-close::before {
     font-weight: 900;
-    content: unicode("f054");
+    content: "\f054";
   }
 
   .rct-icon-expand-open::before {
     font-weight: 900;
-    content: unicode("f078");
+    content: "\f078";
   }
 
   .rct-icon-uncheck::before {
-    content: unicode("f0c8");
+    content: "\f0c8";
   }
 
   .rct-icon-check::before {
-    content: unicode("f14a");
+    content: "\f14a";
   }
 
   .rct-icon-half-check::before {
-    content: unicode("f14a");
+    content: "\f14a";
     opacity: 0.5;
   }
 
   .rct-icon-leaf::before {
-    content: unicode("f15b");
+    content: "\f15b";
   }
 
   .rct-icon-parent-open::before {
-    content: unicode("f07c");
+    content: "\f07c";
   }
 
   .rct-icon-parent-close::before {
-    content: unicode("f07b");
+    content: "\f07b";
   }
 
   .rct-icon-expand-all::before {
-    content: unicode("f0fe");
+    content: "\f0fe";
   }
 
   .rct-icon-collapse-all::before {
-    content: unicode("f146");
+    content: "\f146";
   }
 }
 
@@ -318,10 +312,10 @@ $rct-outline-offset: -2px !default;
   }
 
   &.rct-icons-fa4 .rct-icon-expand-close::before {
-    content: unicode("f105");
+    content: "\f105";
   }
 
   &.rct-icons-fa5 .rct-icon-expand-close::before {
-    content: unicode("f053");
+    content: "\f053";
   }
 }
