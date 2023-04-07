@@ -1,5 +1,6 @@
+$rct-icon-font-family: "Font Awesome 6 Free", "Font Awesome 5 Free",
+  "FontAwesome", sans-serif;
 $rct-icon-color: #33c !default;
-$rct-icon-font-family: "Font Awesome 5 Free", "FontAwesome", sans-serif;
 $rct-label-hover: rgba($rct-icon-color, 0.1) !default;
 $rct-label-active: rgba($rct-icon-color, 0.15) !default;
 $rct-clickable-hover: rgba($rct-icon-color, 0.1) !default;
@@ -256,8 +257,9 @@ $rct-outline-offset: -2px !default;
   }
 }
 
-// Font Awesome 5 style
-.rct-icons-fa5 {
+// Font Awesome 5 and 6 styles
+.rct-icons-fa5,
+.rct-icons-fa6 {
   .rct-icon-expand-close::before {
     font-weight: 900;
     content: "\f054";

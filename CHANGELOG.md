@@ -17,11 +17,11 @@
   * Replaced `toggle` key with `collapseNode` and `expandNode` to better reflect state (#275)
   * Will now merge any missing keys with the default language
 * `icons`: Setting a node icon to `null` will no longer render the wrapper element (#30)
+* `iconsClass`: Now defaults to `'fa6'` for Font Awesome 5/6 instead of Font Awesome 4
 
 #### Styling
 
 * Drop support for Less.js styles
-* The `iconsClass` property now defaults to `"fa5"` for Font Awesome 5/6 instead of Font Awesome 4
 * The `rct-options` and `rct-option` CSS classes are now `rct-actions` and `rct-action` respectively
 * The `rct-title` CSS class is now `rct-label`
 
