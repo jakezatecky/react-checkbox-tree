@@ -50,9 +50,7 @@ class NodeModel {
             }
 
             this.flatNodes[node.value] = {
-                label: node.label,
-                value: node.value,
-                children: node.children,
+                ...node,
                 parent,
                 isChild: parent.value !== undefined,
                 isParent,
