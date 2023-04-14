@@ -2,6 +2,12 @@
 
 ## v2.0.0 (TBA)
 
+### New Features
+
+* Add `checkKeys` property to allow specification of JavaScript keys to trigger check behavior
+* Add `onContextMenu` property, which will trigger whenever a user right-clicks a node (#237)
+* The tree will now preserve original node properties (accessible via `onCheck`/`onExpand`) (#421)
+
 ### Breaking Changes
 
 #### Accessibility
@@ -28,12 +34,6 @@
 #### Other
 
 * Drop support for React before v16.8
-
-### New Features
-
-* Add `checkKeys` property to allow specification of JavaScript keys to trigger check behavior
-* Add `onContextMenu` property, which will trigger whenever a user right-clicks a node (#237)
-* The tree will now preserve original node properties (accessible via `onCheck`/`onExpand`) (#421)
 
 ## [v1.8.0](https://github.com/jakezatecky/react-checkbox-tree/compare/v1.7.3...v1.8.0) (2022-09-06)
 
