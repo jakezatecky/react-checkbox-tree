@@ -1,89 +1,13 @@
-const fileSystem = [
-    {
-        value: '/app',
-        label: 'app',
-        children: [
-            {
-                value: '/app/Http',
-                label: 'Http',
-                children: [
-                    {
-                        value: '/app/Http/Controllers',
-                        label: 'Controllers',
-                        children: [{
-                            value: '/app/Http/Controllers/WelcomeController.js',
-                            label: 'WelcomeController.js',
-                        }],
-                    },
-                    {
-                        value: '/app/Http/routes.js',
-                        label: 'routes.js',
-                    },
-                ],
-            },
-            {
-                value: '/app/Providers',
-                label: 'Providers',
-                children: [{
-                    value: '/app/Providers/EventServiceProvider.js',
-                    label: 'EventServiceProvider.js',
-                }],
-            },
-        ],
-    },
-    {
-        value: '/config',
-        label: 'config',
-        children: [
-            {
-                value: '/config/app.js',
-                label: 'app.js',
-            },
-            {
-                value: '/config/database.js',
-                label: 'database.js',
-            },
-        ],
-    },
-    {
-        value: '/public',
-        label: 'public',
-        children: [
-            {
-                value: '/public/assets/',
-                label: 'assets',
-                children: [{
-                    value: '/public/assets/style.css',
-                    label: 'style.css',
-                }],
-            },
-            {
-                value: '/public/index.html',
-                label: 'index.html',
-            },
-        ],
-    },
-    {
-        value: '/.env',
-        label: '.env',
-    },
-    {
-        value: '/.gitignore',
-        label: '.gitignore',
-    },
-    {
-        value: '/README.md',
-        label: 'README.md',
-    },
-];
 const empires = [
     {
         value: 'favorite-empires',
         label: 'Favorite Empires',
+        expanded: true,
         children: [
             {
                 value: 'classical-era',
                 label: 'Classical Era',
+                expanded: true,
                 children: [
                     {
                         value: 'persian',
@@ -92,6 +16,7 @@ const empires = [
                     {
                         value: 'qin',
                         label: 'Qin Dynasty',
+                        checked: true,
                     },
                     {
                         value: 'spqr',
@@ -102,6 +27,7 @@ const empires = [
             {
                 value: 'medieval-era',
                 label: 'Medieval Era',
+                expanded: true,
                 children: [
                     {
                         value: 'abbasid',
@@ -128,10 +54,12 @@ const empires = [
             {
                 value: 'modern-era',
                 label: 'Modern Era',
+                expanded: true,
                 children: [
                     {
                         value: 'aztec',
                         label: 'Aztec Empire',
+                        checked: true,
                     },
                     {
                         value: 'british',
@@ -144,6 +72,7 @@ const empires = [
                     {
                         value: 'qing',
                         label: 'Qing Dynasty',
+                        checked: true,
                     },
                     {
                         value: 'russian',
@@ -159,7 +88,4 @@ const empires = [
     },
 ];
 
-export {
-    fileSystem,
-    empires,
-};
+export default empires;

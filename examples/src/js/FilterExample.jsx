@@ -1,104 +1,95 @@
-import React, { Component } from 'react';
-import CheckboxTree from 'react-checkbox-tree';
+import React, { useEffect, useState } from 'react';
+import CheckboxTree, { CheckboxTreeProvider, useCheckboxTree } from 'react-checkbox-tree';
 
-import { fileSystem as nodes } from './common';
+import { fileSystem as initialTreeState } from './data';
 
-class FilterExample extends Component {
-    state = {
-        checked: [
-            '/app/Http/Controllers/WelcomeController.js',
-            '/app/Http/routes.js',
-            '/public/assets/style.css',
-            '/public/index.html',
-            '/.gitignore',
-        ],
-        expanded: [
-            '/app',
-        ],
-        filterText: '',
-        filteredNodes: nodes,
+// NOTE: FilterWidget must be within CheckboxTreeProvider
+// so useCheckboxTree can be used in FilterWidget function
+function FilterExample() {
+    return (
+        <CheckboxTreeProvider>
+            <FilterWidget />
+        </CheckboxTreeProvider>
+    );
+}
+
+function FilterWidget() {
+    const [filterText, setFilterText] = useState('');
+    const [activeFilter, setActiveFilter] = useState('');
+    const [timeoutId, setTimeoutId] = useState();
+
+    const { treeModel } = useCheckboxTree();
+
+    const onCheck = (changedNodeKey, newTree) => {
+        const changedNode = newTree.getNode(changedNodeKey);
+        console.log(`changed node = ${changedNode.label}`);
+        console.log(newTree.getChecked());
     };
 
-    constructor(props) {
-        super(props);
+    const onExpand = (changedNodeKey, newTree) => {
+        const changedNode = newTree.getNode(changedNodeKey);
+        console.log(`changed node = ${changedNode.label} => expanded = ${changedNode.expanded}`);
+        console.log(newTree.getExpanded());
+    };
 
-        this.onCheck = this.onCheck.bind(this);
-        this.onExpand = this.onExpand.bind(this);
-        this.onFilterChange = this.onFilterChange.bind(this);
-        this.filterTree = this.filterTree.bind(this);
-        this.filterNodes = this.filterNodes.bind(this);
-    }
+    const onFilterChange = (e) => {
+        setFilterText(e.target.value);
+    };
 
-    onCheck(checked) {
-        this.setState({ checked });
-    }
+    // function to determine if node meets filter test
+    // returns Boolean
+    const filterTest = (node) => (
+        // node's label matches the search string
+        node.label.toLocaleLowerCase().indexOf(filterText.toLocaleLowerCase()) > -1
+    );
 
-    onExpand(expanded) {
-        this.setState({ expanded });
-    }
+    const getFilteredModel = () => {
+        treeModel.filter(filterTest);
+        setActiveFilter(filterText);
+    };
 
-    onFilterChange(e) {
-        this.setState({ filterText: e.target.value }, this.filterTree);
-    }
+    //--------------------------------------------------------------------------
+    useEffect(() => {
+        // timeout is used here to buffer filter text input
+        // so filtering does not occur on every key press
+        const timeoutDelay = 500; // 0.5 seconds
+        clearTimeout(timeoutId);
 
-    filterTree() {
-        const { filterText } = this.state;
-
-        // Reset nodes back to unfiltered state
-        if (!filterText) {
-            this.setState({ filteredNodes: nodes });
-
-            return;
+        // treeModel may not exist on first call
+        if (treeModel) {
+            if (filterText !== '') {
+                // filter is requested
+                if (filterText !== activeFilter) {
+                    // filter has changed
+                    const newTimeoutId = setTimeout(getFilteredModel, timeoutDelay);
+                    setTimeoutId(newTimeoutId);
+                }
+            } else if (activeFilter !== '') {
+                // no filter requested but there was one previously
+                // restore whole tree
+                treeModel.removeFilter();
+                setActiveFilter('');
+            }
         }
+    }, [activeFilter, filterText, treeModel]);
+    //--------------------------------------------------------------------------
 
-        this.setState({
-            filteredNodes: nodes.reduce(this.filterNodes, []),
-        });
-    }
-
-    filterNodes(filtered, node) {
-        const { filterText } = this.state;
-        const children = (node.children || []).reduce(this.filterNodes, []);
-
-        if (
-            // Node's label matches the search string
-            node.label.toLocaleLowerCase().indexOf(filterText.toLocaleLowerCase()) > -1 ||
-            // Or a children has a matching node
-            children.length
-        ) {
-            filtered.push({ ...node, children });
-        }
-
-        return filtered;
-    }
-
-    render() {
-        const {
-            checked,
-            expanded,
-            filterText,
-            filteredNodes,
-        } = this.state;
-
-        return (
-            <div className="filter-container">
-                <input
-                    className="filter-text"
-                    placeholder="Search..."
-                    type="text"
-                    value={filterText}
-                    onChange={this.onFilterChange}
-                />
-                <CheckboxTree
-                    checked={checked}
-                    expanded={expanded}
-                    nodes={filteredNodes}
-                    onCheck={this.onCheck}
-                    onExpand={this.onExpand}
-                />
-            </div>
-        );
-    }
+    return (
+        <div className="filter-container">
+            <input
+                className="filter-text"
+                placeholder="Search..."
+                type="text"
+                value={filterText}
+                onChange={onFilterChange}
+            />
+            <CheckboxTree
+                initialTreeState={initialTreeState}
+                onCheck={onCheck}
+                onExpand={onExpand}
+            />
+        </div>
+    );
 }
 
 export default FilterExample;

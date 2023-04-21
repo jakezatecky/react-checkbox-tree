@@ -7,6 +7,7 @@ import userEvent from '@testing-library/user-event';
 import BaseTreeNode from '../src/js/components/TreeNode';
 import { IconContext, LanguageContext } from '../src/js/contexts';
 import lang from '../src/js/lang/default';
+import NodeModel from '../src/js/models/NodeModel';
 
 const icons = {
     check: <span className="rct-icon rct-icon-check" />,
@@ -27,14 +28,20 @@ const baseProps = {
     expanded: false,
     isLeaf: true,
     isParent: false,
-    label: 'Jupiter',
+    noCascade: false,
+    node: new NodeModel(
+        { label: 'Jupiter', value: 'jupiter' },
+        {},
+        1,
+        0,
+    ),
     optimisticToggle: true,
     showNodeIcon: true,
     treeId: 'id',
-    value: 'jupiter',
     onCheck: () => {},
     onExpand: () => {},
 };
+
 function TreeNode(props) {
     return (
         <LanguageContext.Provider value={lang}>
@@ -66,7 +73,15 @@ describe('<TreeNode />', () => {
 
         it('should render an id based on an integer value', () => {
             render(
-                <TreeNode {...baseProps} value={0} />,
+                <TreeNode
+                    {...baseProps}
+                    node={new NodeModel(
+                        { label: 'Jupiter', value: '0' },
+                        {},
+                        1,
+                        0,
+                    )}
+                />,
             );
 
             assert.equal(screen.getByLabelText('Jupiter').id, 'id-0');
@@ -74,7 +89,15 @@ describe('<TreeNode />', () => {
 
         it('should render an id based on a float value', () => {
             render(
-                <TreeNode {...baseProps} value={0.25} />,
+                <TreeNode
+                    {...baseProps}
+                    node={new NodeModel(
+                        { label: 'Jupiter', value: '0.25' },
+                        {},
+                        1,
+                        0,
+                    )}
+                />,
             );
 
             assert.equal(screen.getByLabelText('Jupiter').id, 'id-0.25');
@@ -90,8 +113,23 @@ describe('<TreeNode />', () => {
             };
 
             Object.keys(iconMap).forEach((state) => {
+                const node = new NodeModel(
+                    {
+                        label: 'Jupiter',
+                        value: 'jupiter',
+                        checked: parseInt(state, 10),
+                    },
+                    {},
+                    1,
+                    0,
+                );
+                node.checkState = parseInt(state, 10);
+
                 const { container } = render(
-                    <TreeNode {...baseProps} checked={parseInt(state, 10)} />,
+                    <TreeNode
+                        {...baseProps}
+                        node={node}
+                    />,
                 );
 
                 assert.isNotNull(container.querySelector(`.${iconMap[state]}`));

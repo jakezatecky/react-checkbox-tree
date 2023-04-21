@@ -1,34 +1,30 @@
-import React, { useState } from 'react';
-import CheckboxTree from 'react-checkbox-tree';
+import React from 'react';
+import CheckboxTree, { CheckboxTreeProvider } from 'react-checkbox-tree';
 
-import { fileSystem as nodes } from './common';
+import { fileSystem as initialTreeState } from './data';
 
 function BasicExample() {
-    const [checked, setChecked] = useState([
-        '/app/Http/Controllers/WelcomeController.js',
-        '/app/Http/routes.js',
-        '/public/assets/style.css',
-        '/public/index.html',
-        '/.gitignore',
-    ]);
-    const [expanded, setExpanded] = useState(['/app']);
-
-    const onCheck = (value) => {
-        setChecked(value);
+    const onCheck = (changedNodeKey, newTree) => {
+        const changedNode = newTree.getNode(changedNodeKey);
+        console.log(`changed node = ${changedNode.label}`);
+        console.log(newTree.getChecked());
     };
 
-    const onExpand = (value) => {
-        setExpanded(value);
+    const onExpand = (changedNodeKey, newTree) => {
+        const changedNode = newTree.getNode(changedNodeKey);
+        console.log(`changed node = ${changedNode.label} => expanded = ${changedNode.expanded}`);
+        console.log(newTree.getExpanded());
     };
 
     return (
-        <CheckboxTree
-            checked={checked}
-            expanded={expanded}
-            nodes={nodes}
-            onCheck={onCheck}
-            onExpand={onExpand}
-        />
+        <CheckboxTreeProvider>
+            <CheckboxTree
+                initialTreeState={initialTreeState}
+                nativeCheckboxes
+                onCheck={onCheck}
+                onExpand={onExpand}
+            />
+        </CheckboxTreeProvider>
     );
 }
 

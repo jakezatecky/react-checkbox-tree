@@ -7,6 +7,7 @@ const nodeShape = {
         PropTypes.number,
     ]).isRequired,
 
+    checked: PropTypes.bool,
     disabled: PropTypes.bool,
     icon: PropTypes.node,
     showCheckbox: PropTypes.bool,
@@ -17,6 +18,7 @@ const nodeShapeWithChildren = PropTypes.oneOfType([
     PropTypes.shape(nodeShape),
     PropTypes.shape({
         ...nodeShape,
+        expanded: PropTypes.bool,
         children: PropTypes.arrayOf(nodeShape).isRequired,
     }),
 ]);

@@ -1,37 +1,31 @@
-import React, { useState } from 'react';
-import CheckboxTree from 'react-checkbox-tree';
+import React from 'react';
+import CheckboxTree, { CheckboxTreeProvider } from 'react-checkbox-tree';
 
-import { fileSystem as nodes } from './common';
+import { fileSystem as initialTreeState } from './data';
 
 function ExpandAllExample() {
-    const [checked, setChecked] = useState([
-        '/app/Http/Controllers/WelcomeController.js',
-        '/app/Http/routes.js',
-        '/public/assets/style.css',
-        '/public/index.html',
-        '/.gitignore',
-    ]);
-    const [expanded, setExpanded] = useState(['/app']);
-
-    const onCheck = (value) => {
-        setChecked(value);
+    const onCheck = (changedNodeKey, newTree) => {
+        const changedNode = newTree.getNode(changedNodeKey);
+        console.log(`changed node = ${changedNode.label}`);
+        console.log(newTree.getChecked());
     };
 
-    const onExpand = (value) => {
-        setExpanded(value);
+    const onExpand = (changedNodeKey, newTree) => {
+        console.log(changedNodeKey);
+        const changedNode = newTree.getNode(changedNodeKey);
+        console.log(`changed node = ${changedNode.label} => expanded = ${changedNode.expanded}`);
+        console.log(newTree.getExpanded());
     };
 
     return (
-        <div className="expand-all-container">
+        <CheckboxTreeProvider>
             <CheckboxTree
-                checked={checked}
-                expanded={expanded}
-                nodes={nodes}
+                initialTreeState={initialTreeState}
                 showExpandAll
                 onCheck={onCheck}
                 onExpand={onExpand}
             />
-        </div>
+        </CheckboxTreeProvider>
     );
 }
 

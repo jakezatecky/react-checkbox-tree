@@ -4,35 +4,29 @@ import React from 'react';
 
 import { KEYS } from '../constants';
 import { IconContext } from '../contexts';
+
+import NodeModel from '../models/NodeModel';
+
+import BareLabel from './BareLabel';
+import CheckboxLabel from './CheckboxLabel';
 import ExpandButton from './ExpandButton';
-import NativeCheckbox from './NativeCheckbox';
-import NodeIcon from './NodeIcon';
+import LabelChildren from './LabelChildren';
 
 class TreeNode extends React.PureComponent {
     static contextType = IconContext;
 
     static propTypes = {
         checkKeys: PropTypes.arrayOf(PropTypes.string).isRequired,
-        checked: PropTypes.number.isRequired,
         disabled: PropTypes.bool.isRequired,
         expandDisabled: PropTypes.bool.isRequired,
-        expanded: PropTypes.bool.isRequired,
-        isLeaf: PropTypes.bool.isRequired,
-        isParent: PropTypes.bool.isRequired,
-        label: PropTypes.node.isRequired,
-        optimisticToggle: PropTypes.bool.isRequired,
+        noCascade: PropTypes.bool.isRequired,
+        node: PropTypes.instanceOf(NodeModel).isRequired,
         showNodeIcon: PropTypes.bool.isRequired,
-        value: PropTypes.oneOfType([
-            PropTypes.string,
-            PropTypes.number,
-        ]).isRequired,
         onCheck: PropTypes.func.isRequired,
         onExpand: PropTypes.func.isRequired,
 
         children: PropTypes.node,
-        className: PropTypes.string,
         expandOnClick: PropTypes.bool,
-        icon: PropTypes.node,
         showCheckbox: PropTypes.bool,
         title: PropTypes.string,
         treeId: PropTypes.string,
@@ -42,9 +36,7 @@ class TreeNode extends React.PureComponent {
 
     static defaultProps = {
         children: null,
-        className: null,
         expandOnClick: false,
-        icon: null,
         showCheckbox: true,
         title: null,
         treeId: null,
@@ -62,12 +54,8 @@ class TreeNode extends React.PureComponent {
     }
 
     onCheck() {
-        const { value, onCheck } = this.props;
-
-        onCheck({
-            value,
-            checked: this.getCheckState({ toggle: true }),
-        });
+        const { node, onCheck } = this.props;
+        onCheck(node.value);
     }
 
     onCheckboxKeyUp(event) {
@@ -87,209 +75,110 @@ class TreeNode extends React.PureComponent {
     onClick() {
         const {
             expandOnClick,
-            isParent,
-            value,
+            node,
             onClick,
         } = this.props;
 
         // Auto expand if enabled
-        if (isParent && expandOnClick) {
+        if (node.isParent && expandOnClick) {
             this.onExpand();
         }
 
-        onClick({ value, checked: this.getCheckState({ toggle: false }) });
+        onClick(node.value);
     }
 
     onExpand() {
-        const { expanded, value, onExpand } = this.props;
-
-        onExpand({ value, expanded: !expanded });
-    }
-
-    getCheckState({ toggle }) {
-        const { checked, optimisticToggle } = this.props;
-
-        // Toggle off state to checked
-        if (checked === 0 && toggle) {
-            return true;
-        }
-
-        // Node is already checked and we are not toggling
-        if (checked === 1 && !toggle) {
-            return true;
-        }
-
-        // Get/toggle partial state based on cascade model
-        if (checked === 2) {
-            return optimisticToggle;
-        }
-
-        return false;
-    }
-
-    renderExpandButton() {
-        const { expandDisabled, expanded, isLeaf } = this.props;
-
-        return (
-            <ExpandButton
-                disabled={expandDisabled}
-                expanded={expanded}
-                isLeaf={isLeaf}
-                onClick={this.onExpand}
-            />
-        );
-    }
-
-    renderCheckboxIcon() {
-        const { uncheck, check, halfCheck } = this.context;
-        const { checked } = this.props;
-
-        if (checked === 0) {
-            return uncheck;
-        }
-
-        if (checked === 1) {
-            return check;
-        }
-
-        return halfCheck;
-    }
-
-    renderBareLabel(children) {
-        const { title, onClick, onContextMenu } = this.props;
-        const clickable = onClick !== null;
-
-        return (
-            <span className="rct-bare-label" title={title}>
-                {clickable ? (
-                    <span
-                        className="rct-node-clickable"
-                        role="button"
-                        tabIndex={0}
-                        onClick={this.onClick}
-                        onContextMenu={onContextMenu}
-                        onKeyPress={this.onClick}
-                    >
-                        {children}
-                    </span>
-                ) : children}
-            </span>
-        );
-    }
-
-    renderCheckboxLabel(children) {
-        const {
-            checked,
-            disabled,
-            title,
-            treeId,
-            value,
-            onClick,
-            onContextMenu,
-        } = this.props;
-        const clickable = onClick !== null;
-        const valueId = String(value).split(' ').join('_');
-        const inputId = treeId ? `${treeId}-${valueId}` : null;
-
-        const render = [(
-            <label key={0} htmlFor={inputId} title={title} onContextMenu={onContextMenu}>
-                <NativeCheckbox
-                    checked={checked === 1}
-                    disabled={disabled}
-                    id={inputId}
-                    indeterminate={checked === 2}
-                    onChange={() => {}}
-                    onClick={this.onCheck}
-                    onKeyUp={this.onCheckboxKeyUp}
-                />
-                <span
-                    aria-hidden="true"
-                    className="rct-checkbox"
-                    role="presentation"
-                >
-                    {this.renderCheckboxIcon()}
-                </span>
-                {!clickable ? children : null}
-            </label>
-        )];
-
-        if (clickable) {
-            render.push((
-                <span
-                    key={1}
-                    className="rct-node-clickable"
-                    role="button"
-                    tabIndex={0}
-                    onClick={this.onClick}
-                    onContextMenu={onContextMenu}
-                    onKeyPress={this.onClick}
-                >
-                    {children}
-                </span>
-            ));
-        }
-
-        return render;
-    }
-
-    renderLabel() {
-        const {
-            expanded,
-            icon,
-            isLeaf,
-            label,
-            showCheckbox,
-            showNodeIcon,
-        } = this.props;
-        const labelChildren = (
-            <>
-                {showNodeIcon && (
-                    <NodeIcon expanded={expanded} icon={icon} isLeaf={isLeaf} />
-                )}
-                <span className="rct-label">{label}</span>
-            </>
-        );
-
-        if (!showCheckbox) {
-            return this.renderBareLabel(labelChildren);
-        }
-
-        return this.renderCheckboxLabel(labelChildren);
-    }
-
-    renderChildren() {
-        const { children, expanded } = this.props;
-
-        if (!expanded) {
-            return null;
-        }
-
-        return children;
+        const { node, onExpand } = this.props;
+        onExpand(node.value);
     }
 
     render() {
         const {
-            className,
+            children,
             disabled,
-            expanded,
-            isLeaf,
+            expandDisabled,
+            noCascade,
+            node,
+            showCheckbox,
+            showNodeIcon,
+            title,
+            treeId,
+            onClick,
+            onContextMenu,
         } = this.props;
+
+        const {
+            checkState,
+            className,
+            expanded,
+            icon,
+            isLeaf,
+            label,
+            value,
+        } = node;
+
+        const nodeDisabled = disabled || node.disabled;
+
         const nodeClass = classNames({
             'rct-node': true,
             'rct-node-leaf': isLeaf,
             'rct-node-parent': !isLeaf,
             'rct-node-expanded': !isLeaf && expanded,
             'rct-node-collapsed': !isLeaf && !expanded,
-            'rct-disabled': disabled,
+            'rct-disabled': nodeDisabled,
         }, className);
+
+        const clickable = onClick !== null;
+        const labelChildren = (
+            <LabelChildren
+                expanded={expanded}
+                icon={icon}
+                isLeaf={isLeaf}
+                label={label}
+                showNodeIcon={showNodeIcon}
+            />
+        );
 
         return (
             <li className={nodeClass}>
                 <span className="rct-text">
-                    {this.renderExpandButton()}
-                    {this.renderLabel()}
+                    <ExpandButton
+                        disabled={expandDisabled}
+                        expanded={expanded}
+                        isLeaf={isLeaf}
+                        onClick={this.onExpand}
+                    />
+
+                    {showCheckbox ? (
+                        <CheckboxLabel
+                            checked={checkState}
+                            clickable={clickable}
+                            disabled={nodeDisabled}
+                            isRadioNode={node.isRadioNode}
+                            noCascade={noCascade}
+                            title={title}
+                            treeId={treeId}
+                            value={value}
+                            onCheck={this.onCheck}
+                            onCheckboxKeyUp={this.onCheckboxKeyUp}
+                            onClick={this.onClick}
+                            onContextMenu={onContextMenu}
+                        >
+                            {labelChildren}
+                        </CheckboxLabel>
+
+                    ) : (
+                        <BareLabel
+                            clickable={clickable}
+                            title={title}
+                            onClick={this.onClick}
+                            onContextMenu={onContextMenu}
+                        >
+                            {labelChildren}
+                        </BareLabel>
+                    )}
                 </span>
-                {this.renderChildren()}
+                {expanded ? children : null}
             </li>
         );
     }

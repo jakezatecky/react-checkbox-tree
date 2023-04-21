@@ -1,39 +1,30 @@
-import React, { useState } from 'react';
-import CheckboxTree from 'react-checkbox-tree';
+import React from 'react';
+import CheckboxTree, { CheckboxTreeProvider } from 'react-checkbox-tree';
 
-import { empires as nodes } from './common';
+import { empires as initialTreeState } from './data';
 
 function HiddenCheckboxesExample() {
-    const [checked, setChecked] = useState([
-        'persian',
-        'spqr',
-        'byzantine',
-        'holy-roman',
-        'inca',
-    ]);
-    const [expanded, setExpanded] = useState([
-        'favorite-empires',
-        'classical-era',
-        'medieval-era',
-    ]);
-
-    const onCheck = (value) => {
-        setChecked(value);
+    const onCheck = (changedNodeKey, newTree) => {
+        const changedNode = newTree.getNode(changedNodeKey);
+        console.log(`changed node = ${changedNode.label}`);
+        console.log(newTree.getChecked());
     };
 
-    const onExpand = (value) => {
-        setExpanded(value);
+    const onExpand = (changedNodeKey, newTree) => {
+        const changedNode = newTree.getNode(changedNodeKey);
+        console.log(`changed node = ${changedNode.label} => expanded = ${changedNode.expanded}`);
+        console.log(newTree.getExpanded());
     };
 
     return (
-        <CheckboxTree
-            checked={checked}
-            expanded={expanded}
-            nodes={nodes}
-            onlyLeafCheckboxes
-            onCheck={onCheck}
-            onExpand={onExpand}
-        />
+        <CheckboxTreeProvider>
+            <CheckboxTree
+                initialTreeState={initialTreeState}
+                onlyLeafCheckboxes
+                onCheck={onCheck}
+                onExpand={onExpand}
+            />
+        </CheckboxTreeProvider>
     );
 }
 

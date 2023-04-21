@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import CheckboxTree from 'react-checkbox-tree';
+import React from 'react';
+import CheckboxTree, { CheckboxTreeProvider } from 'react-checkbox-tree';
 
-const nodes = [
+const initialTreeState = [
     {
         value: 'Documents',
         label: 'Documents',
@@ -41,27 +41,28 @@ const nodes = [
     },
 ];
 
-function CustomIconsExamples() {
-    const [checked, setChecked] = useState([]);
-    const [expanded, setExpanded] = useState(['Documents']);
-
-    const onCheck = (value) => {
-        setChecked(value);
+function CustomIconsExample() {
+    const onCheck = (changedNodeKey, newTree) => {
+        const changedNode = newTree.getNode(changedNodeKey);
+        console.log(`changed node = ${changedNode.label}`);
+        console.log(newTree.getChecked());
     };
 
-    const onExpand = (value) => {
-        setExpanded(value);
+    const onExpand = (changedNodeKey, newTree) => {
+        const changedNode = newTree.getNode(changedNodeKey);
+        console.log(`changed node = ${changedNode.label} => expanded = ${changedNode.expanded}`);
+        console.log(newTree.getExpanded());
     };
 
     return (
-        <CheckboxTree
-            checked={checked}
-            expanded={expanded}
-            nodes={nodes}
-            onCheck={onCheck}
-            onExpand={onExpand}
-        />
+        <CheckboxTreeProvider>
+            <CheckboxTree
+                initialTreeState={initialTreeState}
+                onCheck={onCheck}
+                onExpand={onExpand}
+            />
+        </CheckboxTreeProvider>
     );
 }
 
-export default CustomIconsExamples;
+export default CustomIconsExample;

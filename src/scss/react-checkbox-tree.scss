@@ -236,6 +236,14 @@ $rct-outline-offset: -2px !default;
     opacity: 0.5;
   }
 
+  .rct-icon-radio-off::before {
+    content: "\f111";
+  }
+
+  .rct-icon-radio-on::before {
+    content: "\f192";
+  }
+
   .rct-icon-leaf::before {
     content: "\f016";
   }
@@ -281,6 +289,14 @@ $rct-outline-offset: -2px !default;
   .rct-icon-half-check::before {
     content: "\f14a";
     opacity: 0.5;
+  }
+
+  .rct-icon-radio-off::before {
+    content: "\f111";
+  }
+
+  .rct-icon-radio-on::before {
+    content: "\f192";
   }
 
   .rct-icon-leaf::before {
