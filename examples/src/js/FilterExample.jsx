@@ -43,7 +43,7 @@ function FilterWidget() {
         node.label.toLocaleLowerCase().indexOf(filterText.toLocaleLowerCase()) > -1
     );
 
-    const getFilteredModel = () => {
+    const applyFilter = () => {
         treeModel.filter(filterTest);
         setActiveFilter(filterText);
     };
@@ -61,7 +61,7 @@ function FilterWidget() {
                 // filter is requested
                 if (filterText !== activeFilter) {
                     // filter has changed
-                    const newTimeoutId = setTimeout(getFilteredModel, timeoutDelay);
+                    const newTimeoutId = setTimeout(applyFilter, timeoutDelay);
                     setTimeoutId(newTimeoutId);
                 }
             } else if (activeFilter !== '') {
