@@ -29,7 +29,7 @@ class NodeModel {
 
         if (!(nodeConfig instanceof NodeModel)) {
             // check for required properties and add missing ones;
-            const isParent = Array.isArray(nodeConfig.children) && nodeConfig.children.length > 0;
+            const isParent = Array.isArray(nodeConfig.children);
 
             // save node.value of children in this.childKeys
             // don't save reference to actual child nodes - mutation nightmare
@@ -37,7 +37,7 @@ class NodeModel {
                 this.childKeys = nodeConfig.children.map((child) => child.value);
                 this.expanded = ('expanded' in nodeConfig) ? nodeConfig.expanded : false;
             } else {
-                this.childKeys = [];
+                this.childKeys = null;
                 this.expanded = false;
             }
 
