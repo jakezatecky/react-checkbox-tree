@@ -20,7 +20,6 @@ function BasicExample() {
         <CheckboxTreeProvider>
             <CheckboxTree
                 initialTreeState={initialTreeState}
-                nativeCheckboxes
                 onCheck={onCheck}
                 onExpand={onExpand}
             />

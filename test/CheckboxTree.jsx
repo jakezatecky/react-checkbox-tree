@@ -960,6 +960,7 @@ describe('<CheckboxTree />', () => {
             const makeEmptyParentNode = (initialTreeState) => (
                 <CheckboxTreeProvider>
                     <CheckboxTree
+                        checkModel="all"
                         initialTreeState={initialTreeState}
                         onCheck={(nodeKey, treeModel) => {
                             actualChecked = treeModel.getChecked();
@@ -1315,7 +1316,7 @@ describe('<CheckboxTree />', () => {
                 value: 'io',
                 label: 'Io',
                 title: 'Io',
-                childKeys: [],
+                childKeys: null,
                 expanded: false,
                 checkState: 1,
                 parentKey: 'jupiter',

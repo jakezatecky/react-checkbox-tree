@@ -14,7 +14,7 @@ class TreeModel {
                             newNode.disabled = parent.disabled;
                         }
                     }
-                    if (newNode.isParent) {
+                    if (newNode.isParent && node.children.length > 0) {
                         flatten(node.children, node, depth + 1);
 
                         // adjust checkState based upon children's checkState
@@ -34,6 +34,7 @@ class TreeModel {
                                 );
                             }
                         } else if (!newNode.isRadioNode) {
+                            // this is for parent nodes with children
                             const checkState = this.getCheckState(newNode);
                             newNode.checkState = checkState;
                         }
@@ -198,15 +199,17 @@ class TreeModel {
             if (test(node) && !node.disabled) {
                 checkedArray.push(nodeKey);
             }
-            // ignore all nodes below an OFF radio group
-            // ignore all nodes below an OFF radio button
-            // NOT ( off && (node.isRadioGroup or node.isRadioNode))
-            // TODO: should the above be switchable on/off?
-            //       ignoreCheckedBelowRadioOff: default to true
-            if (!((node.checkState === 0) && (node.isRadioGroup || node.isRadioNode))) {
-                node.childKeys.forEach((key) => {
-                    walkTree(key);
-                });
+            if (node.isParent) {
+                // ignore all nodes below an OFF radio group
+                // ignore all nodes below an OFF radio button
+                // NOT ( off && (node.isRadioGroup or node.isRadioNode))
+                // TODO: should the above be switchable on/off?
+                //       ignoreCheckedBelowRadioOff: default to true
+                if (!((node.checkState === 0) && (node.isRadioGroup || node.isRadioNode))) {
+                    node.childKeys.forEach((key) => {
+                        walkTree(key);
+                    });
+                }
             }
         };
 
@@ -300,25 +303,28 @@ class TreeModel {
         //----------------------------------------------------------------------
         // recursive function to handle toggle
         // defined here because it uses newCheckState & newTree from above
-        const toggle = (key, checked) => {
+        const toggle = (key) => {
             const newNode = this.getNode(key).clone();
-            if (newNode.isLeaf || this.options.noCascade) {
-                newNode.checkState = checked;
-            } else if (newNode.isRadioGroup || newNode.isRadioNode) {
-                // child nodes remain unchanged
+            if (this.options.noCascade ||
+                newNode.isLeaf ||
+                newNode.childKeys.length === 0 ||
+                newNode.isRadioGroup ||
+                newNode.isRadioNode
+            ) {
                 newNode.checkState = newCheckState;
             } else {
                 // toggle child nodes first
                 newNode.childKeys.forEach((childKey) => {
                     toggle(childKey, newCheckState);
                 });
+                // get checkState based upon childNodes checkState
                 newNode.checkState = newTreeModel.getCheckState(newNode);
             }
             newTree[key] = newNode;
         };
         //----------------------------------------------------------------------
 
-        toggle(nodeKey, newCheckState);
+        toggle(nodeKey);
 
         // Percolate check status up to parents
         // if child isRadioNode do not percolate up
