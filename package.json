@@ -66,7 +66,7 @@
     "eslint-plugin-jsx-a11y": "^6.0.2",
     "eslint-plugin-react": "^7.10.0",
     "eslint-plugin-react-hooks": "^4.2.0",
-    "global-jsdom": "^8.6.0",
+    "global-jsdom": "^9.0.1",
     "html-bundler-webpack-plugin": "^1.6.5",
     "jsdom": "^21.0.0",
     "less": "^4.1.3",
