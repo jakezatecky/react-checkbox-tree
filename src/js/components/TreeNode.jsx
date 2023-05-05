@@ -10,7 +10,7 @@ import NodeModel from '../models/NodeModel';
 import BareLabel from './BareLabel';
 import CheckboxLabel from './CheckboxLabel';
 import ExpandButton from './ExpandButton';
-import LabelChildren from './LabelChildren';
+import DefaultLabel from './DefaultLabel';
 
 class TreeNode extends React.PureComponent {
     static contextType = IconContext;
@@ -25,6 +25,9 @@ class TreeNode extends React.PureComponent {
         onCheck: PropTypes.func.isRequired,
         onExpand: PropTypes.func.isRequired,
 
+        LabelComponent: PropTypes.func,
+        LeafLabelComponent: PropTypes.func,
+        ParentLabelComponent: PropTypes.func,
         children: PropTypes.node,
         expandOnClick: PropTypes.bool,
         showCheckbox: PropTypes.bool,
@@ -32,16 +35,25 @@ class TreeNode extends React.PureComponent {
         treeId: PropTypes.string,
         onClick: PropTypes.func,
         onContextMenu: PropTypes.func,
+        onLabelChange:  PropTypes.func,
+        onLeafLabelChange:  PropTypes.func,
+        onParentLabelChange:  PropTypes.func,
     };
 
     static defaultProps = {
         children: null,
         expandOnClick: false,
+        LabelComponent: null,
+        LeafLabelComponent: null,
+        ParentLabelComponent: null,
         showCheckbox: true,
         title: null,
         treeId: null,
         onClick: null,
         onContextMenu: null,
+        onLabelChange: null,
+        onLeafLabelChange: null,
+        onParentLabelChange: null,
     };
 
     constructor(props) {
@@ -84,7 +96,9 @@ class TreeNode extends React.PureComponent {
             this.onExpand();
         }
 
-        onClick(node.value);
+        if (onClick) {
+            onClick(node.value);
+        }
     }
 
     onExpand() {
@@ -97,13 +111,19 @@ class TreeNode extends React.PureComponent {
             children,
             disabled,
             expandDisabled,
-            noCascade,
             node,
-            showCheckbox,
             showNodeIcon,
+            onClick,
+            LabelComponent,
+            LeafLabelComponent,
+            ParentLabelComponent,
+            onLabelChange,
+            onLeafLabelChange,
+            onParentLabelChange,
+            noCascade,
+            showCheckbox,
             title,
             treeId,
-            onClick,
             onContextMenu,
         } = this.props;
 
@@ -128,16 +148,18 @@ class TreeNode extends React.PureComponent {
             'rct-disabled': nodeDisabled,
         }, className);
 
-        const clickable = onClick !== null;
-        const labelChildren = (
-            <LabelChildren
-                expanded={expanded}
-                icon={icon}
-                isLeaf={isLeaf}
-                label={label}
-                showNodeIcon={showNodeIcon}
-            />
-        );
+        let Label;
+        let labelChangeHandler;
+        if (node.isLeaf) {
+            Label = LeafLabelComponent || LabelComponent || DefaultLabel;
+            labelChangeHandler = onLeafLabelChange || onLabelChange;
+        } else {
+            // parent
+            Label = ParentLabelComponent || LabelComponent || DefaultLabel;
+            labelChangeHandler = onParentLabelChange || onLabelChange;
+        }
+
+        const clickable = (typeof onClick === 'function');
 
         return (
             <li className={nodeClass}>
@@ -164,21 +186,29 @@ class TreeNode extends React.PureComponent {
                             onClick={this.onClick}
                             onContextMenu={onContextMenu}
                         >
-                            {labelChildren}
+                            <Label
+                                node={node}
+                                showNodeIcon={showNodeIcon}
+                                onChange={labelChangeHandler}
+                            />
                         </CheckboxLabel>
 
                     ) : (
                         <BareLabel
-                            clickable={clickable}
                             title={title}
-                            onClick={this.onClick}
+                            onClick={onClick && this.onClick}
                             onContextMenu={onContextMenu}
                         >
-                            {labelChildren}
+                            <Label
+                                node={node}
+                                showNodeIcon={showNodeIcon}
+                            />
                         </BareLabel>
                     )}
                 </span>
+
                 {expanded ? children : null}
+
             </li>
         );
     }

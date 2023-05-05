@@ -38,6 +38,73 @@ const defaultIcons = {
     radioOn: <span className="rct-icon rct-icon-radio-on" />,
 };
 
+const propTypes = {
+    initialTreeState: PropTypes.arrayOf(nodeShape).isRequired,
+
+    checkKeys: PropTypes.arrayOf(PropTypes.string),
+    checkModel: PropTypes.oneOf(['leaf', 'all']),
+    direction: PropTypes.string,
+    disabled: PropTypes.bool,
+    expandDisabled: PropTypes.bool,
+    expandOnClick: PropTypes.bool,
+    icons: iconsShape,
+    iconsClass: PropTypes.string,
+    id: PropTypes.string,
+    lang: languageShape,
+    LabelComponent: PropTypes.func,
+    LeafLabelComponent: PropTypes.func,
+    ParentLabelComponent: PropTypes.func,
+    name: PropTypes.string,
+    nameAsArray: PropTypes.bool,
+    nativeCheckboxes: PropTypes.bool,
+    noCascade: PropTypes.bool,
+    onlyLeafCheckboxes: PropTypes.bool,
+    optimisticToggle: PropTypes.bool,
+    showExpandAll: PropTypes.bool,
+    showNodeIcon: PropTypes.bool,
+    showNodeTitle: PropTypes.bool,
+    onCheck: PropTypes.func,
+    onClick: PropTypes.func,
+    onContextMenu: PropTypes.func,
+    onExpand: PropTypes.func,
+    onLabelChange:  PropTypes.func,
+    onLeafLabelChange:  PropTypes.func,
+    onParentLabelChange:  PropTypes.func,
+};
+
+const defaultProps = {
+    checkKeys: [KEYS.SPACEBAR, KEYS.ENTER],
+    checkModel: 'leaf',
+    direction: 'ltr',
+    disabled: false,
+    expandDisabled: false,
+    expandOnClick: false,
+    icons: defaultIcons,
+    iconsClass: 'fa5',
+    id: null,
+    lang: defaultLang,
+    LabelComponent: null,
+    LeafLabelComponent: null,
+    ParentLabelComponent: null,
+    name: undefined,
+    nameAsArray: false,
+    nativeCheckboxes: false,
+    noCascade: false,
+    onlyLeafCheckboxes: false,
+    optimisticToggle: true,
+    showExpandAll: false,
+    showNodeIcon: true,
+    showNodeTitle: false,
+    onCheck: () => {},
+    onClick: null,
+    onContextMenu: null,
+    onExpand: () => {},
+    onLabelChange:  null,
+    onLeafLabelChange:  null,
+    onParentLabelChange:  null,
+};
+
+
 export default function CheckboxTree({
     direction,
     disabled,
@@ -62,8 +129,14 @@ export default function CheckboxTree({
     showNodeIcon,
     // for tree model
     checkModel,
+    LabelComponent,
+    LeafLabelComponent,
+    ParentLabelComponent,
     noCascade,
     optimisticToggle,
+    onLabelChange,
+    onLeafLabelChange,
+    onParentLabelChange,
 }) {
     const mergedLang = combineMemoized(lang, defaultLang);
     const mergedIcons = combineMemoized(icons, defaultIcons);
@@ -118,7 +191,9 @@ export default function CheckboxTree({
 
     // TODO: this needs review
     const onContextMenuHandler = (node) => (event) => {
-        onContextMenu(event, node);
+        if (typeof onContextMenu === 'function') {
+            onContextMenu(event, node);
+        }
     };
 
     const onExpandHandler = (nodeKey) => {
@@ -163,7 +238,6 @@ export default function CheckboxTree({
                 checked: node.checkState,
                 expanded: node.expanded,
             };
-
             return (
                 <TreeNode
                     key={node.value}
@@ -171,6 +245,9 @@ export default function CheckboxTree({
                     disabled={disabled}
                     expandDisabled={expandDisabled}
                     expandOnClick={expandOnClick}
+                    LabelComponent={LabelComponent}
+                    LeafLabelComponent={LeafLabelComponent}
+                    ParentLabelComponent={ParentLabelComponent}
                     noCascade={noCascade}
                     node={node}
                     showCheckbox={showCheckbox}
@@ -181,6 +258,9 @@ export default function CheckboxTree({
                     onClick={onClick && onNodeClick}
                     onContextMenu={onContextMenuHandler(nodeContext)}
                     onExpand={onExpandHandler}
+                    onLabelChange={onLabelChange}
+                    onLeafLabelChange={onLeafLabelChange}
+                    onParentLabelChange={onParentLabelChange}
                 >
                     {children}
                 </TreeNode>
@@ -234,56 +314,5 @@ export default function CheckboxTree({
     );
 }
 
-CheckboxTree.propTypes = {
-    initialTreeState: PropTypes.arrayOf(nodeShape).isRequired,
-
-    checkKeys: PropTypes.arrayOf(PropTypes.string),
-    checkModel: PropTypes.oneOf(['leaf', 'all']),
-    direction: PropTypes.string,
-    disabled: PropTypes.bool,
-    expandDisabled: PropTypes.bool,
-    expandOnClick: PropTypes.bool,
-    icons: iconsShape,
-    iconsClass: PropTypes.string,
-    id: PropTypes.string,
-    lang: languageShape,
-    name: PropTypes.string,
-    nameAsArray: PropTypes.bool,
-    nativeCheckboxes: PropTypes.bool,
-    noCascade: PropTypes.bool,
-    onlyLeafCheckboxes: PropTypes.bool,
-    optimisticToggle: PropTypes.bool,
-    showExpandAll: PropTypes.bool,
-    showNodeIcon: PropTypes.bool,
-    showNodeTitle: PropTypes.bool,
-    onCheck: PropTypes.func,
-    onClick: PropTypes.func,
-    onContextMenu: PropTypes.func,
-    onExpand: PropTypes.func,
-};
-
-CheckboxTree.defaultProps = {
-    checkKeys: [KEYS.SPACEBAR, KEYS.ENTER],
-    checkModel: 'leaf',
-    direction: 'ltr',
-    disabled: false,
-    expandDisabled: false,
-    expandOnClick: false,
-    icons: defaultIcons,
-    iconsClass: 'fa5',
-    id: null,
-    lang: defaultLang,
-    name: undefined,
-    nameAsArray: false,
-    nativeCheckboxes: false,
-    noCascade: false,
-    onlyLeafCheckboxes: false,
-    optimisticToggle: true,
-    showExpandAll: false,
-    showNodeIcon: true,
-    showNodeTitle: false,
-    onCheck: () => {},
-    onClick: null,
-    onContextMenu: null,
-    onExpand: () => {},
-};
+CheckboxTree.propTypes = propTypes;
+CheckboxTree.defaultProps = defaultProps;

@@ -4,6 +4,7 @@ import { createRoot } from 'react-dom/client';
 import BasicExample from './js/BasicExample';
 import ClickableLabelsExample from './js/ClickableLabelsExample';
 import CustomIconsExample from './js/CustomIconsExample';
+import CustomLabelExample from './js/CustomLabelExample';
 import DisabledExample from './js/DisabledExample';
 import ExpandAllExample from './js/ExpandAllExample';
 import FilterExample from './js/FilterExample';
@@ -26,3 +27,4 @@ createRoot(document.getElementById('native-checkboxes-example')).render(<NativeC
 createRoot(document.getElementById('no-cascade-example')).render(<NoCascadeExample />);
 createRoot(document.getElementById('pessimistic-toggle-example')).render(<PessimisticToggleExample />);
 createRoot(document.getElementById('radio-button-example')).render(<RadioButtonExample />);
+createRoot(document.getElementById('custom-label-example')).render(<CustomLabelExample />);
