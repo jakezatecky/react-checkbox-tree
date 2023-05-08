@@ -1,7 +1,7 @@
 import React from 'react';
 import CheckboxTree, { CheckboxTreeProvider } from 'react-checkbox-tree';
 
-import { fileSystem as initialTreeState } from './data';
+import { fileSystem as nodes } from './data';
 
 function ExpandAllExample() {
     const onCheck = (changedNodeKey, newTree) => {
@@ -20,7 +20,7 @@ function ExpandAllExample() {
     return (
         <CheckboxTreeProvider>
             <CheckboxTree
-                initialTreeState={initialTreeState}
+                nodes={nodes}
                 showExpandAll
                 onCheck={onCheck}
                 onExpand={onExpand}

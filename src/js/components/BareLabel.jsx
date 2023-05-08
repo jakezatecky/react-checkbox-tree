@@ -5,14 +5,12 @@ import Clickable from './Clickable';
 
 const propTypes = {
     children: PropTypes.node,
-    clickable: PropTypes.bool,
     title: PropTypes.string,
     onClick: PropTypes.func,
     onContextMenu: PropTypes.func,
 };
 const defaultProps = {
     children: null,
-    clickable: false,
     title: null,
     onClick: null,
     onContextMenu: null,
@@ -25,7 +23,6 @@ export default function BareLabel({
     onContextMenu,
 }) {
     const clickable = (typeof onClick === 'function');
-    console.log(clickable);
 
     return (
         <span className="rct-bare-label" title={title}>

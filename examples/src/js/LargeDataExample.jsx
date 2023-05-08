@@ -28,7 +28,7 @@ function makeLargeDataSet() {
     }];
 }
 
-const initialTreeState = makeLargeDataSet();
+const nodes = makeLargeDataSet();
 
 function LargeDataExample() {
     const onCheck = (changedNodeKey, newTree) => {
@@ -46,7 +46,7 @@ function LargeDataExample() {
     return (
         <CheckboxTreeProvider>
             <CheckboxTree
-                initialTreeState={initialTreeState}
+                nodes={nodes}
                 onCheck={onCheck}
                 onExpand={onExpand}
             />

@@ -8,7 +8,7 @@ import Clickable from './Clickable';
 const propTypes = {
     checked: PropTypes.number.isRequired,
     disabled: PropTypes.bool.isRequired,
-    noCascade: PropTypes.bool.isRequired,
+    noCascadeChecks: PropTypes.bool.isRequired,
     value: PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.number,
@@ -16,7 +16,6 @@ const propTypes = {
     onCheck: PropTypes.func.isRequired,
 
     children: PropTypes.node,
-    clickable: PropTypes.bool,
     isRadioNode: PropTypes.bool,
     title: PropTypes.string,
     treeId: PropTypes.string,
@@ -26,7 +25,6 @@ const propTypes = {
 };
 const defaultProps = {
     children: null,
-    clickable: false,
     isRadioNode: false,
     title: null,
     treeId: null,
@@ -35,22 +33,21 @@ const defaultProps = {
     onContextMenu: null,
 };
 
-export default function CheckboxLabel(props) {
-    const {
-        checked,
-        children,
-        clickable,
-        disabled,
-        isRadioNode,
-        noCascade,
-        title,
-        treeId,
-        value,
-        onCheck,
-        onCheckboxKeyUp,
-        onClick,
-        onContextMenu,
-    } = props;
+export default function CheckboxLabel({
+    checked,
+    children,
+    disabled,
+    isRadioNode,
+    noCascadeChecks,
+    title,
+    treeId,
+    value,
+    onCheck,
+    onCheckboxKeyUp,
+    onClick,
+    onContextMenu,
+}) {
+    const clickable = (typeof onClick === 'function');
 
     const valueId = String(value).split(' ').join('_');
     const inputId = treeId ? `${treeId}-${valueId}` : null;
@@ -76,7 +73,7 @@ export default function CheckboxLabel(props) {
                     <CheckboxIcon
                         checked={checked}
                         isRadioNode={isRadioNode}
-                        noCascade={noCascade}
+                        noCascadeChecks={noCascadeChecks}
                     />
                 </span>
 

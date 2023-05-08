@@ -1,7 +1,7 @@
 import React from 'react';
 import CheckboxTree, { CheckboxTreeProvider } from 'react-checkbox-tree';
 
-import { fileSystem as initialTreeState } from './data';
+import { fileSystem as nodes } from './data';
 
 function DisabledExample() {
     const onCheck = (changedNodeKey, newTree) => {
@@ -20,7 +20,7 @@ function DisabledExample() {
         <CheckboxTreeProvider>
             <CheckboxTree
                 disabled
-                initialTreeState={initialTreeState}
+                nodes={nodes}
                 onCheck={onCheck}
                 onExpand={onExpand}
             />

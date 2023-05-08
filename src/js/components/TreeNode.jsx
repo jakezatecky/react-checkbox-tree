@@ -19,7 +19,6 @@ class TreeNode extends React.PureComponent {
         checkKeys: PropTypes.arrayOf(PropTypes.string).isRequired,
         disabled: PropTypes.bool.isRequired,
         expandDisabled: PropTypes.bool.isRequired,
-        noCascade: PropTypes.bool.isRequired,
         node: PropTypes.instanceOf(NodeModel).isRequired,
         showNodeIcon: PropTypes.bool.isRequired,
         onCheck: PropTypes.func.isRequired,
@@ -30,14 +29,15 @@ class TreeNode extends React.PureComponent {
         ParentLabelComponent: PropTypes.func,
         children: PropTypes.node,
         expandOnClick: PropTypes.bool,
+        noCascadeChecks: PropTypes.bool,
         showCheckbox: PropTypes.bool,
-        title: PropTypes.string,
+        showNodeTitle: PropTypes.bool,
         treeId: PropTypes.string,
         onClick: PropTypes.func,
         onContextMenu: PropTypes.func,
-        onLabelChange:  PropTypes.func,
-        onLeafLabelChange:  PropTypes.func,
-        onParentLabelChange:  PropTypes.func,
+        onLabelChange: PropTypes.func,
+        onLeafLabelChange: PropTypes.func,
+        onParentLabelChange: PropTypes.func,
     };
 
     static defaultProps = {
@@ -46,8 +46,9 @@ class TreeNode extends React.PureComponent {
         LabelComponent: null,
         LeafLabelComponent: null,
         ParentLabelComponent: null,
+        noCascadeChecks: false,
         showCheckbox: true,
-        title: null,
+        showNodeTitle: false,
         treeId: null,
         onClick: null,
         onContextMenu: null,
@@ -113,40 +114,31 @@ class TreeNode extends React.PureComponent {
             expandDisabled,
             node,
             showNodeIcon,
+            showNodeTitle,
             onClick,
             LabelComponent,
             LeafLabelComponent,
             ParentLabelComponent,
+            onContextMenu,
             onLabelChange,
             onLeafLabelChange,
             onParentLabelChange,
-            noCascade,
+            noCascadeChecks,
             showCheckbox,
-            title,
             treeId,
-            onContextMenu,
         } = this.props;
 
-        const {
-            checkState,
-            className,
-            expanded,
-            icon,
-            isLeaf,
-            label,
-            value,
-        } = node;
-
         const nodeDisabled = disabled || node.disabled;
+        const nodeTitle = showNodeTitle ? (node.title || node.label) : node.title;
 
         const nodeClass = classNames({
             'rct-node': true,
-            'rct-node-leaf': isLeaf,
-            'rct-node-parent': !isLeaf,
-            'rct-node-expanded': !isLeaf && expanded,
-            'rct-node-collapsed': !isLeaf && !expanded,
+            'rct-node-leaf': node.isLeaf,
+            'rct-node-parent': !node.isLeaf,
+            'rct-node-expanded': !node.isLeaf && node.expanded,
+            'rct-node-collapsed': !node.isLeaf && !node.expanded,
             'rct-disabled': nodeDisabled,
-        }, className);
+        }, node.className);
 
         let Label;
         let labelChangeHandler;
@@ -159,31 +151,28 @@ class TreeNode extends React.PureComponent {
             labelChangeHandler = onParentLabelChange || onLabelChange;
         }
 
-        const clickable = (typeof onClick === 'function');
-
         return (
             <li className={nodeClass}>
                 <span className="rct-text">
                     <ExpandButton
                         disabled={expandDisabled}
-                        expanded={expanded}
-                        isLeaf={isLeaf}
+                        expanded={node.expanded}
+                        isLeaf={node.isLeaf}
                         onClick={this.onExpand}
                     />
 
                     {showCheckbox ? (
                         <CheckboxLabel
-                            checked={checkState}
-                            clickable={clickable}
+                            checked={node.checkState}
                             disabled={nodeDisabled}
                             isRadioNode={node.isRadioNode}
-                            noCascade={noCascade}
-                            title={title}
+                            noCascadeChecks={noCascadeChecks}
+                            title={nodeTitle}
                             treeId={treeId}
-                            value={value}
+                            value={node.value}
                             onCheck={this.onCheck}
                             onCheckboxKeyUp={this.onCheckboxKeyUp}
-                            onClick={this.onClick}
+                            onClick={onClick && this.onClick}
                             onContextMenu={onContextMenu}
                         >
                             <Label
@@ -195,7 +184,7 @@ class TreeNode extends React.PureComponent {
 
                     ) : (
                         <BareLabel
-                            title={title}
+                            title={nodeTitle}
                             onClick={onClick && this.onClick}
                             onContextMenu={onContextMenu}
                         >
@@ -207,7 +196,7 @@ class TreeNode extends React.PureComponent {
                     )}
                 </span>
 
-                {expanded ? children : null}
+                {node.expanded ? children : null}
 
             </li>
         );

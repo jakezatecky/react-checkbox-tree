@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import CheckboxTree, { CheckboxTreeProvider } from 'react-checkbox-tree';
 
-import { fileSystem as initialTreeState } from './data';
+import { fileSystem as nodes } from './data';
 
 function ClickExample() {
     const [clicked, setClicked] = useState({});
@@ -18,7 +18,8 @@ function ClickExample() {
         console.log(newTree.getExpanded());
     };
 
-    const onClick = (node) => {
+    const onClick = (nodeKey, treeModel) => {
+        const node = treeModel.getNode(nodeKey);
         setClicked(node);
     };
 
@@ -30,7 +31,7 @@ function ClickExample() {
             <CheckboxTreeProvider>
                 <CheckboxTree
                     expandOnClick
-                    initialTreeState={initialTreeState}
+                    nodes={nodes}
                     onCheck={onCheck}
                     onClick={onClick}
                     onExpand={onExpand}

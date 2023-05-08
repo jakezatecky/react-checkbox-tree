@@ -6,13 +6,13 @@ class CheckboxIcon extends React.PureComponent {
     static propTypes = {
         checked: PropTypes.number.isRequired,
         isRadioNode: PropTypes.bool.isRequired,
-        noCascade: PropTypes.bool.isRequired,
+        noCascadeChecks: PropTypes.bool.isRequired,
     };
 
     static contextType = IconContext;
 
     render() {
-        const { checked, isRadioNode, noCascade } = this.props;
+        const { checked, isRadioNode, noCascadeChecks } = this.props;
 
         const {
             uncheck, check, halfCheck, radioOn, radioOff,
@@ -22,7 +22,6 @@ class CheckboxIcon extends React.PureComponent {
             if (checked === 0) {
                 return radioOff;
             }
-
             return radioOn;
         }
 
@@ -30,7 +29,7 @@ class CheckboxIcon extends React.PureComponent {
             return uncheck;
         }
 
-        if (checked === 1 || (checked === 2 && noCascade)) {
+        if (checked === 1 || (checked === 2 && noCascadeChecks)) {
             return check;
         }
 

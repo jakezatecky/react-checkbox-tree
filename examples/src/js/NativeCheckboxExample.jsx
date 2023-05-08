@@ -1,7 +1,7 @@
 import React from 'react';
 import CheckboxTree, { CheckboxTreeProvider } from 'react-checkbox-tree';
 
-import { fileSystemRadio as initialTreeState } from './data';
+import { fileSystemRadio as nodes } from './data';
 
 function NativeCheckboxExample() {
     const onCheck = (changedNodeKey, newTree) => {
@@ -19,8 +19,8 @@ function NativeCheckboxExample() {
     return (
         <CheckboxTreeProvider>
             <CheckboxTree
-                initialTreeState={initialTreeState}
                 nativeCheckboxes
+                nodes={nodes}
                 onCheck={onCheck}
                 onExpand={onExpand}
             />

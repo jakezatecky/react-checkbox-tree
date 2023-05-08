@@ -17,6 +17,9 @@ function ExpandButton({
     isLeaf,
     onClick,
 }) {
+    const { expandClose, expandOpen } = useContext(IconContext);
+    const { collapseNode, expandNode } = useContext(LanguageContext);
+
     if (isLeaf) {
         return (
             <span className="rct-collapse">
@@ -25,8 +28,6 @@ function ExpandButton({
         );
     }
 
-    const { expandClose, expandOpen } = useContext(IconContext);
-    const { collapseNode, expandNode } = useContext(LanguageContext);
     const icon = expanded ? expandOpen : expandClose;
     const title = expanded ? collapseNode : expandNode;
 

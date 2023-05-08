@@ -4,51 +4,61 @@ import { CHECK_MODEL } from '../constants';
 
 class TreeModel {
     constructor(treeConfig, options = {}) {
+        const { noCascadeDisabled } = options;
+
+        //----------------------------------------------------------------------
+        // function to flatten tree from a deep object to a flat object
         const flatten = (childNodes, parent = {}, depth = 0) => {
             if (Array.isArray(childNodes) && childNodes.length !== 0) {
                 childNodes.forEach((node, index) => {
                     const newNode = new NodeModel(node, parent, index, depth, options);
-                    // TODO: fix disabled - for all nodes? options.disabled?
-                    if (newNode.isChild) {
-                        if ('disabled' in parent) {
-                            newNode.disabled = parent.disabled;
-                        }
+
+                    // cascade disabled property down to children
+                    // this makes tree have consistent disabled state
+                    // this already happens in treeNode if noCascadeDisabled = false
+                    if (!noCascadeDisabled) {
+                        newNode.disabled = parent.disabled || newNode.disabled;
                     }
+
+                    // noCascadeChecks is not relevant here
+                    // noCascadeDisabled is
                     if (newNode.isParent && node.children.length > 0) {
-                        flatten(node.children, node, depth + 1);
+                        flatten(node.children, newNode, depth + 1);
 
                         // adjust checkState based upon children's checkState
-                        if (newNode.isRadioGroup) {
-                            // TODO: should this have a default instead of Error
-                            const numChecked = this.howManyChildrenChecked(newNode);
-                            if (numChecked !== 1) {
-                                // bad input for radio group
-                                let textOption;
-                                if (numChecked > 1) {
-                                    textOption = 'Too many children';
-                                } else {
-                                    textOption = 'No children';
-                                }
-                                throw new TreeModelError(
-                                    `TreeModel.constructor Error: ${textOption} (${numChecked}) are checked in Node.isRadioGroup (${node.value}).`,
-                                );
-                            }
-                        } else if (!newNode.isRadioNode) {
-                            // this is for parent nodes with children
+                        if (!(newNode.isRadioGroup || newNode.isRadioNode)) {
                             const checkState = this.getCheckState(newNode);
                             newNode.checkState = checkState;
                         }
-                        // else if newNode.isRadioNode => do nothing
+                    }
+
+                    // check for bad radio group input
+                    if (newNode.isRadioGroup) {
+                        // TODO: should this have a default instead of Error?
+                        //       like default to first checked
+                        const numChecked = this.howManyChildrenChecked(newNode);
+                        if (numChecked !== 1) {
+                            // bad input for radio group
+                            let textOption;
+                            if (numChecked > 1) {
+                                textOption = 'Too many children';
+                            } else {
+                                textOption = 'No children';
+                            }
+                            throw new TreeModelError(
+                                `TreeModel.constructor Error: ${textOption} (${numChecked}) are checked in Node.isRadioGroup (${node.value}).`,
+                            );
+                        }
                     }
 
                     // Protect against duplicate node values
-                    if (this.tree[node.value] !== undefined) {
+                    if (this.nodes[node.value] !== undefined) {
                         throw new TreeModelError(
                             `Duplicate value '${node.value}' detected. All node values must be unique.`,
                         );
                     }
 
-                    this.tree[node.value] = newNode;
+                    this.nodes[node.value] = newNode;
                 });
             }
         };
@@ -58,12 +68,12 @@ class TreeModel {
             // this is a clone request
             // NOTE: nodes are not cloned. They are only cloned when
             //       actually changed to reduce TreeNode rerenders
-            this.tree = {};
             this.rootKeys = [...treeConfig.rootKeys];
             this.unfilteredRootKeys = [...treeConfig.unfilteredRootKeys];
             this.options = { ...treeConfig.options };
-            Object.keys(treeConfig.tree).forEach((key) => {
-                this.tree[key] = treeConfig.tree[key];
+            this.nodes = {};
+            Object.keys(treeConfig.nodes).forEach((key) => {
+                this.nodes[key] = treeConfig.nodes[key];
             });
         } else {
             // these are options passed from CheckboxTree
@@ -74,7 +84,7 @@ class TreeModel {
             this.rootKeys = treeConfig.map((node) => node.value);
             // save a second copy to restore rootKeys when removing filter
             this.unfilteredRootKeys = [...this.rootKeys];
-            this.tree = {};
+            this.nodes = {};
 
             // process the initial tree state into a TreeModel
             flatten(treeConfig);
@@ -93,11 +103,11 @@ class TreeModel {
 
     expandAllNodes(expandValue = true) {
         const newTreeModel = this.clone();
-        Object.keys(newTreeModel.tree).forEach((key) => {
+        Object.keys(newTreeModel.nodes).forEach((key) => {
             const newNode = this.getNode(key);
             if (newNode.isParent) {
                 newNode.expanded = expandValue;
-                newTreeModel.tree[key] = newNode;
+                newTreeModel.nodes[key] = newNode;
             }
         });
         return newTreeModel;
@@ -113,21 +123,21 @@ class TreeModel {
     expandNodesToLevel(targetLevel) {
         const newTreeModel = this.clone();
 
-        const expandLevels = (node, currentLevel = 0) => {
+        const expandLevels = (keys, currentLevel = 0) => {
             if (currentLevel > targetLevel) {
                 return;
             }
-            Object.keys(newTreeModel.tree).forEach((key) => {
-                const newNode = newTreeModel.getNode[key].clone();
+            keys.forEach((key) => {
+                const newNode = newTreeModel.getNode(key).clone();
                 if (newNode.isParent) {
                     newNode.expanded = true;
-                    newTreeModel.tree[key] = newNode;
-                    expandLevels(newNode, currentLevel + 1);
+                    newTreeModel.nodes[key] = newNode;
+                    expandLevels(newNode.childKeys, currentLevel + 1);
                 }
             });
         };
 
-        expandLevels(targetLevel);
+        expandLevels(newTreeModel.rootKeys);
         return newTreeModel;
     }
 
@@ -155,7 +165,7 @@ class TreeModel {
                 // hide the node
                 const newNode = node.clone();
                 newNode.isHiddenByFilter = true;
-                newTreeModel.tree[nodeKey] = newNode;
+                newTreeModel.nodes[nodeKey] = newNode;
             }
             return filtered;
         };
@@ -163,17 +173,6 @@ class TreeModel {
         newTreeModel.rootKeys = newTreeModel.rootKeys.reduce(filterNodes, []);
         this.options.setTreeModel(newTreeModel);
         return newTreeModel;
-    }
-
-    // includes expanded children with parent collapsed
-    getExpanded() {
-        const expandedArray = [];
-        Object.keys(this.tree).forEach((key) => {
-            if (this.tree[key].expanded) {
-                expandedArray.push(key);
-            }
-        });
-        return expandedArray;
     }
 
     getChecked() {
@@ -225,7 +224,7 @@ class TreeModel {
     getChecked_old() {
         const checkModel = this.options.checkModel || CHECK_MODEL.LEAF;
         const checkedArray = [];
-        const keys = Object.keys(this.tree);
+        const keys = Object.keys(this.nodes);
 
         const pushCheckedKeys = (testFn) => {
             keys.forEach((key) => {
@@ -255,24 +254,60 @@ class TreeModel {
     }
     */
 
+    getDisabled() {
+        const disabledArray = [];
+        Object.keys(this.nodes).forEach((key) => {
+            if (this.nodes[key].disabled) {
+                disabledArray.push(key);
+            }
+        });
+        return disabledArray;
+    }
+
+    // includes expanded children with parent collapsed
+    getExpanded() {
+        const expandedArray = [];
+        Object.keys(this.nodes).forEach((key) => {
+            if (this.nodes[key].expanded) {
+                expandedArray.push(key);
+            }
+        });
+        return expandedArray;
+    }
+
     getNode(nodeKey) {
-        return this.tree[nodeKey];
+        return this.nodes[nodeKey];
     }
 
     removeFilter() {
         const newTreeModel = this.clone();
 
-        Object.keys(newTreeModel.tree).forEach((key) => {
+        Object.keys(newTreeModel.nodes).forEach((key) => {
             const newNode = this.getNode(key);
             newNode.isHiddenByFilter = false;
-            newTreeModel.tree[key] = newNode;
+            newTreeModel.nodes[key] = newNode;
         });
         newTreeModel.rootKeys = [...this.unfilteredRootKeys];
 
         return newTreeModel;
     }
 
+    setNewOptions(newOptions) {
+        const newTreeModel = this.clone();
+        newTreeModel.options = { ...newTreeModel.options, ...newOptions };
+        return newTreeModel;
+    }
+
+    setNodeProp(nodeKey, propertyName, value) {
+        const newTreeModel = this.clone();
+        const newNode = this.getNode(nodeKey).clone();
+        newNode[propertyName] = value;
+        newTreeModel.nodes[nodeKey] = newNode;
+        return newTreeModel;
+    }
+
     toggleChecked(nodeKey) {
+        const { noCascadeChecks, optimisticToggle } = this.options;
         const node = this.getNode(nodeKey);
 
         // NOTE: disabled may not be needed here
@@ -286,26 +321,26 @@ class TreeModel {
         }
 
         const newTreeModel = this.clone();
-        const newTree = newTreeModel.tree;
+        const newTree = newTreeModel.nodes;
 
-        // determine newCheckState
+        // determine newCheckState for this node
         let newCheckState;
         if (node.isRadioNode) {
             // turn off all siblings of node in newTree
             newTreeModel.turnOffSiblings(nodeKey);
             newCheckState = 1;
         } else if (node.checkState === 2) {
-            newCheckState = this.options.optimisticToggle ? 1 : 0;
+            newCheckState = (optimisticToggle && !noCascadeChecks) ? 1 : 0;
         } else {
             newCheckState = (node.checkState > 0) ? 0 : 1;
         }
 
         //----------------------------------------------------------------------
-        // recursive function to handle toggle
+        // recursive function to handle toggle on node and children
         // defined here because it uses newCheckState & newTree from above
         const toggle = (key) => {
             const newNode = this.getNode(key).clone();
-            if (this.options.noCascade ||
+            if (noCascadeChecks ||
                 newNode.isLeaf ||
                 newNode.childKeys.length === 0 ||
                 newNode.isRadioGroup ||
@@ -317,7 +352,7 @@ class TreeModel {
                 newNode.childKeys.forEach((childKey) => {
                     toggle(childKey, newCheckState);
                 });
-                // get checkState based upon childNodes checkState
+                // get checkState based upon childNodes' checkState
                 newNode.checkState = newTreeModel.getCheckState(newNode);
             }
             newTree[key] = newNode;
@@ -328,7 +363,7 @@ class TreeModel {
 
         // Percolate check status up to parents
         // if child isRadioNode do not percolate up
-        if (!(this.options.noCascade || node.isRadioNode)) {
+        if (!(noCascadeChecks || node.isRadioNode)) {
             let child = node;
             while (child.parentKey !== '') {
                 const { parentKey } = child;
@@ -348,8 +383,7 @@ class TreeModel {
     }
 
     toggleDisabled(nodeKey) {
-        // TODO: what about this.options.noCascade?
-        const toggleChildren = true;
+        const toggleChildren = !this.options.noCascadeDisabled;
         const newTreeModel = this.toggleProperty(nodeKey, 'disabled', toggleChildren);
         return newTreeModel;
     }
@@ -395,7 +429,7 @@ class TreeModel {
         newNode[propertyName] = newValue;
 
         const newTreeModel = this.clone();
-        const newTree = newTreeModel.tree;
+        const newTree = newTreeModel.nodes;
         newTree[nodeKey] = newNode;
 
         if (toggleChildren && newNode.isParent) {
@@ -418,7 +452,7 @@ class TreeModel {
             if (childKey !== nodeKey) {
                 const newNode = this.getNode(childKey).clone();
                 newNode.checkState = 0;
-                this.tree[childKey] = newNode;
+                this.nodes[childKey] = newNode;
             }
         });
     }

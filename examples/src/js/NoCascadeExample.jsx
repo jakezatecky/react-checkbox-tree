@@ -1,7 +1,7 @@
 import React from 'react';
 import CheckboxTree, { CheckboxTreeProvider } from 'react-checkbox-tree';
 
-import { fileSystem as initialTreeState } from './data';
+import { fileSystem as nodes } from './data';
 
 function NoCascadeExample() {
     const onCheck = (changedNodeKey, newTree) => {
@@ -19,8 +19,8 @@ function NoCascadeExample() {
     return (
         <CheckboxTreeProvider>
             <CheckboxTree
-                initialTreeState={initialTreeState}
-                noCascade
+                noCascadeChecks
+                nodes={nodes}
                 onCheck={onCheck}
                 onExpand={onExpand}
             />

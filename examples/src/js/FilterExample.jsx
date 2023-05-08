@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import CheckboxTree, { CheckboxTreeProvider, useCheckboxTree } from 'react-checkbox-tree';
 
-import { fileSystem as initialTreeState } from './data';
+import { fileSystem as nodes } from './data';
 
 // NOTE: FilterWidget must be within CheckboxTreeProvider
 // so useCheckboxTree can be used in FilterWidget function
@@ -84,7 +84,7 @@ function FilterWidget() {
                 onChange={onFilterChange}
             />
             <CheckboxTree
-                initialTreeState={initialTreeState}
+                nodes={nodes}
                 onCheck={onCheck}
                 onExpand={onExpand}
             />

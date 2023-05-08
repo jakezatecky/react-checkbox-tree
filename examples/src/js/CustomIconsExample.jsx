@@ -1,7 +1,7 @@
 import React from 'react';
 import CheckboxTree, { CheckboxTreeProvider } from 'react-checkbox-tree';
 
-const initialTreeState = [
+const nodes = [
     {
         value: 'Documents',
         label: 'Documents',
@@ -57,7 +57,7 @@ function CustomIconsExample() {
     return (
         <CheckboxTreeProvider>
             <CheckboxTree
-                initialTreeState={initialTreeState}
+                nodes={nodes}
                 onCheck={onCheck}
                 onExpand={onExpand}
             />

@@ -14,9 +14,7 @@ const defaultProps = {
 
 // this component wraps children with a clickable span
 
-function Clickable({
-    children, tabIndex, onClick,
-}) {
+function Clickable({ children, tabIndex, onClick }) {
     return (
         <span
             className="rct-node-clickable"

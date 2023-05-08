@@ -1,52 +1,66 @@
-import React, { useState } from 'react';
 import CheckboxTree, { CheckboxTreeProvider } from 'react-checkbox-tree';
+import PropTypes from 'prop-types';
+import React, { useState } from 'react';
 
-import { mapLayerTreeSmall as initialTreeState } from './data';
+import NodeModel from '../../../src/js/models/NodeModel';
 
-const CustomLabel = ({node, onChange}) => {
+import { mapLayerTreeSmall as nodes } from './data';
+
+const propTypes = {
+    node: PropTypes.instanceOf(NodeModel).isRequired,
+    onChange: PropTypes.func,
+};
+
+const defaultProps = {
+    onChange: null,
+};
+
+function CustomLabel({ node, onChange }) {
     const onChangeHandler = (e) => {
         const nodeKey = e.target.name;
-        const value = e.target.value;
+        const { value } = e.target;
         onChange(nodeKey, value);
-    }
+    };
 
     return (
         <div
             style={{
-                border: "1px solid lightgrey",
-                borderRadius: "8px",
-                margin: "2px",
-                padding: "3px 8px",
-                minWidth: "180px",
-                backgroundColor: "lightblue"
+                border: '1px solid lightgrey',
+                borderRadius: '8px',
+                margin: '2px',
+                padding: '3px 8px',
+                minWidth: '180px',
+                backgroundColor: 'lightblue',
             }}
         >
             <div>
                 {node.label}
             </div>
-            <div style={{display: 'flex'}}>
+            <div style={{ display: 'flex' }}>
                 <label htmlFor="volume">opacity:</label>
                 <span>
                     <input
-                        type="range"
                         id={node.value}
-                        name={node.value}
-                        min="0"
                         max="100"
-                        onChange={onChangeHandler}
+                        min="0"
+                        name={node.value}
                         style={{
-                            display: "block",
+                            display: 'block',
                             margin: '0.4rem',
                             opacity: 1,
-                            width: "100px",
-                            height: "2px",
+                            width: '100px',
+                            height: '2px',
                         }}
+                        type="range"
+                        onChange={onChangeHandler}
                     />
                 </span>
             </div>
         </div>
     );
 }
+CustomLabel.propTypes = propTypes;
+CustomLabel.defaultProps = defaultProps;
 
 function CustomLabelExample() {
     const [nodeKey, setNodeKey] = useState('');
@@ -66,10 +80,10 @@ function CustomLabelExample() {
 
     // this handler gets passed by CheckboxTree through TreeNode
     // along with the CustomLabel replacing the DefaultLabel
-    const onLeafLabelChangeHandler = (nodeKey, value) => {
-        setNodeKey(nodeKey);
-        setValue(value);
-    }
+    const onLeafLabelChangeHandler = (key, newValue) => {
+        setNodeKey(key);
+        setValue(newValue);
+    };
 
     const defaultText = '(none)';
     const displayText = nodeKey || defaultText;
@@ -78,17 +92,17 @@ function CustomLabelExample() {
         <div className="clickable-labels">
             <CheckboxTreeProvider>
                 <CheckboxTree
-                    initialTreeState={initialTreeState}
                     LeafLabelComponent={CustomLabel}
-                    onLeafLabelChange={onLeafLabelChangeHandler}
+                    nodes={nodes}
                     onCheck={onCheck}
                     onExpand={onExpand}
+                    onLeafLabelChange={onLeafLabelChangeHandler}
                 />
             </CheckboxTreeProvider>
             <div className="clickable-labels-info">
                 <strong>layer</strong>
                 {`: ${displayText}`}
-                <br/>
+                <br />
                 Slider Value
                 {`: ${value}`}
 

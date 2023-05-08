@@ -1,7 +1,7 @@
 import React from 'react';
 import CheckboxTree, { CheckboxTreeProvider } from 'react-checkbox-tree';
 
-import initialTreeState from './data/mapLayerTree';
+import nodes from './data/mapLayerTree';
 
 function RadioButtonExample() {
     const onCheck = (changedNodeKey, newTree) => {
@@ -19,7 +19,7 @@ function RadioButtonExample() {
     return (
         <CheckboxTreeProvider>
             <CheckboxTree
-                initialTreeState={initialTreeState}
+                nodes={nodes}
                 onCheck={onCheck}
                 onExpand={onExpand}
             />

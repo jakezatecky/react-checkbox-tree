@@ -2,7 +2,7 @@ import classNames from 'classnames';
 // import isEqual from 'lodash/isEqual';
 import memoize from 'lodash/memoize';
 import PropTypes from 'prop-types';
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 // import CheckboxTreeError from './CheckboxTreeError';
 
@@ -39,8 +39,11 @@ const defaultIcons = {
 };
 
 const propTypes = {
-    initialTreeState: PropTypes.arrayOf(nodeShape).isRequired,
+    nodes: PropTypes.arrayOf(nodeShape).isRequired,
 
+    LabelComponent: PropTypes.func,
+    LeafLabelComponent: PropTypes.func,
+    ParentLabelComponent: PropTypes.func,
     checkKeys: PropTypes.arrayOf(PropTypes.string),
     checkModel: PropTypes.oneOf(['leaf', 'all']),
     direction: PropTypes.string,
@@ -51,13 +54,11 @@ const propTypes = {
     iconsClass: PropTypes.string,
     id: PropTypes.string,
     lang: languageShape,
-    LabelComponent: PropTypes.func,
-    LeafLabelComponent: PropTypes.func,
-    ParentLabelComponent: PropTypes.func,
     name: PropTypes.string,
     nameAsArray: PropTypes.bool,
     nativeCheckboxes: PropTypes.bool,
-    noCascade: PropTypes.bool,
+    noCascadeChecks: PropTypes.bool,
+    noCascadeDisabled: PropTypes.bool,
     onlyLeafCheckboxes: PropTypes.bool,
     optimisticToggle: PropTypes.bool,
     showExpandAll: PropTypes.bool,
@@ -67,9 +68,9 @@ const propTypes = {
     onClick: PropTypes.func,
     onContextMenu: PropTypes.func,
     onExpand: PropTypes.func,
-    onLabelChange:  PropTypes.func,
-    onLeafLabelChange:  PropTypes.func,
-    onParentLabelChange:  PropTypes.func,
+    onLabelChange: PropTypes.func,
+    onLeafLabelChange: PropTypes.func,
+    onParentLabelChange: PropTypes.func,
 };
 
 const defaultProps = {
@@ -89,7 +90,8 @@ const defaultProps = {
     name: undefined,
     nameAsArray: false,
     nativeCheckboxes: false,
-    noCascade: false,
+    noCascadeChecks: false,
+    noCascadeDisabled: false,
     onlyLeafCheckboxes: false,
     optimisticToggle: true,
     showExpandAll: false,
@@ -99,11 +101,10 @@ const defaultProps = {
     onClick: null,
     onContextMenu: null,
     onExpand: () => {},
-    onLabelChange:  null,
-    onLeafLabelChange:  null,
-    onParentLabelChange:  null,
+    onLabelChange: null,
+    onLeafLabelChange: null,
+    onParentLabelChange: null,
 };
-
 
 export default function CheckboxTree({
     direction,
@@ -116,8 +117,8 @@ export default function CheckboxTree({
     name,
     nameAsArray,
     nativeCheckboxes,
+    nodes,
     showExpandAll,
-    initialTreeState,
     checkKeys,
     expandOnClick,
     onCheck,
@@ -132,7 +133,8 @@ export default function CheckboxTree({
     LabelComponent,
     LeafLabelComponent,
     ParentLabelComponent,
-    noCascade,
+    noCascadeChecks,
+    noCascadeDisabled,
     optimisticToggle,
     onLabelChange,
     onLeafLabelChange,
@@ -141,23 +143,48 @@ export default function CheckboxTree({
     const mergedLang = combineMemoized(lang, defaultLang);
     const mergedIcons = combineMemoized(icons, defaultIcons);
 
+    // save nodes prop to check for new value in useEffect
+    const [prevNodes, setPreviousNodes] = useState();
     // get the treeModel from CheckboxTreeProvider
     const { treeModel, setTreeModel } = useCheckboxTree();
+    // bundle props passed to TreeModel
+    const treeModelOptions = useMemo(() => ({
+        checkModel,
+        disabled,
+        noCascadeChecks,
+        noCascadeDisabled,
+        optimisticToggle,
+        setTreeModel,
+    }), [
+        checkModel,
+        disabled,
+        noCascadeChecks,
+        noCascadeDisabled,
+        optimisticToggle,
+        setTreeModel,
+    ]);
 
     //--------------------------------------------------------------------------
-    // insert the inital tree state into TreeModel
     useEffect(() => {
-        // options are from props
-        const options = {
-            checkModel, disabled, noCascade, optimisticToggle, setTreeModel,
-        };
-
-        const newTreeModel = new TreeModel(initialTreeState, options);
-        setTreeModel(newTreeModel);
-    }, [initialTreeState]);
-
-    // TODO: how to handle changed props?
-
+        if (!treeModel || nodes !== prevNodes) {
+            // initial setup or change of nodes prop
+            // convert the inital tree state into a TreeModel and store in context
+            const newTreeModel = new TreeModel(nodes, treeModelOptions);
+            setPreviousNodes(nodes);
+            setTreeModel(newTreeModel);
+        } else if (treeModel && treeModelOptions !== treeModel.options) {
+            // change of options revelant to TreeModel
+            const newTreeModel = treeModel.clone();
+            newTreeModel.options = treeModelOptions;
+            setTreeModel(newTreeModel);
+        }
+    }, [
+        nodes,
+        prevNodes,
+        setTreeModel,
+        treeModel,
+        treeModelOptions,
+    ]);
     //--------------------------------------------------------------------------
 
     // there is no treeModel until first useEffect above is run
@@ -189,7 +216,6 @@ export default function CheckboxTree({
         setTreeModel(newTreeModel);
     };
 
-    // TODO: this needs review
     const onContextMenuHandler = (node) => (event) => {
         if (typeof onContextMenu === 'function') {
             onContextMenu(event, node);
@@ -211,10 +237,10 @@ export default function CheckboxTree({
     };
 
     const onNodeClick = (nodeKey) => {
-        onClick(treeModel.getNode(nodeKey));
+        onClick(nodeKey, treeModel);
     };
 
-    const renderTreeNodes = (childKeys) => {
+    const renderTreeNodes = (childKeys, ancestorDisabled = false) => {
         const treeNodes = childKeys.map((nodeKey) => {
             const node = treeModel.getNode(nodeKey);
             const parent = node.parentKey ? treeModel.getNode(node.parentKey) : null;
@@ -227,7 +253,16 @@ export default function CheckboxTree({
             }
 
             // render child nodes here after determining to render this node
-            const children = node.isParent ? renderTreeNodes(node.childKeys) : null;
+            let children = null;
+            if (node.isParent) {
+                // determine if child nodes should be disabled
+                const disabledByAncestor = !noCascadeDisabled && (
+                    ancestorDisabled || node.disabled ||
+                    (node.isRadioGroup && node.checkState === 0)
+                );
+
+                children = renderTreeNodes(node.childKeys, disabledByAncestor);
+            }
 
             // Show checkbox only if this is a leaf node or showCheckbox is true
             const showCheckbox = onlyLeafCheckboxes ? node.isLeaf : node.showCheckbox;
@@ -235,24 +270,25 @@ export default function CheckboxTree({
             // Prepare node information for context menu usage
             const nodeContext = {
                 ...node,
-                checked: node.checkState,
+                checked: (node.checkState > 0),
                 expanded: node.expanded,
             };
+
             return (
                 <TreeNode
                     key={node.value}
-                    checkKeys={checkKeys}
-                    disabled={disabled}
-                    expandDisabled={expandDisabled}
-                    expandOnClick={expandOnClick}
                     LabelComponent={LabelComponent}
                     LeafLabelComponent={LeafLabelComponent}
                     ParentLabelComponent={ParentLabelComponent}
-                    noCascade={noCascade}
+                    checkKeys={checkKeys}
+                    disabled={disabled || ancestorDisabled || node.disabled}
+                    expandDisabled={expandDisabled}
+                    expandOnClick={expandOnClick}
+                    noCascadeChecks={noCascadeChecks}
                     node={node}
                     showCheckbox={showCheckbox}
                     showNodeIcon={showNodeIcon}
-                    title={showNodeTitle ? node.title || node.label : node.title}
+                    showNodeTitle={showNodeTitle}
                     treeId={id}
                     onCheck={onCheckHandler}
                     onClick={onClick && onNodeClick}
@@ -276,7 +312,6 @@ export default function CheckboxTree({
 
     //--------------------------------------------------------------------------
     // render CheckboxTree
-
     const treeNodes = renderTreeNodes(treeModel.rootKeys);
 
     const className = classNames({

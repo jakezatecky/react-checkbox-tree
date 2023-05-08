@@ -1,7 +1,7 @@
 import React from 'react';
 import CheckboxTree, { CheckboxTreeProvider } from 'react-checkbox-tree';
 
-import { empires as initialTreeState } from './data';
+import { empires as nodes } from './data';
 
 function HiddenCheckboxesExample() {
     const onCheck = (changedNodeKey, newTree) => {
@@ -19,7 +19,7 @@ function HiddenCheckboxesExample() {
     return (
         <CheckboxTreeProvider>
             <CheckboxTree
-                initialTreeState={initialTreeState}
+                nodes={nodes}
                 onlyLeafCheckboxes
                 onCheck={onCheck}
                 onExpand={onExpand}
