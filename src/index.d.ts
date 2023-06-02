@@ -61,7 +61,7 @@ declare module "react-checkbox-tree" {
         optimisticToggle?: boolean;
         showExpandAll?: boolean;
         showNodeIcon?: boolean;
-        showNodeTitles?: boolean;
+        showNodeTitle?: boolean;
         onCheck?: (checked: Array<string>, node: OnCheckNode) => void;
         onClick?: (node: OnCheckNode) => void;
         onExpand?: (expanded: Array<string>, node: OnExpandNode) => void;
