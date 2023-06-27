@@ -336,7 +336,7 @@ export default function CheckboxTree({
 
                     {name !== undefined ? (
                         <HiddenInput
-                            checked={treeModel.getCheckedArray()}
+                            checked={treeModel.getChecked()}
                             name={name}
                             nameAsArray={nameAsArray}
                         />
