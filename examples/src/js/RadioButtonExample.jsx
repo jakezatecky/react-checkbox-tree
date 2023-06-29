@@ -1,9 +1,17 @@
-import React from 'react';
-import CheckboxTree, { CheckboxTreeProvider } from 'react-checkbox-tree';
+import React, { useState } from 'react';
+import CheckboxTree, { TreeModel } from 'react-checkbox-tree';
 
 import nodes from './data/mapLayerTree';
 
+const initialTree = new TreeModel(nodes);
+
 function RadioButtonExample() {
+    const [tree, setTree] = useState(initialTree);
+
+    const onChange = (newTree) => {
+        setTree(newTree);
+    };
+
     const onCheck = (changedNodeKey, newTree) => {
         const changedNode = newTree.getNode(changedNodeKey);
         console.log(`changed node = ${changedNode.label}`);
@@ -17,13 +25,12 @@ function RadioButtonExample() {
     };
 
     return (
-        <CheckboxTreeProvider>
-            <CheckboxTree
-                nodes={nodes}
-                onCheck={onCheck}
-                onExpand={onExpand}
-            />
-        </CheckboxTreeProvider>
+        <CheckboxTree
+            tree={tree}
+            onChange={onChange}
+            onCheck={onCheck}
+            onExpand={onExpand}
+        />
     );
 }
 

@@ -76,6 +76,7 @@ class TreeModel {
                 this.nodes[key] = treeConfig.nodes[key];
             });
         } else {
+            // treeConfig is a nodeShape
             // these are options passed from CheckboxTree
             this.options = { ...options };
 
@@ -90,6 +91,7 @@ class TreeModel {
             flatten(treeConfig);
 
             // at this point 'this' is a valid TreeModel and should be valid input for CheckboxTree
+            // console.log(this);
         }
     }
 
@@ -171,7 +173,6 @@ class TreeModel {
         };
 
         newTreeModel.rootKeys = newTreeModel.rootKeys.reduce(filterNodes, []);
-        this.options.setTreeModel(newTreeModel);
         return newTreeModel;
     }
 
@@ -455,6 +456,10 @@ class TreeModel {
                 this.nodes[childKey] = newNode;
             }
         });
+    }
+
+    updateOptions(newOptions) {
+        this.options = { ...this.options, ...newOptions };
     }
 
     //--------------------------------------------------------------------------

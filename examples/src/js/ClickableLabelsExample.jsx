@@ -1,10 +1,17 @@
 import React, { useState } from 'react';
-import CheckboxTree, { CheckboxTreeProvider } from 'react-checkbox-tree';
+import CheckboxTree, { TreeModel } from 'react-checkbox-tree';
 
 import { fileSystem as nodes } from './data';
 
+const initialTree = new TreeModel(nodes);
+
 function ClickExample() {
+    const [tree, setTree] = useState(initialTree);
     const [clicked, setClicked] = useState({});
+
+    const onChange = (newTree) => {
+        setTree(newTree);
+    };
 
     const onCheck = (changedNodeKey, newTree) => {
         const changedNode = newTree.getNode(changedNodeKey);
@@ -28,15 +35,14 @@ function ClickExample() {
 
     return (
         <div className="clickable-labels">
-            <CheckboxTreeProvider>
-                <CheckboxTree
-                    expandOnClick
-                    nodes={nodes}
-                    onCheck={onCheck}
-                    onClick={onClick}
-                    onExpand={onExpand}
-                />
-            </CheckboxTreeProvider>
+            <CheckboxTree
+                expandOnClick
+                tree={tree}
+                onChange={onChange}
+                onCheck={onCheck}
+                onClick={onClick}
+                onExpand={onExpand}
+            />
             <div className="clickable-labels-info">
                 <strong>Clicked Node</strong>
                 {`: ${displayText}`}

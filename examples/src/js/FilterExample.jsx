@@ -1,24 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import CheckboxTree, { CheckboxTreeProvider, useCheckboxTree } from 'react-checkbox-tree';
+import CheckboxTree, { TreeModel } from 'react-checkbox-tree';
 
 import { fileSystem as nodes } from './data';
 
-// NOTE: FilterWidget must be within CheckboxTreeProvider
-// so useCheckboxTree can be used in FilterWidget function
-function FilterExample() {
-    return (
-        <CheckboxTreeProvider>
-            <FilterWidget />
-        </CheckboxTreeProvider>
-    );
-}
+const initialTree = new TreeModel(nodes);
 
-function FilterWidget() {
+function FilterExample() {
+    const [tree, setTree] = useState(initialTree);
     const [filterText, setFilterText] = useState('');
     const [activeFilter, setActiveFilter] = useState('');
     const [timeoutId, setTimeoutId] = useState();
 
-    const { treeModel } = useCheckboxTree();
+    const onChange = (newTree) => {
+        setTree(newTree);
+    };
 
     const onCheck = (changedNodeKey, newTree) => {
         const changedNode = newTree.getNode(changedNodeKey);
@@ -44,8 +39,9 @@ function FilterWidget() {
     );
 
     const applyFilter = () => {
-        treeModel.filter(filterTest);
+        const filteredTree = tree.filter(filterTest);
         setActiveFilter(filterText);
+        setTree(filteredTree);
     };
 
     //--------------------------------------------------------------------------
@@ -55,23 +51,21 @@ function FilterWidget() {
         const timeoutDelay = 500; // 0.5 seconds
         clearTimeout(timeoutId);
 
-        // treeModel may not exist on first call
-        if (treeModel) {
-            if (filterText !== '') {
-                // filter is requested
-                if (filterText !== activeFilter) {
-                    // filter has changed
-                    const newTimeoutId = setTimeout(applyFilter, timeoutDelay);
-                    setTimeoutId(newTimeoutId);
-                }
-            } else if (activeFilter !== '') {
-                // no filter requested but there was one previously
-                // restore whole tree
-                treeModel.removeFilter();
-                setActiveFilter('');
+        if (filterText !== '') {
+            // filter is requested
+            if (filterText !== activeFilter) {
+                // filter has changed
+                const newTimeoutId = setTimeout(applyFilter, timeoutDelay);
+                setTimeoutId(newTimeoutId);
             }
+        } else if (activeFilter !== '') {
+            // no filter requested but there was one previously
+            // restore whole tree
+            const unFilteredTree = tree.removeFilter();
+            setTree(unFilteredTree);
+            setActiveFilter('');
         }
-    }, [activeFilter, filterText, treeModel]);
+    }, [activeFilter, filterText, tree]);
     //--------------------------------------------------------------------------
 
     return (
@@ -84,7 +78,8 @@ function FilterWidget() {
                 onChange={onFilterChange}
             />
             <CheckboxTree
-                nodes={nodes}
+                tree={tree}
+                onChange={onChange}
                 onCheck={onCheck}
                 onExpand={onExpand}
             />

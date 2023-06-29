@@ -18,6 +18,7 @@ import RadioButtonExample from './js/RadioButtonExample';
 createRoot(document.getElementById('basic-example')).render(<BasicExample />);
 createRoot(document.getElementById('clickable-labels-example')).render(<ClickableLabelsExample />);
 createRoot(document.getElementById('custom-icons-example')).render(<CustomIconsExample />);
+createRoot(document.getElementById('custom-label-example')).render(<CustomLabelExample />);
 createRoot(document.getElementById('disabled-example')).render(<DisabledExample />);
 createRoot(document.getElementById('expand-all-example')).render(<ExpandAllExample />);
 createRoot(document.getElementById('filter-example')).render(<FilterExample />);
@@ -27,4 +28,3 @@ createRoot(document.getElementById('native-checkboxes-example')).render(<NativeC
 createRoot(document.getElementById('no-cascade-example')).render(<NoCascadeExample />);
 createRoot(document.getElementById('pessimistic-toggle-example')).render(<PessimisticToggleExample />);
 createRoot(document.getElementById('radio-button-example')).render(<RadioButtonExample />);
-createRoot(document.getElementById('custom-label-example')).render(<CustomLabelExample />);

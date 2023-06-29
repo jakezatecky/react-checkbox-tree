@@ -1,10 +1,12 @@
-import CheckboxTree, { CheckboxTreeProvider } from 'react-checkbox-tree';
-import PropTypes from 'prop-types';
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+import CheckboxTree, { TreeModel } from 'react-checkbox-tree';
 
 import NodeModel from '../../../src/js/models/NodeModel';
 
 import { mapLayerTreeSmall as nodes } from './data';
+
+const initialTree = new TreeModel(nodes);
 
 const propTypes = {
     node: PropTypes.instanceOf(NodeModel).isRequired,
@@ -63,8 +65,13 @@ CustomLabel.propTypes = propTypes;
 CustomLabel.defaultProps = defaultProps;
 
 function CustomLabelExample() {
+    const [tree, setTree] = useState(initialTree);
     const [nodeKey, setNodeKey] = useState('');
     const [value, setValue] = useState('');
+
+    const onChange = (newTree) => {
+        setTree(newTree);
+    };
 
     const onCheck = (changedNodeKey, newTree) => {
         const changedNode = newTree.getNode(changedNodeKey);
@@ -90,15 +97,14 @@ function CustomLabelExample() {
 
     return (
         <div className="clickable-labels">
-            <CheckboxTreeProvider>
-                <CheckboxTree
-                    LeafLabelComponent={CustomLabel}
-                    nodes={nodes}
-                    onCheck={onCheck}
-                    onExpand={onExpand}
-                    onLeafLabelChange={onLeafLabelChangeHandler}
-                />
-            </CheckboxTreeProvider>
+            <CheckboxTree
+                LeafLabelComponent={CustomLabel}
+                tree={tree}
+                onChange={onChange}
+                onCheck={onCheck}
+                onExpand={onExpand}
+                onLeafLabelChange={onLeafLabelChangeHandler}
+            />
             <div className="clickable-labels-info">
                 <strong>layer</strong>
                 {`: ${displayText}`}

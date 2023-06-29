@@ -2,7 +2,7 @@ import classNames from 'classnames';
 // import isEqual from 'lodash/isEqual';
 import memoize from 'lodash/memoize';
 import PropTypes from 'prop-types';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useMemo, useEffect } from 'react';
 
 // import CheckboxTreeError from './CheckboxTreeError';
 
@@ -15,11 +15,10 @@ import defaultLang from './lang/default';
 import iconsShape from './shapes/iconsShape';
 import languageShape from './shapes/languageShape';
 // import listShape from './shapes/listShape';
-import nodeShape from './shapes/nodeShape';
+// import nodeShape from './shapes/nodeShape';
 // import treeShape from './shapes/treeShape';
 import { KEYS } from './constants';
 import { IconContext, LanguageContext } from './contexts';
-import { useCheckboxTree } from './CheckboxTreeContext';
 
 const combineMemoized = memoize((newValue, defaultValue) => ({ ...defaultValue, ...newValue }));
 
@@ -39,7 +38,8 @@ const defaultIcons = {
 };
 
 const propTypes = {
-    nodes: PropTypes.arrayOf(nodeShape).isRequired,
+    tree: PropTypes.instanceOf(TreeModel).isRequired,
+    onChange: PropTypes.func.isRequired,
 
     LabelComponent: PropTypes.func,
     LeafLabelComponent: PropTypes.func,
@@ -117,10 +117,11 @@ export default function CheckboxTree({
     name,
     nameAsArray,
     nativeCheckboxes,
-    nodes,
     showExpandAll,
+    tree,
     checkKeys,
     expandOnClick,
+    onChange,
     onCheck,
     onClick,
     onContextMenu,
@@ -144,59 +145,43 @@ export default function CheckboxTree({
     const mergedIcons = combineMemoized(icons, defaultIcons);
 
     // save nodes prop to check for new value in useEffect
-    const [prevNodes, setPreviousNodes] = useState();
-    // get the treeModel from CheckboxTreeProvider
-    const { treeModel, setTreeModel } = useCheckboxTree();
+    // const [prevNodes, setPreviousNodes] = useState();
+
     // bundle props passed to TreeModel
-    const treeModelOptions = useMemo(() => ({
+    // TODO: how should these be added to TreeModel??????
+    const treeOptions = useMemo(() => ({
         checkModel,
-        disabled,
         noCascadeChecks,
         noCascadeDisabled,
         optimisticToggle,
-        setTreeModel,
     }), [
         checkModel,
-        disabled,
         noCascadeChecks,
         noCascadeDisabled,
         optimisticToggle,
-        setTreeModel,
     ]);
 
-    //--------------------------------------------------------------------------
-    useEffect(() => {
-        if (!treeModel || nodes !== prevNodes) {
-            // initial setup or change of nodes prop
-            // convert the inital tree state into a TreeModel and store in context
-            const newTreeModel = new TreeModel(nodes, treeModelOptions);
-            setPreviousNodes(nodes);
-            setTreeModel(newTreeModel);
-        } else if (treeModel && treeModelOptions !== treeModel.options) {
-            // change of options revelant to TreeModel
-            const newTreeModel = treeModel.clone();
-            newTreeModel.options = treeModelOptions;
-            setTreeModel(newTreeModel);
-        }
-    }, [
-        nodes,
-        prevNodes,
-        setTreeModel,
-        treeModel,
-        treeModelOptions,
-    ]);
+    // insert or update options in tree
+    tree.updateOptions(treeOptions);
+
     //--------------------------------------------------------------------------
 
-    // there is no treeModel until first useEffect above is run
-    if (!(treeModel instanceof TreeModel)) {
+    // TODO: this may not be needed as TreeModel is required
+    // should throw error?
+    if (!(tree instanceof TreeModel)) {
         return null;
     }
 
     //--------------------------------------------------------------------------
     // methods
 
+    // TODO: is this needed?
+    const onChangeHandler = () => {
+
+    }
+
     const onCheckHandler = (nodeKey) => {
-        const newTreeModel = treeModel.toggleChecked(nodeKey);
+        const newTreeModel = tree.toggleChecked(nodeKey);
 
         // TODO: should toggleChecked return false if no change??
         // probably...
@@ -204,16 +189,16 @@ export default function CheckboxTree({
         // toggleChecked returns original treeModel if the check is not
         // changed due to being disabled or being an already checked
         // radio node so we ignore the check change attempt
-        if (newTreeModel !== treeModel) {
-            setTreeModel(newTreeModel);
+        if (newTreeModel !== tree) {
             onCheck(nodeKey, newTreeModel);
+            onChange(newTreeModel);
         }
     };
 
     const onCollapseAll = () => {
-        const newTreeModel = treeModel.expandAllNodes(false);
-        onExpand('', newTreeModel);
-        setTreeModel(newTreeModel);
+        const newTreeModel = tree.expandAllNodes(false);
+        // onExpand('', newTreeModel);
+        onChange(newTreeModel);
     };
 
     const onContextMenuHandler = (node) => (event) => {
@@ -223,27 +208,28 @@ export default function CheckboxTree({
     };
 
     const onExpandHandler = (nodeKey) => {
-        const newTreeModel = treeModel.toggleExpanded(nodeKey);
-        setTreeModel(newTreeModel);
+        const newTreeModel = tree.toggleExpanded(nodeKey);
         onExpand(nodeKey, newTreeModel);
+        onChange(newTreeModel);
     };
 
     const onExpandAll = () => {
         if (!expandDisabled) {
-            const newTreeModel = treeModel.expandAllNodes(true);
-            setTreeModel(newTreeModel);
-            onExpand('', newTreeModel);
+            const newTreeModel = tree.expandAllNodes(true);
+            // onExpand('', newTreeModel);
+            onChange(newTreeModel);
         }
     };
 
     const onNodeClick = (nodeKey) => {
-        onClick(nodeKey, treeModel);
+        onClick(nodeKey, tree);
     };
 
     const renderTreeNodes = (childKeys, ancestorDisabled = false) => {
         const treeNodes = childKeys.map((nodeKey) => {
-            const node = treeModel.getNode(nodeKey);
-            const parent = node.parentKey ? treeModel.getNode(node.parentKey) : null;
+            const node = tree.getNode(nodeKey);
+
+            const parent = node.parentKey ? tree.getNode(node.parentKey) : null;
 
             // render only if not marked hidden by filter or
             // if parent is expanded or if there is no parent
@@ -312,7 +298,7 @@ export default function CheckboxTree({
 
     //--------------------------------------------------------------------------
     // render CheckboxTree
-    const treeNodes = renderTreeNodes(treeModel.rootKeys);
+    const treeNodes = renderTreeNodes(tree.rootKeys);
 
     const className = classNames({
         'react-checkbox-tree': true,
@@ -336,7 +322,7 @@ export default function CheckboxTree({
 
                     {name !== undefined ? (
                         <HiddenInput
-                            checked={treeModel.getChecked()}
+                            checked={tree.getChecked()}
                             name={name}
                             nameAsArray={nameAsArray}
                         />

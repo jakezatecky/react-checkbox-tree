@@ -1,9 +1,17 @@
-import React from 'react';
-import CheckboxTree, { CheckboxTreeProvider } from 'react-checkbox-tree';
+import React, { useState } from 'react';
+import CheckboxTree, { TreeModel } from 'react-checkbox-tree';
 
 import { empires as nodes } from './data';
 
+const initialTree = new TreeModel(nodes);
+
 function HiddenCheckboxesExample() {
+    const [tree, setTree] = useState(initialTree);
+
+    const onChange = (newTree) => {
+        setTree(newTree);
+    };
+
     const onCheck = (changedNodeKey, newTree) => {
         const changedNode = newTree.getNode(changedNodeKey);
         console.log(`changed node = ${changedNode.label}`);
@@ -17,14 +25,13 @@ function HiddenCheckboxesExample() {
     };
 
     return (
-        <CheckboxTreeProvider>
-            <CheckboxTree
-                nodes={nodes}
-                onlyLeafCheckboxes
-                onCheck={onCheck}
-                onExpand={onExpand}
-            />
-        </CheckboxTreeProvider>
+        <CheckboxTree
+            onlyLeafCheckboxes
+            tree={tree}
+            onChange={onChange}
+            onCheck={onCheck}
+            onExpand={onExpand}
+        />
     );
 }
 

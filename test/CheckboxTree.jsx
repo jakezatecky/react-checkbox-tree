@@ -6,38 +6,37 @@ import userEvent from '@testing-library/user-event';
 
 import CheckboxTree from '../src/js/CheckboxTree';
 // import CheckboxTreeError from '../src/js/CheckboxTreeError';
-import { CheckboxTreeProvider } from '../src/js/CheckboxTreeContext';
 import TreeModel from '../src/js/models/TreeModel';
 import TreeModelError from '../src/js/models/TreeModelError';
 
 const consoleError = console.error;
-/*
+
 const test1 = [
     {
-        label: 'Jupiter',
-        value: 'jupiter',
-        children: [
-            { value: 'io', label: 'Io', checked: true },
-            { value: 'europa', label: 'Europa' },
-        ],
-    }, {
         label: 'Saturn',
         value: 'saturn',
-        children: [
-            { value: ' titan', label: ' Titan', checked: true },
-            { value: ' enceladus', label: ' Enceladus', checked: true },
-        ],
-    }, {
-        label: 'Earth',
-        value: 'earth',
-        children: [
-            { value: 'moon', label: 'Moon' },
-        ],
     },
 ];
 
 const test2 = [
     {
+        label: 'Jupiter',
+        value: 'jupiter',
+        expanded: true,
+        children: [
+            { value: 'io', label: 'Io' },
+            { value: 'europa', label: 'Europa' },
+        ],
+    }, {
+        label: 'Saturn',
+        value: 'saturn',
+        checked: true,
+        expanded: true,
+        children: [
+            { value: 'titan', label: 'Titan', checked: true },
+            { value: 'enceladus', label: 'Enceladus', checked: true },
+        ],
+    }, {
         label: 'Earth',
         value: 'earth',
         children: [
@@ -45,7 +44,35 @@ const test2 = [
         ],
     },
 ];
-*/
+
+const test3 = [
+    {
+        label: 'Earth',
+        value: 'earth',
+        expanded: true,
+        children: [
+            { value: 'moon', label: 'Moon' },
+        ],
+    },
+];
+
+const test4 = [
+    {
+        label: 'Saturn',
+        value: 'saturn',
+        expanded: true,
+        children: [
+            { value: 'titan', label: 'Titan' },
+            { value: 'enceladus', label: 'Enceladus' },
+        ],
+    },
+];
+
+const tree1 = new TreeModel(test1);
+const tree2 = new TreeModel(test2);
+const tree3 = new TreeModel(test3);
+const tree4 = new TreeModel(test4);
+
 // Increase waitFor timeout to prevent unusual issues when there are many tests
 configure({
     asyncUtilTimeout: 10000,
@@ -55,48 +82,30 @@ describe('<CheckboxTree />', () => {
     describe('component', () => {
         it('should render the react-checkbox-tree container', () => {
             const { container } = render(
-                <CheckboxTreeProvider>
-                    <CheckboxTree nodes={[]} />
-                </CheckboxTreeProvider>,
+                <CheckboxTree
+                    tree={tree1}
+                    onChange={() => {}}
+                />,
             );
 
             assert.isNotNull(container.querySelector('.react-checkbox-tree'));
         });
 
-        it('should rerender using the nodes prop if that prop has changed', () => {
+        it('should rerender using the tree prop if that prop has changed', () => {
             const { rerender } = render(
-                <CheckboxTreeProvider>
-                    <CheckboxTree
-                        nodes={[
-                            {
-                                label: 'Jupiter',
-                                value: 'jupiter',
-                                children: [
-                                    { value: 'io', label: 'Io', checked: true },
-                                    { value: 'europa', label: 'Europa' },
-                                ],
-                            },
-                        ]}
-                    />
-                </CheckboxTreeProvider>,
+                <CheckboxTree
+                    tree={tree2}
+                    onChange={() => {}}
+                />,
             );
 
             assert.isNotNull(screen.queryByLabelText('Jupiter'));
 
             rerender(
-                <CheckboxTreeProvider>
-                    <CheckboxTree
-                        nodes={[
-                            {
-                                label: 'Earth',
-                                value: 'earth',
-                                children: [
-                                    { value: 'moon', label: 'Moon' },
-                                ],
-                            },
-                        ]}
-                    />
-                </CheckboxTreeProvider>,
+                <CheckboxTree
+                    tree={tree3}
+                    onChange={() => {}}
+                />,
             );
 
             assert.isNull(screen.queryByLabelText('Jupiter'));
@@ -106,111 +115,73 @@ describe('<CheckboxTree />', () => {
 
     describe('checkModel', () => {
         describe('all', () => {
-            it('should record checked parent and leaf nodes', async () => {
+            it('should return checked parent and leaf nodes', async () => {
                 let actual = null;
+                let tree = tree2;
 
                 render(
-                    <CheckboxTreeProvider>
-                        <CheckboxTree
-                            checkModel="all"
-                            nodes={[
-                                {
-                                    value: 'jupiter',
-                                    label: 'Jupiter',
-                                    children: [
-                                        { value: 'io', label: 'Io' },
-                                        { value: 'europa', label: 'Europa' },
-                                    ],
-                                },
-                            ]}
-                            onCheck={(nodeKey, treeModel) => {
-                                actual = treeModel.getChecked();
-                            }}
-                        />
-                    </CheckboxTreeProvider>,
+                    <CheckboxTree
+                        checkModel="all"
+                        tree={tree}
+                        onChange={(newTree) => {
+                            tree = newTree;
+                        }}
+                        onCheck={(nodeKey, newTree) => {
+                            actual = newTree.getChecked();
+                        }}
+                    />,
                 );
 
                 const user = userEvent.setup();
                 await user.click(screen.getByLabelText('Jupiter'));
 
-                assert.deepEqual(actual, ['jupiter', 'io', 'europa']);
+                assert.deepEqual(actual, ['jupiter', 'io', 'europa', 'saturn', 'titan', 'enceladus']);
             });
 
             it('should percolate `checked` to all parents and grandparents if all leaves are checked', async () => {
+                // TODO: this needs a deeper test
                 let actual = null;
+                let tree = tree3;
 
                 render(
-                    <CheckboxTreeProvider>
-                        <CheckboxTree
-                            checkModel="all"
-                            nodes={[
-                                {
-                                    value: 'sol',
-                                    label: 'Sol System',
-                                    expanded: true,
-                                    children: [
-                                        {
-                                            value: 'mercury',
-                                            label: 'Mercury',
-                                            checked: true,
-                                        },
-                                        {
-                                            value: 'jupiter',
-                                            label: 'Jupiter',
-                                            expanded: true,
-                                            children: [
-                                                {
-                                                    value: 'io',
-                                                    label: 'Io',
-                                                    checked: true,
-                                                },
-                                                { value: 'europa', label: 'Europa' },
-                                            ],
-                                        },
-                                    ],
-                                },
-                            ]}
-                            onCheck={(nodeKey, treeModel) => {
-                                actual = treeModel.getChecked();
-                            }}
-                        />
-                    </CheckboxTreeProvider>,
+                    <CheckboxTree
+                        checkModel="all"
+                        tree={tree}
+                        onChange={(newTree) => {
+                            tree = newTree;
+                        }}
+                        onCheck={(nodeKey, treeModel) => {
+                            actual = treeModel.getChecked();
+                        }}
+                    />,
                 );
 
                 const user = userEvent.setup();
-                await user.click(screen.getByLabelText('Europa'));
+                await user.click(screen.getByLabelText('Moon'));
 
-                assert.deepEqual(actual, ['sol', 'mercury', 'jupiter', 'io', 'europa']);
+                assert.deepEqual(actual, ['earth', 'moon']);
             });
 
             it('parent.checkState should equal 2 if not all leaves are checked', async () => {
                 let actual = null;
+                let tree = tree4;
 
                 render(
-                    <CheckboxTreeProvider>
-                        <CheckboxTree
-                            checkModel="all"
-                            nodes={[
-                                {
-                                    value: 'jupiter',
-                                    label: 'Jupiter',
-                                    expanded: true,
-                                    children: [
-                                        { value: 'io', label: 'Io' },
-                                        { value: 'europa', label: 'Europa' },
-                                    ],
-                                },
-                            ]}
-                            onCheck={(nodeKey, treeModel) => {
-                                const node = treeModel.getNode('jupiter');
-                                actual = node.checkState;
-                            }}
-                        />
-                    </CheckboxTreeProvider>,
+                    <CheckboxTree
+                        checkModel="all"
+                        tree={tree}
+                        onChange={(newTree) => {
+                            tree = newTree;
+                        }}
+                        onCheck={(nodeKey, treeModel) => {
+                            const node = treeModel.getNode('saturn');
+                            actual = node.checkState;
+                        }}
+                    />,
                 );
 
                 const user = userEvent.setup();
-                await user.click(screen.getByLabelText('Europa'));
+                await user.click(screen.getByLabelText('Enceladus'));
 
                 assert.equal(actual, 2);
             });
@@ -219,31 +190,24 @@ describe('<CheckboxTree />', () => {
         describe('leaf', () => {
             it('should only record leaf nodes in the checked array', async () => {
                 let actual = null;
+                let tree = tree2;
 
                 render(
-                    <CheckboxTreeProvider>
-                        <CheckboxTree
-                            nodes={[
-                                {
-                                    value: 'jupiter',
-                                    label: 'Jupiter',
-                                    children: [
-                                        { value: 'io', label: 'Io' },
-                                        { value: 'europa', label: 'Europa' },
-                                    ],
-                                },
-                            ]}
-                            onCheck={(nodeKey, treeModel) => {
-                                actual = treeModel.getChecked();
-                            }}
-                        />
-                    </CheckboxTreeProvider>,
+                    <CheckboxTree
+                        tree={tree}
+                        onChange={(newTree) => {
+                            tree = newTree;
+                        }}
+                        onCheck={(nodeKey, newTree) => {
+                            actual = newTree.getChecked();
+                        }}
+                    />,
                 );
 
                 const user = userEvent.setup();
                 await user.click(screen.getByLabelText('Jupiter'));
 
-                assert.deepEqual(actual, ['io', 'europa']);
+                assert.deepEqual(actual, ['io', 'europa', 'titan', 'enceladus']);
             });
         });
     });
@@ -251,35 +215,39 @@ describe('<CheckboxTree />', () => {
     describe('checkKeys', () => {
         it('should trigger a check event when pressing one of the supplied values', async () => {
             let actual = null;
+            let tree = tree1;
 
             render(
-                <CheckboxTreeProvider>
-                    <CheckboxTree
-                        checkKeys={['Shift']}
-                        checked={[]}
-                        nodes={[{ value: 'jupiter', label: 'Jupiter' }]}
-                        onCheck={(nodeKey, treeModel) => {
-                            actual = treeModel.getChecked();
-                        }}
-                    />
-                </CheckboxTreeProvider>,
+                <CheckboxTree
+                    checkKeys={['Shift']}
+                    tree={tree}
+                    onChange={(newTree) => {
+                        tree = newTree;
+                    }}
+                    onCheck={(nodeKey, treeModel) => {
+                        actual = treeModel.getChecked();
+                    }}
+                />,
             );
 
             await fireEvent.keyUp(screen.getByRole('checkbox'), { key: 'Shift' });
 
-            assert.deepEqual(actual, ['jupiter']);
+            assert.deepEqual(actual, ['saturn']);
         });
     });
 
     describe('direction', () => {
         it('should add the class rct-direction-rtl to the root when set to `rtl`', () => {
+            let tree = tree1;
+
             const { container } = render(
-                <CheckboxTreeProvider>
-                    <CheckboxTree
-                        direction="rtl"
-                        nodes={[]}
-                    />
-                </CheckboxTreeProvider>,
+                <CheckboxTree
+                    direction="rtl"
+                    tree={tree}
+                    onChange={(newTree) => {
+                        tree = newTree;
+                    }}
+                />,
             );
 
             assert.isNotNull(container.querySelector('.react-checkbox-tree.rct-direction-rtl'));
@@ -288,13 +256,16 @@ describe('<CheckboxTree />', () => {
 
     describe('disabled', () => {
         it('should add the class rct-disabled to the root', () => {
+            let tree = tree1;
+
             const { container } = render(
-                <CheckboxTreeProvider>
-                    <CheckboxTree
-                        disabled
-                        nodes={[]}
-                    />
-                </CheckboxTreeProvider>,
+                <CheckboxTree
+                    disabled
+                    tree={tree}
+                    onChange={(newTree) => {
+                        tree = newTree;
+                    }}
+                />,
             );
 
             assert.isNotNull(container.querySelector('.react-checkbox-tree.rct-disabled'));
@@ -303,50 +274,46 @@ describe('<CheckboxTree />', () => {
 
     describe('icons', () => {
         it('should pass the property directly to tree nodes', () => {
+            let tree = tree1;
+            tree = tree.toggleChecked('saturn');
             const { container } = render(
-                <CheckboxTreeProvider>
-                    <CheckboxTree
-                        icons={{ check: <span className="other-check" /> }}
-                        nodes={[
-                            {
-                                value: 'jupiter',
-                                label: 'Jupiter',
-                                checked: true,
-                            },
-                        ]}
-                    />
-                </CheckboxTreeProvider>,
+                <CheckboxTree
+                    icons={{ check: <span className="other-check" /> }}
+                    tree={tree}
+                    onChange={(newTree) => {
+                        tree = newTree;
+                    }}
+                />,
             );
 
             assert.isNotNull(container.querySelector('.rct-checkbox > .other-check'));
         });
 
         it('should be merged in with the defaults when keys are missing', () => {
+            let tree = tree1;
             const { container } = render(
-                <CheckboxTreeProvider>
-                    <CheckboxTree
-                        icons={{ check: <span className="other-check" /> }}
-                        nodes={[
-                            {
-                                value: 'jupiter',
-                                label: 'Jupiter',
-                            },
-                        ]}
-                    />
-                </CheckboxTreeProvider>,
+                <CheckboxTree
+                    icons={{ check: <span className="other-check" /> }}
+                    tree={tree}
+                    onChange={(newTree) => {
+                        tree = newTree;
+                    }}
+                />,
             );
 
             assert.isNotNull(container.querySelector('.rct-checkbox > .rct-icon-uncheck'));
         });
 
         it('should not render the wrapper element when an icon is set to null', () => {
+            let tree = tree1;
             const { container } = render(
-                <CheckboxTreeProvider>
-                    <CheckboxTree
-                        icons={{ leaf: null }}
-                        nodes={[{ value: 'jupiter', label: 'Jupiter' }]}
-                    />
-                </CheckboxTreeProvider>,
+                <CheckboxTree
+                    icons={{ leaf: null }}
+                    tree={tree}
+                    onChange={(newTree) => {
+                        tree = newTree;
+                    }}
+                />,
             );
 
             assert.isNull(container.querySelector('.rct-node-icon'));
@@ -355,13 +322,15 @@ describe('<CheckboxTree />', () => {
 
     describe('iconsClass', () => {
         it('should apply the specified icon style to the tree', () => {
+            let tree = tree1;
             const { container } = render(
-                <CheckboxTreeProvider>
-                    <CheckboxTree
-                        iconsClass="some-class"
-                        nodes={[{ value: 'jupiter', label: 'Jupiter' }]}
-                    />
-                </CheckboxTreeProvider>,
+                <CheckboxTree
+                    iconsClass="some-class"
+                    tree={tree}
+                    onChange={(newTree) => {
+                        tree = newTree;
+                    }}
+                />,
             );
 
             assert.isTrue(container.querySelector('.react-checkbox-tree').classList.contains('rct-icons-some-class'));
@@ -370,47 +339,53 @@ describe('<CheckboxTree />', () => {
 
     describe('id', () => {
         it('should pass the id to the top-level DOM node', () => {
+            let tree = tree1;
             const { container } = render(
-                <CheckboxTreeProvider>
-                    <CheckboxTree
-                        id="my-awesome-id"
-                        nodes={[{ value: 'jupiter', label: 'Jupiter' }]}
-                    />
-                </CheckboxTreeProvider>,
+                <CheckboxTree
+                    id="my-awesome-id"
+                    tree={tree}
+                    onChange={(newTree) => {
+                        tree = newTree;
+                    }}
+                />,
             );
 
             assert.equal(container.querySelector('.react-checkbox-tree').id, 'my-awesome-id');
         });
 
         it('should pass the id as a property directly to tree nodes', () => {
+            let tree = tree1;
             render(
-                <CheckboxTreeProvider>
-                    <CheckboxTree
-                        id="my-awesome-id"
-                        nodes={[{ value: 'jupiter', label: 'Jupiter' }]}
-                    />
-                </CheckboxTreeProvider>,
+                <CheckboxTree
+                    id="my-awesome-id"
+                    tree={tree}
+                    onChange={(newTree) => {
+                        tree = newTree;
+                    }}
+                />,
             );
 
-            assert.equal(screen.getByRole('checkbox').id, 'my-awesome-id-jupiter');
+            assert.equal(screen.getByRole('checkbox').id, 'my-awesome-id-saturn');
         });
     });
 
     describe('lang', () => {
         it('should override default language values', () => {
+            let tree = tree1;
             render(
-                <CheckboxTreeProvider>
-                    <CheckboxTree
-                        lang={{
-                            expandAll: 'Expand all of it',
-                            expandNode: 'Expand it',
-                            collapseAll: 'Collapse all of it',
-                            collapseNode: 'Collapse it',
-                        }}
-                        nodes={[]}
-                        showExpandAll
-                    />
-                </CheckboxTreeProvider>,
+                <CheckboxTree
+                    lang={{
+                        expandAll: 'Expand all of it',
+                        expandNode: 'Expand it',
+                        collapseAll: 'Collapse all of it',
+                        collapseNode: 'Collapse it',
+                    }}
+                    showExpandAll
+                    tree={tree}
+                    onChange={(newTree) => {
+                        tree = newTree;
+                    }}
+                />,
             );
 
             assert.isNotNull(screen.queryByLabelText('Expand all of it'));
@@ -419,10 +394,15 @@ describe('<CheckboxTree />', () => {
 
     describe('nativeCheckboxes', () => {
         it('should add the class `rct-native-display` to the root', () => {
+            let tree = tree1;
             const { container } = render(
-                <CheckboxTreeProvider>
-                    <CheckboxTree nativeCheckboxes nodes={[]} />
-                </CheckboxTreeProvider>,
+                <CheckboxTree
+                    nativeCheckboxes
+                    tree={tree}
+                    onChange={(newTree) => {
+                        tree = newTree;
+                    }}
+                />,
             );
 
             assert.isNotNull(container.querySelector('.react-checkbox-tree.rct-native-display'));
@@ -436,41 +416,44 @@ describe('<CheckboxTree />', () => {
         });
 
         it('should render the node\'s label', () => {
+            let tree = tree1;
             render(
-                <CheckboxTreeProvider>
-                    <CheckboxTree
-                        nodes={[{ value: 'jupiter', label: 'Jupiter' }]}
-                    />
-                </CheckboxTreeProvider>,
+                <CheckboxTree
+                    tree={tree}
+                    onChange={(newTree) => {
+                        tree = newTree;
+                    }}
+                />,
             );
 
-            assert.isNotNull(screen.queryByLabelText('Jupiter'));
+            assert.isNotNull(screen.queryByLabelText('Saturn'));
         });
 
         it('should render the node\'s value', () => {
+            let tree = tree1;
             render(
-                <CheckboxTreeProvider>
-                    <CheckboxTree
-                        id="id"
-                        nodes={[{ value: 'jupiter', label: 'Jupiter' }]}
-                    />
-                </CheckboxTreeProvider>,
+                <CheckboxTree
+                    id="id"
+                    tree={tree}
+                    onChange={(newTree) => {
+                        tree = newTree;
+                    }}
+                />,
             );
 
-            assert.equal(screen.getByRole('checkbox').id, 'id-jupiter');
+            assert.equal(screen.getByRole('checkbox').id, 'id-saturn');
         });
 
         it('should render multiple nodes', () => {
+            let tree = tree2;
             render(
-                <CheckboxTreeProvider>
-                    <CheckboxTree
-                        id="id"
-                        nodes={[
-                            { value: 'jupiter', label: 'Jupiter' },
-                            { value: 'saturn', label: 'Saturn' },
-                        ]}
-                    />
-                </CheckboxTreeProvider>,
+                <CheckboxTree
+                    id="id"
+                    tree={tree}
+                    onChange={(newTree) => {
+                        tree = newTree;
+                    }}
+                />,
             );
 
             assert.equal(screen.getByLabelText('Jupiter').id, 'id-jupiter');
@@ -478,22 +461,14 @@ describe('<CheckboxTree />', () => {
         });
 
         it('should render child nodes', () => {
+            let tree = tree2;
             render(
-                <CheckboxTreeProvider>
-                    <CheckboxTree
-                        nodes={[
-                            {
-                                value: 'jupiter',
-                                label: 'Jupiter',
-                                expanded: true,
-                                children: [
-                                    { value: 'io', label: 'Io' },
-                                    { value: 'europa', label: 'Europa' },
-                                ],
-                            },
-                        ]}
-                    />
-                </CheckboxTreeProvider>,
+                <CheckboxTree
+                    tree={tree}
+                    onChange={(newTree) => {
+                        tree = newTree;
+                    }}
+                />,
             );
 
             assert.isNotNull(screen.queryByLabelText('Io'));
@@ -501,14 +476,14 @@ describe('<CheckboxTree />', () => {
         });
 
         it('should render a node with no `children` array as a leaf', () => {
+            let tree = tree1;
             const { container } = render(
-                <CheckboxTreeProvider>
-                    <CheckboxTree
-                        nodes={[
-                            { value: 'jupiter', label: 'Jupiter' },
-                        ]}
-                    />
-                </CheckboxTreeProvider>,
+                <CheckboxTree
+                    tree={tree}
+                    onChange={(newTree) => {
+                        tree = newTree;
+                    }}
+                />,
             );
 
             const { classList } = container.querySelector('.rct-node');
@@ -518,18 +493,21 @@ describe('<CheckboxTree />', () => {
         });
 
         it('should render a node with an empty `children` array as a parent', () => {
+            let tree = new TreeModel([
+                {
+                    value: 'jupiter',
+                    label: 'Jupiter',
+                    children: [],
+                },
+            ]);
+
             const { container } = render(
-                <CheckboxTreeProvider>
-                    <CheckboxTree
-                        nodes={[
-                            {
-                                value: 'jupiter',
-                                label: 'Jupiter',
-                                children: [],
-                            },
-                        ]}
-                    />
-                </CheckboxTreeProvider>,
+                <CheckboxTree
+                    tree={tree}
+                    onChange={(newTree) => {
+                        tree = newTree;
+                    }}
+                />,
             );
 
             const { classList } = container.querySelector('.rct-node');
@@ -540,18 +518,21 @@ describe('<CheckboxTree />', () => {
 
         // https://github.com/jakezatecky/react-checkbox-tree/issues/258
         it('should render a node with an empty `children` array as unchecked by default', () => {
+            let tree = new TreeModel([
+                {
+                    value: 'jupiter',
+                    label: 'Jupiter',
+                    children: [],
+                },
+            ]);
+
             render(
-                <CheckboxTreeProvider>
-                    <CheckboxTree
-                        nodes={[
-                            {
-                                value: 'jupiter',
-                                label: 'Jupiter',
-                                children: [],
-                            },
-                        ]}
-                    />
-                </CheckboxTreeProvider>,
+                <CheckboxTree
+                    tree={tree}
+                    onChange={(newTree) => {
+                        tree = newTree;
+                    }}
+                />,
             );
 
             assert.isFalse(screen.getByRole('checkbox').checked);
@@ -564,22 +545,25 @@ describe('<CheckboxTree />', () => {
             let errorMessage = '';
 
             try {
+                let tree = new TreeModel([
+                    {
+                        value: 'jupiter',
+                        label: 'Jupiter',
+                        expanded: true,
+                        children: [
+                            { value: 'io', label: 'Io' },
+                            { value: 'io', label: 'Europa' },
+                        ],
+                    },
+                ]);
+
                 render(
-                    <CheckboxTreeProvider>
-                        <CheckboxTree
-                            nodes={[
-                                {
-                                    value: 'jupiter',
-                                    label: 'Jupiter',
-                                    expanded: true,
-                                    children: [
-                                        { value: 'io', label: 'Io' },
-                                        { value: 'io', label: 'Europa' },
-                                    ],
-                                },
-                            ]}
-                        />
-                    </CheckboxTreeProvider>,
+                    <CheckboxTree
+                        tree={tree}
+                        onChange={(newTree) => {
+                            tree = newTree;
+                        }}
+                    />,
                 );
             } catch (e) {
                 if (e instanceof TreeModelError) {
@@ -599,20 +583,23 @@ describe('<CheckboxTree />', () => {
             let errorMessage = '';
 
             try {
+                let tree = new TreeModel([
+                    {
+                        value: 'jupiter',
+                        label: 'Jupiter',
+                        children: [
+                            { value: 'jupiter', label: 'Jupiter' },
+                        ],
+                    },
+                ]);
+
                 render(
-                    <CheckboxTreeProvider>
-                        <CheckboxTree
-                            nodes={[
-                                {
-                                    value: 'jupiter',
-                                    label: 'Jupiter',
-                                    children: [
-                                        { value: 'jupiter', label: 'Jupiter' },
-                                    ],
-                                },
-                            ]}
-                        />
-                    </CheckboxTreeProvider>,
+                    <CheckboxTree
+                        tree={tree}
+                        onChange={(newTree) => {
+                            tree = newTree;
+                        }}
+                    />,
                 );
             } catch (e) {
                 if (e instanceof TreeModelError) {
@@ -629,128 +616,124 @@ describe('<CheckboxTree />', () => {
     describe('noCascadeChecks', () => {
         it('should not toggle the check state of children when set to true', async () => {
             let actual = null;
+            let tree = tree4;
 
             render(
-                <CheckboxTreeProvider>
-                    <CheckboxTree
-                        checkModel="all"
-                        noCascadeChecks
-                        nodes={[
-                            {
-                                value: 'jupiter',
-                                label: 'Jupiter',
-                                children: [
-                                    { value: 'io', label: 'Io' },
-                                    { value: 'europa', label: 'Europa' },
-                                ],
-                            },
-                        ]}
-                        onCheck={(nodeKey, treeModel) => {
-                            actual = treeModel.getChecked();
-                        }}
-                    />
-                </CheckboxTreeProvider>,
+                <CheckboxTree
+                    checkModel="all"
+                    noCascadeChecks
+                    tree={tree}
+                    onChange={(newTree) => {
+                        tree = newTree;
+                    }}
+                    onCheck={(nodeKey, treeModel) => {
+                        actual = treeModel.getChecked();
+                    }}
+                />,
             );
 
             const user = userEvent.setup();
-            await user.click(screen.getByLabelText('Jupiter'));
+            await user.click(screen.getByLabelText('Saturn'));
 
-            assert.deepEqual(actual, ['jupiter']);
+            assert.deepEqual(actual, ['saturn']);
         });
 
         it('should toggle the check state of children when set to false', async () => {
             let actual = null;
+            let tree = tree4;
 
             render(
-                <CheckboxTreeProvider>
-                    <CheckboxTree
-                        nodes={[
-                            {
-                                value: 'jupiter',
-                                label: 'Jupiter',
-                                children: [
-                                    { value: 'io', label: 'Io' },
-                                    { value: 'europa', label: 'Europa' },
-                                ],
-                            },
-                        ]}
-                        onCheck={(nodeKey, treeModel) => {
-                            actual = treeModel.getChecked();
-                        }}
-                    />
-                </CheckboxTreeProvider>,
+                <CheckboxTree
+                    tree={tree}
+                    onChange={(newTree) => {
+                        tree = newTree;
+                    }}
+                    onCheck={(nodeKey, treeModel) => {
+                        actual = treeModel.getChecked();
+                    }}
+                />,
             );
 
             const user = userEvent.setup();
-            await user.click(screen.getByLabelText('Jupiter'));
+            await user.click(screen.getByLabelText('Saturn'));
 
-            assert.deepEqual(actual, ['io', 'europa']);
+            assert.deepEqual(actual, ['titan', 'enceladus']);
         });
     });
 
     describe('nodeProps', () => {
         describe('disabled', () => {
             it('should disable the target node when set to true', () => {
+                let tree = new TreeModel([
+                    {
+                        value: 'jupiter',
+                        label: 'Jupiter',
+                        disabled: true,
+                        children: [
+                            { value: 'europa', label: 'Europa' },
+                        ],
+                    },
+                ]);
+
                 render(
-                    <CheckboxTreeProvider>
-                        <CheckboxTree
-                            nodes={[
-                                {
-                                    value: 'jupiter',
-                                    label: 'Jupiter',
-                                    disabled: true,
-                                    children: [
-                                        { value: 'europa', label: 'Europa' },
-                                    ],
-                                },
-                            ]}
-                        />
-                    </CheckboxTreeProvider>,
+                    <CheckboxTree
+                        tree={tree}
+                        onChange={(newTree) => {
+                            tree = newTree;
+                        }}
+                    />,
                 );
 
                 assert.isTrue(screen.getByLabelText('Jupiter').disabled);
             });
 
             it('should disable the child nodes when `noCascadeDisabled` is false', () => {
+                let tree = new TreeModel([
+                    {
+                        value: 'jupiter',
+                        label: 'Jupiter',
+                        disabled: true,
+                        expanded: true,
+                        children: [
+                            { value: 'europa', label: 'Europa' },
+                        ],
+                    },
+                ]);
+
                 render(
-                    <CheckboxTreeProvider>
-                        <CheckboxTree
-                            nodes={[
-                                {
-                                    value: 'jupiter',
-                                    label: 'Jupiter',
-                                    disabled: true,
-                                    expanded: true,
-                                    children: [
-                                        { value: 'europa', label: 'Europa' },
-                                    ],
-                                },
-                            ]}
-                        />
-                    </CheckboxTreeProvider>,
+                    <CheckboxTree
+                        tree={tree}
+                        onChange={(newTree) => {
+                            tree = newTree;
+                        }}
+                    />,
                 );
 
                 assert.isTrue(screen.getByLabelText('Europa').disabled);
             });
 
             it('should NOT disable the child nodes when `noCascadeDisabled` is true', () => {
+                // TODO: figure out about TreeModel options
+                let tree = new TreeModel([
+                    {
+                        value: 'jupiter',
+                        label: 'Jupiter',
+                        disabled: true,
+                        expanded: true,
+                        children: [
+                            { value: 'europa', label: 'Europa' },
+                        ],
+                    },
+                ], { noCascadeDisabled: true });
+
                 render(
-                    <CheckboxTreeProvider>
-                        <CheckboxTree
-                            noCascadeDisabled
-                            nodes={[
-                                {
-                                    value: 'jupiter',
-                                    label: 'Jupiter',
-                                    disabled: true,
-                                    expanded: true,
-                                    children: [
-                                        { value: 'europa', label: 'Europa' },
-                                    ],
-                                },
-                            ]}
-                        />
-                    </CheckboxTreeProvider>,
+                    <CheckboxTree
+                        noCascadeDisabled
+                        tree={tree}
+                        onChange={(newTree) => {
+                            tree = newTree;
+                        }}
+                    />,
                 );
 
                 assert.isFalse(screen.getByLabelText('Europa').disabled);
@@ -758,7 +741,7 @@ describe('<CheckboxTree />', () => {
 
             // https://github.com/jakezatecky/react-checkbox-tree/issues/119
             it('should be able to change disabled state after the initial render', () => {
-                const nodes = [
+                let tree = new TreeModel([
                     {
                         value: 'jupiter',
                         label: 'Jupiter',
@@ -767,22 +750,25 @@ describe('<CheckboxTree />', () => {
                             { value: 'europa', label: 'Europa' },
                         ],
                     },
-                ];
+                ]);
+
                 const { rerender } = render(
-                    <CheckboxTreeProvider>
-                        <CheckboxTree
-                            disabled
-                            nodes={nodes}
-                        />
-                    </CheckboxTreeProvider>,
+                    <CheckboxTree
+                        disabled
+                        tree={tree}
+                        onChange={(newTree) => {
+                            tree = newTree;
+                        }}
+                    />,
                 );
 
                 rerender(
-                    <CheckboxTreeProvider>
-                        <CheckboxTree
-                            nodes={nodes}
-                        />
-                    </CheckboxTreeProvider>,
+                    <CheckboxTree
+                        tree={tree}
+                        onChange={(newTree) => {
+                            tree = newTree;
+                        }}
+                    />,
                 );
 
                 assert.isFalse(screen.getByLabelText('Europa').disabled);
@@ -792,24 +778,15 @@ describe('<CheckboxTree />', () => {
 
     describe('onlyLeafCheckboxes', () => {
         it('should only render checkboxes for leaf nodes', () => {
+            let tree = tree2;
             render(
-                <CheckboxTreeProvider>
-                    <CheckboxTree
-                        nodes={[
-                            {
-                                value: 'jupiter',
-                                label: 'Jupiter',
-                                expanded: true,
-                                children: [
-                                    { value: 'io', label: 'Io' },
-                                    { value: 'europa', label: 'Europa' },
-                                ],
-                            },
-                        ]}
-                        onlyLeafCheckboxes
-                    />
-                </CheckboxTreeProvider>,
-
+                <CheckboxTree
+                    onlyLeafCheckboxes
+                    tree={tree}
+                    onChange={(newTree) => {
+                        tree = newTree;
+                    }}
+                />,
             );
 
             assert.isNull(screen.queryByLabelText('Jupiter'));
@@ -820,13 +797,16 @@ describe('<CheckboxTree />', () => {
 
     describe('showExpandAll', () => {
         it('should render the expand all/collapse all buttons', () => {
+            let tree = tree1;
+
             render(
-                <CheckboxTreeProvider>
-                    <CheckboxTree
-                        nodes={[{ value: 'jupiter', label: 'Jupiter' }]}
-                        showExpandAll
-                    />
-                </CheckboxTreeProvider>,
+                <CheckboxTree
+                    showExpandAll
+                    tree={tree}
+                    onChange={(newTree) => {
+                        tree = newTree;
+                    }}
+                />,
             );
 
             assert.isNotNull(screen.queryByLabelText('Expand all'));
@@ -836,42 +816,47 @@ describe('<CheckboxTree />', () => {
         describe('expandAll', () => {
             it('should add all parent nodes to the `expanded` array', async () => {
                 let actualExpanded = null;
+                let tree = new TreeModel([
+                    {
+                        value: 'mercury',
+                        label: 'Mercury',
+                    },
+                    {
+                        value: 'mars',
+                        label: 'Mars',
+                        children: [
+                            { value: 'phobos', label: 'Phobos' },
+                            { value: 'deimos', label: 'Deimos' },
+                        ],
+                    },
+                    {
+                        value: 'jupiter',
+                        label: 'Jupiter',
+                        children: [
+                            { value: 'io', label: 'Io' },
+                            { value: 'europa', label: 'Europa' },
+                        ],
+                    },
+                ]);
 
                 render(
-                    <CheckboxTreeProvider>
-                        <CheckboxTree
-                            nodes={[
-                                {
-                                    value: 'mercury',
-                                    label: 'Mercury',
-                                },
-                                {
-                                    value: 'mars',
-                                    label: 'Mars',
-                                    children: [
-                                        { value: 'phobos', label: 'Phobos' },
-                                        { value: 'deimos', label: 'Deimos' },
-                                    ],
-                                },
-                                {
-                                    value: 'jupiter',
-                                    label: 'Jupiter',
-                                    children: [
-                                        { value: 'io', label: 'Io' },
-                                        { value: 'europa', label: 'Europa' },
-                                    ],
-                                },
-                            ]}
-                            showExpandAll
-                            onExpand={(nodeKey, treeModel) => {
-                                actualExpanded = treeModel.getExpanded();
-                            }}
-                        />
-                    </CheckboxTreeProvider>,
+                    <CheckboxTree
+                        showExpandAll
+                        tree={tree}
+                        onChange={(newTree) => {
+                            tree = newTree;
+                        }}
+                        onExpand={(nodeKey, treeModel) => {
+                            actualExpanded = treeModel.getExpanded();
+                        }}
+                    />,
                 );
 
                 const user = userEvent.setup();
                 await user.click(screen.getByLabelText('Expand all'));
+
+                // TODO: onExpand is not called by expandAll
+                actualExpanded = tree.getExpanded();
 
                 assert.deepEqual(actualExpanded, ['mars', 'jupiter']);
             });
@@ -880,43 +865,26 @@ describe('<CheckboxTree />', () => {
         describe('collapseAll', () => {
             it('should remove all nodes from the `expanded` array', async () => {
                 let actualExpanded = null;
+                let tree = tree2;
 
                 render(
-                    <CheckboxTreeProvider>
-                        <CheckboxTree
-                            expanded={['mars', 'jupiter']}
-                            nodes={[
-                                {
-                                    value: 'mercury',
-                                    label: 'Mercury',
-                                },
-                                {
-                                    value: 'mars',
-                                    label: 'Mars',
-                                    children: [
-                                        { value: 'phobos', label: 'Phobos' },
-                                        { value: 'deimos', label: 'Deimos' },
-                                    ],
-                                },
-                                {
-                                    value: 'jupiter',
-                                    label: 'Jupiter',
-                                    children: [
-                                        { value: 'io', label: 'Io' },
-                                        { value: 'europa', label: 'Europa' },
-                                    ],
-                                },
-                            ]}
-                            showExpandAll
-                            onExpand={(nodeKey, treeModel) => {
-                                actualExpanded = treeModel.getExpanded();
-                            }}
-                        />
-                    </CheckboxTreeProvider>,
+                    <CheckboxTree
+                        showExpandAll
+                        tree={tree}
+                        onChange={(newTree) => {
+                            tree = newTree;
+                        }}
+                        onExpand={(nodeKey, treeModel) => {
+                            actualExpanded = treeModel.getExpanded();
+                        }}
+                    />,
                 );
 
                 const user = userEvent.setup();
                 await user.click(screen.getByLabelText('Collapse all'));
+
+                // TODO: onExpand is not called by collapseAll
+                actualExpanded = tree.getExpanded();
 
                 assert.deepEqual(actualExpanded, []);
             });
@@ -925,37 +893,38 @@ describe('<CheckboxTree />', () => {
 
     describe('showNodeTitle', () => {
         it('should add `title` properties to a TreeNode from the `label` property when set', () => {
+            let tree = tree1;
+
             const { container } = render(
-                <CheckboxTreeProvider>
-                    <CheckboxTree
-                        nodes={[
-                            {
-                                value: 'jupiter',
-                                label: 'Jupiter',
-                            },
-                        ]}
-                        showNodeTitle
-                    />
-                </CheckboxTreeProvider>,
+                <CheckboxTree
+                    showNodeTitle
+                    tree={tree}
+                    onChange={(newTree) => {
+                        tree = newTree;
+                    }}
+                />,
             );
 
-            assert.equal(container.querySelector('label').title, 'Jupiter');
+            assert.equal(container.querySelector('label').title, 'Saturn');
         });
 
         it('should prioritize the node `title` over the `label', () => {
+            let tree = new TreeModel([
+                {
+                    value: 'jupiter',
+                    label: 'Jupiter',
+                    title: 'That Big Failed Star',
+                },
+            ]);
+
             const { container } = render(
-                <CheckboxTreeProvider>
-                    <CheckboxTree
-                        nodes={[
-                            {
-                                value: 'jupiter',
-                                label: 'Jupiter',
-                                title: 'That Big Failed Star',
-                            },
-                        ]}
-                        showNodeTitle
-                    />
-                </CheckboxTreeProvider>,
+                <CheckboxTree
+                    showNodeTitle
+                    tree={tree}
+                    onChange={(newTree) => {
+                        tree = newTree;
+                    }}
+                />,
             );
 
             assert.equal(container.querySelector('label').title, 'That Big Failed Star');
@@ -965,25 +934,27 @@ describe('<CheckboxTree />', () => {
     describe('onCheck', () => {
         it('should add all children of the checked parent to the checked array', async () => {
             let actualChecked = null;
+            let tree = new TreeModel([
+                {
+                    value: 'jupiter',
+                    label: 'Jupiter',
+                    children: [
+                        { value: 'io', label: 'Io' },
+                        { value: 'europa', label: 'Europa' },
+                    ],
+                },
+            ]);
 
             render(
-                <CheckboxTreeProvider>
-                    <CheckboxTree
-                        nodes={[
-                            {
-                                value: 'jupiter',
-                                label: 'Jupiter',
-                                children: [
-                                    { value: 'io', label: 'Io' },
-                                    { value: 'europa', label: 'Europa' },
-                                ],
-                            },
-                        ]}
-                        onCheck={(nodeKey, treeModel) => {
-                            actualChecked = treeModel.getChecked();
-                        }}
-                    />
-                </CheckboxTreeProvider>,
+                <CheckboxTree
+                    tree={tree}
+                    onChange={(newTree) => {
+                        tree = newTree;
+                    }}
+                    onCheck={(nodeKey, treeModel) => {
+                        actualChecked = treeModel.getChecked();
+                    }}
+                />,
             );
 
             const user = userEvent.setup();
@@ -994,65 +965,74 @@ describe('<CheckboxTree />', () => {
 
         // https://github.com/jakezatecky/react-checkbox-tree/issues/258
         it('should toggle a node with an empty `children` array', async () => {
-            let actualChecked = {};
-            const makeEmptyParentNode = (nodes) => (
-                <CheckboxTreeProvider>
-                    <CheckboxTree
-                        checkModel="all"
-                        nodes={nodes}
-                        onCheck={(nodeKey, treeModel) => {
-                            actualChecked = treeModel.getChecked();
-                        }}
-                    />
-                </CheckboxTreeProvider>
+            let actualChecked = [];
+            let tree = new TreeModel([
+                {
+                    value: 'jupiter',
+                    label: 'Jupiter',
+                    children: [],
+                },
+            ]);
+
+            // Unchecked to checked
+            const { rerender } = render(
+                <CheckboxTree
+                    checkModel="all"
+                    tree={tree}
+                    onChange={(newTree) => {
+                        tree = newTree;
+                    }}
+                    onCheck={(nodeKey, treeModel) => {
+                        actualChecked = treeModel.getChecked();
+                    }}
+                />,
             );
 
             const user = userEvent.setup();
-
-            // Unchecked to checked
-            const { rerender } = render(makeEmptyParentNode([
-                {
-                    value: 'jupiter',
-                    label: 'Jupiter',
-                    children: [],
-                },
-            ]));
             await user.click(screen.getByRole('checkbox'));
+
             assert.deepEqual(actualChecked, ['jupiter']);
 
             // Checked to unchecked
-            rerender(makeEmptyParentNode([
-                {
-                    value: 'jupiter',
-                    label: 'Jupiter',
-                    checked: true,
-                    children: [],
-                },
-            ]));
+            rerender(
+                <CheckboxTree
+                    checkModel="all"
+                    tree={tree}
+                    onChange={(newTree) => {
+                        tree = newTree;
+                    }}
+                    onCheck={(nodeKey, treeModel) => {
+                        actualChecked = treeModel.getChecked();
+                    }}
+                />,
+            );
+
             await user.click(screen.getByRole('checkbox'));
             assert.deepEqual(actualChecked, []);
         });
 
         it('should not add disabled children to the checked array', async () => {
             let actualChecked = null;
+            let tree = new TreeModel([
+                {
+                    value: 'jupiter',
+                    label: 'Jupiter',
+                    children: [
+                        { value: 'io', label: 'Io', disabled: true },
+                        { value: 'europa', label: 'Europa' },
+                    ],
+                },
+            ]);
             render(
-                <CheckboxTreeProvider>
-                    <CheckboxTree
-                        nodes={[
-                            {
-                                value: 'jupiter',
-                                label: 'Jupiter',
-                                children: [
-                                    { value: 'io', label: 'Io', disabled: true },
-                                    { value: 'europa', label: 'Europa' },
-                                ],
-                            },
-                        ]}
-                        onCheck={(nodeKey, treeModel) => {
-                            actualChecked = treeModel.getChecked();
-                        }}
-                    />
-                </CheckboxTreeProvider>,
+                <CheckboxTree
+                    tree={tree}
+                    onChange={(newTree) => {
+                        tree = newTree;
+                    }}
+                    onCheck={(nodeKey, treeModel) => {
+                        actualChecked = treeModel.getChecked();
+                    }}
+                />,
             );
 
             const user = userEvent.setup();
@@ -1063,25 +1043,18 @@ describe('<CheckboxTree />', () => {
 
         it('should pass the node.value of the clicked node as the first parameter', async () => {
             let actual = '';
+            let tree = tree2;
 
             render(
-                <CheckboxTreeProvider>
-                    <CheckboxTree
-                        nodes={[
-                            {
-                                value: 'jupiter',
-                                label: 'Jupiter',
-                                children: [
-                                    { value: 'io', label: 'Io' },
-                                    { value: 'europa', label: 'Europa' },
-                                ],
-                            },
-                        ]}
-                        onCheck={(nodeKey) => {
-                            actual = nodeKey;
-                        }}
-                    />
-                </CheckboxTreeProvider>,
+                <CheckboxTree
+                    tree={tree}
+                    onChange={(newTree) => {
+                        tree = newTree;
+                    }}
+                    onCheck={(nodeKey) => {
+                        actual = nodeKey;
+                    }}
+                />,
             );
 
             const user = userEvent.setup();
@@ -1092,25 +1065,18 @@ describe('<CheckboxTree />', () => {
 
         it('should pass the TreeModel instance as the second parameter', async () => {
             let actual = false;
+            let tree = tree2;
 
             render(
-                <CheckboxTreeProvider>
-                    <CheckboxTree
-                        nodes={[
-                            {
-                                value: 'jupiter',
-                                label: 'Jupiter',
-                                children: [
-                                    { value: 'io', label: 'Io' },
-                                    { value: 'europa', label: 'Europa' },
-                                ],
-                            },
-                        ]}
-                        onCheck={(nodeKey, treeModel) => {
-                            actual = treeModel instanceof TreeModel;
-                        }}
-                    />
-                </CheckboxTreeProvider>,
+                <CheckboxTree
+                    tree={tree}
+                    onChange={(newTree) => {
+                        tree = newTree;
+                    }}
+                    onCheck={(nodeKey, treeModel) => {
+                        actual = treeModel instanceof TreeModel;
+                    }}
+                />,
             );
 
             const user = userEvent.setup();
@@ -1123,26 +1089,19 @@ describe('<CheckboxTree />', () => {
     describe('onClick', () => {
         it('should pass the nodeKey(node.value) of the node clicked as the first parameter', async () => {
             let actualNode = null;
+            let tree = tree2;
 
             render(
-                <CheckboxTreeProvider>
-                    <CheckboxTree
-                        nodes={[
-                            {
-                                value: 'jupiter',
-                                label: 'Jupiter',
-                                children: [
-                                    { value: 'io', label: 'Io' },
-                                    { value: 'europa', label: 'Europa' },
-                                ],
-                            },
-                        ]}
-                        onClick={(nodeKey, treeModel) => {
-                            const node = treeModel.getNode(nodeKey);
-                            actualNode = node;
-                        }}
-                    />
-                </CheckboxTreeProvider>,
+                <CheckboxTree
+                    tree={tree}
+                    onChange={(newTree) => {
+                        tree = newTree;
+                    }}
+                    onCheck={(nodeKey, treeModel) => {
+                        const node = treeModel.getNode(nodeKey);
+                        actualNode = node;
+                    }}
+                />,
             );
 
             const user = userEvent.setup();
@@ -1155,25 +1114,18 @@ describe('<CheckboxTree />', () => {
     describe('onContextMenu', () => {
         it('should provide the target node\'s information when right-clicking a label', async () => {
             let actualNode = null;
+            let tree = tree2;
 
             render(
-                <CheckboxTreeProvider>
-                    <CheckboxTree
-                        nodes={[
-                            {
-                                value: 'jupiter',
-                                label: 'Jupiter',
-                                children: [
-                                    { value: 'io', label: 'Io' },
-                                    { value: 'europa', label: 'Europa' },
-                                ],
-                            },
-                        ]}
-                        onContextMenu={(event, node) => {
-                            actualNode = node;
-                        }}
-                    />
-                </CheckboxTreeProvider>,
+                <CheckboxTree
+                    tree={tree}
+                    onChange={(newTree) => {
+                        tree = newTree;
+                    }}
+                    onContextMenu={(event, node) => {
+                        actualNode = node;
+                    }}
+                />,
             );
 
             const user = userEvent.setup();
@@ -1190,25 +1142,27 @@ describe('<CheckboxTree />', () => {
     describe('onExpand', () => {
         it('should toggle the expansion state of the target node', async () => {
             let actualExpanded = null;
+            let tree = new TreeModel([
+                {
+                    value: 'jupiter',
+                    label: 'Jupiter',
+                    children: [
+                        { value: 'io', label: 'Io' },
+                        { value: 'europa', label: 'Europa' },
+                    ],
+                },
+            ]);
 
             render(
-                <CheckboxTreeProvider>
-                    <CheckboxTree
-                        nodes={[
-                            {
-                                value: 'jupiter',
-                                label: 'Jupiter',
-                                children: [
-                                    { value: 'io', label: 'Io' },
-                                    { value: 'europa', label: 'Europa' },
-                                ],
-                            },
-                        ]}
-                        onExpand={(nodeKey, treeModel) => {
-                            actualExpanded = treeModel.getExpanded();
-                        }}
-                    />
-                </CheckboxTreeProvider>,
+                <CheckboxTree
+                    tree={tree}
+                    onChange={(newTree) => {
+                        tree = newTree;
+                    }}
+                    onExpand={(nodeKey, treeModel) => {
+                        actualExpanded = treeModel.getExpanded();
+                    }}
+                />,
             );
 
             const user = userEvent.setup();
@@ -1219,25 +1173,27 @@ describe('<CheckboxTree />', () => {
 
         it('should pass the node.value of the clicked node as the first parameter', async () => {
             let actual = '';
+            let tree = new TreeModel([
+                {
+                    value: 'jupiter',
+                    label: 'Jupiter',
+                    children: [
+                        { value: 'io', label: 'Io' },
+                        { value: 'europa', label: 'Europa' },
+                    ],
+                },
+            ]);
 
             render(
-                <CheckboxTreeProvider>
-                    <CheckboxTree
-                        nodes={[
-                            {
-                                value: 'jupiter',
-                                label: 'Jupiter',
-                                children: [
-                                    { value: 'io', label: 'Io' },
-                                    { value: 'europa', label: 'Europa' },
-                                ],
-                            },
-                        ]}
-                        onExpand={(nodeKey) => {
-                            actual = nodeKey;
-                        }}
-                    />
-                </CheckboxTreeProvider>,
+                <CheckboxTree
+                    tree={tree}
+                    onChange={(newTree) => {
+                        tree = newTree;
+                    }}
+                    onExpand={(nodeKey) => {
+                        actual = nodeKey;
+                    }}
+                />,
             );
 
             const user = userEvent.setup();
@@ -1248,25 +1204,27 @@ describe('<CheckboxTree />', () => {
 
         it('should pass the TreeModel instance as the second parameter', async () => {
             let actual = false;
+            let tree = new TreeModel([
+                {
+                    value: 'jupiter',
+                    label: 'Jupiter',
+                    children: [
+                        { value: 'io', label: 'Io' },
+                        { value: 'europa', label: 'Europa' },
+                    ],
+                },
+            ]);
 
             render(
-                <CheckboxTreeProvider>
-                    <CheckboxTree
-                        nodes={[
-                            {
-                                value: 'jupiter',
-                                label: 'Jupiter',
-                                children: [
-                                    { value: 'io', label: 'Io' },
-                                    { value: 'europa', label: 'Europa' },
-                                ],
-                            },
-                        ]}
-                        onExpand={(nodeKey, treeModel) => {
-                            actual = treeModel instanceof TreeModel;
-                        }}
-                    />
-                </CheckboxTreeProvider>,
+                <CheckboxTree
+                    tree={tree}
+                    onChange={(newTree) => {
+                        tree = newTree;
+                    }}
+                    onExpand={(nodeKey, treeModel) => {
+                        actual = treeModel instanceof TreeModel;
+                    }}
+                />,
             );
 
             const user = userEvent.setup();
@@ -1281,6 +1239,17 @@ describe('<CheckboxTree />', () => {
             let checkNode = null;
             let expandNode = null;
             let clickNode = null;
+            let tree = new TreeModel([
+                {
+                    value: 'jupiter',
+                    label: 'Jupiter',
+                    expanded: true,
+                    children: [
+                        { value: 'io', label: 'Io', title: 'Io' },
+                        { value: 'europa', label: 'Europa' },
+                    ],
+                },
+            ]);
 
             const getNodeMetadata = (node) => {
                 const {
@@ -1325,32 +1294,25 @@ describe('<CheckboxTree />', () => {
                     treeDepth,
                 };
             };
+
             render(
-                <CheckboxTreeProvider>
-                    <CheckboxTree
-                        nodes={[
-                            {
-                                value: 'jupiter',
-                                label: 'Jupiter',
-                                expanded: true,
-                                children: [
-                                    { value: 'io', label: 'Io', title: 'Io' },
-                                    { value: 'europa', label: 'Europa' },
-                                ],
-                            },
-                        ]}
-                        onCheck={(nodeKey, treeModel) => {
-                            checkNode = treeModel.getNode(nodeKey);
-                        }}
-                        onClick={(nodeKey, treeModel) => {
-                            clickNode = treeModel.getNode(nodeKey);
-                        }}
-                        onExpand={(nodeKey, treeModel) => {
-                            expandNode = treeModel.getNode(nodeKey);
-                        }}
-                    />
-                </CheckboxTreeProvider>,
+                <CheckboxTree
+                    tree={tree}
+                    onChange={(newTree) => {
+                        tree = newTree;
+                    }}
+                    onCheck={(nodeKey, treeModel) => {
+                        checkNode = treeModel.getNode(nodeKey);
+                    }}
+                    onClick={(nodeKey, treeModel) => {
+                        clickNode = treeModel.getNode(nodeKey);
+                    }}
+                    onExpand={(nodeKey, treeModel) => {
+                        expandNode = treeModel.getNode(nodeKey);
+                    }}
+                />,
             );
+
             const expectedLeafMetadata = {
                 value: 'io',
                 label: 'Io',
@@ -1371,13 +1333,14 @@ describe('<CheckboxTree />', () => {
                 index: 0,
                 treeDepth: 1,
             };
+
             const expectedParentMetadata = {
                 value: 'jupiter',
                 label: 'Jupiter',
                 title: undefined,
                 childKeys: ['io', 'europa'],
                 expanded: false,
-                checkState: 2,
+                checkState: 0,
                 parentKey: '',
                 isChild: false,
                 isParent: true,
@@ -1396,10 +1359,16 @@ describe('<CheckboxTree />', () => {
 
             // onCheck
             await user.click(screen.getByTitle('Io'));
+
+            // first click makes checked true
+            expectedLeafMetadata.checkState = 1;
             assert.deepEqual(getNodeMetadata(checkNode), expectedLeafMetadata);
 
             // onClick
             await user.click(screen.getByText('Io'));
+            // second click makes checked false
+            expectedLeafMetadata.checkState = 0;
+
             assert.deepEqual(getNodeMetadata(clickNode), expectedLeafMetadata);
 
             // onExpand

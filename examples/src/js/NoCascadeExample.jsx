@@ -1,9 +1,17 @@
-import React from 'react';
-import CheckboxTree, { CheckboxTreeProvider } from 'react-checkbox-tree';
+import React, { useState } from 'react';
+import CheckboxTree, { TreeModel } from 'react-checkbox-tree';
 
 import { fileSystem as nodes } from './data';
 
+const initialTree = new TreeModel(nodes);
+
 function NoCascadeExample() {
+    const [tree, setTree] = useState(initialTree);
+
+    const onChange = (newTree) => {
+        setTree(newTree);
+    };
+
     const onCheck = (changedNodeKey, newTree) => {
         const changedNode = newTree.getNode(changedNodeKey);
         console.log(`changed node = ${changedNode.label}`);
@@ -17,14 +25,13 @@ function NoCascadeExample() {
     };
 
     return (
-        <CheckboxTreeProvider>
-            <CheckboxTree
-                noCascadeChecks
-                nodes={nodes}
-                onCheck={onCheck}
-                onExpand={onExpand}
-            />
-        </CheckboxTreeProvider>
+        <CheckboxTree
+            noCascadeChecks
+            tree={tree}
+            onChange={onChange}
+            onCheck={onCheck}
+            onExpand={onExpand}
+        />
     );
 }
 
