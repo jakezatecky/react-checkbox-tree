@@ -2,7 +2,7 @@ import classNames from 'classnames';
 // import isEqual from 'lodash/isEqual';
 import memoize from 'lodash/memoize';
 import PropTypes from 'prop-types';
-import React, { useMemo, useEffect } from 'react';
+import React, { useMemo } from 'react';
 
 // import CheckboxTreeError from './CheckboxTreeError';
 
@@ -176,9 +176,11 @@ export default function CheckboxTree({
     // methods
 
     // TODO: is this needed?
+    /*
     const onChangeHandler = () => {
 
-    }
+    };
+    */
 
     const onCheckHandler = (nodeKey) => {
         const newTreeModel = tree.toggleChecked(nodeKey);
