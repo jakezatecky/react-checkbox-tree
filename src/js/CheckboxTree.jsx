@@ -183,24 +183,24 @@ export default function CheckboxTree({
     */
 
     const onCheckHandler = (nodeKey) => {
-        const newTreeModel = tree.toggleChecked(nodeKey);
+        const newTree = tree.toggleChecked(nodeKey);
 
         // TODO: should toggleChecked return false if no change??
         // probably...
 
-        // toggleChecked returns original treeModel if the check is not
+        // toggleChecked returns original tree if the check is not
         // changed due to being disabled or being an already checked
         // radio node so we ignore the check change attempt
-        if (newTreeModel !== tree) {
-            onCheck(nodeKey, newTreeModel);
-            onChange(newTreeModel);
+        if (newTree !== tree) {
+            onCheck(nodeKey, newTree);
+            onChange(newTree);
         }
     };
 
     const onCollapseAll = () => {
-        const newTreeModel = tree.expandAllNodes(false);
-        // onExpand('', newTreeModel);
-        onChange(newTreeModel);
+        const newTree = tree.expandAllNodes(false);
+        // onExpand('', newTree);
+        onChange(newTree);
     };
 
     const onContextMenuHandler = (node) => (event) => {
@@ -210,16 +210,16 @@ export default function CheckboxTree({
     };
 
     const onExpandHandler = (nodeKey) => {
-        const newTreeModel = tree.toggleExpanded(nodeKey);
-        onExpand(nodeKey, newTreeModel);
-        onChange(newTreeModel);
+        const newTree = tree.toggleExpanded(nodeKey);
+        onExpand(nodeKey, newTree);
+        onChange(newTree);
     };
 
     const onExpandAll = () => {
         if (!expandDisabled) {
-            const newTreeModel = tree.expandAllNodes(true);
-            // onExpand('', newTreeModel);
-            onChange(newTreeModel);
+            const newTree = tree.expandAllNodes(true);
+            // onExpand('', newTree);
+            onChange(newTree);
         }
     };
 

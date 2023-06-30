@@ -104,15 +104,15 @@ class TreeModel {
     }
 
     expandAllNodes(expandValue = true) {
-        const newTreeModel = this.clone();
-        Object.keys(newTreeModel.nodes).forEach((key) => {
+        const newTree = this.clone();
+        Object.keys(newTree.nodes).forEach((key) => {
             const newNode = this.getNode(key);
             if (newNode.isParent) {
                 newNode.expanded = expandValue;
-                newTreeModel.nodes[key] = newNode;
+                newTree.nodes[key] = newNode;
             }
         });
-        return newTreeModel;
+        return newTree;
     }
 
     /**
@@ -123,24 +123,24 @@ class TreeModel {
      * @returns {TreeModel}
      */
     expandNodesToLevel(targetLevel) {
-        const newTreeModel = this.clone();
+        const newTree = this.clone();
 
         const expandLevels = (keys, currentLevel = 0) => {
             if (currentLevel > targetLevel) {
                 return;
             }
             keys.forEach((key) => {
-                const newNode = newTreeModel.getNode(key).clone();
+                const newNode = newTree.getNode(key).clone();
                 if (newNode.isParent) {
                     newNode.expanded = true;
-                    newTreeModel.nodes[key] = newNode;
+                    newTree.nodes[key] = newNode;
                     expandLevels(newNode.childKeys, currentLevel + 1);
                 }
             });
         };
 
-        expandLevels(newTreeModel.rootKeys);
-        return newTreeModel;
+        expandLevels(newTree.rootKeys);
+        return newTree;
     }
 
     filter(testFunc) {
@@ -151,7 +151,7 @@ class TreeModel {
             );
         }
 
-        const newTreeModel = this.clone().removeFilter();
+        const newTree = this.clone().removeFilter();
 
         const filterNodes = (filtered, nodeKey) => {
             const node = this.getNode(nodeKey);
@@ -167,13 +167,13 @@ class TreeModel {
                 // hide the node
                 const newNode = node.clone();
                 newNode.isHiddenByFilter = true;
-                newTreeModel.nodes[nodeKey] = newNode;
+                newTree.nodes[nodeKey] = newNode;
             }
             return filtered;
         };
 
-        newTreeModel.rootKeys = newTreeModel.rootKeys.reduce(filterNodes, []);
-        return newTreeModel;
+        newTree.rootKeys = newTree.rootKeys.reduce(filterNodes, []);
+        return newTree;
     }
 
     getChecked() {
@@ -281,30 +281,30 @@ class TreeModel {
     }
 
     removeFilter() {
-        const newTreeModel = this.clone();
+        const newTree = this.clone();
 
-        Object.keys(newTreeModel.nodes).forEach((key) => {
+        Object.keys(newTree.nodes).forEach((key) => {
             const newNode = this.getNode(key);
             newNode.isHiddenByFilter = false;
-            newTreeModel.nodes[key] = newNode;
+            newTree.nodes[key] = newNode;
         });
-        newTreeModel.rootKeys = [...this.unfilteredRootKeys];
+        newTree.rootKeys = [...this.unfilteredRootKeys];
 
-        return newTreeModel;
+        return newTree;
     }
 
     setNewOptions(newOptions) {
-        const newTreeModel = this.clone();
-        newTreeModel.options = { ...newTreeModel.options, ...newOptions };
-        return newTreeModel;
+        const newTree = this.clone();
+        newTree.options = { ...newTree.options, ...newOptions };
+        return newTree;
     }
 
     setNodeProp(nodeKey, propertyName, value) {
-        const newTreeModel = this.clone();
+        const newTree = this.clone();
         const newNode = this.getNode(nodeKey).clone();
         newNode[propertyName] = value;
-        newTreeModel.nodes[nodeKey] = newNode;
-        return newTreeModel;
+        newTree.nodes[nodeKey] = newNode;
+        return newTree;
     }
 
     toggleChecked(nodeKey) {
@@ -317,18 +317,17 @@ class TreeModel {
             ((node.isRadioNode) && (node.checkState > 0))
         ) {
             // TODO: should this be return FALSE?
-            // no change return old treeModel
+            // no change return old tree
             return this;
         }
 
-        const newTreeModel = this.clone();
-        const newTree = newTreeModel.nodes;
+        const newTree = this.clone();
 
         // determine newCheckState for this node
         let newCheckState;
         if (node.isRadioNode) {
             // turn off all siblings of node in newTree
-            newTreeModel.turnOffSiblings(nodeKey);
+            newTree.turnOffSiblings(nodeKey);
             newCheckState = 1;
         } else if (node.checkState === 2) {
             newCheckState = (optimisticToggle && !noCascadeChecks) ? 1 : 0;
@@ -354,9 +353,9 @@ class TreeModel {
                     toggle(childKey, newCheckState);
                 });
                 // get checkState based upon childNodes' checkState
-                newNode.checkState = newTreeModel.getCheckState(newNode);
+                newNode.checkState = newTree.getCheckState(newNode);
             }
-            newTree[key] = newNode;
+            newTree.nodes[key] = newNode;
         };
         //----------------------------------------------------------------------
 
@@ -368,31 +367,31 @@ class TreeModel {
             let child = node;
             while (child.parentKey !== '') {
                 const { parentKey } = child;
-                const newParent = newTreeModel.getNode(parentKey).clone();
+                const newParent = newTree.getNode(parentKey).clone();
                 if (newParent.isRadioNode) {
                     // do not percolate up
                     break;
                 } else {
-                    newParent.checkState = newTreeModel.getCheckState(newParent);
-                    newTree[parentKey] = newParent;
+                    newParent.checkState = newTree.getCheckState(newParent);
+                    newTree.nodes[parentKey] = newParent;
                     child = newParent;
                 }
             }
         }
 
-        return newTreeModel;
+        return newTree;
     }
 
     toggleDisabled(nodeKey) {
         const toggleChildren = !this.options.noCascadeDisabled;
-        const newTreeModel = this.toggleProperty(nodeKey, 'disabled', toggleChildren);
-        return newTreeModel;
+        const newTree = this.toggleProperty(nodeKey, 'disabled', toggleChildren);
+        return newTree;
     }
 
     toggleExpanded(nodeKey) {
         const toggleChildren = false;
-        const newTreeModel = this.toggleProperty(nodeKey, 'expanded', toggleChildren);
-        return newTreeModel;
+        const newTree = this.toggleProperty(nodeKey, 'expanded', toggleChildren);
+        return newTree;
     }
 
     //--------------------------------------------------------------------------
@@ -429,19 +428,18 @@ class TreeModel {
         const newValue = !newNode[propertyName];
         newNode[propertyName] = newValue;
 
-        const newTreeModel = this.clone();
-        const newTree = newTreeModel.nodes;
-        newTree[nodeKey] = newNode;
+        const newTree = this.clone();
+        newTree.nodes[nodeKey] = newNode;
 
         if (toggleChildren && newNode.isParent) {
             newNode.childKeys.forEach((childKey) => {
                 const node = this.getNode(childKey).clone();
                 node[propertyName] = newValue;
-                newTree[childKey] = node;
+                newTree.nodes[childKey] = node;
             });
         }
 
-        return newTreeModel;
+        return newTree;
     }
 
     // this method is private and does not handle cascading
