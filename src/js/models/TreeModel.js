@@ -3,7 +3,12 @@ import NodeModel from './NodeModel';
 import { CHECK_MODEL } from '../constants';
 
 class TreeModel {
-    constructor(treeConfig, options = {}) {
+    constructor(treeConfig, options = {
+        checkModel: CHECK_MODEL.LEAF,
+        noCascadeChecks: false,
+        noCascadeDisabled: false,
+        optimisticToggle: true,
+    }) {
         const { noCascadeDisabled } = options;
 
         //----------------------------------------------------------------------
@@ -11,7 +16,7 @@ class TreeModel {
         const flatten = (childNodes, parent = {}, depth = 0) => {
             if (Array.isArray(childNodes) && childNodes.length !== 0) {
                 childNodes.forEach((node, index) => {
-                    const newNode = new NodeModel(node, parent, index, depth, options);
+                    const newNode = new NodeModel(node, parent, index, depth);
 
                     // cascade disabled property down to children
                     // this makes tree have consistent disabled state
@@ -177,7 +182,9 @@ class TreeModel {
     }
 
     getChecked() {
-        const checkModel = this.options.checkModel || CHECK_MODEL.LEAF;
+        // TODO: should this method have a checkModel argument to override
+        //       the one in options
+        const { checkModel } = this.options;
         const checkedArray = [];
 
         let test;
@@ -196,7 +203,7 @@ class TreeModel {
 
         const walkTree = (nodeKey) => {
             const node = this.getNode(nodeKey);
-            if (test(node) && !node.disabled) {
+            if (!node.disabled && test(node)) {
                 checkedArray.push(nodeKey);
             }
             if (node.isParent) {
@@ -293,6 +300,7 @@ class TreeModel {
         return newTree;
     }
 
+    // TODO: this method or updateOptions???
     setNewOptions(newOptions) {
         const newTree = this.clone();
         newTree.options = { ...newTree.options, ...newOptions };
@@ -308,6 +316,7 @@ class TreeModel {
     }
 
     toggleChecked(nodeKey) {
+        // TODO: should these options be able to be overidden with an options argument
         const { noCascadeChecks, optimisticToggle } = this.options;
         const node = this.getNode(nodeKey);
 

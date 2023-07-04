@@ -126,7 +126,7 @@ describe('<CheckboxTree />', () => {
                         onChange={(newTree) => {
                             tree = newTree;
                         }}
-                        onCheck={(nodeKey, newTree) => {
+                        onCheck={(node, newTree) => {
                             actual = newTree.getChecked();
                         }}
                     />,
@@ -150,7 +150,7 @@ describe('<CheckboxTree />', () => {
                         onChange={(newTree) => {
                             tree = newTree;
                         }}
-                        onCheck={(nodeKey, treeModel) => {
+                        onCheck={(node, treeModel) => {
                             actual = treeModel.getChecked();
                         }}
                     />,
@@ -173,9 +173,9 @@ describe('<CheckboxTree />', () => {
                         onChange={(newTree) => {
                             tree = newTree;
                         }}
-                        onCheck={(nodeKey, treeModel) => {
-                            const node = treeModel.getNode('saturn');
-                            actual = node.checkState;
+                        onCheck={(node, treeModel) => {
+                            const parentNode = treeModel.getNode('saturn');
+                            actual = parentNode.checkState;
                         }}
                     />,
                 );
@@ -1041,7 +1041,7 @@ describe('<CheckboxTree />', () => {
             assert.deepEqual(actualChecked, ['europa']);
         });
 
-        it('should pass the node.value of the clicked node as the first parameter', async () => {
+        it('should pass the node of the clicked node as the first parameter', async () => {
             let actual = '';
             let tree = tree2;
 
@@ -1051,8 +1051,8 @@ describe('<CheckboxTree />', () => {
                     onChange={(newTree) => {
                         tree = newTree;
                     }}
-                    onCheck={(nodeKey) => {
-                        actual = nodeKey;
+                    onCheck={(node) => {
+                        actual = node.value;
                     }}
                 />,
             );
@@ -1087,7 +1087,7 @@ describe('<CheckboxTree />', () => {
     });
 
     describe('onClick', () => {
-        it('should pass the nodeKey(node.value) of the node clicked as the first parameter', async () => {
+        it('should pass the node clicked as the first parameter', async () => {
             let actualNode = null;
             let tree = tree2;
 
@@ -1097,8 +1097,7 @@ describe('<CheckboxTree />', () => {
                     onChange={(newTree) => {
                         tree = newTree;
                     }}
-                    onCheck={(nodeKey, treeModel) => {
-                        const node = treeModel.getNode(nodeKey);
+                    onCheck={(node, treeModel) => {
                         actualNode = node;
                     }}
                 />,
@@ -1190,8 +1189,8 @@ describe('<CheckboxTree />', () => {
                     onChange={(newTree) => {
                         tree = newTree;
                     }}
-                    onExpand={(nodeKey) => {
-                        actual = nodeKey;
+                    onExpand={(node) => {
+                        actual = node.value;
                     }}
                 />,
             );
@@ -1301,14 +1300,14 @@ describe('<CheckboxTree />', () => {
                     onChange={(newTree) => {
                         tree = newTree;
                     }}
-                    onCheck={(nodeKey, treeModel) => {
-                        checkNode = treeModel.getNode(nodeKey);
+                    onCheck={(node, treeModel) => {
+                        checkNode = node;
                     }}
-                    onClick={(nodeKey, treeModel) => {
-                        clickNode = treeModel.getNode(nodeKey);
+                    onClick={(node, treeModel) => {
+                        clickNode = node;
                     }}
-                    onExpand={(nodeKey, treeModel) => {
-                        expandNode = treeModel.getNode(nodeKey);
+                    onExpand={(node, treeModel) => {
+                        expandNode = node;
                     }}
                 />,
             );

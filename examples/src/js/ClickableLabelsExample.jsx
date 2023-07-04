@@ -13,20 +13,17 @@ function ClickExample() {
         setTree(newTree);
     };
 
-    const onCheck = (changedNodeKey, newTree) => {
-        const changedNode = newTree.getNode(changedNodeKey);
+    const onCheck = (changedNode, newTree) => {
         console.log(`changed node = ${changedNode.label}`);
         console.log(newTree.getChecked());
     };
 
-    const onExpand = (changedNodeKey, newTree) => {
-        const changedNode = newTree.getNode(changedNodeKey);
+    const onExpand = (changedNode, newTree) => {
         console.log(`changed node = ${changedNode.label} => expanded = ${changedNode.expanded}`);
         console.log(newTree.getExpanded());
     };
 
-    const onClick = (nodeKey, treeModel) => {
-        const node = treeModel.getNode(nodeKey);
+    const onClick = (node, tree) => {
         setClicked(node);
     };
 

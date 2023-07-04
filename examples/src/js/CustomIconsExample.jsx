@@ -50,14 +50,12 @@ function CustomIconsExample() {
         setTree(newTree);
     };
 
-    const onCheck = (changedNodeKey, newTree) => {
-        const changedNode = newTree.getNode(changedNodeKey);
+    const onCheck = (changedNode, newTree) => {
         console.log(`changed node = ${changedNode.label}`);
         console.log(newTree.getChecked());
     };
 
-    const onExpand = (changedNodeKey, newTree) => {
-        const changedNode = newTree.getNode(changedNodeKey);
+    const onExpand = (changedNode, newTree) => {
         console.log(`changed node = ${changedNode.label} => expanded = ${changedNode.expanded}`);
         console.log(newTree.getExpanded());
     };

@@ -52,7 +52,7 @@ const baseProps = {
     expanded: false,
     isLeaf: true,
     isParent: false,
-    noCascade: false,
+    noCascadeChecks: false,
     node: testTree.getNode('jupiter'),
     optimisticToggle: true,
     showNodeIcon: true,

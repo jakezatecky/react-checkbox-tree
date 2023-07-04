@@ -184,6 +184,7 @@ export default function CheckboxTree({
 
     const onCheckHandler = (nodeKey) => {
         const newTree = tree.toggleChecked(nodeKey);
+        const checkedNode = newTree.getNode(nodeKey);
 
         // TODO: should toggleChecked return false if no change??
         // probably...
@@ -192,7 +193,7 @@ export default function CheckboxTree({
         // changed due to being disabled or being an already checked
         // radio node so we ignore the check change attempt
         if (newTree !== tree) {
-            onCheck(nodeKey, newTree);
+            onCheck(checkedNode, newTree);
             onChange(newTree);
         }
     };
@@ -211,7 +212,8 @@ export default function CheckboxTree({
 
     const onExpandHandler = (nodeKey) => {
         const newTree = tree.toggleExpanded(nodeKey);
-        onExpand(nodeKey, newTree);
+        const expandedNode = newTree.getNode(nodeKey);
+        onExpand(expandedNode, newTree);
         onChange(newTree);
     };
 
@@ -224,7 +226,8 @@ export default function CheckboxTree({
     };
 
     const onNodeClick = (nodeKey) => {
-        onClick(nodeKey, tree);
+        const clickedNode = tree.getNode(nodeKey);
+        onClick(clickedNode, tree);
     };
 
     const renderTreeNodes = (childKeys, ancestorDisabled = false) => {
