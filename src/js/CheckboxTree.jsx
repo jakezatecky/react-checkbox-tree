@@ -207,10 +207,8 @@ export default function CheckboxTree({
             let children = null;
             if (node.isParent) {
                 // determine if child nodes should be disabled
-                const disabledByAncestor = !tree.options.noCascadeDisabled && (
-                    ancestorDisabled || node.disabled ||
-                    (node.isRadioGroup && node.checkState === 0)
-                );
+                const disabledByAncestor = (node.isRadioGroup && node.checkState === 0) ||
+                    (!tree.options.noCascadeDisabled && (ancestorDisabled || node.disabled));
 
                 children = renderTreeNodes(node.childKeys, disabledByAncestor);
             }
