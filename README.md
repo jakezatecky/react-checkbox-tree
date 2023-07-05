@@ -41,11 +41,11 @@ import 'react-checkbox-tree/lib/react-checkbox-tree.css';
 
 ### Render Component
 
-Below is a minimal example. Note that `CheckboxTree` is an [uncontrolled][docs-controlled] component. The tree state is stored in a context provided by `CheckboxTreeProvider`. This allows the `CheckboxTreeProvider` to be moved up in the React component tree to save the `CheckboxTree` state between component mounts. An example would be having the `CheckboxTree` inside a tab which unmounts when the selected tab changes.
+Below is a minimal example. Note that `CheckboxTree` is a [controlled][docs-controlled] component. 
 
 ``` jsx
-import React from 'react';
-import CheckboxTree, { CheckboxTreeProvider } from 'react-checkbox-tree';
+import React, { useState } from 'react';
+import CheckboxTree, { TreeModel } from 'react-checkbox-tree';
 import 'react-checkbox-tree/lib/react-checkbox-tree.css';
 
 const nodes = [{
@@ -57,32 +57,153 @@ const nodes = [{
   ],
 }];
 
+// optional inputs for TreeModel
+const options = {
+  checkModel: 'all,'
+};
+
+const initialTree = new TreeModel(nodes, options);
+
 function Widget() {
+  const [tree, setTree] = useState(initialTree);
+  
   return (
-    <CheckboxTreeProvider>
-      <CheckboxTree
-        nodes={nodes}
-        checked={checked}
-        expanded={expanded}
-        onCheck={(nodeKey, updatedTreeModel) => {
-          const node = updatedTreeModel.getNode(nodeKey);
-        }}
-        onExpand={(nodeKey, updatedTreeModel) => {
-          const node = updatedTreeModel.getNode(nodeKey);
-        }}
-      />
-    </CheckboxTreeProvider>
+    <CheckboxTree
+      tree={tree}
+      onChange={(updatedTree) => {
+        setTree(updatedTree);
+      }}
+      onCheck={(node, updatedTree) => {
+        console.log(node.label);
+        console.log(updatedTree.getChecked());
+      }}
+      onExpand={(node, updatedTree) => {
+        console.log(node.label);
+        console.log(updatedTree.getExpanded());
+      }}
+    />
   );
 }
 ```
 
-> **Note** &ndash; All node objects **must** have a unique `value`.
+### Initial State of the CheckboxTree
 
-#### Initial State of the CheckboxTree
+The initial state of the `CheckBoxTree` is defined by an array of *node* objects (`nodes`). This array is input to the [`TreeModel` class](#treemodel-class) to create the `tree` prop for `CheckboxTree`.
 
-The ***initial*** state of the `CheckboxTree` is supplied to the `nodes` property. This property is used on the first mounting of the `CheckboxTree` component. A `TreeModel` is used internally by `CheckboxTree` to maintain consistent state. Subsequent mounting and rendering of the tree uses the state saved in the context provided by the `CheckboxTreeProvider`.
+### Node Properties
 
-#### Changing the Default Icons
+Individual nodes within the `nodes` array must have the following structure:
+
+| Property       | Type   | Description                                                              | Default |
+| -------------- | ------ | ------------------------------------------------------------------------ | ------- |
+| `label`        | mixed  | **Required**. The node's label.                                          |         |
+| `value`        | mixed  | **Required**. The node's value.  Must be **unique**.                     |         |
+| `children`     | array  | An array of child nodes. Can be an empty array to denote a parent node.  | `null`  |
+| `className`    | string | A className to add to the node.                                          | `null`  |
+| `checked`      | bool   | Whether the node is checked.                                             | `false` |
+| `disabled`     | bool   | Whether the node should be disabled.                                     | `false` |
+| `expanded`     | bool   | Whether the node is expanded (parent nodes).                             | `false` |
+| `icon`         | mixed  | A custom icon for the node.                                              | `null`  |
+| `showCheckbox` | bool   | Whether the node should show a checkbox.                                 | `true`  |
+| `title`        | string | A custom `title` attribute for the node.                                 | `null`  |
+
+> **Note**: any additional properties included in an input node will be included in that node in the `TreeModel` instance.
+
+### TreeModel Class
+
+A `TreeModel` class instance defines the state of a `CheckboxTree`. The constructor takes two arguments.
+* `nodes` - the array of nodes defining the [inital state](#initial-state-of-the-checkboxtree) (**required**)
+* `options` - an object of [control properties](#control-properties) (optional)
+
+```
+const tree = new TreeModel(nodes, options);
+```
+
+#### Control Properties
+
+| Control Property     | Type     | Description                                                                                                            | Default          |
+| -------------------- | -------- | ---------------------------------------------------------------------------------------------------------------------- | ---------------- |
+| `checkModel`         | string   | Specifies which checked nodes should be extracted to the `checked` array. Accepts `'leaf'`, `'parent'` or `'all'`.     | `'leaf'`         |
+| `noCascadeChecks`    | bool     | If true, toggling a parent node will **not** cascade its check state to its children.                                    | `false`          |
+| `noCascadeDisabled`  | bool     | If true, toggling a parent node will **not** cascade its disabled state to its children.                                | `false`          |
+| `optimisticToggle`   | bool     | If true, toggling a partially-checked node will select all children. If false, it will deselect. Requires`noCascadeChecks=false`. | `true`           |
+
+#### TreeModel Public properties
+
+> **Note**: these properties are **read-only**. Use the `TreeModel` [methods](#treemodel-public-methods) below to manipulate the data in the `TreeModel` instance.
+
+| Property             | Type     | Description                                                    |
+| -------------------- | -------- | -------------------------------------------------------------- |
+| `rootKeys`           | array    | list of node `value` properties of the level '0' nodes.        |
+| `options`            | object   | [Control Properties](#control-properties)                      |
+
+#### TreeModel Public Methods
+
+> **Note**: any `TreeModel` method which changes the state will return an updated `TreeModel` instance (`newTree`). This instance should be saved to state to update `CheckBoxTree`.
+
+```
+const newTree = tree.toggleChecked(node.value);
+setTree(newTree);
+```
+
+| Method               | Type     | Description                                                    |
+| -------------------- | -------- | -------------------------------------------------------------- |
+| `clone`              | function | clone the `TreeModel` instance: `clone() => newTree`           |
+| `expandAllNodes`     | function | expand all parent nodes: `expandAllNodes() => newTree`         |
+| `expandNodesToLevel` | function | expand parent nodes down to a particular level: `expandNodesToLevel(level) => newTree` |
+| `filter`             | function | filter nodes visible in tree (see [Filtering Nodes](#filtering-nodes)): `filter(testFunc) => newTree` |
+| `getChecked`         | function | get list of `node.value` for checked nodes based upon `checkModel`: `getChecked() => checkedArray` |
+| `getDisabled`        | function | get list of `node.value` for disabled nodes: `getDisabled() => disabledArray`           |
+| `getExpanded`        | function | get list `node.value` for of expanded nodes: `getExpanded() => expandedArray`           |
+| `getNode`            | function | get a particular node from the tree: `getNode(nodeKey) => node`  |
+| `removeFilter`       | function | remove the filter from the TreeModel: `removeFilter() => newTree` |
+| `setNodeProp`        | function | set a property on a particular node in the TreeModel: `setNodeProp(nodeKey, propertyName, value) => newTree` |
+| `toggleChecked`      | function | toggle the check status of a particular node: `toggleChecked(nodeKey) => newTree` |
+| `toggleDisabled`     | function | toggle the disabled status of a particular node: `toggleDisabled(nodeKey) => newTree` |
+| `toggleExpanded`     | function | toggle the expanded status of a particular node: `toggleExpanded(nodeKey) => newTree` |
+| `updateOptions`      | function | change the options in the TreeModel: `updateOptions(newOptions) => newTree`  |
+
+### CheckBoxTree Component
+
+#### Properties
+
+| Property             | Type     | Description                                     | Default      |
+| -------------------- | -------- | ----------------------------------------------- | ------------ |
+| `tree`               | TreeModel | **Required**. A TreeModel instance defining the current state of the CheckBoxTree. |                  |
+| `checkKeys`          | array    | A list of [keyboard keys][mdn-key] that will trigger a toggle of the check status of a node. | `[' ', 'Enter']` |
+| `direction`          | string   | A string that specify whether the direction of the component is left-to-right (`'ltr'`) or right-to-left (`'rtl'`). | `'ltr'`          |
+| `disabled`           | bool     | If true, the component will be disabled and nodes cannot be checked. | `false` |
+| `expandDisabled`     | bool     | If true, the ability to expand nodes will be disabled. | `false`     |
+| `expandOnClick`      | bool     | If true, nodes will be expanded by clicking on labels. Requires a non-empty `onClick` function. | `false`          |
+| `icons`              | object   | An object containing the mappings for the various icons and their components. See [Changing the Default Icons](#changing-the-default-icons).      | `{ ... }`       |
+| `iconsClass`         | string   | A string that specifies which icons class to utilize. Currently, `'fa4'` and `'fa5'` are supported. | `'fa5'`       |
+| `id`                 | string   | A string to be used for the HTML ID of the rendered tree and its nodes. | `null` |
+| `lang`               | object   | A key-value pairing of localized text. See [`src/js/lang/default.js`][lang-file] for a list of keys. | `{ ... }`        |
+| `name`               | string   | Optional name for the hidden `<input>` element. | `undefined`      |
+| `nameAsArray`        | bool     | If true, the hidden `<input>` will encode its values as an array rather than a joined string. | `false`          |
+| `nativeCheckboxes`   | bool     | If true, native browser checkboxes will be used instead of pseudo-checkbox icons. | `false`          |
+| `onlyLeafCheckboxes` | bool     | If true, checkboxes will only be shown for leaf nodes. | `false`   |
+| `showExpandAll`      | bool     | If true, buttons for expanding and collapsing all parent nodes will appear in the tree. | `false`          |
+| `showNodeIcon`       | bool     | If true, each node will show a parent or leaf icon.    | `true` |
+| `showNodeTitle`      | bool     | If true, the `label` of each node will become the `title` of the resulting DOM node. Overridden by `node.title`. | `false`          |
+| `onChange`           | function | **Required**. `onChange` handler (see [Event Handlers](#event-handlers)): `onChange(updatedTree) {}` Called when there is a state change in the tree.   | `() => {}`       |
+| `onCheck`            | function | `onCheck` handler (see [Event Handlers](#event-handlers)): `onCheck(node, updatedTree) {}` | `() => {}`       |
+| `onClick`            | function | `onClick` handler (see [Event Handlers](#event-handlers)): `onClick(node, updatedTree) {}`. If set, `onClick` will be called when a node's label has been clicked. | `null`           |
+| `onContextMenu`      | function | `onContextMenu` handler (see [Event Handlers](#event-handlers)): `onContextMenu(event, node, updatedTree) {}`. Triggers when right-clicking a node element. | `null`           |
+| `onExpand`           | function | `onExpand` handler (see [Event Handlers](#event-handlers)): `onExpand(node, updatedTree) {}` | `() => {}`  |
+
+> **TODO** add definitions for these properties  - see also [Replacing Default Label Components](#replacing-default-label-components)
+
+```
+LabelComponent: PropTypes.func,
+LeafLabelComponent: PropTypes.func,
+ParentLabelComponent: PropTypes.func,
+onLabelChange: PropTypes.func,
+onLeafLabelChange: PropTypes.func,
+onParentLabelChange: PropTypes.func,
+```
+
+### Changing the Default Icons
 
 By default, **react-checkbox-tree** uses Font Awesome 5/6 for the various icons that appear in the tree. To utilize Font Awesome 4 icons, simply pass in `iconsClass="fa4"`:
 
@@ -137,84 +258,34 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 />
 ```
 
-### Properties
 
-| Property             | Type     | Description                                                                                                            | Default          |
-| -------------------- | -------- | ---------------------------------------------------------------------------------------------------------------------- | ---------------- |
-| `nodes`              | array    | **Required**. Specifies the ***initial*** state of the tree nodes and their children.                                                             |                  |
-| `checkKeys`          | array    | A list of [keyboard keys][mdn-key] that will trigger a toggle of the check status of a node.                           | `[' ', 'Enter']` |
-| `checkModel`         | string   | Specifies which checked nodes should be extracted to the `checked` array. Accepts `'leaf'` or `'all'`.                 | `'leaf'`         |
-| `checked`            | array    | An array of checked node values.                                                                                       | `[]`             |
-| `direction`          | string   | A string that specify whether the direction of the component is left-to-right (`'ltr'`) or right-to-left (`'rtl'`).    | `'ltr'`          |
-| `disabled`           | bool     | If true, the component will be disabled and nodes cannot be checked.                                                   | `false`          |
-| `expandDisabled`     | bool     | If true, the ability to expand nodes will be disabled.                                                                 | `false`          |
-| `expandOnClick`      | bool     | If true, nodes will be expanded by clicking on labels. Requires a non-empty `onClick` function.                        | `false`          |
-| `expanded`           | array    | An array of expanded node values.                                                                                      | `[]`             |
-| `icons`              | object   | An object containing the mappings for the various icons and their components. See **Changing the Default Icons**.      | `{ ... }`        |
-| `iconsClass`         | string   | A string that specifies which icons class to utilize. Currently, `'fa4'` and `'fa5'` are supported.                    | `'fa5'`          |
-| `id`                 | string   | A string to be used for the HTML ID of the rendered tree and its nodes.                                                | `null`           |
-| `lang`               | object   | A key-value pairing of localized text. See [`src/js/lang/default.js`][lang-file] for a list of keys.                   | `{ ... }`        |
-| `name`               | string   | Optional name for the hidden `<input>` element.                                                                        | `undefined`      |
-| `nameAsArray`        | bool     | If true, the hidden `<input>` will encode its values as an array rather than a joined string.                          | `false`          |
-| `nativeCheckboxes`   | bool     | If true, native browser checkboxes will be used instead of pseudo-checkbox icons.                                      | `false`          |
-| `noCascadeChecks`    | bool     | If true, toggling a parent node will **not** cascade its check state to its children. See also `percolateChecks`.      | `false`          |
-| `noCascadeDisabled`  | bool     | If true, toggling a parent node will **not** cascade its disabled state to its children.                               | `false`          |
-| `onlyLeafCheckboxes` | bool     | If true, checkboxes will only be shown for leaf nodes.                                                                 | `false`          |
-| `optimisticToggle`   | bool     | If true, toggling a partially-checked node will select all children. If false, it will deselect. Requires`noCascade=false`. | `true`           |
-| `showExpandAll`      | bool     | If true, buttons for expanding and collapsing all parent nodes will appear in the tree.                                | `false`          |
-| `showNodeIcon`       | bool     | If true, each node will show a parent or leaf icon.                                                                    | `true`           |
-| `showNodeTitle`      | bool     | If true, the `label` of each node will become the `title` of the resulting DOM node. Overridden by `node.title`.       | `false`          |
-| `onCheck`            | function | onCheck handler: `function(nodeKey, updatedTreeModel) {}`   see [discussion](#oncheck-and-onexpand) below                                                            | `() => {}`       |
-| `onClick`            | function | onClick handler: `function(nodeKey, updatedTreeModel) {}`. If set, `onClick` will be called when a node's label has been clicked.     | `null`           |
-| `onContextMenu`      | function | onContextMenu handler: `function(event, nodeKey, updatedTreeModel) {}`. Triggers when right-clicking a node element.   | `null`           |
-| `onExpand`           | function | onExpand handler: `function(nodeKey, updatedTreeModel) {}`                                                             | `() => {}`       |
+### Event Handlers
 
-#### `onCheck` and `onExpand`
-
-#### Node Properties
-
-Individual nodes within the `nodes` property can have the following structure:
-
-| Property       | Type   | Description                                                              | Default |
-| -------------- | ------ | ------------------------------------------------------------------------ | ------- |
-| `label`        | mixed  | **Required**. The node's label.                                          |         |
-| `value`        | mixed  | **Required**. The node's value.  Must be unique.                         |         |
-| `children`     | array  | An array of child nodes. Can be an empty array to denote a parent node.  | `null`  |
-| `className`    | string | A className to add to the node.                                          | `null`  |
-| `checked`      | bool   | Whether the node is checked.                                             | `false` |
-| `disabled`     | bool   | Whether the node should be disabled.                                     | `false` |
-| `expanded`     | bool   | Whether the node is expanded (parent nodes).                             | `false` |
-| `icon`         | mixed  | A custom icon for the node.                                              | `null`  |
-| `showCheckbox` | bool   | Whether the node should show a checkbox.                                 | `true`  |
-| `title`        | string | A custom `title` attribute for the node.                                 | `null`  |
-
-### TreeModel Public Properties and Methods
-
-The updated `TreeModel` instance is supplied to the `onCheck` and `onExpand` handlers as the second argument.
-
-| Property/Method      | Type     | Description                                                                     |
-| -------------------- | -------- | ------------------------------------------------------------------------------- |
-| `nodes`              | object   | object holding the nodes of the tree indexed by their `value` property.         |
-| `rootKeys`           | array    | list of node `value` properties of the level '0' nodes.                         |
-| `options`            | object   | collection of properties passed from the input 'props' of `CheckboxTree`.       |
-| `clone  `            | function | method to clone the `TreeModel`: `function()`                                   |
-| `expandAllNodes`     | function | method to expand all parent nodes: `function()`                                 |
-| `expandNodesToLevel` | function | method to expand parent nodes down to a particular level: `function(level)`     |
-| `filter`             | function | method to filter nodes: `function(testFunc)` see further explanation below      |
-| `getChecked`         | function | method to get list of checked nodes: `function()`  list contents based upon `checkModel` |
-| `getDisabled`        | function | method to get list of disabled nodes: `function()`                              |
-| `getExpanded`        | function | method to get list of expanded nodes: `function()`                              |
-| `getNode`            | function | method to get a particular node from the tree: `function(nodeKey)`              |
-| `removeFilter`       | function | method to remove the filter from the TreeModel: `function()`       |
-| `setNewOptions`      | function | method to change the options in the TreeModel: `function(newOptions)`              |
-| `setNodeProp`        | function | method to set a property on a particular node in the TreeModel: `function(nodeKey, propertyName, value)`              |
-| `toggleChecked`      | function | method to toggle the check status of a particular node: `function(nodeKey)`     |
-| `toggleDisabled`     | function | method to toggle the disabled status of a particular node: `function(nodeKey)`  |
-| `toggleExpanded`     | function | method to toggle the expanded status of a particular node: `function(nodeKey)`  |
+> **TODO**: add explanatory text here... `onChange`, `onCheck`, `onClick`, `oncContextMenu`, `onExpand` ...
 
 ### Filtering Nodes
 
-This is a way to reduce the tree by filtering the visible nodes.   TODO: expand on this section....
+The nodes visible in the `CheckBoxTree` can be filtered using the `TreeModel.filter` method.
+
+The `filter` method takes one argument, a test function which determines if the node should be visible. This test function will be provided each node as it's first argument.
+
+```
+// function to determine if node should be visible
+// returns Boolean
+const filterTest = (node) => (
+    // node's label matches the search string
+    node.label.toLocaleLowerCase().indexOf(filterText.toLocaleLowerCase()) > -1
+);
+
+const filteredTree = tree.filter(filterTest);
+setTree(filteredTree);
+
+```
+ See [FilterExample](examples/src/js/FilterExample.jsx) for a complete example.
+ 
+### Replacing Default Label Components
+ 
+ > **TODO**: add explanatory text here...
 
 [docs-controlled]: https://react.dev/learn/sharing-state-between-components#controlled-and-uncontrolled-components
 [docs-state-hooks]: https://react.dev/reference/react/useState
