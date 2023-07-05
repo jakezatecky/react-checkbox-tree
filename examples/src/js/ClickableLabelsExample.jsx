@@ -23,7 +23,7 @@ function ClickExample() {
         console.log(newTree.getExpanded());
     };
 
-    const onClick = (node, tree) => {
+    const onClick = (node) => {
         setClicked(node);
     };
 
