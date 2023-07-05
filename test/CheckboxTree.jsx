@@ -117,11 +117,12 @@ describe('<CheckboxTree />', () => {
         describe('all', () => {
             it('should return checked parent and leaf nodes', async () => {
                 let actual = null;
-                let tree = tree2;
+                let tree = tree2.updateOptions({
+                    checkModel: 'all',
+                });
 
                 render(
                     <CheckboxTree
-                        checkModel="all"
                         tree={tree}
                         onChange={(newTree) => {
                             tree = newTree;
@@ -141,11 +142,12 @@ describe('<CheckboxTree />', () => {
             it('should percolate `checked` to all parents and grandparents if all leaves are checked', async () => {
                 // TODO: this needs a deeper test
                 let actual = null;
-                let tree = tree3;
+                let tree = tree3.updateOptions({
+                    checkModel: 'all',
+                });
 
                 render(
                     <CheckboxTree
-                        checkModel="all"
                         tree={tree}
                         onChange={(newTree) => {
                             tree = newTree;
@@ -164,11 +166,12 @@ describe('<CheckboxTree />', () => {
 
             it('parent.checkState should equal 2 if not all leaves are checked', async () => {
                 let actual = null;
-                let tree = tree4;
+                let tree = tree4.updateOptions({
+                    checkModel: 'all',
+                });
 
                 render(
                     <CheckboxTree
-                        checkModel="all"
                         tree={tree}
                         onChange={(newTree) => {
                             tree = newTree;
@@ -616,12 +619,13 @@ describe('<CheckboxTree />', () => {
     describe('noCascadeChecks', () => {
         it('should not toggle the check state of children when set to true', async () => {
             let actual = null;
-            let tree = tree4;
+            let tree = tree4.updateOptions({
+                checkModel: 'all',
+                noCascadeChecks: true,
+            });
 
             render(
                 <CheckboxTree
-                    checkModel="all"
-                    noCascadeChecks
                     tree={tree}
                     onChange={(newTree) => {
                         tree = newTree;
@@ -966,18 +970,22 @@ describe('<CheckboxTree />', () => {
         // https://github.com/jakezatecky/react-checkbox-tree/issues/258
         it('should toggle a node with an empty `children` array', async () => {
             let actualChecked = [];
-            let tree = new TreeModel([
+            let tree = new TreeModel(
+                [
+                    {
+                        value: 'jupiter',
+                        label: 'Jupiter',
+                        children: [],
+                    },
+                ],
                 {
-                    value: 'jupiter',
-                    label: 'Jupiter',
-                    children: [],
+                    checkModel: 'all',
                 },
-            ]);
+            );
 
             // Unchecked to checked
             const { rerender } = render(
                 <CheckboxTree
-                    checkModel="all"
                     tree={tree}
                     onChange={(newTree) => {
                         tree = newTree;
@@ -996,7 +1004,6 @@ describe('<CheckboxTree />', () => {
             // Checked to unchecked
             rerender(
                 <CheckboxTree
-                    checkModel="all"
                     tree={tree}
                     onChange={(newTree) => {
                         tree = newTree;
@@ -1097,7 +1104,7 @@ describe('<CheckboxTree />', () => {
                     onChange={(newTree) => {
                         tree = newTree;
                     }}
-                    onCheck={(node, treeModel) => {
+                    onCheck={(node) => {
                         actualNode = node;
                     }}
                 />,
@@ -1300,13 +1307,13 @@ describe('<CheckboxTree />', () => {
                     onChange={(newTree) => {
                         tree = newTree;
                     }}
-                    onCheck={(node, treeModel) => {
+                    onCheck={(node) => {
                         checkNode = node;
                     }}
-                    onClick={(node, treeModel) => {
+                    onClick={(node) => {
                         clickNode = node;
                     }}
-                    onExpand={(node, treeModel) => {
+                    onExpand={(node) => {
                         expandNode = node;
                     }}
                 />,

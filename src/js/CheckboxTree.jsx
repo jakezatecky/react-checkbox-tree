@@ -2,7 +2,7 @@ import classNames from 'classnames';
 // import isEqual from 'lodash/isEqual';
 import memoize from 'lodash/memoize';
 import PropTypes from 'prop-types';
-import React, { useMemo } from 'react';
+import React from 'react';
 
 // import CheckboxTreeError from './CheckboxTreeError';
 
@@ -45,7 +45,6 @@ const propTypes = {
     LeafLabelComponent: PropTypes.func,
     ParentLabelComponent: PropTypes.func,
     checkKeys: PropTypes.arrayOf(PropTypes.string),
-    checkModel: PropTypes.oneOf(['leaf', 'all']),
     direction: PropTypes.string,
     disabled: PropTypes.bool,
     expandDisabled: PropTypes.bool,
@@ -57,10 +56,7 @@ const propTypes = {
     name: PropTypes.string,
     nameAsArray: PropTypes.bool,
     nativeCheckboxes: PropTypes.bool,
-    noCascadeChecks: PropTypes.bool,
-    noCascadeDisabled: PropTypes.bool,
     onlyLeafCheckboxes: PropTypes.bool,
-    optimisticToggle: PropTypes.bool,
     showExpandAll: PropTypes.bool,
     showNodeIcon: PropTypes.bool,
     showNodeTitle: PropTypes.bool,
@@ -75,7 +71,6 @@ const propTypes = {
 
 const defaultProps = {
     checkKeys: [KEYS.SPACEBAR, KEYS.ENTER],
-    checkModel: 'leaf',
     direction: 'ltr',
     disabled: false,
     expandDisabled: false,
@@ -90,10 +85,7 @@ const defaultProps = {
     name: undefined,
     nameAsArray: false,
     nativeCheckboxes: false,
-    noCascadeChecks: false,
-    noCascadeDisabled: false,
     onlyLeafCheckboxes: false,
-    optimisticToggle: true,
     showExpandAll: false,
     showNodeIcon: true,
     showNodeTitle: false,
@@ -130,39 +122,15 @@ export default function CheckboxTree({
     showNodeTitle,
     showNodeIcon,
     // for tree model
-    checkModel,
     LabelComponent,
     LeafLabelComponent,
     ParentLabelComponent,
-    noCascadeChecks,
-    noCascadeDisabled,
-    optimisticToggle,
     onLabelChange,
     onLeafLabelChange,
     onParentLabelChange,
 }) {
     const mergedLang = combineMemoized(lang, defaultLang);
     const mergedIcons = combineMemoized(icons, defaultIcons);
-
-    // save nodes prop to check for new value in useEffect
-    // const [prevNodes, setPreviousNodes] = useState();
-
-    // bundle props passed to TreeModel
-    // TODO: how should these be added to TreeModel??????
-    const treeOptions = useMemo(() => ({
-        checkModel,
-        noCascadeChecks,
-        noCascadeDisabled,
-        optimisticToggle,
-    }), [
-        checkModel,
-        noCascadeChecks,
-        noCascadeDisabled,
-        optimisticToggle,
-    ]);
-
-    // insert or update options in tree
-    tree.updateOptions(treeOptions);
 
     //--------------------------------------------------------------------------
 
@@ -174,13 +142,6 @@ export default function CheckboxTree({
 
     //--------------------------------------------------------------------------
     // methods
-
-    // TODO: is this needed?
-    /*
-    const onChangeHandler = () => {
-
-    };
-    */
 
     const onCheckHandler = (nodeKey) => {
         const newTree = tree.toggleChecked(nodeKey);
@@ -233,7 +194,6 @@ export default function CheckboxTree({
     const renderTreeNodes = (childKeys, ancestorDisabled = false) => {
         const treeNodes = childKeys.map((nodeKey) => {
             const node = tree.getNode(nodeKey);
-
             const parent = node.parentKey ? tree.getNode(node.parentKey) : null;
 
             // render only if not marked hidden by filter or
@@ -247,7 +207,7 @@ export default function CheckboxTree({
             let children = null;
             if (node.isParent) {
                 // determine if child nodes should be disabled
-                const disabledByAncestor = !noCascadeDisabled && (
+                const disabledByAncestor = !tree.options.noCascadeDisabled && (
                     ancestorDisabled || node.disabled ||
                     (node.isRadioGroup && node.checkState === 0)
                 );
@@ -275,7 +235,7 @@ export default function CheckboxTree({
                     disabled={disabled || ancestorDisabled || node.disabled}
                     expandDisabled={expandDisabled}
                     expandOnClick={expandOnClick}
-                    noCascadeChecks={noCascadeChecks}
+                    noCascadeChecks={tree.options.noCascadeChecks}
                     node={node}
                     showCheckbox={showCheckbox}
                     showNodeIcon={showNodeIcon}

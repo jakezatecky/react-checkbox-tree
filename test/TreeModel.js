@@ -292,7 +292,7 @@ describe('TreeModel', () => {
         it("should return the array of checked leaf nodes if treeModel.options.checkModel === 'leaf'", () => {
             const expected = ['0-1-0-0'];
             const treeModel = new TreeModel(nestedTree, defaultOptions);
-            const newTreeModel = treeModel.setNewOptions({ checkModel: 'leaf' });
+            const newTreeModel = treeModel.updateOptions({ checkModel: 'leaf' });
             const actual = newTreeModel.getChecked();
 
             assert.deepEqual(expected, actual);
@@ -301,7 +301,7 @@ describe('TreeModel', () => {
         it("should return the array of checked parent nodes if treeModel.options.checkModel === 'parent'", () => {
             const expected = ['0', '0-1', '0-1-0'];
             const treeModel = new TreeModel(nestedTree, defaultOptions);
-            const newTreeModel = treeModel.setNewOptions({ checkModel: 'parent' });
+            const newTreeModel = treeModel.updateOptions({ checkModel: 'parent' });
             const actual = newTreeModel.getChecked();
 
             assert.deepEqual(expected, actual);
@@ -310,7 +310,7 @@ describe('TreeModel', () => {
         it("should return the array of all checked nodes if treeModel.options.checkModel === 'all'", () => {
             const expected = ['0', '0-1', '0-1-0', '0-1-0-0'];
             const treeModel = new TreeModel(nestedTree, defaultOptions);
-            const newTreeModel = treeModel.setNewOptions({ checkModel: 'all' });
+            const newTreeModel = treeModel.updateOptions({ checkModel: 'all' });
             const actual = newTreeModel.getChecked();
 
             assert.deepEqual(expected, actual);
@@ -377,12 +377,12 @@ describe('TreeModel', () => {
         });
     });
 
-    describe('setNewOptions(newOptions)', () => {
+    describe('updateOptions(newOptions)', () => {
         it('should return a new TreeModel with updated options', () => {
             const expected = defaultOptions;
             expected.noCascadeChecks = true;
             const treeModel = new TreeModel(nestedTree, defaultOptions);
-            const newTreeModel = treeModel.setNewOptions({ noCascadeChecks: true });
+            const newTreeModel = treeModel.updateOptions({ noCascadeChecks: true });
 
             assert.deepEqual(expected, newTreeModel.options);
         });

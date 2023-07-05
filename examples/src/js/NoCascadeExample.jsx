@@ -3,7 +3,9 @@ import CheckboxTree, { TreeModel } from 'react-checkbox-tree';
 
 import { fileSystem as nodes } from './data';
 
-const initialTree = new TreeModel(nodes);
+const initialTree = new TreeModel(nodes, {
+    noCascadeChecks: true,
+});
 
 function NoCascadeExample() {
     const [tree, setTree] = useState(initialTree);
@@ -24,7 +26,6 @@ function NoCascadeExample() {
 
     return (
         <CheckboxTree
-            noCascadeChecks
             tree={tree}
             onChange={onChange}
             onCheck={onCheck}

@@ -8,7 +8,6 @@ import Clickable from './Clickable';
 const propTypes = {
     checked: PropTypes.number.isRequired,
     disabled: PropTypes.bool.isRequired,
-    noCascadeChecks: PropTypes.bool.isRequired,
     value: PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.number,
@@ -17,6 +16,7 @@ const propTypes = {
 
     children: PropTypes.node,
     isRadioNode: PropTypes.bool,
+    noCascadeChecks: PropTypes.bool,
     title: PropTypes.string,
     treeId: PropTypes.string,
     onCheckboxKeyUp: PropTypes.func,
@@ -26,6 +26,7 @@ const propTypes = {
 const defaultProps = {
     children: null,
     isRadioNode: false,
+    noCascadeChecks: false,
     title: null,
     treeId: null,
     onCheckboxKeyUp: null,

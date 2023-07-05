@@ -6,7 +6,11 @@ class CheckboxIcon extends React.PureComponent {
     static propTypes = {
         checked: PropTypes.number.isRequired,
         isRadioNode: PropTypes.bool.isRequired,
-        noCascadeChecks: PropTypes.bool.isRequired,
+        noCascadeChecks: PropTypes.bool,
+    };
+
+    static defaultProps = {
+        noCascadeChecks: false,
     };
 
     static contextType = IconContext;

@@ -300,13 +300,6 @@ class TreeModel {
         return newTree;
     }
 
-    // TODO: this method or updateOptions???
-    setNewOptions(newOptions) {
-        const newTree = this.clone();
-        newTree.options = { ...newTree.options, ...newOptions };
-        return newTree;
-    }
-
     setNodeProp(nodeKey, propertyName, value) {
         const newTree = this.clone();
         const newNode = this.getNode(nodeKey).clone();
@@ -403,8 +396,14 @@ class TreeModel {
         return newTree;
     }
 
-    //--------------------------------------------------------------------------
+    updateOptions(newOptions) {
+        const newTree = this.clone();
+        newTree.options = { ...newTree.options, ...newOptions };
+        return newTree;
+    }
+
     // Private functions
+    //--------------------------------------------------------------------------
 
     getCheckState(node) {
         if (this.isEveryChildChecked(node)) {
@@ -463,10 +462,6 @@ class TreeModel {
                 this.nodes[childKey] = newNode;
             }
         });
-    }
-
-    updateOptions(newOptions) {
-        this.options = { ...this.options, ...newOptions };
     }
 
     //--------------------------------------------------------------------------

@@ -3,7 +3,9 @@ import CheckboxTree, { TreeModel } from 'react-checkbox-tree';
 
 import { fileSystem as nodes } from './data';
 
-const initialTree = new TreeModel(nodes);
+const initialTree = new TreeModel(nodes, {
+    optimisticToggle: false,
+});
 
 function PessimisticToggleExample() {
     const [tree, setTree] = useState(initialTree);
@@ -24,7 +26,6 @@ function PessimisticToggleExample() {
 
     return (
         <CheckboxTree
-            optimisticToggle={false}
             tree={tree}
             onChange={onChange}
             onCheck={onCheck}
