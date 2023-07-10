@@ -691,7 +691,7 @@ describe('<CheckboxTree />', () => {
                 assert.isTrue(screen.getByLabelText('Jupiter').disabled);
             });
 
-            it('should disable the child nodes when `noCascadeDisabled` is false', () => {
+            it('should disable the child nodes when `disabledCascade` is true', () => {
                 let tree = new TreeModel([
                     {
                         value: 'jupiter',
@@ -716,7 +716,7 @@ describe('<CheckboxTree />', () => {
                 assert.isTrue(screen.getByLabelText('Europa').disabled);
             });
 
-            it('should NOT disable the child nodes when `noCascadeDisabled` is true', () => {
+            it('should NOT disable the child nodes when `disabledCascade` is false', () => {
                 // TODO: figure out about TreeModel options
                 let tree = new TreeModel([
                     {
@@ -728,11 +728,10 @@ describe('<CheckboxTree />', () => {
                             { value: 'europa', label: 'Europa' },
                         ],
                     },
-                ], { noCascadeDisabled: true });
+                ], { disabledCascade: false });
 
                 render(
                     <CheckboxTree
-                        noCascadeDisabled
                         tree={tree}
                         onChange={(newTree) => {
                             tree = newTree;

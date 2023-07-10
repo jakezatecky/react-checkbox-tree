@@ -44,7 +44,7 @@ const defaultOptions = {
     checkModel: 'leaf',
     disabled: false,
     noCascadeChecks: false,
-    noCascadeDisabled: false,
+    disabledCascade: true,
     optimisticToggle: true,
     setTreeModel: () => {},
 };
@@ -318,11 +318,38 @@ describe('TreeModel', () => {
     });
 
     describe('getDisabled()', () => {
-        it('should return the array of disabled nodes', () => {
-            const expected = ['0-1-0', '0-1-1', '0-1'];
+        it("should return disabled nodes based upon 'disabledCascade` option in tree.options", () => {
+            const expected1 = ['0-1', '0-1-0', '0-1-0-0', '0-1-1', '0-1-1-0'];
+
+            let treeModel = new TreeModel(nestedTree, { ...defaultOptions, disabledCascade: true });
+            let newTreeModel = treeModel.toggleDisabled('0-1');
+            const actual1 = newTreeModel.getDisabled();
+
+            const expected2 = ['0-1', '0-1-0-0'];
+            treeModel = new TreeModel(nestedTree, { ...defaultOptions, disabledCascade: false });
+            newTreeModel = treeModel.toggleDisabled('0-1');
+            newTreeModel = newTreeModel.toggleDisabled('0-1-0-0');
+            const actual2 = newTreeModel.getDisabled();
+
+            assert.deepEqual(expected1, actual1);
+            assert.deepEqual(expected2, actual2);
+        });
+
+        it('should return nodes with disabled property = true and their children when disabledCascade = true', () => {
+            const expected = ['0-1', '0-1-0', '0-1-0-0', '0-1-1', '0-1-1-0'];
             const treeModel = new TreeModel(nestedTree, defaultOptions);
             const newTreeModel = treeModel.toggleDisabled('0-1');
-            const actual = newTreeModel.getDisabled();
+            const actual = newTreeModel.getDisabled(true);
+
+            assert.deepEqual(expected, actual);
+        });
+
+        it('should return only nodes with disabled property = true when disabledCascade = false', () => {
+            const expected = ['0-1', '0-1-0-0'];
+            const treeModel = new TreeModel(nestedTree, defaultOptions);
+            let newTreeModel = treeModel.toggleDisabled('0-1');
+            newTreeModel = newTreeModel.toggleDisabled('0-1-0-0');
+            const actual = newTreeModel.getDisabled(false);
 
             assert.deepEqual(expected, actual);
         });
@@ -440,21 +467,23 @@ describe('TreeModel', () => {
 
     describe('toggleDisabled(nodeKey)', () => {
         it('should return a new TreeModel with disabled property toggled on node with value === nodeKey', () => {
-            const expected = ['0-1-0', '0-1-1', '0-1'];
+            const expected = ['0-1'];
             const treeModel = new TreeModel(nestedTree, defaultOptions);
             const newTreeModel = treeModel.toggleDisabled('0-1');
-            const actual = newTreeModel.getDisabled();
+            const actual = newTreeModel.getDisabled(false);
 
             assert.deepEqual(expected, actual);
         });
 
-        it('should not disable child nodes if noCascadeDisabled === true', () => {
-            const expected = ['0-1'];
+        // actually toggleDisabled never toggles child nodes!
+        it('should not disable child nodes if disabledCascade === false', () => {
+            const expected = ['0-1', '0-1-0-0'];
             const treeModel = new TreeModel(
                 nestedTree,
-                { ...defaultOptions, noCascadeDisabled: true },
+                { ...defaultOptions, disabledCascade: false },
             );
-            const newTreeModel = treeModel.toggleDisabled('0-1');
+            let newTreeModel = treeModel.toggleDisabled('0-1');
+            newTreeModel = newTreeModel.toggleDisabled('0-1-0-0');
             const actual = newTreeModel.getDisabled();
 
             assert.deepEqual(expected, actual);

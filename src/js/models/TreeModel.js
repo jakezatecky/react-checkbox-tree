@@ -6,27 +6,15 @@ class TreeModel {
     constructor(treeConfig, options = {
         checkModel: CHECK_MODEL.LEAF,
         noCascadeChecks: false,
-        noCascadeDisabled: false,
+        disabledCascade: true,
         optimisticToggle: true,
     }) {
-        const { noCascadeDisabled } = options;
-
-        //----------------------------------------------------------------------
         // function to flatten tree from a deep object to a flat object
         const flatten = (childNodes, parent = {}, depth = 0) => {
             if (Array.isArray(childNodes) && childNodes.length !== 0) {
                 childNodes.forEach((node, index) => {
                     const newNode = new NodeModel(node, parent, index, depth);
 
-                    // cascade disabled property down to children
-                    // this makes tree have consistent disabled state
-                    // this already happens in treeNode if noCascadeDisabled = false
-                    if (!noCascadeDisabled) {
-                        newNode.disabled = parent.disabled || newNode.disabled;
-                    }
-
-                    // noCascadeChecks is not relevant here
-                    // noCascadeDisabled is
                     if (newNode.isParent && node.children.length > 0) {
                         flatten(node.children, newNode, depth + 1);
 
@@ -262,13 +250,26 @@ class TreeModel {
     }
     */
 
-    getDisabled() {
+    getDisabled(disabledCascade = this.options.disabledCascade) {
         const disabledArray = [];
-        Object.keys(this.nodes).forEach((key) => {
-            if (this.nodes[key].disabled) {
-                disabledArray.push(key);
+
+        const walkTree = (nodeKey, ancestorDisabled = false) => {
+            const node = this.getNode(nodeKey);
+            const disabled = node.disabled || (disabledCascade && ancestorDisabled);
+            if (disabled) {
+                disabledArray.push(nodeKey);
             }
+            if (node.childKeys) {
+                node.childKeys.forEach((key) => {
+                    walkTree(key, disabled);
+                });
+            }
+        };
+
+        this.rootKeys.forEach((key) => {
+            walkTree(key);
         });
+
         return disabledArray;
     }
 
@@ -312,6 +313,8 @@ class TreeModel {
         // TODO: should these options be able to be overidden with an options argument
         const { noCascadeChecks, optimisticToggle } = this.options;
         const node = this.getNode(nodeKey);
+
+        // TODO: what about ancestor.disabled? and disabledCascade
 
         // NOTE: disabled may not be needed here
         //       toggleChecked does not get called if node is disabled
@@ -385,7 +388,9 @@ class TreeModel {
     }
 
     toggleDisabled(nodeKey) {
-        const toggleChildren = !this.options.noCascadeDisabled;
+        // do not change children - they are handled in CheckboxTree when rendered
+        // const toggleChildren = this.options.disabledCascade;
+        const toggleChildren = false;
         const newTree = this.toggleProperty(nodeKey, 'disabled', toggleChildren);
         return newTree;
     }
@@ -462,25 +467,6 @@ class TreeModel {
                 this.nodes[childKey] = newNode;
             }
         });
-    }
-
-    //--------------------------------------------------------------------------
-    // TODO: these functions need review
-
-    getDisabledState(nodeKey, disabledProp, noCascade) {
-        // TODO: how to handle disabledProp and noCascade
-        //       are they in this.options? or passed
-        const node = this.getNode(nodeKey);
-        const parent = this.getNode(node.parentKey);
-        if (disabledProp) {
-            return true;
-        }
-
-        if (!noCascade && parent.disabled) {
-            return true;
-        }
-
-        return Boolean(node.disabled);
     }
 }
 
