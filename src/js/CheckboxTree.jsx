@@ -1,8 +1,12 @@
 import classNames from 'classnames';
-import isEqual from 'lodash/isEqual';
+// import isEqual from 'lodash/isEqual';
 import memoize from 'lodash/memoize';
 import PropTypes from 'prop-types';
 import React from 'react';
+
+// import CheckboxTreeError from './CheckboxTreeError';
+
+import TreeModel from './models/TreeModel';
 
 import GlobalActions from './components/GlobalActions';
 import HiddenInput from './components/HiddenInput';
@@ -10,11 +14,11 @@ import TreeNode from './components/TreeNode';
 import defaultLang from './lang/default';
 import iconsShape from './shapes/iconsShape';
 import languageShape from './shapes/languageShape';
-import listShape from './shapes/listShape';
-import nodeShape from './shapes/nodeShape';
-import { CHECK_MODEL, KEYS } from './constants';
+// import listShape from './shapes/listShape';
+// import nodeShape from './shapes/nodeShape';
+// import treeShape from './shapes/treeShape';
+import { KEYS } from './constants';
 import { IconContext, LanguageContext } from './contexts';
-import NodeModel from './NodeModel';
 
 const combineMemoized = memoize((newValue, defaultValue) => ({ ...defaultValue, ...newValue }));
 
@@ -29,269 +33,219 @@ const defaultIcons = {
     parentClose: <span className="rct-icon rct-icon-parent-close" />,
     parentOpen: <span className="rct-icon rct-icon-parent-open" />,
     leaf: <span className="rct-icon rct-icon-leaf" />,
+    radioOff: <span className="rct-icon rct-icon-radio-off" />,
+    radioOn: <span className="rct-icon rct-icon-radio-on" />,
 };
 
-class CheckboxTree extends React.Component {
-    static propTypes = {
-        nodes: PropTypes.arrayOf(nodeShape).isRequired,
+const propTypes = {
+    tree: PropTypes.instanceOf(TreeModel).isRequired,
+    onChange: PropTypes.func.isRequired,
 
-        checkKeys: PropTypes.arrayOf(PropTypes.string),
-        checkModel: PropTypes.oneOf([CHECK_MODEL.LEAF, CHECK_MODEL.ALL]),
-        checked: listShape,
-        direction: PropTypes.string,
-        disabled: PropTypes.bool,
-        expandDisabled: PropTypes.bool,
-        expandOnClick: PropTypes.bool,
-        expanded: listShape,
-        icons: iconsShape,
-        iconsClass: PropTypes.string,
-        id: PropTypes.string,
-        lang: languageShape,
-        name: PropTypes.string,
-        nameAsArray: PropTypes.bool,
-        nativeCheckboxes: PropTypes.bool,
-        noCascade: PropTypes.bool,
-        onlyLeafCheckboxes: PropTypes.bool,
-        optimisticToggle: PropTypes.bool,
-        showExpandAll: PropTypes.bool,
-        showNodeIcon: PropTypes.bool,
-        showNodeTitle: PropTypes.bool,
-        onCheck: PropTypes.func,
-        onClick: PropTypes.func,
-        onContextMenu: PropTypes.func,
-        onExpand: PropTypes.func,
-    };
+    LabelComponent: PropTypes.func,
+    LeafLabelComponent: PropTypes.func,
+    ParentLabelComponent: PropTypes.func,
+    checkKeys: PropTypes.arrayOf(PropTypes.string),
+    direction: PropTypes.string,
+    disabled: PropTypes.bool,
+    expandDisabled: PropTypes.bool,
+    expandOnClick: PropTypes.bool,
+    icons: iconsShape,
+    iconsClass: PropTypes.string,
+    id: PropTypes.string,
+    lang: languageShape,
+    name: PropTypes.string,
+    nameAsArray: PropTypes.bool,
+    nativeCheckboxes: PropTypes.bool,
+    onlyLeafCheckboxes: PropTypes.bool,
+    showExpandAll: PropTypes.bool,
+    showNodeIcon: PropTypes.bool,
+    showNodeTitle: PropTypes.bool,
+    onCheck: PropTypes.func,
+    onClick: PropTypes.func,
+    onContextMenu: PropTypes.func,
+    onExpand: PropTypes.func,
+    onLabelChange: PropTypes.func,
+    onLeafLabelChange: PropTypes.func,
+    onParentLabelChange: PropTypes.func,
+};
 
-    static defaultProps = {
-        checkKeys: [KEYS.SPACEBAR, KEYS.ENTER],
-        checkModel: CHECK_MODEL.LEAF,
-        checked: [],
-        direction: 'ltr',
-        disabled: false,
-        expandDisabled: false,
-        expandOnClick: false,
-        expanded: [],
-        icons: defaultIcons,
-        iconsClass: 'fa5',
-        id: null,
-        lang: defaultLang,
-        name: undefined,
-        nameAsArray: false,
-        nativeCheckboxes: false,
-        noCascade: false,
-        onlyLeafCheckboxes: false,
-        optimisticToggle: true,
-        showExpandAll: false,
-        showNodeIcon: true,
-        showNodeTitle: false,
-        onCheck: () => {},
-        onClick: null,
-        onContextMenu: null,
-        onExpand: () => {},
-    };
+const defaultProps = {
+    checkKeys: [KEYS.SPACEBAR, KEYS.ENTER],
+    direction: 'ltr',
+    disabled: false,
+    expandDisabled: false,
+    expandOnClick: false,
+    icons: defaultIcons,
+    iconsClass: 'fa5',
+    id: null,
+    lang: defaultLang,
+    LabelComponent: null,
+    LeafLabelComponent: null,
+    ParentLabelComponent: null,
+    name: undefined,
+    nameAsArray: false,
+    nativeCheckboxes: false,
+    onlyLeafCheckboxes: false,
+    showExpandAll: false,
+    showNodeIcon: true,
+    showNodeTitle: false,
+    onCheck: () => {},
+    onClick: null,
+    onContextMenu: null,
+    onExpand: () => {},
+    onLabelChange: null,
+    onLeafLabelChange: null,
+    onParentLabelChange: null,
+};
 
-    constructor(props) {
-        super(props);
+export default function CheckboxTree({
+    direction,
+    disabled,
+    expandDisabled,
+    icons,
+    iconsClass,
+    id,
+    lang,
+    name,
+    nameAsArray,
+    nativeCheckboxes,
+    showExpandAll,
+    tree,
+    checkKeys,
+    expandOnClick,
+    onChange,
+    onCheck,
+    onClick,
+    onContextMenu,
+    onExpand,
+    onlyLeafCheckboxes,
+    showNodeTitle,
+    showNodeIcon,
+    // for tree model
+    LabelComponent,
+    LeafLabelComponent,
+    ParentLabelComponent,
+    onLabelChange,
+    onLeafLabelChange,
+    onParentLabelChange,
+}) {
+    const mergedLang = combineMemoized(lang, defaultLang);
+    const mergedIcons = combineMemoized(icons, defaultIcons);
 
-        const model = new NodeModel(props);
-        model.flattenNodes(props.nodes);
-        model.deserializeLists({
-            checked: props.checked,
-            expanded: props.expanded,
-        });
+    //--------------------------------------------------------------------------
 
-        this.state = {
-            model,
-            prevProps: props,
-        };
-
-        this.onCheck = this.onCheck.bind(this);
-        this.onContextMenu = this.onContextMenu.bind(this);
-        this.onExpand = this.onExpand.bind(this);
-        this.onNodeClick = this.onNodeClick.bind(this);
-        this.onExpandAll = this.onExpandAll.bind(this);
-        this.onCollapseAll = this.onCollapseAll.bind(this);
+    // TODO: this may not be needed as TreeModel is required
+    // should throw error?
+    if (!(tree instanceof TreeModel)) {
+        return null;
     }
 
-    static getDerivedStateFromProps(newProps, prevState) {
-        const { model, prevProps } = prevState;
-        const { disabled, nodes } = newProps;
-        const newState = { ...prevState, prevProps: newProps };
+    //--------------------------------------------------------------------------
+    // methods
 
-        // Apply new properties to model
-        model.setProps(newProps);
+    const onCheckHandler = (nodeKey) => {
+        const newTree = tree.toggleChecked(nodeKey);
+        const checkedNode = newTree.getNode(nodeKey);
 
-        // Since flattening nodes is an expensive task, only update when there is a node change
-        if (!isEqual(prevProps.nodes, nodes) || prevProps.disabled !== disabled) {
-            model.reset();
-            model.flattenNodes(nodes);
+        // TODO: should toggleChecked return false if no change??
+        // probably...
+
+        // toggleChecked returns original tree if the check is not
+        // changed due to being disabled or being an already checked
+        // radio node so we ignore the check change attempt
+        if (newTree !== tree) {
+            onCheck(checkedNode, newTree);
+            onChange(newTree);
         }
+    };
 
-        model.deserializeLists({
-            checked: newProps.checked,
-            expanded: newProps.expanded,
-        });
+    const onCollapseAll = () => {
+        const newTree = tree.expandAllNodes(false);
+        // onExpand('', newTree);
+        onChange(newTree);
+    };
 
-        return newState;
-    }
-
-    onContextMenu(node) {
-        const { onContextMenu } = this.props;
-
-        return (event) => {
+    const onContextMenuHandler = (node) => (event) => {
+        if (typeof onContextMenu === 'function') {
             onContextMenu(event, node);
-        };
-    }
-
-    onCheck(nodeInfo) {
-        const { checkModel, noCascade, onCheck } = this.props;
-        const { model } = this.state;
-        const newModel = model.clone();
-        const node = newModel.getNode(nodeInfo.value);
-
-        newModel.toggleChecked(nodeInfo, nodeInfo.checked, checkModel, noCascade);
-        onCheck(newModel.serializeList('checked'), { ...node, ...nodeInfo });
-    }
-
-    onExpand(nodeInfo) {
-        const { onExpand } = this.props;
-        const { model } = this.state;
-        const newModel = model.clone();
-        const node = newModel.getNode(nodeInfo.value);
-
-        newModel.toggleNode(nodeInfo.value, 'expanded', nodeInfo.expanded);
-        onExpand(newModel.serializeList('expanded'), { ...node, ...nodeInfo });
-    }
-
-    onNodeClick(nodeInfo) {
-        const { onClick } = this.props;
-        const { model } = this.state;
-        const node = model.getNode(nodeInfo.value);
-
-        onClick({ ...node, ...nodeInfo });
-    }
-
-    onExpandAll() {
-        this.expandAllNodes();
-    }
-
-    onCollapseAll() {
-        this.expandAllNodes(false);
-    }
-
-    expandAllNodes(expand = true) {
-        const { onExpand } = this.props;
-        const { model } = this.state;
-
-        onExpand(
-            model.clone()
-                .expandAllNodes(expand)
-                .serializeList('expanded'),
-        );
-    }
-
-    determineShallowCheckState(node, noCascade) {
-        const { model } = this.state;
-        const flatNode = model.getNode(node.value);
-
-        if (flatNode.isLeaf || noCascade || node.children.length === 0) {
-            // Note that an empty parent node tracks its own state
-            return flatNode.checked ? 1 : 0;
         }
+    };
 
-        if (this.isEveryChildChecked(node)) {
-            return 1;
+    const onExpandHandler = (nodeKey) => {
+        const newTree = tree.toggleExpanded(nodeKey);
+        const expandedNode = newTree.getNode(nodeKey);
+        onExpand(expandedNode, newTree);
+        onChange(newTree);
+    };
+
+    const onExpandAll = () => {
+        if (!expandDisabled) {
+            const newTree = tree.expandAllNodes(true);
+            // onExpand('', newTree);
+            onChange(newTree);
         }
+    };
 
-        if (this.isSomeChildChecked(node)) {
-            return 2;
-        }
+    const onNodeClick = (nodeKey) => {
+        const clickedNode = tree.getNode(nodeKey);
+        onClick(clickedNode, tree);
+    };
 
-        return 0;
-    }
+    const renderTreeNodes = (childKeys, ancestorDisabled = false) => {
+        const treeNodes = childKeys.map((nodeKey) => {
+            const node = tree.getNode(nodeKey);
+            const parent = node.parentKey ? tree.getNode(node.parentKey) : null;
 
-    isEveryChildChecked(node) {
-        const { model } = this.state;
-
-        return node.children.every(
-            (child) => model.getNode(child.value).checkState === 1,
-        );
-    }
-
-    isSomeChildChecked(node) {
-        const { model } = this.state;
-
-        return node.children.some(
-            (child) => model.getNode(child.value).checkState > 0,
-        );
-    }
-
-    renderTreeNodes(nodes, parent = {}) {
-        const {
-            checkKeys,
-            expandDisabled,
-            expandOnClick,
-            id,
-            noCascade,
-            onClick,
-            onlyLeafCheckboxes,
-            optimisticToggle,
-            showNodeTitle,
-            showNodeIcon,
-        } = this.props;
-        const { model } = this.state;
-
-        const treeNodes = nodes.map((node) => {
-            const key = node.value;
-            const flatNode = model.getNode(node.value);
-            const children = flatNode.isParent ? this.renderTreeNodes(node.children, node) : null;
-
-            // Determine the check state after all children check states have been determined
-            // This is done during rendering as to avoid an additional loop during the
-            // deserialization of the `checked` property
-            flatNode.checkState = this.determineShallowCheckState(node, noCascade);
-
-            // Show checkbox only if this is a leaf node or showCheckbox is true
-            const showCheckbox = onlyLeafCheckboxes ? flatNode.isLeaf : flatNode.showCheckbox;
-
-            // Render only if parent is expanded or if there is no root parent
-            const parentExpanded = parent.value ? model.getNode(parent.value).expanded : true;
-
-            if (!parentExpanded) {
+            // render only if not marked hidden by filter or
+            // if parent is expanded or if there is no parent
+            const parentExpanded = parent ? parent.expanded : true;
+            if (node.isHiddenByFilter || !parentExpanded) {
                 return null;
             }
+
+            // render child nodes here after determining to render this node
+            let children = null;
+            if (node.isParent) {
+                // determine if child nodes should be disabled
+                const disabledByAncestor = (node.isRadioGroup && node.checkState === 0) ||
+                    (tree.options.disabledCascade && (ancestorDisabled || node.disabled));
+
+                children = renderTreeNodes(node.childKeys, disabledByAncestor);
+            }
+
+            // Show checkbox only if this is a leaf node or showCheckbox is true
+            const showCheckbox = onlyLeafCheckboxes ? node.isLeaf : node.showCheckbox;
 
             // Prepare node information for context menu usage
             const nodeContext = {
                 ...node,
-                checked: flatNode.checkState,
-                expanded: flatNode.expanded,
+                checked: (node.checkState > 0),
+                expanded: node.expanded,
             };
 
             return (
                 <TreeNode
-                    key={key}
+                    key={node.value}
+                    LabelComponent={LabelComponent}
+                    LeafLabelComponent={LeafLabelComponent}
+                    ParentLabelComponent={ParentLabelComponent}
                     checkKeys={checkKeys}
-                    checked={flatNode.checkState}
-                    className={node.className}
-                    disabled={flatNode.disabled}
+                    disabled={disabled || ancestorDisabled || node.disabled}
                     expandDisabled={expandDisabled}
                     expandOnClick={expandOnClick}
-                    expanded={flatNode.expanded}
-                    icon={node.icon}
-                    isLeaf={flatNode.isLeaf}
-                    isParent={flatNode.isParent}
-                    label={node.label}
-                    optimisticToggle={optimisticToggle}
+                    noCascadeChecks={tree.options.noCascadeChecks}
+                    node={node}
                     showCheckbox={showCheckbox}
                     showNodeIcon={showNodeIcon}
-                    title={showNodeTitle ? node.title || node.label : node.title}
+                    showNodeTitle={showNodeTitle}
                     treeId={id}
-                    value={node.value}
-                    onCheck={this.onCheck}
-                    onClick={onClick && this.onNodeClick}
-                    onContextMenu={this.onContextMenu(nodeContext)}
-                    onExpand={this.onExpand}
+                    onCheck={onCheckHandler}
+                    onClick={onClick && onNodeClick}
+                    onContextMenu={onContextMenuHandler(nodeContext)}
+                    onExpand={onExpandHandler}
+                    onLabelChange={onLabelChange}
+                    onLeafLabelChange={onLeafLabelChange}
+                    onParentLabelChange={onParentLabelChange}
                 >
                     {children}
                 </TreeNode>
@@ -303,59 +257,46 @@ class CheckboxTree extends React.Component {
                 {treeNodes}
             </ol>
         );
-    }
+    };
 
-    renderGlobalOptions() {
-        const { showExpandAll } = this.props;
+    //--------------------------------------------------------------------------
+    // render CheckboxTree
+    const treeNodes = renderTreeNodes(tree.rootKeys);
 
-        return showExpandAll ? (
-            <GlobalActions onCollapseAll={this.onCollapseAll} onExpandAll={this.onExpandAll} />
-        ) : null;
-    }
+    const className = classNames({
+        'react-checkbox-tree': true,
+        'rct-disabled': disabled,
+        [`rct-icons-${iconsClass}`]: true,
+        'rct-native-display': nativeCheckboxes,
+        'rct-direction-rtl': direction === 'rtl',
+    });
 
-    renderHiddenInput() {
-        const { checked, name, nameAsArray } = this.props;
+    return (
+        <LanguageContext.Provider value={mergedLang}>
+            <IconContext.Provider value={mergedIcons}>
+                <div className={className} id={id}>
 
-        return name !== undefined ? (
-            <HiddenInput checked={checked} name={name} nameAsArray={nameAsArray} />
-        ) : null;
-    }
+                    {showExpandAll ? (
+                        <GlobalActions
+                            onCollapseAll={onCollapseAll}
+                            onExpandAll={onExpandAll}
+                        />
+                    ) : null}
 
-    render() {
-        const {
-            direction,
-            disabled,
-            icons,
-            iconsClass,
-            id,
-            lang,
-            nodes,
-            nativeCheckboxes,
-        } = this.props;
-        const mergedLang = combineMemoized(lang, defaultLang);
-        const mergedIcons = combineMemoized(icons, defaultIcons);
-        const treeNodes = this.renderTreeNodes(nodes);
+                    {name !== undefined ? (
+                        <HiddenInput
+                            checked={tree.getChecked()}
+                            name={name}
+                            nameAsArray={nameAsArray}
+                        />
+                    ) : null}
 
-        const className = classNames({
-            'react-checkbox-tree': true,
-            'rct-disabled': disabled,
-            [`rct-icons-${iconsClass}`]: true,
-            'rct-native-display': nativeCheckboxes,
-            'rct-direction-rtl': direction === 'rtl',
-        });
-
-        return (
-            <LanguageContext.Provider value={mergedLang}>
-                <IconContext.Provider value={mergedIcons}>
-                    <div className={className} id={id}>
-                        {this.renderGlobalOptions()}
-                        {this.renderHiddenInput()}
-                        {treeNodes}
-                    </div>
-                </IconContext.Provider>
-            </LanguageContext.Provider>
-        );
-    }
+                    {treeNodes}
+                </div>
+            </IconContext.Provider>
+        </LanguageContext.Provider>
+    );
 }
 
-export default CheckboxTree;
+CheckboxTree.propTypes = propTypes;
+CheckboxTree.defaultProps = defaultProps;

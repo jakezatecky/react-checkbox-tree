@@ -52,6 +52,9 @@
       <h2>Disabled Example</h2>
       <div id="disabled-example"></div>
 
+      <h2>Native Checkboxes Example</h2>
+      <div id="native-checkboxes-example"></div>
+
       <h2>No Cascading Example</h2>
       <p>
         By default, the check state of children determine the check state of a parent. Similarly, checking or unchecking
@@ -73,8 +76,8 @@
         property, the tree will instead call the provided function and will restrict toggling to the checkbox icon.
       </p>
       <p>
-        When the <code>onClick</code> function is defined, passing the <code>expandOnClick</code> property will also
-        expand the clicked node automatically.
+        When the <code>onClick</code> function is defined, passing the <code>expandOnClick</code> property will
+        cause the clicked node to expand/contract when clicked.
       </p>
       <div id="clickable-labels-example"></div>
 
@@ -99,6 +102,25 @@
       <h2>Filter Example</h2>
 	    <p>Filtering tree nodes is possible.</p>
       <div id="filter-example"></div>
+
+      <h2>Radio Button Group Example</h2>
+      <p>
+        By adding <code>isRadioGroup: true</code> to a node in the tree initial
+        configuration, that node's children will work as a Radio Group.
+      </p>
+      <div id="radio-button-example"></div>
+
+      <h2>Custom Label Example</h2>
+      <p>
+        A custom label component can be passed to replace the default label
+        component. All labels can be replaced with the same component or parent
+        and leaf nodes can have different replacement label components.
+      </p>
+      <p>
+        See <code>LabelComponent</code>, <code>LeafLabelComponent</code>, and
+        <code>ParentLabelComponent</code> properties of <code>CheckboxTree</code>.
+      </p>
+      <div id="custom-label-example"></div>
 
       <footer class="site-footer">
         <span class="site-footer-owner">

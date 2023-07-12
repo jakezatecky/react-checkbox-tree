@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import CheckboxTree, { TreeModel } from 'react-checkbox-tree';
 
-import { fileSystem as nodes } from './data';
+import { fileSystemRadio as nodes } from './data';
 
 const initialTree = new TreeModel(nodes);
 
-function DisabledExample() {
+function NativeCheckboxExample() {
     const [tree, setTree] = useState(initialTree);
 
     const onChange = (newTree) => {
@@ -24,7 +24,7 @@ function DisabledExample() {
 
     return (
         <CheckboxTree
-            disabled
+            nativeCheckboxes
             tree={tree}
             onChange={onChange}
             onCheck={onCheck}
@@ -33,4 +33,4 @@ function DisabledExample() {
     );
 }
 
-export default DisabledExample;
+export default NativeCheckboxExample;

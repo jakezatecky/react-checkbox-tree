@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import CheckboxTree, { TreeModel } from 'react-checkbox-tree';
 
-import { fileSystem as nodes } from './data';
+import nodes from './data/mapLayerTree';
 
 const initialTree = new TreeModel(nodes);
 
-function DisabledExample() {
+function RadioButtonExample() {
     const [tree, setTree] = useState(initialTree);
 
     const onChange = (newTree) => {
@@ -24,7 +24,6 @@ function DisabledExample() {
 
     return (
         <CheckboxTree
-            disabled
             tree={tree}
             onChange={onChange}
             onCheck={onCheck}
@@ -33,4 +32,4 @@ function DisabledExample() {
     );
 }
 
-export default DisabledExample;
+export default RadioButtonExample;

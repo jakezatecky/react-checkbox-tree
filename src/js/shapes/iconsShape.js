@@ -11,6 +11,9 @@ const icons = PropTypes.shape({
     parentClose: PropTypes.node,
     parentOpen: PropTypes.node,
     leaf: PropTypes.node,
+    radioOff: PropTypes.node,
+    radioOn: PropTypes.node,
+
 });
 
 export default icons;

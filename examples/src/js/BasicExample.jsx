@@ -1,31 +1,32 @@
 import React, { useState } from 'react';
-import CheckboxTree from 'react-checkbox-tree';
+import CheckboxTree, { TreeModel } from 'react-checkbox-tree';
 
-import { fileSystem as nodes } from './common';
+import { fileSystem as nodes } from './data';
+
+const initialTree = new TreeModel(nodes);
 
 function BasicExample() {
-    const [checked, setChecked] = useState([
-        '/app/Http/Controllers/WelcomeController.js',
-        '/app/Http/routes.js',
-        '/public/assets/style.css',
-        '/public/index.html',
-        '/.gitignore',
-    ]);
-    const [expanded, setExpanded] = useState(['/app']);
+    const [tree, setTree] = useState(initialTree);
 
-    const onCheck = (value) => {
-        setChecked(value);
+    const onChange = (newTree) => {
+        setTree(newTree);
     };
 
-    const onExpand = (value) => {
-        setExpanded(value);
+    const onCheck = (changedNode, newTree) => {
+        console.log(`changed node = ${changedNode.label}`);
+        console.log(newTree.getChecked());
+    };
+
+    const onExpand = (changedNode, newTree) => {
+        console.log(`changed node = ${changedNode.label} => expanded = ${changedNode.expanded}`);
+        console.log(newTree.getExpanded());
     };
 
     return (
         <CheckboxTree
-            checked={checked}
-            expanded={expanded}
-            nodes={nodes}
+            id="my-awesome-id"
+            tree={tree}
+            onChange={onChange}
             onCheck={onCheck}
             onExpand={onExpand}
         />

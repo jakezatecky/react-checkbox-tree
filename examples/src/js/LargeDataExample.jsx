@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import CheckboxTree from 'react-checkbox-tree';
+import CheckboxTree, { TreeModel } from 'react-checkbox-tree';
 
 function makeLargeDataSet() {
     const parents = [];
@@ -29,24 +29,29 @@ function makeLargeDataSet() {
 }
 
 const nodes = makeLargeDataSet();
+const initialTree = new TreeModel(nodes);
 
 function LargeDataExample() {
-    const [checked, setChecked] = useState([]);
-    const [expanded, setExpanded] = useState([]);
+    const [tree, setTree] = useState(initialTree);
 
-    const onCheck = (value) => {
-        setChecked(value);
+    const onChange = (newTree) => {
+        setTree(newTree);
     };
 
-    const onExpand = (value) => {
-        setExpanded(value);
+    const onCheck = (changedNode, newTree) => {
+        console.log(`changed node = ${changedNode.label}`);
+        console.log(newTree.getChecked());
+    };
+
+    const onExpand = (changedNode, newTree) => {
+        console.log(`changed node = ${changedNode.label} => expanded = ${changedNode.expanded}`);
+        console.log(newTree.getExpanded());
     };
 
     return (
         <CheckboxTree
-            checked={checked}
-            expanded={expanded}
-            nodes={nodes}
+            tree={tree}
+            onChange={onChange}
             onCheck={onCheck}
             onExpand={onExpand}
         />

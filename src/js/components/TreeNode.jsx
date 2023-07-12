@@ -4,52 +4,57 @@ import React from 'react';
 
 import { KEYS } from '../constants';
 import { IconContext } from '../contexts';
+
+import NodeModel from '../models/NodeModel';
+
+import BareLabel from './BareLabel';
+import CheckboxLabel from './CheckboxLabel';
 import ExpandButton from './ExpandButton';
-import NativeCheckbox from './NativeCheckbox';
-import NodeIcon from './NodeIcon';
+import DefaultLabel from './DefaultLabel';
 
 class TreeNode extends React.PureComponent {
     static contextType = IconContext;
 
     static propTypes = {
         checkKeys: PropTypes.arrayOf(PropTypes.string).isRequired,
-        checked: PropTypes.number.isRequired,
         disabled: PropTypes.bool.isRequired,
         expandDisabled: PropTypes.bool.isRequired,
-        expanded: PropTypes.bool.isRequired,
-        isLeaf: PropTypes.bool.isRequired,
-        isParent: PropTypes.bool.isRequired,
-        label: PropTypes.node.isRequired,
-        optimisticToggle: PropTypes.bool.isRequired,
+        node: PropTypes.instanceOf(NodeModel).isRequired,
         showNodeIcon: PropTypes.bool.isRequired,
-        value: PropTypes.oneOfType([
-            PropTypes.string,
-            PropTypes.number,
-        ]).isRequired,
         onCheck: PropTypes.func.isRequired,
         onExpand: PropTypes.func.isRequired,
 
+        LabelComponent: PropTypes.func,
+        LeafLabelComponent: PropTypes.func,
+        ParentLabelComponent: PropTypes.func,
         children: PropTypes.node,
-        className: PropTypes.string,
         expandOnClick: PropTypes.bool,
-        icon: PropTypes.node,
+        noCascadeChecks: PropTypes.bool,
         showCheckbox: PropTypes.bool,
-        title: PropTypes.string,
+        showNodeTitle: PropTypes.bool,
         treeId: PropTypes.string,
         onClick: PropTypes.func,
         onContextMenu: PropTypes.func,
+        onLabelChange: PropTypes.func,
+        onLeafLabelChange: PropTypes.func,
+        onParentLabelChange: PropTypes.func,
     };
 
     static defaultProps = {
         children: null,
-        className: null,
         expandOnClick: false,
-        icon: null,
+        LabelComponent: null,
+        LeafLabelComponent: null,
+        noCascadeChecks: false,
+        ParentLabelComponent: null,
         showCheckbox: true,
-        title: null,
+        showNodeTitle: false,
         treeId: null,
         onClick: null,
         onContextMenu: null,
+        onLabelChange: null,
+        onLeafLabelChange: null,
+        onParentLabelChange: null,
     };
 
     constructor(props) {
@@ -62,12 +67,8 @@ class TreeNode extends React.PureComponent {
     }
 
     onCheck() {
-        const { value, onCheck } = this.props;
-
-        onCheck({
-            value,
-            checked: this.getCheckState({ toggle: true }),
-        });
+        const { node, onCheck } = this.props;
+        onCheck(node.value);
     }
 
     onCheckboxKeyUp(event) {
@@ -87,209 +88,116 @@ class TreeNode extends React.PureComponent {
     onClick() {
         const {
             expandOnClick,
-            isParent,
-            value,
+            node,
             onClick,
         } = this.props;
 
         // Auto expand if enabled
-        if (isParent && expandOnClick) {
+        if (node.isParent && expandOnClick) {
             this.onExpand();
         }
 
-        onClick({ value, checked: this.getCheckState({ toggle: false }) });
+        if (onClick) {
+            onClick(node.value);
+        }
     }
 
     onExpand() {
-        const { expanded, value, onExpand } = this.props;
-
-        onExpand({ value, expanded: !expanded });
-    }
-
-    getCheckState({ toggle }) {
-        const { checked, optimisticToggle } = this.props;
-
-        // Toggle off state to checked
-        if (checked === 0 && toggle) {
-            return true;
-        }
-
-        // Node is already checked and we are not toggling
-        if (checked === 1 && !toggle) {
-            return true;
-        }
-
-        // Get/toggle partial state based on cascade model
-        if (checked === 2) {
-            return optimisticToggle;
-        }
-
-        return false;
-    }
-
-    renderExpandButton() {
-        const { expandDisabled, expanded, isLeaf } = this.props;
-
-        return (
-            <ExpandButton
-                disabled={expandDisabled}
-                expanded={expanded}
-                isLeaf={isLeaf}
-                onClick={this.onExpand}
-            />
-        );
-    }
-
-    renderCheckboxIcon() {
-        const { uncheck, check, halfCheck } = this.context;
-        const { checked } = this.props;
-
-        if (checked === 0) {
-            return uncheck;
-        }
-
-        if (checked === 1) {
-            return check;
-        }
-
-        return halfCheck;
-    }
-
-    renderBareLabel(children) {
-        const { title, onClick, onContextMenu } = this.props;
-        const clickable = onClick !== null;
-
-        return (
-            <span className="rct-bare-label" title={title}>
-                {clickable ? (
-                    <span
-                        className="rct-node-clickable"
-                        role="button"
-                        tabIndex={0}
-                        onClick={this.onClick}
-                        onContextMenu={onContextMenu}
-                        onKeyPress={this.onClick}
-                    >
-                        {children}
-                    </span>
-                ) : children}
-            </span>
-        );
-    }
-
-    renderCheckboxLabel(children) {
-        const {
-            checked,
-            disabled,
-            title,
-            treeId,
-            value,
-            onClick,
-            onContextMenu,
-        } = this.props;
-        const clickable = onClick !== null;
-        const valueId = String(value).split(' ').join('_');
-        const inputId = treeId ? `${treeId}-${valueId}` : null;
-
-        const render = [(
-            <label key={0} htmlFor={inputId} title={title} onContextMenu={onContextMenu}>
-                <NativeCheckbox
-                    checked={checked === 1}
-                    disabled={disabled}
-                    id={inputId}
-                    indeterminate={checked === 2}
-                    onChange={() => {}}
-                    onClick={this.onCheck}
-                    onKeyUp={this.onCheckboxKeyUp}
-                />
-                <span
-                    aria-hidden="true"
-                    className="rct-checkbox"
-                    role="presentation"
-                >
-                    {this.renderCheckboxIcon()}
-                </span>
-                {!clickable ? children : null}
-            </label>
-        )];
-
-        if (clickable) {
-            render.push((
-                <span
-                    key={1}
-                    className="rct-node-clickable"
-                    role="button"
-                    tabIndex={0}
-                    onClick={this.onClick}
-                    onContextMenu={onContextMenu}
-                    onKeyPress={this.onClick}
-                >
-                    {children}
-                </span>
-            ));
-        }
-
-        return render;
-    }
-
-    renderLabel() {
-        const {
-            expanded,
-            icon,
-            isLeaf,
-            label,
-            showCheckbox,
-            showNodeIcon,
-        } = this.props;
-        const labelChildren = (
-            <>
-                {showNodeIcon && (
-                    <NodeIcon expanded={expanded} icon={icon} isLeaf={isLeaf} />
-                )}
-                <span className="rct-label">{label}</span>
-            </>
-        );
-
-        if (!showCheckbox) {
-            return this.renderBareLabel(labelChildren);
-        }
-
-        return this.renderCheckboxLabel(labelChildren);
-    }
-
-    renderChildren() {
-        const { children, expanded } = this.props;
-
-        if (!expanded) {
-            return null;
-        }
-
-        return children;
+        const { node, onExpand } = this.props;
+        onExpand(node.value);
     }
 
     render() {
         const {
-            className,
+            children,
             disabled,
-            expanded,
-            isLeaf,
+            expandDisabled,
+            node,
+            showNodeIcon,
+            showNodeTitle,
+            onClick,
+            LabelComponent,
+            LeafLabelComponent,
+            ParentLabelComponent,
+            onContextMenu,
+            onLabelChange,
+            onLeafLabelChange,
+            onParentLabelChange,
+            noCascadeChecks,
+            showCheckbox,
+            treeId,
         } = this.props;
+
+        const nodeDisabled = disabled || node.disabled;
+        const nodeTitle = showNodeTitle ? (node.title || node.label) : node.title;
+
         const nodeClass = classNames({
             'rct-node': true,
-            'rct-node-leaf': isLeaf,
-            'rct-node-parent': !isLeaf,
-            'rct-node-expanded': !isLeaf && expanded,
-            'rct-node-collapsed': !isLeaf && !expanded,
-            'rct-disabled': disabled,
-        }, className);
+            'rct-node-leaf': node.isLeaf,
+            'rct-node-parent': !node.isLeaf,
+            'rct-node-expanded': !node.isLeaf && node.expanded,
+            'rct-node-collapsed': !node.isLeaf && !node.expanded,
+            'rct-disabled': nodeDisabled,
+        }, node.className);
+
+        let Label;
+        let labelChangeHandler;
+        if (node.isLeaf) {
+            Label = LeafLabelComponent || LabelComponent || DefaultLabel;
+            labelChangeHandler = onLeafLabelChange || onLabelChange;
+        } else {
+            // parent
+            Label = ParentLabelComponent || LabelComponent || DefaultLabel;
+            labelChangeHandler = onParentLabelChange || onLabelChange;
+        }
 
         return (
             <li className={nodeClass}>
                 <span className="rct-text">
-                    {this.renderExpandButton()}
-                    {this.renderLabel()}
+                    <ExpandButton
+                        disabled={expandDisabled}
+                        expanded={node.expanded}
+                        isLeaf={node.isLeaf}
+                        onClick={this.onExpand}
+                    />
+
+                    {showCheckbox ? (
+                        <CheckboxLabel
+                            checked={node.checkState}
+                            disabled={nodeDisabled}
+                            isRadioNode={node.isRadioNode}
+                            noCascadeChecks={noCascadeChecks}
+                            title={nodeTitle}
+                            treeId={treeId}
+                            value={node.value}
+                            onCheck={this.onCheck}
+                            onCheckboxKeyUp={this.onCheckboxKeyUp}
+                            onClick={onClick && this.onClick}
+                            onContextMenu={onContextMenu}
+                        >
+                            <Label
+                                node={node}
+                                showNodeIcon={showNodeIcon}
+                                onChange={labelChangeHandler}
+                            />
+                        </CheckboxLabel>
+
+                    ) : (
+                        <BareLabel
+                            title={nodeTitle}
+                            onClick={onClick && this.onClick}
+                            onContextMenu={onContextMenu}
+                        >
+                            <Label
+                                node={node}
+                                showNodeIcon={showNodeIcon}
+                            />
+                        </BareLabel>
+                    )}
                 </span>
-                {this.renderChildren()}
+
+                {node.expanded ? children : null}
+
             </li>
         );
     }
