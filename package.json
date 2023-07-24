@@ -67,7 +67,7 @@
     "eslint-plugin-react": "^7.10.0",
     "eslint-plugin-react-hooks": "^4.2.0",
     "global-jsdom": "^9.0.1",
-    "html-bundler-webpack-plugin": "^1.6.5",
+    "html-bundler-webpack-plugin": "^2.2.1",
     "jsdom": "^22.0.0",
     "less": "^4.1.3",
     "mocha": "^10.0.0",
