@@ -65,6 +65,7 @@ declare module "react-checkbox-tree" {
         onCheck?: (checked: Array<string>, node: OnCheckNode) => void;
         onClick?: (node: OnCheckNode) => void;
         onExpand?: (expanded: Array<string>, node: OnExpandNode) => void;
+        i18n?: any;
     }
 
     export default class CheckboxTree extends React.Component<CheckboxProps> {}
