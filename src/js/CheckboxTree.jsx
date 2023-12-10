@@ -25,6 +25,7 @@ class CheckboxTree extends React.Component {
         expandDisabled: PropTypes.bool,
         expandOnClick: PropTypes.bool,
         expanded: listShape,
+        i18n: PropTypes.func,
         icons: iconsShape,
         iconsClass: PropTypes.string,
         id: PropTypes.string,
@@ -51,6 +52,7 @@ class CheckboxTree extends React.Component {
         expandDisabled: false,
         expandOnClick: false,
         expanded: [],
+        i18n: null,
         icons: {
             check: <span className="rct-icon rct-icon-check" />,
             uncheck: <span className="rct-icon rct-icon-uncheck" />,
@@ -223,6 +225,7 @@ class CheckboxTree extends React.Component {
             expandDisabled,
             expandOnClick,
             icons,
+            i18n,
             lang,
             noCascade,
             onClick,
@@ -267,7 +270,7 @@ class CheckboxTree extends React.Component {
                     icons={this.combineMemorized(defaultIcons, icons)}
                     isLeaf={flatNode.isLeaf}
                     isParent={flatNode.isParent}
-                    label={node.label}
+                    label={i18n ? i18n.t(node.label) : node.label}
                     lang={lang}
                     optimisticToggle={optimisticToggle}
                     showCheckbox={showCheckbox}
