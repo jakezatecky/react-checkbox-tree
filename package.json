@@ -60,7 +60,7 @@
     "css-loader": "^6.7.3",
     "cssnano": "^6.0.0",
     "eslint": "^8.23.0",
-    "eslint-config-takiyon-react": "^3.0.0",
+    "eslint-config-takiyon-react": "^4.0.0",
     "eslint-import-resolver-webpack": "^0.13.0",
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jsx-a11y": "^6.0.2",
