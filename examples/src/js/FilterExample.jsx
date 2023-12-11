@@ -66,7 +66,12 @@ class FilterExample extends Component {
             // Or a children has a matching node
             children.length
         ) {
-            filtered.push({ ...node, children });
+            let addNode = { ...node };
+            // check if node is not in expanded list, add it
+            if (children.length) {
+                addNode.children = children;
+            }
+            filtered.push(addNode);
         }
 
         return filtered;
