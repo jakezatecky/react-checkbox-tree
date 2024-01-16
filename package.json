@@ -1,6 +1,6 @@
 {
   "name": "react-checkbox-tree",
-  "version": "1.8.0",
+  "version": "1.8.1",
   "description": "A simple and elegant checkbox tree for React.",
   "author": "Jake Zatecky",
   "license": "MIT",
@@ -86,7 +86,8 @@
   },
   "dependencies": {
     "classnames": "^2.2.5",
-    "lodash": "^4.17.10",
+    "lodash.isequal": "^4.5.0",
+    "lodash.memoize": "^4.1.2",
     "nanoid": "^3.0.0",
     "prop-types": "^15.5.8"
   }
