@@ -4,20 +4,43 @@
 
 ### Breaking Changes
 
-#### Styling
-
-* The `iconsClass` property now defaults to `"fa5"` for Font Awesome 5/6 instead of Font Awesome 4
-
 #### Accessibility
 
+* Make the underlying checkbox accessible to screen readers and touch (#276)
 * Hide the pseudo-checkbox from the accessibility tree
 * Change the clickable label from `role="link"` to `role="button"`
+
+#### Properties
+
+* `id`: No longer generates a random UUID when empty
+* `lang`:
+  * Replaced `toggle` key with `collapseNode` and `expandNode` to better reflect state (#275)
+  * Will now merge any missing keys with the default language
+* `icons`: Setting a node icon to `null` will no longer render the wrapper element (#30)
+* `iconsClass`: Now defaults to `'fa6'` for Font Awesome 5/6 instead of Font Awesome 4
+
+#### Styling
+
+* Drop support for Less.js styles
+* The `rct-options` and `rct-option` CSS classes are now `rct-actions` and `rct-action` respectively
+* The `rct-title` CSS class is now `rct-label`
+
+#### Other
+
+* Drop support for React before v16.8
+
+### Added
+
+* Add full support for ESM environments
+* Add `checkKeys` property to allow specification of JavaScript keys to trigger check behavior
+* Add `onContextMenu` property, which will trigger whenever a user right-clicks a node (#237)
+* The tree will now preserve original node properties (accessible via `onCheck`/`onExpand`) (#421)
 
 ## [v1.8.0](https://github.com/jakezatecky/react-checkbox-tree/compare/v1.7.3...v1.8.0) (2022-09-06)
 
 ### Other
 
-* [#329] Add React 18 to the peer dependency list (**Note**: React 18 is not part of the automatic testing, but should work)
+* [#329]: Add React 18 to the peer dependency list (**Note**: React 18 is not part of the automatic testing, but should work)
 
 ## [v1.7.3](https://github.com/jakezatecky/react-checkbox-tree/compare/v1.7.2...v1.7.3) (2022-05-23)
 

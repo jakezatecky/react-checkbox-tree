@@ -1,61 +1,68 @@
-const path = require('node:path');
-const webpack = require('webpack');
-const pkg = require('./package.json');
+import path from 'node:path';
+import webpack from 'webpack';
+import { readFile } from 'node:fs/promises';
 
-const banner = `${pkg.name} - v${pkg.version} | ${(new Date()).getFullYear()}`;
+const { dirname } = import.meta;
+const json = await readFile(new URL('./package.json', import.meta.url));
+const pkg = JSON.parse(json.toString());
+const banner = `
+${pkg.name} - v${pkg.version}
+Copyright (c) ${pkg.author}
+Licensed under the ${pkg.license} License.
+`;
+
+const commonConfig = {
+    mode: 'none',
+    entry: path.join(dirname, 'src/index.js'),
+    resolve: {
+        extensions: ['.js', '.jsx'],
+    },
+    module: {
+        rules: [
+            {
+                test: /\.jsx?$/,
+                exclude: /(node_modules)/,
+                loader: 'babel-loader',
+            },
+        ],
+    },
+    externals: {
+        react: 'react',
+    },
+    plugins: [
+        new webpack.BannerPlugin(banner.trim()),
+    ],
+};
+const umdConfig = {
+    ...commonConfig,
+    output: {
+        path: path.join(dirname, '/lib'),
+        filename: 'index.js',
+        library: {
+            name: 'ReactCheckboxTree',
+            type: 'umd',
+            umdNamedDefine: true,
+        },
+        globalObject: 'this',
+    },
+};
+const esmConfig = {
+    ...commonConfig,
+    target: 'es2020',
+    output: {
+        path: path.join(dirname, '/lib'),
+        filename: 'index.esm.js',
+        library: {
+            type: 'module',
+        },
+    },
+    experiments: {
+        outputModule: true,
+    },
+};
 
 function makeConfig({ target }) {
-    const fileMap = {
-        node: 'index.js',
-        web: 'index.browser.js',
-    };
-
-    return {
-        mode: 'production',
-        target,
-        entry: path.join(__dirname, 'src/index.js'),
-        output: {
-            path: path.join(__dirname, '/lib'),
-            filename: fileMap[target],
-            library: {
-                name: 'ReactCheckboxTree',
-                type: 'umd',
-            },
-        },
-        resolve: {
-            extensions: ['.js', '.jsx'],
-        },
-        externals: [
-            {
-                react: {
-                    root: 'React',
-                    commonjs2: 'react',
-                    commonjs: 'react',
-                    amd: 'react',
-                },
-            },
-            {
-                'react-dom': {
-                    root: 'ReactDOM',
-                    commonjs2: 'react-dom',
-                    commonjs: 'react-dom',
-                    amd: 'react-dom',
-                },
-            },
-        ],
-        module: {
-            rules: [
-                {
-                    test: /\.jsx?$/,
-                    exclude: /(node_modules)/,
-                    loader: 'babel-loader',
-                },
-            ],
-        },
-        plugins: [
-            new webpack.BannerPlugin(banner),
-        ],
-    };
+    return target === 'esm' ? esmConfig : umdConfig;
 }
 
-module.exports = makeConfig;
+export default makeConfig;

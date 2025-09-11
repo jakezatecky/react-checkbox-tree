@@ -1,6 +1,6 @@
 import { assert } from 'chai';
 
-import { expandNodesToLevel } from '../src';
+import { expandNodesToLevel } from '#src/index.js';
 
 const nestedTree = [{
     value: '0',

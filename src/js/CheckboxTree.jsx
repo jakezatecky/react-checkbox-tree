@@ -1,23 +1,41 @@
 import classNames from 'classnames';
 import isEqual from 'lodash.isequal';
 import memoize from 'lodash.memoize';
-import { nanoid } from 'nanoid';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import Button from './Button';
-import { CHECK_MODEL } from './constants';
-import NodeModel from './NodeModel';
-import TreeNode from './TreeNode';
-import iconsShape from './shapes/iconsShape';
-import languageShape from './shapes/languageShape';
-import listShape from './shapes/listShape';
-import nodeShape from './shapes/nodeShape';
+import GlobalActions from '#js/components/GlobalActions.jsx';
+import HiddenInput from '#js/components/HiddenInput.jsx';
+import TreeNode from '#js/components/TreeNode.jsx';
+import defaultLang from '#js/lang/default.js';
+import iconsShape from '#js/shapes/iconsShape.js';
+import languageShape from '#js/shapes/languageShape.js';
+import listShape from '#js/shapes/listShape.js';
+import nodeShape from '#js/shapes/nodeShape.js';
+import { CHECK_MODEL, KEYS } from '#js/constants.js';
+import { IconContext, LanguageContext } from '#js/contexts.js';
+import NodeModel from '#js/NodeModel.js';
+
+const combineMemoized = memoize((newValue, defaultValue) => ({ ...defaultValue, ...newValue }));
+
+const defaultIcons = {
+    check: <span className="rct-icon rct-icon-check" />,
+    uncheck: <span className="rct-icon rct-icon-uncheck" />,
+    halfCheck: <span className="rct-icon rct-icon-half-check" />,
+    expandClose: <span className="rct-icon rct-icon-expand-close" />,
+    expandOpen: <span className="rct-icon rct-icon-expand-open" />,
+    expandAll: <span className="rct-icon rct-icon-expand-all" />,
+    collapseAll: <span className="rct-icon rct-icon-collapse-all" />,
+    parentClose: <span className="rct-icon rct-icon-parent-close" />,
+    parentOpen: <span className="rct-icon rct-icon-parent-open" />,
+    leaf: <span className="rct-icon rct-icon-leaf" />,
+};
 
 class CheckboxTree extends React.Component {
     static propTypes = {
         nodes: PropTypes.arrayOf(nodeShape).isRequired,
 
+        checkKeys: PropTypes.arrayOf(PropTypes.string),
         checkModel: PropTypes.oneOf([CHECK_MODEL.LEAF, CHECK_MODEL.ALL]),
         checked: listShape,
         direction: PropTypes.string,
@@ -40,10 +58,12 @@ class CheckboxTree extends React.Component {
         showNodeTitle: PropTypes.bool,
         onCheck: PropTypes.func,
         onClick: PropTypes.func,
+        onContextMenu: PropTypes.func,
         onExpand: PropTypes.func,
     };
 
     static defaultProps = {
+        checkKeys: [KEYS.SPACEBAR, KEYS.ENTER],
         checkModel: CHECK_MODEL.LEAF,
         checked: [],
         direction: 'ltr',
@@ -51,25 +71,10 @@ class CheckboxTree extends React.Component {
         expandDisabled: false,
         expandOnClick: false,
         expanded: [],
-        icons: {
-            check: <span className="rct-icon rct-icon-check" />,
-            uncheck: <span className="rct-icon rct-icon-uncheck" />,
-            halfCheck: <span className="rct-icon rct-icon-half-check" />,
-            expandClose: <span className="rct-icon rct-icon-expand-close" />,
-            expandOpen: <span className="rct-icon rct-icon-expand-open" />,
-            expandAll: <span className="rct-icon rct-icon-expand-all" />,
-            collapseAll: <span className="rct-icon rct-icon-collapse-all" />,
-            parentClose: <span className="rct-icon rct-icon-parent-close" />,
-            parentOpen: <span className="rct-icon rct-icon-parent-open" />,
-            leaf: <span className="rct-icon rct-icon-leaf" />,
-        },
+        icons: defaultIcons,
         iconsClass: 'fa5',
         id: null,
-        lang: {
-            collapseAll: 'Collapse all',
-            expandAll: 'Expand all',
-            toggle: 'Toggle',
-        },
+        lang: defaultLang,
         name: undefined,
         nameAsArray: false,
         nativeCheckboxes: false,
@@ -81,6 +86,7 @@ class CheckboxTree extends React.Component {
         showNodeTitle: false,
         onCheck: () => {},
         onClick: null,
+        onContextMenu: null,
         onExpand: () => {},
     };
 
@@ -95,24 +101,22 @@ class CheckboxTree extends React.Component {
         });
 
         this.state = {
-            id: props.id || `rct-${nanoid()}`,
             model,
             prevProps: props,
         };
 
         this.onCheck = this.onCheck.bind(this);
+        this.onContextMenu = this.onContextMenu.bind(this);
         this.onExpand = this.onExpand.bind(this);
         this.onNodeClick = this.onNodeClick.bind(this);
         this.onExpandAll = this.onExpandAll.bind(this);
         this.onCollapseAll = this.onCollapseAll.bind(this);
-
-        this.combineMemorized = memoize((icons1, icons2) => ({ ...icons1, ...icons2 })).bind(this);
     }
 
     static getDerivedStateFromProps(newProps, prevState) {
         const { model, prevProps } = prevState;
-        const { disabled, id, nodes } = newProps;
-        let newState = { ...prevState, prevProps: newProps };
+        const { disabled, nodes } = newProps;
+        const newState = { ...prevState, prevProps: newProps };
 
         // Apply new properties to model
         model.setProps(newProps);
@@ -123,16 +127,20 @@ class CheckboxTree extends React.Component {
             model.flattenNodes(nodes);
         }
 
-        if (id !== null) {
-            newState = { ...newState, id };
-        }
-
         model.deserializeLists({
             checked: newProps.checked,
             expanded: newProps.expanded,
         });
 
         return newState;
+    }
+
+    onContextMenu(node) {
+        const { onContextMenu } = this.props;
+
+        return (event) => {
+            onContextMenu(event, node);
+        };
     }
 
     onCheck(nodeInfo) {
@@ -220,10 +228,10 @@ class CheckboxTree extends React.Component {
 
     renderTreeNodes(nodes, parent = {}) {
         const {
+            checkKeys,
             expandDisabled,
             expandOnClick,
-            icons,
-            lang,
+            id,
             noCascade,
             onClick,
             onlyLeafCheckboxes,
@@ -231,8 +239,7 @@ class CheckboxTree extends React.Component {
             showNodeTitle,
             showNodeIcon,
         } = this.props;
-        const { id, model } = this.state;
-        const { icons: defaultIcons } = CheckboxTree.defaultProps;
+        const { model } = this.state;
 
         const treeNodes = nodes.map((node) => {
             const key = node.value;
@@ -254,9 +261,17 @@ class CheckboxTree extends React.Component {
                 return null;
             }
 
+            // Prepare node information for context menu usage
+            const nodeContext = {
+                ...node,
+                checked: flatNode.checkState,
+                expanded: flatNode.expanded,
+            };
+
             return (
                 <TreeNode
                     key={key}
+                    checkKeys={checkKeys}
                     checked={flatNode.checkState}
                     className={node.className}
                     disabled={flatNode.disabled}
@@ -264,11 +279,9 @@ class CheckboxTree extends React.Component {
                     expandOnClick={expandOnClick}
                     expanded={flatNode.expanded}
                     icon={node.icon}
-                    icons={this.combineMemorized(defaultIcons, icons)}
                     isLeaf={flatNode.isLeaf}
                     isParent={flatNode.isParent}
                     label={node.label}
-                    lang={lang}
                     optimisticToggle={optimisticToggle}
                     showCheckbox={showCheckbox}
                     showNodeIcon={showNodeIcon}
@@ -277,6 +290,7 @@ class CheckboxTree extends React.Component {
                     value={node.value}
                     onCheck={this.onCheck}
                     onClick={onClick && this.onNodeClick}
+                    onContextMenu={this.onContextMenu(nodeContext)}
                     onExpand={this.onExpand}
                 >
                     {children}
@@ -291,73 +305,35 @@ class CheckboxTree extends React.Component {
         );
     }
 
-    renderExpandAll() {
-        const { icons: { expandAll, collapseAll }, lang, showExpandAll } = this.props;
+    renderGlobalOptions() {
+        const { showExpandAll } = this.props;
 
-        if (!showExpandAll) {
-            return null;
-        }
-
-        return (
-            <div className="rct-options">
-                <Button
-                    className="rct-option rct-option-expand-all"
-                    title={lang.expandAll}
-                    onClick={this.onExpandAll}
-                >
-                    {expandAll}
-                </Button>
-                <Button
-                    className="rct-option rct-option-collapse-all"
-                    title={lang.collapseAll}
-                    onClick={this.onCollapseAll}
-                >
-                    {collapseAll}
-                </Button>
-            </div>
-        );
+        return showExpandAll ? (
+            <GlobalActions onCollapseAll={this.onCollapseAll} onExpandAll={this.onExpandAll} />
+        ) : null;
     }
 
     renderHiddenInput() {
-        const { name, nameAsArray } = this.props;
+        const { checked, name, nameAsArray } = this.props;
 
-        if (name === undefined) {
-            return null;
-        }
-
-        if (nameAsArray) {
-            return this.renderArrayHiddenInput();
-        }
-
-        return this.renderJoinedHiddenInput();
-    }
-
-    renderArrayHiddenInput() {
-        const { checked, name: inputName } = this.props;
-
-        return checked.map((value) => {
-            const name = `${inputName}[]`;
-
-            return <input key={value} name={name} type="hidden" value={value} />;
-        });
-    }
-
-    renderJoinedHiddenInput() {
-        const { checked, name } = this.props;
-        const inputValue = checked.join(',');
-
-        return <input name={name} type="hidden" value={inputValue} />;
+        return name !== undefined ? (
+            <HiddenInput checked={checked} name={name} nameAsArray={nameAsArray} />
+        ) : null;
     }
 
     render() {
         const {
             direction,
             disabled,
+            icons,
             iconsClass,
+            id,
+            lang,
             nodes,
             nativeCheckboxes,
         } = this.props;
-        const { id } = this.state;
+        const mergedLang = combineMemoized(lang, defaultLang);
+        const mergedIcons = combineMemoized(icons, defaultIcons);
         const treeNodes = this.renderTreeNodes(nodes);
 
         const className = classNames({
@@ -369,11 +345,15 @@ class CheckboxTree extends React.Component {
         });
 
         return (
-            <div className={className} id={id}>
-                {this.renderExpandAll()}
-                {this.renderHiddenInput()}
-                {treeNodes}
-            </div>
+            <LanguageContext.Provider value={mergedLang}>
+                <IconContext.Provider value={mergedIcons}>
+                    <div className={className} id={id}>
+                        {this.renderGlobalOptions()}
+                        {this.renderHiddenInput()}
+                        {treeNodes}
+                    </div>
+                </IconContext.Provider>
+            </LanguageContext.Provider>
         );
     }
 }

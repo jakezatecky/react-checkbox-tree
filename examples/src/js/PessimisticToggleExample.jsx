@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import CheckboxTree from 'react-checkbox-tree';
 
-import { fileSystem as nodes } from './common';
+import { fileSystem as nodes } from './common.js';
 
 function PessimisticToggleExample() {
     const [checked, setChecked] = useState([

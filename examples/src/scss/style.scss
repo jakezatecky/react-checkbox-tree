@@ -1,17 +1,29 @@
-$header-bg-color: #3498db;
-$header-bg-color-secondary: #2c3e50;
-$section-headings-color: #3498db;
+@use "../../../src/scss/react-checkbox-tree";
+@use "cayman" with (
+  $body-text-color: #444,
+  $code-text-color: #465e6a,
+  $header-bg-color: #3498db,
+  $header-bg-color-secondary: #2c3e50,
+  $section-headings-color: #2079b5,
+  $blockquote-text-color: #576266
+);
+
+// Misc.
 $rct-color: #444;
-$rct-border-color: #ccc;
 $input-border-color: #ced4da;
 $tree-font-family: "Roboto", sans-serif;
 
-@import "../../../src/scss/react-checkbox-tree";
-@import "cayman";
+.main-content {
+  h1,
+  h2,
+  h3 {
+    font-weight: bold;
+  }
+}
 
 .react-checkbox-tree {
-  color: $rct-color;
   font-family: $tree-font-family;
+  color: $rct-color;
 }
 
 .clickable-labels {
@@ -33,11 +45,11 @@ $tree-font-family: "Roboto", sans-serif;
 
 .filter-container > .filter-text {
   display: block;
-  margin-bottom: .75rem;
-  border: 1px solid $input-border-color;
-  border-radius: .25rem;
-  background-clip: padding-box;
-  padding: .375rem .75rem;
-  line-height: 1.5;
+  padding: 0.375rem 0.75rem;
+  margin-bottom: 0.75rem;
   font-size: 1rem;
+  line-height: 1.5;
+  background-clip: padding-box;
+  border: 1px solid $input-border-color;
+  border-radius: 0.25rem;
 }

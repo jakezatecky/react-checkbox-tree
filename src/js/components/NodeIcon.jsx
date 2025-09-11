@@ -1,0 +1,39 @@
+import PropTypes from 'prop-types';
+import React, { useContext } from 'react';
+
+import { IconContext } from '#js/contexts.js';
+
+const propTypes = {
+    expanded: PropTypes.bool.isRequired,
+    isLeaf: PropTypes.bool.isRequired,
+
+    icon: PropTypes.node,
+};
+
+function NodeIcon({ expanded, isLeaf, icon = null }) {
+    const { leaf, parentClose, parentOpen } = useContext(IconContext);
+
+    function getIcon() {
+        if (icon !== null) {
+            return icon;
+        }
+
+        if (isLeaf) {
+            return leaf;
+        }
+
+        if (!expanded) {
+            return parentClose;
+        }
+
+        return parentOpen;
+    }
+
+    const nodeIcon = getIcon();
+
+    return nodeIcon && <span className="rct-node-icon">{nodeIcon}</span>;
+}
+
+NodeIcon.propTypes = propTypes;
+
+export default NodeIcon;

@@ -1,5 +1,5 @@
-import CheckboxTreeError from './CheckboxTreeError';
-import { CHECK_MODEL } from './constants';
+import CheckboxTreeError from '#js/CheckboxTreeError.js';
+import { CHECK_MODEL } from '#js/constants.js';
 
 class NodeModel {
     constructor(props, nodes = {}) {

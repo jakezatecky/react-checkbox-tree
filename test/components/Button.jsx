@@ -2,7 +2,7 @@ import React from 'react';
 import { assert } from 'chai';
 import { render, screen } from '@testing-library/react';
 
-import Button from '../src/js/Button';
+import Button from '#js/components/Button.jsx';
 
 describe('<Button />', () => {
     describe('title', () => {

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import CheckboxTree from 'react-checkbox-tree';
 
-import { empires as nodes } from './common';
+import { empires as nodes } from './common.js';
 
 function HiddenCheckboxesExample() {
     const [checked, setChecked] = useState([

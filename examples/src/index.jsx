@@ -1,16 +1,16 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 
-import BasicExample from './js/BasicExample';
-import CustomIconsExample from './js/CustomIconsExample';
-import ClickableLabelsExample from './js/ClickableLabelsExample';
-import DisabledExample from './js/DisabledExample';
-import ExpandAllExample from './js/ExpandAllExample';
-import HiddenCheckboxesExample from './js/HiddenCheckboxesExample';
-import NoCascadeExample from './js/NoCascadeExample';
-import LargeDataExample from './js/LargeDataExample';
-import PessimisticToggleExample from './js/PessimisticToggleExample';
-import FilterExample from './js/FilterExample';
+import BasicExample from './js/BasicExample.jsx';
+import CustomIconsExample from './js/CustomIconsExample.jsx';
+import ClickableLabelsExample from './js/ClickableLabelsExample.jsx';
+import DisabledExample from './js/DisabledExample.jsx';
+import ExpandAllExample from './js/ExpandAllExample.jsx';
+import HiddenCheckboxesExample from './js/HiddenCheckboxesExample.jsx';
+import NoCascadeExample from './js/NoCascadeExample.jsx';
+import LargeDataExample from './js/LargeDataExample.jsx';
+import PessimisticToggleExample from './js/PessimisticToggleExample.jsx';
+import FilterExample from './js/FilterExample.jsx';
 
 createRoot(document.getElementById('basic-example')).render(<BasicExample />);
 createRoot(document.getElementById('custom-icons-example')).render(<CustomIconsExample />);

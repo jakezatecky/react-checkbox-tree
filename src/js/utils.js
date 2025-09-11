@@ -1,4 +1,6 @@
 /**
+ * Return a list of all parent node keys up until `targetLevel`.
+ *
  * @param {Array} nodes The nodes to traverse.
  * @param {number} targetLevel How deep to expand the nodes.
  * @param {int} currentLevel The current level in the recursive chain.
@@ -20,6 +22,7 @@ function expandNodesToLevel(nodes, targetLevel, currentLevel = 0) {
             ];
         }
     });
+
     return expanded;
 }
 

@@ -1,20 +1,17 @@
-const HtmlBundlerPlugin = require('html-bundler-webpack-plugin');
-const path = require('node:path');
+import path from 'node:path';
 
-module.exports = {
+const { dirname } = import.meta;
+
+export default {
     mode: 'development',
+    entry: {
+        index: path.join(dirname, 'test/index.js'),
+    },
     output: {
-        path: path.join(__dirname, 'examples/dist'),
-        library: {
-            name: 'ReactCheckboxTree',
-            type: 'umd',
-        },
+        path: path.join(dirname, '/test-compiled'),
     },
     resolve: {
-        extensions: ['.js', '.jsx'],
-        alias: {
-            'react-checkbox-tree': path.resolve(__dirname, 'src/index.js'),
-        },
+        extensions: ['.js'],
     },
     module: {
         rules: [
@@ -23,33 +20,6 @@ module.exports = {
                 exclude: /(node_modules)/,
                 loader: 'babel-loader',
             },
-            {
-                test: /\.s[ac]ss$/i,
-                use: [
-                    'css-loader',
-                    'sass-loader',
-                ],
-            },
         ],
     },
-    devServer: {
-        open: true,
-        static: {
-            directory: path.join(__dirname, 'examples/dist'),
-        },
-        watchFiles: ['src/**/*', 'examples/src/**/*'],
-    },
-    plugins: [
-        new HtmlBundlerPlugin({
-            entry: {
-                index: 'examples/src/index.html',
-            },
-            js: {
-                filename: '[name].[contenthash:8].js',
-            },
-            css: {
-                filename: '[name].[contenthash:8].css',
-            },
-        }),
-    ],
 };

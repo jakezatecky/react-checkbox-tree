@@ -35,8 +35,9 @@ declare module "react-checkbox-tree" {
 
     interface Language {
         collapseAll: string;
+        collapseNode: string;
         expandAll: string;
-        toggle: string;
+        expandNode: string;
     }
 
     interface CheckboxProps {

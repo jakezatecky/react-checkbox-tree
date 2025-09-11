@@ -1,12 +1,13 @@
 import React from 'react';
 import { assert } from 'chai';
 import { render, screen } from '@testing-library/react';
-import { configure } from '@testing-library/dom';
+import { configure, fireEvent } from '@testing-library/dom';
 import userEvent from '@testing-library/user-event';
 
-import CheckboxTree from '../src/js/CheckboxTree';
-import CheckboxTreeError from '../src/js/CheckboxTreeError';
+import CheckboxTree from '#js/CheckboxTree.jsx';
+import CheckboxTreeError from '#js/CheckboxTreeError.js';
 
+// eslint-disable-next-line no-console
 const consoleError = console.error;
 
 // Increase waitFor timeout to prevent unusual issues when there are many tests
@@ -156,6 +157,27 @@ describe('<CheckboxTree />', () => {
         });
     });
 
+    describe('checkKeys', () => {
+        it('should trigger a check event when pressing one of the supplied values', async () => {
+            let actual = null;
+
+            render(
+                <CheckboxTree
+                    checkKeys={['Shift']}
+                    checked={[]}
+                    nodes={[{ value: 'jupiter', label: 'Jupiter' }]}
+                    onCheck={(checked) => {
+                        actual = checked;
+                    }}
+                />,
+            );
+
+            await fireEvent.keyUp(screen.getByRole('checkbox'), { key: 'Shift' });
+
+            assert.deepEqual(actual, ['jupiter']);
+        });
+    });
+
     describe('checked', () => {
         // https://github.com/jakezatecky/react-checkbox-tree/issues/69
         it('should not throw an exception if it contains values that are not in the `nodes` property', () => {
@@ -227,6 +249,17 @@ describe('<CheckboxTree />', () => {
 
             assert.isNotNull(container.querySelector('.rct-checkbox > .rct-icon-uncheck'));
         });
+
+        it('should not render the wrapper element when an icon is set to null', () => {
+            const { container } = render(
+                <CheckboxTree
+                    icons={{ leaf: null }}
+                    nodes={[{ value: 'jupiter', label: 'Jupiter' }]}
+                />,
+            );
+
+            assert.isNull(container.querySelector('.rct-node-icon'));
+        });
     });
 
     describe('iconsClass', () => {
@@ -271,16 +304,17 @@ describe('<CheckboxTree />', () => {
             render(
                 <CheckboxTree
                     lang={{
-                        expandAll: 'Expand it',
-                        collapseAll: 'Collapse it',
-                        toggle: 'Toggle it',
+                        expandAll: 'Expand all of it',
+                        expandNode: 'Expand it',
+                        collapseAll: 'Collapse all of it',
+                        collapseNode: 'Collapse it',
                     }}
                     nodes={[]}
                     showExpandAll
                 />,
             );
 
-            assert.isNotNull(screen.queryByLabelText('Expand it'));
+            assert.isNotNull(screen.queryByLabelText('Expand all of it'));
         });
     });
 
@@ -297,6 +331,7 @@ describe('<CheckboxTree />', () => {
     describe('nodes', () => {
         afterEach(() => {
             // Restore console error
+            // eslint-disable-next-line no-console
             console.error = consoleError;
         });
 
@@ -410,6 +445,7 @@ describe('<CheckboxTree />', () => {
 
         it('should throw an error when duplicate values are used', async () => {
             // Suppress caught errors from React
+            // eslint-disable-next-line no-console
             console.error = () => {};
 
             let errorMessage = '';
@@ -893,6 +929,39 @@ describe('<CheckboxTree />', () => {
         });
     });
 
+    describe('onContextMenu', () => {
+        it('should provide the target node\'s information when right-clicking a label', async () => {
+            let actualNode = null;
+
+            render(
+                <CheckboxTree
+                    nodes={[
+                        {
+                            value: 'jupiter',
+                            label: 'Jupiter',
+                            children: [
+                                { value: 'io', label: 'Io' },
+                                { value: 'europa', label: 'Europa' },
+                            ],
+                        },
+                    ]}
+                    onContextMenu={(event, node) => {
+                        actualNode = node;
+                    }}
+                />,
+            );
+
+            const user = userEvent.setup();
+            await user.pointer({
+                target: screen.getByText('Jupiter'),
+                keys: '[MouseRight]',
+            });
+
+            assert.equal(actualNode.value, 'jupiter');
+            assert.isFalse(actualNode.expanded);
+        });
+    });
+
     describe('onExpand', () => {
         it('should toggle the expansion state of the target node', async () => {
             let actualExpanded = null;
@@ -916,7 +985,7 @@ describe('<CheckboxTree />', () => {
             );
 
             const user = userEvent.setup();
-            await user.click(screen.getByLabelText('Toggle'));
+            await user.click(screen.getByLabelText('Expand node'));
 
             assert.deepEqual(actualExpanded, ['jupiter']);
         });
@@ -943,7 +1012,7 @@ describe('<CheckboxTree />', () => {
             );
 
             const user = userEvent.setup();
-            await user.click(screen.getByLabelText('Toggle'));
+            await user.click(screen.getByLabelText('Expand node'));
 
             assert.equal(actualNode.value, 'jupiter');
         });
@@ -1030,7 +1099,7 @@ describe('<CheckboxTree />', () => {
             assert.deepEqual(getNodeMetadata(clickNode), expectedLeafMetadata);
 
             // onExpand
-            await user.click(screen.getByLabelText('Toggle'));
+            await user.click(screen.getByLabelText('Collapse node'));
             assert.deepEqual(getNodeMetadata(expandNode), expectedParentMetadata);
         });
     });

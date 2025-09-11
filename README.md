@@ -28,10 +28,9 @@ npm install react-checkbox-tree --save
 
 ### Include CSS
 
-For your convenience, the library's styles can be consumed utilizing one of the following files:
+The library's styles are available through one of the following files:
 
 * `node_modules/react-checkbox-tree/lib/react-checkbox-tree.css`
-* `node_modules/react-checkbox-tree/src/less/react-checkbox-tree.less`
 * `node_modules/react-checkbox-tree/src/scss/react-checkbox-tree.scss`
 
 Either include one of these files in your stylesheets or utilize a CSS loader:
@@ -47,6 +46,7 @@ Below is a minimal example using [state hooks][docs-state-hooks]. Note that `Che
 ``` jsx
 import React, { useState } from 'react';
 import CheckboxTree from 'react-checkbox-tree';
+import 'react-checkbox-tree/lib/react-checkbox-tree.css';
 
 const nodes = [{
   value: 'mars',
@@ -149,32 +149,34 @@ Returns:
 
 ### Properties
 
-| Property             | Type     | Description                                                                                                            | Default     |
-| -------------------- | -------- | ---------------------------------------------------------------------------------------------------------------------- | ----------- |
-| `nodes`              | array    | **Required**. Specifies the tree nodes and their children.                                                             |             |
-| `checkModel`         | string   | Specifies which checked nodes should be stored in the `checked` array. Accepts `'leaf'` or `'all'`.                    | `'leaf'`    |
-| `checked`            | array    | An array of checked node values.                                                                                       | `[]`        |
-| `direction`          | string   | A string that specify whether the direction of the component is left-to-right (`'ltr'`) or right-to-left (`'rtl'`).    | `'ltr'`     |
-| `disabled`           | bool     | If true, the component will be disabled and nodes cannot be checked.                                                   | `false`     |
-| `expandDisabled`     | bool     | If true, the ability to expand nodes will be disabled.                                                                 | `false`     |
-| `expandOnClick`      | bool     | If true, nodes will be expanded by clicking on labels. Requires a non-empty `onClick` function.                        | `false`     |
-| `expanded`           | array    | An array of expanded node values.                                                                                      | `[]`        |
-| `icons`              | object   | An object containing the mappings for the various icons and their components. See **Changing the Default Icons**.      | `{ ... }`   |
-| `iconsClass`         | string   | A string that specifies which icons class to utilize. Currently, `'fa4'` and `'fa5'` are supported.                    | `'fa5'`     |
-| `id`                 | string   | A string to be used for the HTML ID of the rendered tree and its nodes.                                                | `null`      |
-| `lang`               | object   | An object containing the language mappings for the various text elements.                                              | `{ ... }`   |
-| `name`               | string   | Optional name for the hidden `<input>` element.                                                                        | `undefined` |
-| `nameAsArray`        | bool     | If true, the hidden `<input>` will encode its values as an array rather than a joined string.                          | `false`     |
-| `nativeCheckboxes`   | bool     | If true, native browser checkboxes will be used instead of pseudo-checkbox icons.                                      | `false`     |
-| `noCascade`          | bool     | If true, toggling a parent node will **not** cascade its check state to its children.                                  | `false`     |
-| `onlyLeafCheckboxes` | bool     | If true, checkboxes will only be shown for leaf nodes.                                                                 | `false`     |
-| `optimisticToggle`   | bool     | If true, toggling a partially-checked node will select all children. If false, it will deselect.                       | `true`      |
-| `showExpandAll`      | bool     | If true, buttons for expanding and collapsing all parent nodes will appear in the tree.                                | `false`     |
-| `showNodeIcon`       | bool     | If true, each node will show a parent or leaf icon.                                                                    | `true`      |
-| `showNodeTitle`      | bool     | If true, the `label` of each node will become the `title` of the resulting DOM node. Overridden by `node.title`.       | `false`     |
-| `onCheck`            | function | onCheck handler: `function(checked, targetNode) {}`                                                                    | `() => {}`  |
-| `onClick`            | function | onClick handler: `function(targetNode) {}`. If set, `onClick` will be called when a node's label has been clicked.     | `() => {}`  |
-| `onExpand`           | function | onExpand handler: `function(expanded, targetNode) {}`                                                                  | `() => {}`  |
+| Property             | Type     | Description                                                                                                            | Default          |
+| -------------------- | -------- | ---------------------------------------------------------------------------------------------------------------------- | ---------------- |
+| `nodes`              | array    | **Required**. Specifies the tree nodes and their children.                                                             |                  |
+| `checkKeys`          | array    | A list of [keyboard keys][mdn-key] that will trigger a toggle of the check status of a node.                           | `[' ', 'Enter']` |
+| `checkModel`         | string   | Specifies which checked nodes should be stored in the `checked` array. Accepts `'leaf'` or `'all'`.                    | `'leaf'`         |
+| `checked`            | array    | An array of checked node values.                                                                                       | `[]`             |
+| `direction`          | string   | A string that specify whether the direction of the component is left-to-right (`'ltr'`) or right-to-left (`'rtl'`).    | `'ltr'`          |
+| `disabled`           | bool     | If true, the component will be disabled and nodes cannot be checked.                                                   | `false`          |
+| `expandDisabled`     | bool     | If true, the ability to expand nodes will be disabled.                                                                 | `false`          |
+| `expandOnClick`      | bool     | If true, nodes will be expanded by clicking on labels. Requires a non-empty `onClick` function.                        | `false`          |
+| `expanded`           | array    | An array of expanded node values.                                                                                      | `[]`             |
+| `icons`              | object   | An object containing the mappings for the various icons and their components. See **Changing the Default Icons**.      | `{ ... }`        |
+| `iconsClass`         | string   | A string that specifies which icons class to utilize. Currently, `'fa4'` and `'fa5'` are supported.                    | `'fa5'`          |
+| `id`                 | string   | A string to be used for the HTML ID of the rendered tree and its nodes.                                                | `null`           |
+| `lang`               | object   | A key-value pairing of localized text. See [`src/js/lang/default.js`][lang-file] for a list of keys.                   | `{ ... }`        |
+| `name`               | string   | Optional name for the hidden `<input>` element.                                                                        | `undefined`      |
+| `nameAsArray`        | bool     | If true, the hidden `<input>` will encode its values as an array rather than a joined string.                          | `false`          |
+| `nativeCheckboxes`   | bool     | If true, native browser checkboxes will be used instead of pseudo-checkbox icons.                                      | `false`          |
+| `noCascade`          | bool     | If true, toggling a parent node will **not** cascade its check state to its children.                                  | `false`          |
+| `onlyLeafCheckboxes` | bool     | If true, checkboxes will only be shown for leaf nodes.                                                                 | `false`          |
+| `optimisticToggle`   | bool     | If true, toggling a partially-checked node will select all children. If false, it will deselect.                       | `true`           |
+| `showExpandAll`      | bool     | If true, buttons for expanding and collapsing all parent nodes will appear in the tree.                                | `false`          |
+| `showNodeIcon`       | bool     | If true, each node will show a parent or leaf icon.                                                                    | `true`           |
+| `showNodeTitle`      | bool     | If true, the `label` of each node will become the `title` of the resulting DOM node. Overridden by `node.title`.       | `false`          |
+| `onCheck`            | function | onCheck handler: `function(checked, targetNode) {}`                                                                    | `() => {}`       |
+| `onClick`            | function | onClick handler: `function(targetNode) {}`. If set, `onClick` will be called when a node's label has been clicked.     | `null`           |
+| `onContextMenu`      | function | onContextMenu handler: `function(event, targetNode) {}`. Triggers when right-clicking a node element.                  | `null`           |
+| `onExpand`           | function | onExpand handler: `function(expanded, targetNode) {}`                                                                  | `() => {}`       |
 
 #### `onCheck` and `onExpand`
 
@@ -196,4 +198,6 @@ Individual nodes within the `nodes` property can have the following structure:
 [docs-controlled]: https://react.dev/learn/sharing-state-between-components#controlled-and-uncontrolled-components
 [docs-state-hooks]: https://react.dev/reference/react/useState
 [font-awesome]: https://fontawesome.com
+[lang-file]: https://github.com/jakezatecky/react-checkbox-tree/blob/master/src/js/lang/default.js
+[mdn-key]: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key
 [react-fontawesome]: https://github.com/FortAwesome/react-fontawesome

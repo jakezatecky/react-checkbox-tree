@@ -4,28 +4,27 @@ import { fireEvent } from '@testing-library/dom';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import TreeNode from '../src/js/TreeNode';
+import BaseTreeNode from '#js/components/TreeNode.jsx';
+import { IconContext, LanguageContext } from '#js/contexts.js';
+import lang from '#js/lang/default.js';
+
+const icons = {
+    check: <span className="rct-icon rct-icon-check" />,
+    uncheck: <span className="rct-icon rct-icon-uncheck" />,
+    halfCheck: <span className="rct-icon rct-icon-half-check" />,
+    expandClose: <span className="rct-icon rct-icon-expand-close" />,
+    expandOpen: <span className="rct-icon rct-icon-expand-open" />,
+    parentClose: <span className="rct-icon rct-icon-parent-close" />,
+    parentOpen: <span className="rct-icon rct-icon-parent-open" />,
+    leaf: <span className="rct-icon rct-icon-leaf" />,
+};
 
 const baseProps = {
+    checkKeys: [' ', 'Enter'],
     checked: 0,
     disabled: false,
     expandDisabled: false,
     expanded: false,
-    lang: {
-        collapseAll: 'Collapse',
-        expandAll: 'Expand',
-        toggle: 'Toggle',
-    },
-    icons: {
-        check: <span className="rct-icon rct-icon-check" />,
-        uncheck: <span className="rct-icon rct-icon-uncheck" />,
-        halfCheck: <span className="rct-icon rct-icon-half-check" />,
-        expandClose: <span className="rct-icon rct-icon-expand-close" />,
-        expandOpen: <span className="rct-icon rct-icon-expand-open" />,
-        parentClose: <span className="rct-icon rct-icon-parent-close" />,
-        parentOpen: <span className="rct-icon rct-icon-parent-open" />,
-        leaf: <span className="rct-icon rct-icon-leaf" />,
-    },
     isLeaf: true,
     isParent: false,
     label: 'Jupiter',
@@ -36,6 +35,17 @@ const baseProps = {
     onCheck: () => {},
     onExpand: () => {},
 };
+
+/* eslint-disable react/jsx-props-no-spreading */
+function TreeNode(props) {
+    return (
+        <LanguageContext.Provider value={lang}>
+            <IconContext.Provider value={icons}>
+                <BaseTreeNode {...props} />
+            </IconContext.Provider>
+        </LanguageContext.Provider>
+    );
+}
 
 describe('<TreeNode />', () => {
     describe('component', () => {
@@ -139,7 +149,7 @@ describe('<TreeNode />', () => {
                 <TreeNode {...baseProps} expandDisabled isLeaf={false} />,
             );
 
-            assert.isTrue(screen.getByLabelText('Toggle').disabled);
+            assert.isTrue(screen.getByLabelText('Expand node').disabled);
         });
     });
 
@@ -219,16 +229,6 @@ describe('<TreeNode />', () => {
             );
 
             assert.isNotNull(container.querySelector('.rct-node-icon > .fa.fa-plus'));
-        });
-    });
-
-    describe('icons', () => {
-        it('should replace the default set of icons with the provided values', () => {
-            const { container } = render(
-                <TreeNode {...baseProps} icons={{ uncheck: <span className="other-uncheck" /> }} />,
-            );
-
-            assert.isNotNull(container.querySelector('.rct-checkbox .other-uncheck'));
         });
     });
 
@@ -380,7 +380,7 @@ describe('<TreeNode />', () => {
         it('should trigger on key press', async () => {
             let actual = {};
 
-            const { container } = render(
+            render(
                 <TreeNode
                     {...baseProps}
                     checked={2}
@@ -391,8 +391,7 @@ describe('<TreeNode />', () => {
                 />,
             );
 
-            // TODO: Replace with `user.type` when migrating away from `keyCode`
-            await fireEvent.keyUp(container.querySelector('.rct-checkbox'), { keyCode: 32 });
+            await fireEvent.keyUp(screen.getByRole('checkbox'), { key: 'Enter' });
 
             assert.isTrue(actual.checked);
         });
@@ -438,7 +437,7 @@ describe('<TreeNode />', () => {
             );
 
             const user = userEvent.setup();
-            await user.click(screen.getByLabelText('Toggle'));
+            await user.click(screen.getByLabelText('Collapse node'));
 
             assert.deepEqual(actual, { value: 'jupiter', expanded: false });
         });

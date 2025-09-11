@@ -5,11 +5,8 @@ const propTypes = {
     children: PropTypes.node.isRequired,
     title: PropTypes.string,
 };
-const defaultProps = {
-    title: null,
-};
 
-function Button({ children, title, ...props }) {
+function Button({ children, title = null, ...props }) {
     return (
         <button
             aria-label={title}
@@ -23,6 +20,5 @@ function Button({ children, title, ...props }) {
 }
 
 Button.propTypes = propTypes;
-Button.defaultProps = defaultProps;
 
 export default Button;

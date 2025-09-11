@@ -1,4 +1,4 @@
-import CheckboxTree from './js/CheckboxTree';
+import CheckboxTree from './js/CheckboxTree.jsx';
 
 export default CheckboxTree;
-export * from './js/utils';
+export * from './js/utils.js';
