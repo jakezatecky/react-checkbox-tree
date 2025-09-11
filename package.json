@@ -70,7 +70,7 @@
     "chai": "^6.0.1",
     "cross-env": "^7.0.3",
     "css-loader": "^6.7.3",
-    "cssnano": "^6.0.0",
+    "cssnano": "^7.1.1",
     "eslint": "^8.23.0",
     "eslint-config-takiyon-react": "^6.0.0",
     "eslint-import-resolver-webpack": "^0.13.0",
