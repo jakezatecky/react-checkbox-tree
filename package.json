@@ -66,7 +66,7 @@
     "@testing-library/user-event": "^14.4.3",
     "@types/react": "^18.0.18",
     "autoprefixer": "^10.4.13",
-    "babel-loader": "^9.0.0",
+    "babel-loader": "^10.0.0",
     "chai": "^6.0.1",
     "cross-env": "^7.0.3",
     "css-loader": "^7.1.2",
