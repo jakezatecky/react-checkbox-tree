@@ -32,6 +32,7 @@
 
 ### Added
 
+* Add support for React 19
 * Add full support for ESM environments
 * Add `checkKeys` property to allow specification of JavaScript keys to trigger check behavior
 * Add `onContextMenu` property, which will trigger whenever a user right-clicks a node (#237)
