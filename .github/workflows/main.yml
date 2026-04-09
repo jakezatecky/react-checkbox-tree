@@ -31,4 +31,7 @@ jobs:
         run: yarn install
       -
         name: Run tests
-        run: yarn release
+        run: yarn test
+      -
+        name: Build the library
+        run: yarn build

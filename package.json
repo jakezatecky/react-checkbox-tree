@@ -46,11 +46,11 @@
     "lint:style": "stylelint src/scss/**/*.scss examples/src/scss/**/*.scss",
     "gh-build": "webpack --config=webpack.config.examples.js --mode=production",
     "gh-deploy": "npm run gh-build && bash ./gh-deploy.sh",
-    "prepublishOnly": "npm run release",
-    "release": "npm run test && npm run build",
+    "prepublishOnly": "npm run test-and-build",
     "test": "npm run lint && npm run test:script && npm run test:style-format",
     "test:script": "webpack --config=webpack.config.test.js && mocha test-compiled/index.js --exit",
-    "test:style-format": "prettier --check src/scss/**/*.scss examples/src/scss/**/*.scss"
+    "test:style-format": "prettier --check src/scss/**/*.scss examples/src/scss/**/*.scss",
+    "test-and-build": "npm run test && npm run build"
   },
   "peerDependencies": {
     "react": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0"
