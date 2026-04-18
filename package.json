@@ -27,7 +27,8 @@
   "exports": {
     ".": {
       "import": "./lib/index.esm.js",
-      "require": "./lib/index.js"
+      "require": "./lib/index.js",
+      "types": "./src/index.d.ts"
     },
     "./*": "./*"
   },
