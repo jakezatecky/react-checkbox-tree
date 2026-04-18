@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [v2.0.1](https://github.com/jakezatecky/react-checkbox-tree/compare/v2.0.0...v2.0.1) (2026-04-17)
+
+### Fixes
+
+* Fix TypeScript type exports (#562)
+
 ## [v2.0.0](https://github.com/jakezatecky/react-checkbox-tree/compare/v1.8.0...v2.0.0) (2026-04-09)
 
 ### Breaking Changes
