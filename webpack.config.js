@@ -37,7 +37,7 @@ const umdConfig = {
     ...commonConfig,
     output: {
         path: path.join(dirname, '/lib'),
-        filename: 'index.js',
+        filename: 'index.cjs',
         library: {
             name: 'ReactCheckboxTree',
             type: 'umd',
