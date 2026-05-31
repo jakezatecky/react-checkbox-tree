@@ -59,6 +59,7 @@ class TreeNode extends React.PureComponent {
         this.onCheckboxKeyUp = this.onCheckboxKeyUp.bind(this);
         this.onClick = this.onClick.bind(this);
         this.onExpand = this.onExpand.bind(this);
+        this.checkboxRef = React.createRef();
     }
 
     onCheck() {
@@ -168,7 +169,7 @@ class TreeNode extends React.PureComponent {
                         tabIndex={0}
                         onClick={this.onClick}
                         onContextMenu={onContextMenu}
-                        onKeyPress={this.onClick}
+                        onKeyDown={this.onClick}
                     >
                         {children}
                     </span>
