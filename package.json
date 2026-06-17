@@ -59,7 +59,7 @@
   "devDependencies": {
     "@babel/core": "^7.0.0",
     "@babel/eslint-parser": "^7.13.10",
-    "@babel/preset-env": "^7.0.0",
+    "@babel/preset-env": "^8.0.1",
     "@babel/preset-react": "^7.0.0",
     "@babel/register": "^7.0.0",
     "@testing-library/dom": "^10.4.1",
