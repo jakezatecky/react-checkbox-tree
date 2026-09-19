@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import React from 'react';
+import { PureComponent } from 'react';
 
 import { KEYS } from '#js/constants.js';
 import { IconContext } from '#js/contexts.js';
@@ -8,7 +8,7 @@ import ExpandButton from '#js/components/ExpandButton.jsx';
 import NativeCheckbox from '#js/components/NativeCheckbox.jsx';
 import NodeIcon from '#js/components/NodeIcon.jsx';
 
-class TreeNode extends React.PureComponent {
+class TreeNode extends PureComponent {
     static contextType = IconContext;
 
     static propTypes = {
@@ -243,9 +243,7 @@ class TreeNode extends React.PureComponent {
         } = this.props;
         const labelChildren = (
             <>
-                {showNodeIcon && (
-                    <NodeIcon expanded={expanded} icon={icon} isLeaf={isLeaf} />
-                )}
+                {showNodeIcon ? <NodeIcon expanded={expanded} icon={icon} isLeaf={isLeaf} /> : null}
                 <span className="rct-label">{label}</span>
             </>
         );

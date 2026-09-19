@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import CheckboxTree from 'react-checkbox-tree';
 
 import { fileSystem as nodes } from './common.js';
@@ -51,7 +51,9 @@ function FilterExample() {
 
         // Reset nodes back to unfiltered state
         if (!filterText) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
             setFilteredNodes(nodes);
+
             return;
         }
 

@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import { deepEqual } from 'fast-equals';
 import memoize from 'lodash.memoize';
 import PropTypes from 'prop-types';
-import React from 'react';
+import { Component } from 'react';
 
 import GlobalActions from '#js/components/GlobalActions.jsx';
 import HiddenInput from '#js/components/HiddenInput.jsx';
@@ -31,7 +31,7 @@ const defaultIcons = {
     leaf: <span className="rct-icon rct-icon-leaf" />,
 };
 
-class CheckboxTree extends React.Component {
+class CheckboxTree extends Component {
     static propTypes = {
         nodes: PropTypes.arrayOf(nodeShape).isRequired,
 
@@ -289,7 +289,7 @@ class CheckboxTree extends React.Component {
                     treeId={id}
                     value={node.value}
                     onCheck={this.onCheck}
-                    onClick={onClick && this.onNodeClick}
+                    onClick={onClick ? this.onNodeClick : null}
                     onContextMenu={this.onContextMenu(nodeContext)}
                     onExpand={this.onExpand}
                 >

@@ -1,4 +1,3 @@
-import React from 'react';
 import { assert } from 'chai';
 import { fireEvent } from '@testing-library/dom';
 import { render, screen } from '@testing-library/react';

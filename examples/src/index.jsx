@@ -1,4 +1,3 @@
-import React from 'react';
 import { createRoot } from 'react-dom/client';
 
 import BasicExample from './js/BasicExample.jsx';

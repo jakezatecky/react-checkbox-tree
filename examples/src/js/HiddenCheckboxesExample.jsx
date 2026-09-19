@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import CheckboxTree from 'react-checkbox-tree';
 
 import { empires as nodes } from './common.js';
