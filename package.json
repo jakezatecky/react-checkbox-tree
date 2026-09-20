@@ -17,7 +17,7 @@
   "homepage": "https://jakezatecky.github.io/react-checkbox-tree",
   "bugs": "https://github.com/jakezatecky/react-checkbox-tree/issues",
   "main": "lib/index.cjs",
-  "module": "lib/index.esm.js",
+  "module": "lib/index.js",
   "browser": "lib/index.cjs",
   "type": "module",
   "imports": {
@@ -26,7 +26,7 @@
   },
   "exports": {
     ".": {
-      "import": "./lib/index.esm.js",
+      "import": "./lib/index.js",
       "require": "./lib/index.cjs",
       "types": "./src/index.d.ts"
     },

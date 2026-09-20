@@ -13,7 +13,6 @@ export default [
         files: [
             '**/*.{js,jsx}',
         ],
-        ignores: ['./node_modules/**/*'],
         settings: {
             // Account for webpack.resolve.module imports
             'import/resolver': {

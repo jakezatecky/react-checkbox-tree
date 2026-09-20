@@ -51,7 +51,7 @@ const esmConfig = {
     target: 'es2020',
     output: {
         path: path.join(dirname, '/lib'),
-        filename: 'index.esm.js',
+        filename: 'index.js',
         library: {
             type: 'module',
         },
