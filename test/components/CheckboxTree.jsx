@@ -959,6 +959,32 @@ describe('<CheckboxTree />', () => {
             assert.equal(actualNode.value, 'jupiter');
             assert.isFalse(actualNode.expanded);
         });
+
+        it('should not throw when right-clicking a label without a handler', async () => {
+            const errors = [];
+            const onError = (event) => {
+                errors.push(event.error);
+                event.preventDefault();
+            };
+
+            window.addEventListener('error', onError);
+
+            render(
+                <CheckboxTree
+                    nodes={[{ value: 'jupiter', label: 'Jupiter' }]}
+                />,
+            );
+
+            const user = userEvent.setup();
+            await user.pointer({
+                target: screen.getByText('Jupiter'),
+                keys: '[MouseRight]',
+            });
+
+            window.removeEventListener('error', onError);
+
+            assert.deepEqual(errors, []);
+        });
     });
 
     describe('onExpand', () => {

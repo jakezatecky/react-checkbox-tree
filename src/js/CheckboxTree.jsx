@@ -267,7 +267,7 @@ function CheckboxTree({
                     value={node.value}
                     onCheck={handleCheck}
                     onClick={onClick ? handleNodeClick : null}
-                    onContextMenu={createContextMenuHandler(nodeContext)}
+                    onContextMenu={onContextMenu ? createContextMenuHandler(nodeContext) : null}
                     onExpand={handleExpand}
                 >
                     {children}

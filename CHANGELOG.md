@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v2.0.3
+
+### Fixed
+
+* Fix error thrown when `onContextMenu` is `null`
+
 ## [v2.0.2](https://github.com/jakezatecky/react-checkbox-tree/compare/v2.0.1...v2.0.2) (2026-05-28)
 
 ### Fixed
