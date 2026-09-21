@@ -232,7 +232,9 @@ function CheckboxTree({
             const showCheckbox = onlyLeafCheckboxes ? flatNode.isLeaf : flatNode.showCheckbox;
 
             // Render only if parent is expanded or if there is no root parent
-            const parentExpanded = parent.value ? model.getNode(parent.value).expanded : true;
+            const parentExpanded = parent.value !== undefined ? (
+                model.getNode(parent.value).expanded
+            ) : true;
 
             if (!parentExpanded) {
                 return null;
