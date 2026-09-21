@@ -486,6 +486,59 @@ describe('<TreeNode />', () => {
             assert.equal(actual.value, 'jupiter');
         });
 
+        it('should trigger on a key in `checkKeys`', () => {
+            let actual = {};
+
+            render(
+                <TreeNode
+                    {...baseProps}
+                    checkKeys={['Enter']}
+                    value="jupiter"
+                    onClick={(node) => {
+                        actual = node;
+                    }}
+                />,
+            );
+
+            fireEvent.keyDown(screen.getByRole('button'), { key: 'Enter' });
+
+            assert.equal(actual.value, 'jupiter');
+        });
+
+        it('should not trigger on a key outside of `checkKeys`', () => {
+            let actual = null;
+
+            render(
+                <TreeNode
+                    {...baseProps}
+                    checkKeys={['Enter']}
+                    value="jupiter"
+                    onClick={(node) => {
+                        actual = node;
+                    }}
+                />,
+            );
+
+            fireEvent.keyDown(screen.getByRole('button'), { key: ' ' });
+
+            assert.isNull(actual);
+        });
+
+        it('should prevent the default scroll behavior of the spacebar', () => {
+            render(
+                <TreeNode
+                    {...baseProps}
+                    onClick={() => {}}
+                />,
+            );
+
+            const button = screen.getByRole('button');
+
+            // `fireEvent` returns false when the event was default-prevented
+            assert.isFalse(fireEvent.keyDown(button, { key: ' ' }));
+            assert.isTrue(fireEvent.keyDown(button, { key: 'Enter' }));
+        });
+
         it('should return the unchecked node as unchecked', async () => {
             let actual = {};
 

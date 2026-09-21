@@ -115,6 +115,17 @@ function TreeNode({
         onClick({ value, checked: getCheckState({ toggle: false }) });
     }
 
+    function handleClickKeyDown(event) {
+        // Prevent the spacebar from scrolling the page
+        if (event.key === KEYS.SPACEBAR) {
+            event.preventDefault();
+        }
+
+        if (checkKeys.includes(event.key)) {
+            handleClick();
+        }
+    }
+
     function renderCheckboxIcon() {
         if (checked === 0) {
             return uncheck;
@@ -139,7 +150,7 @@ function TreeNode({
                         tabIndex={0}
                         onClick={handleClick}
                         onContextMenu={onContextMenu}
-                        onKeyPress={handleClick}
+                        onKeyDown={handleClickKeyDown}
                     >
                         {labelChildren}
                     </span>
@@ -184,7 +195,7 @@ function TreeNode({
                     tabIndex={0}
                     onClick={handleClick}
                     onContextMenu={onContextMenu}
-                    onKeyPress={handleClick}
+                    onKeyDown={handleClickKeyDown}
                 >
                     {labelChildren}
                 </span>
