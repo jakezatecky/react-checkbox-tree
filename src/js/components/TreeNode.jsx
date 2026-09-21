@@ -93,7 +93,7 @@ function TreeNode({
         const { key } = event;
 
         // Prevent default spacebar behavior from interfering with user settings
-        if (KEYS.SPACEBAR) {
+        if (key === KEYS.SPACEBAR) {
             event.preventDefault();
         }
 
