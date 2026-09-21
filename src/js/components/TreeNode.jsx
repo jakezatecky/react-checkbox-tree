@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import { PureComponent } from 'react';
+import { memo, useCallback, useContext } from 'react';
 
 import { KEYS } from '#js/constants.js';
 import { IconContext } from '#js/contexts.js';
@@ -8,107 +8,62 @@ import ExpandButton from '#js/components/ExpandButton.jsx';
 import NativeCheckbox from '#js/components/NativeCheckbox.jsx';
 import NodeIcon from '#js/components/NodeIcon.jsx';
 
-class TreeNode extends PureComponent {
-    static contextType = IconContext;
+const propTypes = {
+    checkKeys: PropTypes.arrayOf(PropTypes.string).isRequired,
+    checked: PropTypes.number.isRequired,
+    disabled: PropTypes.bool.isRequired,
+    expandDisabled: PropTypes.bool.isRequired,
+    expanded: PropTypes.bool.isRequired,
+    isLeaf: PropTypes.bool.isRequired,
+    isParent: PropTypes.bool.isRequired,
+    label: PropTypes.node.isRequired,
+    optimisticToggle: PropTypes.bool.isRequired,
+    showNodeIcon: PropTypes.bool.isRequired,
+    value: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.number,
+    ]).isRequired,
+    onCheck: PropTypes.func.isRequired,
+    onExpand: PropTypes.func.isRequired,
 
-    static propTypes = {
-        checkKeys: PropTypes.arrayOf(PropTypes.string).isRequired,
-        checked: PropTypes.number.isRequired,
-        disabled: PropTypes.bool.isRequired,
-        expandDisabled: PropTypes.bool.isRequired,
-        expanded: PropTypes.bool.isRequired,
-        isLeaf: PropTypes.bool.isRequired,
-        isParent: PropTypes.bool.isRequired,
-        label: PropTypes.node.isRequired,
-        optimisticToggle: PropTypes.bool.isRequired,
-        showNodeIcon: PropTypes.bool.isRequired,
-        value: PropTypes.oneOfType([
-            PropTypes.string,
-            PropTypes.number,
-        ]).isRequired,
-        onCheck: PropTypes.func.isRequired,
-        onExpand: PropTypes.func.isRequired,
+    children: PropTypes.node,
+    className: PropTypes.string,
+    expandOnClick: PropTypes.bool,
+    icon: PropTypes.node,
+    showCheckbox: PropTypes.bool,
+    title: PropTypes.string,
+    treeId: PropTypes.string,
+    onClick: PropTypes.func,
+    onContextMenu: PropTypes.func,
+};
 
-        children: PropTypes.node,
-        className: PropTypes.string,
-        expandOnClick: PropTypes.bool,
-        icon: PropTypes.node,
-        showCheckbox: PropTypes.bool,
-        title: PropTypes.string,
-        treeId: PropTypes.string,
-        onClick: PropTypes.func,
-        onContextMenu: PropTypes.func,
-    };
+function TreeNode({
+    checkKeys,
+    checked,
+    disabled,
+    expandDisabled,
+    expanded,
+    isLeaf,
+    isParent,
+    label,
+    optimisticToggle,
+    showNodeIcon,
+    value,
+    onCheck,
+    onExpand,
+    children = null,
+    className = null,
+    expandOnClick = false,
+    icon = null,
+    showCheckbox = true,
+    title = null,
+    treeId = null,
+    onClick = null,
+    onContextMenu = null,
+}) {
+    const { uncheck, check, halfCheck } = useContext(IconContext);
 
-    static defaultProps = {
-        children: null,
-        className: null,
-        expandOnClick: false,
-        icon: null,
-        showCheckbox: true,
-        title: null,
-        treeId: null,
-        onClick: null,
-        onContextMenu: null,
-    };
-
-    constructor(props) {
-        super(props);
-
-        this.onCheck = this.onCheck.bind(this);
-        this.onCheckboxKeyUp = this.onCheckboxKeyUp.bind(this);
-        this.onClick = this.onClick.bind(this);
-        this.onExpand = this.onExpand.bind(this);
-    }
-
-    onCheck() {
-        const { value, onCheck } = this.props;
-
-        onCheck({
-            value,
-            checked: this.getCheckState({ toggle: true }),
-        });
-    }
-
-    onCheckboxKeyUp(event) {
-        const { checkKeys } = this.props;
-        const { key } = event;
-
-        // Prevent default spacebar behavior from interfering with user settings
-        if (KEYS.SPACEBAR) {
-            event.preventDefault();
-        }
-
-        if (checkKeys.includes(key)) {
-            this.onCheck();
-        }
-    }
-
-    onClick() {
-        const {
-            expandOnClick,
-            isParent,
-            value,
-            onClick,
-        } = this.props;
-
-        // Auto expand if enabled
-        if (isParent && expandOnClick) {
-            this.onExpand();
-        }
-
-        onClick({ value, checked: this.getCheckState({ toggle: false }) });
-    }
-
-    onExpand() {
-        const { expanded, value, onExpand } = this.props;
-
-        onExpand({ value, expanded: !expanded });
-    }
-
-    getCheckState({ toggle }) {
-        const { checked, optimisticToggle } = this.props;
-
+    const getCheckState = useCallback(({ toggle }) => {
         // Toggle off state to checked
         if (checked === 0 && toggle) {
             return true;
@@ -125,25 +80,42 @@ class TreeNode extends PureComponent {
         }
 
         return false;
+    }, [checked, optimisticToggle]);
+
+    const handleCheck = useCallback(() => {
+        onCheck({
+            value,
+            checked: getCheckState({ toggle: true }),
+        });
+    }, [getCheckState, onCheck, value]);
+
+    const handleCheckboxKeyUp = useCallback((event) => {
+        const { key } = event;
+
+        // Prevent default spacebar behavior from interfering with user settings
+        if (KEYS.SPACEBAR) {
+            event.preventDefault();
+        }
+
+        if (checkKeys.includes(key)) {
+            handleCheck();
+        }
+    }, [checkKeys, handleCheck]);
+
+    const handleExpand = useCallback(() => {
+        onExpand({ value, expanded: !expanded });
+    }, [expanded, onExpand, value]);
+
+    function handleClick() {
+        // Auto expand if enabled
+        if (isParent && expandOnClick) {
+            handleExpand();
+        }
+
+        onClick({ value, checked: getCheckState({ toggle: false }) });
     }
 
-    renderExpandButton() {
-        const { expandDisabled, expanded, isLeaf } = this.props;
-
-        return (
-            <ExpandButton
-                disabled={expandDisabled}
-                expanded={expanded}
-                isLeaf={isLeaf}
-                onClick={this.onExpand}
-            />
-        );
-    }
-
-    renderCheckboxIcon() {
-        const { uncheck, check, halfCheck } = this.context;
-        const { checked } = this.props;
-
+    function renderCheckboxIcon() {
         if (checked === 0) {
             return uncheck;
         }
@@ -155,8 +127,7 @@ class TreeNode extends PureComponent {
         return halfCheck;
     }
 
-    renderBareLabel(children) {
-        const { title, onClick, onContextMenu } = this.props;
+    function renderBareLabel(labelChildren) {
         const clickable = onClick !== null;
 
         return (
@@ -166,27 +137,18 @@ class TreeNode extends PureComponent {
                         className="rct-node-clickable"
                         role="button"
                         tabIndex={0}
-                        onClick={this.onClick}
+                        onClick={handleClick}
                         onContextMenu={onContextMenu}
-                        onKeyPress={this.onClick}
+                        onKeyPress={handleClick}
                     >
-                        {children}
+                        {labelChildren}
                     </span>
-                ) : children}
+                ) : labelChildren}
             </span>
         );
     }
 
-    renderCheckboxLabel(children) {
-        const {
-            checked,
-            disabled,
-            title,
-            treeId,
-            value,
-            onClick,
-            onContextMenu,
-        } = this.props;
+    function renderCheckboxLabel(labelChildren) {
         const clickable = onClick !== null;
         const valueId = String(value).split(' ').join('_');
         const inputId = treeId ? `${treeId}-${valueId}` : null;
@@ -199,17 +161,17 @@ class TreeNode extends PureComponent {
                     id={inputId}
                     indeterminate={checked === 2}
                     onChange={() => {}}
-                    onClick={this.onCheck}
-                    onKeyUp={this.onCheckboxKeyUp}
+                    onClick={handleCheck}
+                    onKeyUp={handleCheckboxKeyUp}
                 />
                 <span
                     aria-hidden="true"
                     className="rct-checkbox"
                     role="presentation"
                 >
-                    {this.renderCheckboxIcon()}
+                    {renderCheckboxIcon()}
                 </span>
-                {!clickable ? children : null}
+                {!clickable ? labelChildren : null}
             </label>
         )];
 
@@ -220,11 +182,11 @@ class TreeNode extends PureComponent {
                     className="rct-node-clickable"
                     role="button"
                     tabIndex={0}
-                    onClick={this.onClick}
+                    onClick={handleClick}
                     onContextMenu={onContextMenu}
-                    onKeyPress={this.onClick}
+                    onKeyPress={handleClick}
                 >
-                    {children}
+                    {labelChildren}
                 </span>
             ));
         }
@@ -232,15 +194,7 @@ class TreeNode extends PureComponent {
         return render;
     }
 
-    renderLabel() {
-        const {
-            expanded,
-            icon,
-            isLeaf,
-            label,
-            showCheckbox,
-            showNodeIcon,
-        } = this.props;
+    function renderLabel() {
         const labelChildren = (
             <>
                 {showNodeIcon ? <NodeIcon expanded={expanded} icon={icon} isLeaf={isLeaf} /> : null}
@@ -249,48 +203,38 @@ class TreeNode extends PureComponent {
         );
 
         if (!showCheckbox) {
-            return this.renderBareLabel(labelChildren);
+            return renderBareLabel(labelChildren);
         }
 
-        return this.renderCheckboxLabel(labelChildren);
+        return renderCheckboxLabel(labelChildren);
     }
 
-    renderChildren() {
-        const { children, expanded } = this.props;
+    const nodeClass = classNames({
+        'rct-node': true,
+        'rct-node-leaf': isLeaf,
+        'rct-node-parent': !isLeaf,
+        'rct-node-expanded': !isLeaf && expanded,
+        'rct-node-collapsed': !isLeaf && !expanded,
+        'rct-disabled': disabled,
+    }, className);
 
-        if (!expanded) {
-            return null;
-        }
-
-        return children;
-    }
-
-    render() {
-        const {
-            className,
-            disabled,
-            expanded,
-            isLeaf,
-        } = this.props;
-        const nodeClass = classNames({
-            'rct-node': true,
-            'rct-node-leaf': isLeaf,
-            'rct-node-parent': !isLeaf,
-            'rct-node-expanded': !isLeaf && expanded,
-            'rct-node-collapsed': !isLeaf && !expanded,
-            'rct-disabled': disabled,
-        }, className);
-
-        return (
-            <li className={nodeClass}>
-                <span className="rct-text">
-                    {this.renderExpandButton()}
-                    {this.renderLabel()}
-                </span>
-                {this.renderChildren()}
-            </li>
-        );
-    }
+    return (
+        <li className={nodeClass}>
+            <span className="rct-text">
+                <ExpandButton
+                    disabled={expandDisabled}
+                    expanded={expanded}
+                    isLeaf={isLeaf}
+                    onClick={handleExpand}
+                />
+                {renderLabel()}
+            </span>
+            {expanded ? children : null}
+        </li>
+    );
 }
 
-export default TreeNode;
+TreeNode.propTypes = propTypes;
+
+// Memoized to preserve the shallow-compare behavior of the previous `PureComponent`
+export default memo(TreeNode);
