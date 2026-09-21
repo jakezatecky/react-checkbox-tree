@@ -1,4 +1,5 @@
 import takiyonConfig from 'eslint-config-takiyon-react';
+import { createNodeResolver } from 'eslint-plugin-import-x';
 import globals from 'globals';
 
 import webpackConfig from './webpack.config.examples.js';
@@ -14,12 +15,17 @@ export default [
             '**/*.{js,jsx}',
         ],
         settings: {
-            // Account for webpack.resolve.module imports
-            'import/resolver': {
-                webpack: {
-                    config: webpackConfig,
-                },
-            },
+            // Account for webpack.resolve.alias imports
+            'import-x/resolver-next': [
+                createNodeResolver({
+                    alias: Object.fromEntries(
+                        Object.entries(webpackConfig.resolve.alias).map(([name, target]) => [
+                            name,
+                            [target],
+                        ]),
+                    ),
+                }),
+            ],
         },
     },
     {

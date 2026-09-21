@@ -74,6 +74,7 @@
     "cssnano": "^8.0.0",
     "eslint": "^10.10.0",
     "eslint-config-takiyon-react": "^8.0.1",
+    "eslint-plugin-import-x": "^4.17.1",
     "global-jsdom": "^29.0.0",
     "globals": "^17.4.0",
     "html-bundler-webpack-plugin": "^4.21.1",
