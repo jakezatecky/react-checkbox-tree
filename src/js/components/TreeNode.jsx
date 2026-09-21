@@ -126,6 +126,12 @@ function TreeNode({
         }
     }
 
+    function handleContextMenu(event) {
+        onContextMenu(event, { value, checked, expanded });
+    }
+
+    const contextMenuHandler = onContextMenu !== null ? handleContextMenu : null;
+
     function renderCheckboxIcon() {
         if (checked === 0) {
             return uncheck;
@@ -149,7 +155,7 @@ function TreeNode({
                         role="button"
                         tabIndex={0}
                         onClick={handleClick}
-                        onContextMenu={onContextMenu}
+                        onContextMenu={contextMenuHandler}
                         onKeyDown={handleClickKeyDown}
                     >
                         {labelChildren}
@@ -165,7 +171,7 @@ function TreeNode({
         const inputId = treeId ? `${treeId}-${valueId}` : null;
 
         const render = [(
-            <label key={0} htmlFor={inputId} title={title} onContextMenu={onContextMenu}>
+            <label key={0} htmlFor={inputId} title={title} onContextMenu={contextMenuHandler}>
                 <NativeCheckbox
                     checked={checked === 1}
                     disabled={disabled}
@@ -194,7 +200,7 @@ function TreeNode({
                     role="button"
                     tabIndex={0}
                     onClick={handleClick}
-                    onContextMenu={onContextMenu}
+                    onContextMenu={contextMenuHandler}
                     onKeyDown={handleClickKeyDown}
                 >
                     {labelChildren}

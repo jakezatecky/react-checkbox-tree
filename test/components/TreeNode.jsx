@@ -419,6 +419,34 @@ describe('<TreeNode />', () => {
         });
     });
 
+    describe('onContextMenu', () => {
+        it('should pass the event and the current node\'s state when right-clicking the label', async () => {
+            let actual = null;
+
+            render(
+                <TreeNode
+                    {...baseProps}
+                    checked={2}
+                    expanded
+                    isLeaf={false}
+                    value="jupiter"
+                    onContextMenu={(event, node) => {
+                        actual = { event, node };
+                    }}
+                />,
+            );
+
+            const user = userEvent.setup();
+            await user.pointer({
+                target: screen.getByText('Jupiter'),
+                keys: '[MouseRight]',
+            });
+
+            assert.equal(actual.event.type, 'contextmenu');
+            assert.deepEqual(actual.node, { value: 'jupiter', checked: 2, expanded: true });
+        });
+    });
+
     describe('onExpand', () => {
         it('should toggle the expanded property and pass the current node\'s value', async () => {
             let actual = {};

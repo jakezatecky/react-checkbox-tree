@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import { deepEqual } from 'fast-equals';
 import memoize from 'lodash.memoize';
 import PropTypes from 'prop-types';
-import { useCallback, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import GlobalActions from '#js/components/GlobalActions.jsx';
 import HiddenInput from '#js/components/HiddenInput.jsx';
@@ -14,6 +14,7 @@ import listShape from '#js/shapes/listShape.js';
 import nodeShape from '#js/shapes/nodeShape.js';
 import { CHECK_MODEL, KEYS } from '#js/constants.js';
 import { IconContext, LanguageContext } from '#js/contexts.js';
+import useEventCallback from '#js/useEventCallback.js';
 import NodeModel from '#js/NodeModel.js';
 
 const combineMemoized = memoize((newValue, defaultValue) => ({ ...defaultValue, ...newValue }));
@@ -65,6 +66,20 @@ const propTypes = {
     onContextMenu: PropTypes.func,
     onExpand: PropTypes.func,
 };
+
+function findNode(nodes, value) {
+    return nodes.reduce((found, node) => {
+        if (found !== undefined) {
+            return found;
+        }
+
+        if (node.value === value) {
+            return node;
+        }
+
+        return Array.isArray(node.children) ? findNode(node.children, value) : undefined;
+    }, undefined);
+}
 
 /**
  * Derive a `NodeModel` from the current props.
@@ -142,49 +157,49 @@ function CheckboxTree({
         noCascade,
     });
 
-    const handleCheck = useCallback((nodeInfo) => {
+    // Handlers keep a stable identity so that memoized `TreeNode`s are not invalidated whenever the
+    // model changes
+    const handleCheck = useEventCallback((nodeInfo) => {
         const newModel = model.clone();
         const node = newModel.getNode(nodeInfo.value);
 
         newModel.toggleChecked(nodeInfo, nodeInfo.checked, checkModel, noCascade);
         onCheck(newModel.serializeList('checked'), { ...node, ...nodeInfo });
-    }, [checkModel, model, noCascade, onCheck]);
+    });
 
-    const handleExpand = useCallback((nodeInfo) => {
+    const handleExpand = useEventCallback((nodeInfo) => {
         const newModel = model.clone();
         const node = newModel.getNode(nodeInfo.value);
 
         newModel.toggleNode(nodeInfo.value, 'expanded', nodeInfo.expanded);
         onExpand(newModel.serializeList('expanded'), { ...node, ...nodeInfo });
-    }, [model, onExpand]);
+    });
 
-    const handleNodeClick = useCallback((nodeInfo) => {
+    const handleNodeClick = useEventCallback((nodeInfo) => {
         const node = model.getNode(nodeInfo.value);
 
         onClick({ ...node, ...nodeInfo });
-    }, [model, onClick]);
+    });
 
-    const expandAllNodes = useCallback((expand = true) => {
+    const handleContextMenu = useEventCallback((event, nodeInfo) => {
+        onContextMenu(event, { ...findNode(nodes, nodeInfo.value), ...nodeInfo });
+    });
+
+    function expandAllNodes(expand) {
         onExpand(
             model.clone()
                 .expandAllNodes(expand)
                 .serializeList('expanded'),
         );
-    }, [model, onExpand]);
-
-    const handleExpandAll = useCallback(() => {
-        expandAllNodes();
-    }, [expandAllNodes]);
-
-    const handleCollapseAll = useCallback(() => {
-        expandAllNodes(false);
-    }, [expandAllNodes]);
-
-    function createContextMenuHandler(node) {
-        return (event) => {
-            onContextMenu(event, node);
-        };
     }
+
+    const handleExpandAll = useEventCallback(() => {
+        expandAllNodes(true);
+    });
+
+    const handleCollapseAll = useEventCallback(() => {
+        expandAllNodes(false);
+    });
 
     function isEveryChildChecked(node) {
         return node.children.every(
@@ -240,13 +255,6 @@ function CheckboxTree({
                 return null;
             }
 
-            // Prepare node information for context menu usage
-            const nodeContext = {
-                ...node,
-                checked: flatNode.checkState,
-                expanded: flatNode.expanded,
-            };
-
             return (
                 <TreeNode
                     key={key}
@@ -269,10 +277,10 @@ function CheckboxTree({
                     value={node.value}
                     onCheck={handleCheck}
                     onClick={onClick ? handleNodeClick : null}
-                    onContextMenu={onContextMenu ? createContextMenuHandler(nodeContext) : null}
+                    onContextMenu={onContextMenu ? handleContextMenu : null}
                     onExpand={handleExpand}
                 >
-                    {children}
+                    {flatNode.expanded ? children : null}
                 </TreeNode>
             );
         });
