@@ -4,10 +4,6 @@ import globals from 'globals';
 
 import webpackConfig from './webpack.config.examples.js';
 
-// Resolve issue with HTML Webpack Bundler causing circular references
-// https://github.com/webdiscus/html-bundler-webpack-plugin/issues/186
-delete webpackConfig.plugins;
-
 export default [
     ...takiyonConfig,
     {
