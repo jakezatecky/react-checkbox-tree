@@ -1,8 +1,0 @@
-/.css-compare
-/examples/dist
-/lib
-/node_modules
-/test-compiled
-package-lock.json
-yarn.lock
-pnpm-lock.yaml

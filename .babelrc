@@ -1,6 +1,0 @@
-{
-  "presets": [
-    ["@babel/preset-react", { "development": false }],
-    ["@babel/preset-env", { "modules": false }]
-  ]
-}
