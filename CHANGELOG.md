@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## v2.1.0 (TBA)
+## [v2.1.0](https://github.com/jakezatecky/react-checkbox-tree/compare/v2.0.2...v2.1.0) (2026-09-27)
 
 ### Added
 
