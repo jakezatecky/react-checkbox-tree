@@ -69,5 +69,11 @@ declare module "react-checkbox-tree" {
     }
 
     export default class CheckboxTree extends React.Component<CheckboxProps> {}
+
+    function checkAllNodes (
+        nodes: Array<Node>,
+        options?: { checkModel?: 'leaf' | 'all', noCascade?: boolean },
+    ): Array<string>
+
     function expandNodesToLevel (nodes: Array<Node>, targetLevel: number): Array<string>
 }

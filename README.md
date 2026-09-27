@@ -134,6 +134,29 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 In addition to the `CheckboxTree` component, additional utility functions are available to set the initial state of the tree.
 
+#### `checkAllNodes(nodes, options)`
+
+Creates a list of node keys that checks every enabled node in the tree. Pass the result to the `checked` property to implement "check all" functionality. Disabled nodes, as well as the descendants of disabled parents when cascading, are left unchecked.
+
+Arguments:
+
+* `nodes` (`Array`): The same array of nodes passed into the main `CheckboxTree` component
+* `options` (`Object`): Optional. Should match the properties passed into the `CheckboxTree` component.
+  * `checkModel` (`string`): Either `'leaf'` or `'all'`. Defaults to `'leaf'`.
+  * `noCascade` (`bool`): Defaults to `false`.
+
+Returns:
+
+* `Array`: A list of node keys.
+
+``` jsx
+import CheckboxTree, { checkAllNodes } from 'react-checkbox-tree';
+
+...
+
+<button type="button" onClick={() => setChecked(checkAllNodes(nodes))}>Check all</button>
+```
+
 #### `expandNodesToLevel(nodes, targetLevel)`
 
 Creates a list of all parent node keys until `targetLevel`.

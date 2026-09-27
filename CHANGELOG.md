@@ -1,6 +1,10 @@
 # CHANGELOG
 
-## v2.0.3 (TBA)
+## v2.1.0 (TBA)
+
+### New Features
+
+* Add `checkAllNodes` utility function to help implement "check all" functionality (#143, #174, #251)
 
 ### Fixed
 

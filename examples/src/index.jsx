@@ -1,6 +1,7 @@
 import { createRoot } from 'react-dom/client';
 
 import BasicExample from './js/BasicExample.jsx';
+import CheckAllExample from './js/CheckAllExample.jsx';
 import CustomIconsExample from './js/CustomIconsExample.jsx';
 import ClickableLabelsExample from './js/ClickableLabelsExample.jsx';
 import DisabledExample from './js/DisabledExample.jsx';
@@ -19,5 +20,6 @@ createRoot(document.getElementById('pessimistic-toggle-example')).render(<Pessim
 createRoot(document.getElementById('clickable-labels-example')).render(<ClickableLabelsExample />);
 createRoot(document.getElementById('hidden-checkboxes-example')).render(<HiddenCheckboxesExample />);
 createRoot(document.getElementById('expand-all-example')).render(<ExpandAllExample />);
+createRoot(document.getElementById('check-all-example')).render(<CheckAllExample />);
 createRoot(document.getElementById('large-data-example')).render(<LargeDataExample />);
 createRoot(document.getElementById('filter-example')).render(<FilterExample />);
