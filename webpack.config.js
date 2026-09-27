@@ -28,6 +28,7 @@ const commonConfig = {
     },
     externals: {
         react: 'react',
+        'react/jsx-runtime': 'react/jsx-runtime',
     },
     plugins: [
         new webpack.BannerPlugin(banner.trim()),

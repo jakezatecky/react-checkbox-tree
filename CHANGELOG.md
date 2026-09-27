@@ -1,5 +1,17 @@
 # CHANGELOG
 
+## [v2.1.1](https://github.com/jakezatecky/react-checkbox-tree/compare/v2.1.0...v2.1.1) (2026-09-27)
+
+### Fixed
+
+* Fix `jsxDEV is not a function` error in production builds
+* Fix React 16–18 compatibility by using the host application's `react/jsx-runtime` instead of a bundled copy from React 19
+
+### Changed
+
+* Raise the minimum React peer dependency to v16.14.0, the first version to ship `react/jsx-runtime`
+* The UMD build now requires `react/jsx-runtime`, so it can no longer be used with React from a `<script>` tag alone
+
 ## [v2.1.0](https://github.com/jakezatecky/react-checkbox-tree/compare/v2.0.2...v2.1.0) (2026-09-27)
 
 ### Added
