@@ -59,6 +59,7 @@ const propTypes = {
     noCascade: PropTypes.bool,
     onlyLeafCheckboxes: PropTypes.bool,
     optimisticToggle: PropTypes.bool,
+    preserveUnknownValues: PropTypes.bool,
     showExpandAll: PropTypes.bool,
     showNodeIcon: PropTypes.bool,
     showNodeTitle: PropTypes.bool,
@@ -143,6 +144,7 @@ function CheckboxTree({
     noCascade = false,
     onlyLeafCheckboxes = false,
     optimisticToggle = true,
+    preserveUnknownValues = false,
     showExpandAll = false,
     showNodeIcon = true,
     showNodeTitle = false,
@@ -166,7 +168,10 @@ function CheckboxTree({
         const node = newModel.getNode(nodeInfo.value);
 
         newModel.toggleChecked(nodeInfo, nodeInfo.checked, checkModel, noCascade);
-        onCheck(newModel.serializeList('checked'), { ...node, ...nodeInfo });
+        onCheck(
+            newModel.serializeList('checked', preserveUnknownValues),
+            { ...node, ...nodeInfo },
+        );
     });
 
     const handleExpand = useEventCallback((nodeInfo) => {
@@ -174,7 +179,10 @@ function CheckboxTree({
         const node = newModel.getNode(nodeInfo.value);
 
         newModel.toggleNode(nodeInfo.value, 'expanded', nodeInfo.expanded);
-        onExpand(newModel.serializeList('expanded'), { ...node, ...nodeInfo });
+        onExpand(
+            newModel.serializeList('expanded', preserveUnknownValues),
+            { ...node, ...nodeInfo },
+        );
     });
 
     const handleNodeClick = useEventCallback((nodeInfo) => {
@@ -191,7 +199,7 @@ function CheckboxTree({
         onExpand(
             model.clone()
                 .expandAllNodes(expand)
-                .serializeList('expanded'),
+                .serializeList('expanded', preserveUnknownValues),
         );
     }
 

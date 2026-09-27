@@ -2,9 +2,10 @@ import CheckboxTreeError from '#js/CheckboxTreeError.js';
 import { CHECK_MODEL } from '#js/constants.js';
 
 class NodeModel {
-    constructor(props, nodes = {}) {
+    constructor(props, nodes = {}, unknownValues = { checked: [], expanded: [] }) {
         this.props = props;
         this.flatNodes = nodes;
+        this.unknownValues = unknownValues;
     }
 
     setProps(props) {
@@ -20,7 +21,10 @@ class NodeModel {
             clonedNodes[value] = { ...node };
         });
 
-        return new NodeModel(this.props, clonedNodes);
+        return new NodeModel(this.props, clonedNodes, {
+            checked: [...this.unknownValues.checked],
+            expanded: [...this.unknownValues.expanded],
+        });
     }
 
     getNode(value) {
@@ -91,17 +95,22 @@ class NodeModel {
         });
 
         // Deserialize values and set their nodes to true
+        // Values without a matching node are tracked so that they can optionally be serialized
         listKeys.forEach((listKey) => {
+            this.unknownValues[listKey] = [];
+
             lists[listKey].forEach((value) => {
                 if (this.flatNodes[value] !== undefined) {
                     this.flatNodes[value][listKey] = true;
+                } else {
+                    this.unknownValues[listKey].push(value);
                 }
             });
         });
     }
 
-    serializeList(key) {
-        const list = [];
+    serializeList(key, preserveUnknownValues = false) {
+        const list = preserveUnknownValues ? [...this.unknownValues[key]] : [];
 
         Object.keys(this.flatNodes).forEach((value) => {
             if (this.flatNodes[value][key]) {

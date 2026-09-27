@@ -6,6 +6,7 @@
 
 * Add `checkAllNodes` utility function to help implement "check all" functionality (#143, #174, #251)
 * Add `listTag` to allow specification of `ol` or `ul` for the underlying HTML elements (#501)
+* Add `preserveUnknownValues` to keep `checked` and `expanded` values that are not in `nodes`, such as those hidden by a filter (#289)
 
 ### Fixed
 

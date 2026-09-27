@@ -1,24 +1,7 @@
-import {
-    useState,
-    useCallback,
-    useEffect,
-    useMemo,
-} from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import CheckboxTree from 'react-checkbox-tree';
 
 import { fileSystem as nodes } from './common.js';
-
-function getNodeValues(nodeList) {
-    return nodeList.flatMap((node) => [node.value, ...getNodeValues(node.children || [])]);
-}
-
-// The tree only reports on the nodes it is given, so keep any values hidden by the filter
-function mergeHiddenValues(previousValues, visibleValues, newValues) {
-    return [
-        ...previousValues.filter((value) => !visibleValues.has(value)),
-        ...newValues,
-    ];
-}
 
 function FilterExample() {
     const [checked, setChecked] = useState([
@@ -32,17 +15,13 @@ function FilterExample() {
     const [filterText, setFilterText] = useState('');
     const [filteredNodes, setFilteredNodes] = useState(nodes);
 
-    const visibleValues = useMemo(() => new Set(getNodeValues(filteredNodes)), [filteredNodes]);
-
     const onCheck = useCallback((checkedValues) => {
-        setChecked((prevChecked) => mergeHiddenValues(prevChecked, visibleValues, checkedValues));
-    }, [visibleValues]);
+        setChecked(checkedValues);
+    }, []);
 
     const onExpand = useCallback((expandedValues) => {
-        setExpanded((prevExpanded) => (
-            mergeHiddenValues(prevExpanded, visibleValues, expandedValues)
-        ));
-    }, [visibleValues]);
+        setExpanded(expandedValues);
+    }, []);
 
     const onFilterChange = useCallback((e) => {
         setFilterText(e.target.value);
@@ -94,6 +73,7 @@ function FilterExample() {
                 checked={checked}
                 expanded={expanded}
                 nodes={filteredNodes}
+                preserveUnknownValues
                 onCheck={onCheck}
                 onExpand={onExpand}
             />

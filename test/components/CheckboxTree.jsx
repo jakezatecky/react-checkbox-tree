@@ -678,6 +678,120 @@ describe('<CheckboxTree />', () => {
         });
     });
 
+    describe('preserveUnknownValues', () => {
+        const jupiter = {
+            value: 'jupiter',
+            label: 'Jupiter',
+            children: [
+                { value: 'io', label: 'Io' },
+                { value: 'europa', label: 'Europa' },
+            ],
+        };
+
+        it('should drop `checked` values that are not in `nodes` by default', async () => {
+            let actual = null;
+
+            render(
+                <CheckboxTree
+                    checked={['phobos']}
+                    expanded={['jupiter']}
+                    nodes={[jupiter]}
+                    onCheck={(checked) => {
+                        actual = checked;
+                    }}
+                />,
+            );
+
+            const user = userEvent.setup();
+            await user.click(screen.getByLabelText('Io'));
+
+            assert.deepEqual(actual, ['io']);
+        });
+
+        // https://github.com/jakezatecky/react-checkbox-tree/issues/289
+        it('should keep `checked` values that are not in `nodes` when checking', async () => {
+            let actual = null;
+
+            render(
+                <CheckboxTree
+                    checked={['phobos', 'europa']}
+                    expanded={['jupiter']}
+                    nodes={[jupiter]}
+                    preserveUnknownValues
+                    onCheck={(checked) => {
+                        actual = checked;
+                    }}
+                />,
+            );
+
+            const user = userEvent.setup();
+            await user.click(screen.getByLabelText('Io'));
+
+            assert.deepEqual(actual, ['phobos', 'io', 'europa']);
+        });
+
+        it('should keep `checked` values that are not in `nodes` when unchecking', async () => {
+            let actual = null;
+
+            render(
+                <CheckboxTree
+                    checked={['phobos', 'io', 'europa']}
+                    nodes={[jupiter]}
+                    preserveUnknownValues
+                    onCheck={(checked) => {
+                        actual = checked;
+                    }}
+                />,
+            );
+
+            const user = userEvent.setup();
+            await user.click(screen.getByLabelText('Jupiter'));
+
+            assert.deepEqual(actual, ['phobos']);
+        });
+
+        it('should keep `expanded` values that are not in `nodes` when expanding', async () => {
+            let actual = null;
+
+            render(
+                <CheckboxTree
+                    expanded={['mars']}
+                    nodes={[jupiter]}
+                    preserveUnknownValues
+                    onExpand={(expanded) => {
+                        actual = expanded;
+                    }}
+                />,
+            );
+
+            const user = userEvent.setup();
+            await user.click(screen.getByLabelText('Expand node'));
+
+            assert.deepEqual(actual, ['mars', 'jupiter']);
+        });
+
+        it('should keep `expanded` values that are not in `nodes` when collapsing all', async () => {
+            let actual = null;
+
+            render(
+                <CheckboxTree
+                    expanded={['mars', 'jupiter']}
+                    nodes={[jupiter]}
+                    preserveUnknownValues
+                    showExpandAll
+                    onExpand={(expanded) => {
+                        actual = expanded;
+                    }}
+                />,
+            );
+
+            const user = userEvent.setup();
+            await user.click(screen.getByLabelText('Collapse all'));
+
+            assert.deepEqual(actual, ['mars']);
+        });
+    });
+
     describe('showExpandAll', () => {
         it('should render the expand all/collapse all buttons', () => {
             render(

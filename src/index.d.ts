@@ -61,6 +61,7 @@ declare module "react-checkbox-tree" {
         noCascade?: boolean;
         onlyLeafCheckboxes?: boolean;
         optimisticToggle?: boolean;
+        preserveUnknownValues?: boolean;
         showExpandAll?: boolean;
         showNodeIcon?: boolean;
         showNodeTitle?: boolean;
