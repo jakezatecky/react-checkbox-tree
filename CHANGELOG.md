@@ -12,6 +12,10 @@
 * Fix error thrown when `onContextMenu` is `null`
 * Fix TypeScript resolving `lib/index.js` instead of the bundled typings in some configurations
 
+### Changed
+
+* Updated `FilterExample.jsx` to not discard hidden values on change (#289)
+
 ## [v2.0.2](https://github.com/jakezatecky/react-checkbox-tree/compare/v2.0.1...v2.0.2) (2026-05-28)
 
 ### Fixed
