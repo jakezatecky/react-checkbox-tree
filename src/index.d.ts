@@ -54,6 +54,7 @@ declare module "react-checkbox-tree" {
         iconsClass?: string;
         id?: string;
         lang?: Language;
+        listTag?: 'ol' | 'ul';
         name?: string;
         nameAsArray?: boolean;
         nativeCheckboxes?: boolean;

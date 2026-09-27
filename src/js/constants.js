@@ -9,7 +9,13 @@ const KEYS = {
     ENTER: 'Enter',
 };
 
+const LIST_TAGS = {
+    ORDERED: 'ol',
+    UNORDERED: 'ul',
+};
+
 export {
     CHECK_MODEL,
     KEYS,
+    LIST_TAGS,
 };

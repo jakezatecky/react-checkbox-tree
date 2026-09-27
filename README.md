@@ -187,6 +187,7 @@ Returns:
 | `iconsClass`         | string   | A string that specifies which icons class to utilize. Currently, `'fa4'`, `'fa5'`, and `'fa6'` are supported.          | `'fa5'`          |
 | `id`                 | string   | A string to be used for the HTML ID of the rendered tree and its nodes.                                                | `null`           |
 | `lang`               | object   | A key-value pairing of localized text. See [`src/js/lang/default.js`][lang-file] for a list of keys.                   | `{ ... }`        |
+| `listTag`            | string   | Either `ol` or `ul`. This determines the underlying HTML tag (`<ol>` vs. `<ul>`).                                      | `'ol'`           |
 | `name`               | string   | Optional name for the hidden `<input>` element.                                                                        | `undefined`      |
 | `nameAsArray`        | bool     | If true, the hidden `<input>` will encode its values as an array rather than a joined string.                          | `false`          |
 | `nativeCheckboxes`   | bool     | If true, native browser checkboxes will be used instead of pseudo-checkbox icons.                                      | `false`          |

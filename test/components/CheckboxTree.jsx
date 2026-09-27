@@ -317,6 +317,34 @@ describe('<CheckboxTree />', () => {
         });
     });
 
+    describe('listTag', () => {
+        const nodes = [
+            {
+                value: 'jupiter',
+                label: 'Jupiter',
+                children: [{ value: 'io', label: 'Io' }],
+            },
+        ];
+
+        it('should render `ol` elements by default', () => {
+            const { container } = render(
+                <CheckboxTree expanded={['jupiter']} nodes={nodes} />,
+            );
+
+            assert.equal(container.querySelectorAll('ol').length, 2);
+            assert.equal(container.querySelectorAll('ul').length, 0);
+        });
+
+        it('should render `ul` elements at every level when set to `ul`', () => {
+            const { container } = render(
+                <CheckboxTree expanded={['jupiter']} listTag="ul" nodes={nodes} />,
+            );
+
+            assert.equal(container.querySelectorAll('ul').length, 2);
+            assert.equal(container.querySelectorAll('ol').length, 0);
+        });
+    });
+
     describe('nativeCheckboxes', () => {
         it('should add the class `rct-native-display` to the root', () => {
             const { container } = render(

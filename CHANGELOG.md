@@ -2,9 +2,10 @@
 
 ## v2.1.0 (TBA)
 
-### New Features
+### Added
 
 * Add `checkAllNodes` utility function to help implement "check all" functionality (#143, #174, #251)
+* Add `listTag` to allow specification of `ol` or `ul` for the underlying HTML elements (#501)
 
 ### Fixed
 

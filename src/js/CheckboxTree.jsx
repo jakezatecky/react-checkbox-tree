@@ -12,7 +12,7 @@ import iconsShape from '#js/shapes/iconsShape.js';
 import languageShape from '#js/shapes/languageShape.js';
 import listShape from '#js/shapes/listShape.js';
 import nodeShape from '#js/shapes/nodeShape.js';
-import { CHECK_MODEL, KEYS } from '#js/constants.js';
+import { CHECK_MODEL, KEYS, LIST_TAGS } from '#js/constants.js';
 import { IconContext, LanguageContext } from '#js/contexts.js';
 import useEventCallback from '#js/useEventCallback.js';
 import NodeModel from '#js/NodeModel.js';
@@ -52,6 +52,7 @@ const propTypes = {
     iconsClass: PropTypes.string,
     id: PropTypes.string,
     lang: languageShape,
+    listTag: PropTypes.oneOf([LIST_TAGS.ORDERED, LIST_TAGS.UNORDERED]),
     name: PropTypes.string,
     nameAsArray: PropTypes.bool,
     nativeCheckboxes: PropTypes.bool,
@@ -135,6 +136,7 @@ function CheckboxTree({
     iconsClass = 'fa5',
     id = null,
     lang = defaultLang,
+    listTag: ListTag = LIST_TAGS.ORDERED,
     name = undefined,
     nameAsArray = false,
     nativeCheckboxes = false,
@@ -286,9 +288,9 @@ function CheckboxTree({
         });
 
         return (
-            <ol>
+            <ListTag>
                 {renderedNodes}
-            </ol>
+            </ListTag>
         );
     }
 

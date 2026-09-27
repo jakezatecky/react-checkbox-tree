@@ -16,16 +16,19 @@ $rct-outline-offset: -2px !default;
   flex-direction: row-reverse;
   font-size: 16px;
 
-  > ol {
+  > ol,
+  > ul {
     flex: 1 1 auto;
   }
 
-  ol {
+  ol,
+  ul {
     padding-left: 0;
     margin: 0;
     list-style-type: none;
 
-    ol {
+    ol,
+    ul {
       padding-left: 24px;
     }
   }
@@ -304,7 +307,8 @@ $rct-outline-offset: -2px !default;
 .rct-direction-rtl {
   direction: rtl;
 
-  ol ol {
+  ol ol,
+  ul ul {
     padding-right: 24px;
     padding-left: 0;
   }
