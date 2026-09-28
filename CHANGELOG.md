@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v2.2.0 (TBA)
+
+### Changed
+
+* Declare TypeScript typings with top-level exports instead of an ambient `declare module` block
+
 ## [v2.1.1](https://github.com/jakezatecky/react-checkbox-tree/compare/v2.1.0...v2.1.1) (2026-09-27)
 
 ### Fixed
