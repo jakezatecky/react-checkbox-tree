@@ -44,7 +44,7 @@ import 'react-checkbox-tree/lib/react-checkbox-tree.css';
 Below is a minimal example using [state hooks][docs-state-hooks]. Note that `CheckboxTree` is a [controlled][docs-controlled] component, so you must update its `checked` and `expanded` properties whenever a change occurs.
 
 ``` jsx
-import React, { useState } from 'react';
+import { useState } from 'react';
 import CheckboxTree from 'react-checkbox-tree';
 import 'react-checkbox-tree/lib/react-checkbox-tree.css';
 
@@ -80,10 +80,7 @@ function Widget() {
 By default, **react-checkbox-tree** uses Font Awesome 5/6 for the various icons that appear in the tree. To utilize Font Awesome 4 icons, simply pass in `iconsClass="fa4"`:
 
 ``` jsx
-<CheckboxTree
-    ...
-    iconsClass="fa4"
-/>
+<CheckboxTree iconsClass="fa4" />
 ```
 
 To change the rendered icons entirely, simply pass in the `icons` property and override the defaults. Note that you can override as many or as little icons as you like:
