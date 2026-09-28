@@ -127,46 +127,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 />
 ```
 
-### Utility Functions
-
-In addition to the `CheckboxTree` component, additional utility functions are available to set the initial state of the tree.
-
-#### `checkAllNodes(nodes, options)`
-
-Creates a list of node keys that checks every enabled node in the tree. Pass the result to the `checked` property to implement "check all" functionality. Disabled nodes, as well as the descendants of disabled parents when cascading, are left unchecked.
-
-Arguments:
-
-* `nodes` (`Array`): The same array of nodes passed into the main `CheckboxTree` component
-* `options` (`Object`): Optional. Should match the properties passed into the `CheckboxTree` component.
-  * `checkModel` (`string`): Either `'leaf'` or `'all'`. Defaults to `'leaf'`.
-  * `noCascade` (`bool`): Defaults to `false`.
-
-Returns:
-
-* `Array`: A list of node keys.
-
-``` jsx
-import CheckboxTree, { checkAllNodes } from 'react-checkbox-tree';
-
-...
-
-<button type="button" onClick={() => setChecked(checkAllNodes(nodes))}>Check all</button>
-```
-
-#### `expandNodesToLevel(nodes, targetLevel)`
-
-Creates a list of all parent node keys until `targetLevel`.
-
-Arguments:
-
-* `nodes` (`Array`): The same array of nodes passed into the main `CheckboxTree` component
-* `targetLevel` (`number`): The maximum expansion depth. Use `Infinity` for maximum depth.
-
-Returns:
-
-* `Array`: A list of node keys.
-
 ### Properties
 
 | Property                | Type     | Description                                                                                                         | Default          |
@@ -200,8 +160,6 @@ Returns:
 | `onContextMenu`         | function | onContextMenu handler: `function(event, targetNode) {}`. Triggers when right-clicking a node element.               | `null`           |
 | `onExpand`              | function | onExpand handler: `function(expanded, targetNode) {}`                                                               | `() => {}`       |
 
-#### `onCheck` and `onExpand`
-
 #### Node Properties
 
 Individual nodes within the `nodes` property can have the following structure:
@@ -216,6 +174,46 @@ Individual nodes within the `nodes` property can have the following structure:
 | `icon`         | mixed  | A custom icon for the node.              | `null`  |
 | `showCheckbox` | bool   | Whether the node should show a checkbox. | `true`  |
 | `title`        | string | A custom `title` attribute for the node. | `null`  |
+
+### Utility Functions
+
+In addition to the `CheckboxTree` component, additional utility functions are available to set the initial state of the tree.
+
+#### `checkAllNodes(nodes, options)`
+
+Creates a list of node keys that checks every enabled node in the tree. Pass the result to the `checked` property to implement "check all" functionality. Disabled nodes, as well as the descendants of disabled parents when cascading, are left unchecked.
+
+Arguments:
+
+* `nodes` (`Array`): The same array of nodes passed into the main `CheckboxTree` component
+* `options` (`Object`): Optional. Should match the properties passed into the `CheckboxTree` component.
+    * `checkModel` (`string`): Either `'leaf'` or `'all'`. Defaults to `'leaf'`.
+    * `noCascade` (`bool`): Defaults to `false`.
+
+Returns:
+
+* `Array`: A list of node keys.
+
+``` jsx
+import CheckboxTree, { checkAllNodes } from 'react-checkbox-tree';
+
+...
+
+<button type="button" onClick={() => setChecked(checkAllNodes(nodes))}>Check all</button>
+```
+
+#### `expandNodesToLevel(nodes, targetLevel)`
+
+Creates a list of all parent node keys until `targetLevel`.
+
+Arguments:
+
+* `nodes` (`Array`): The same array of nodes passed into the main `CheckboxTree` component
+* `targetLevel` (`number`): The maximum expansion depth. Use `Infinity` for maximum depth.
+
+Returns:
+
+* `Array`: A list of node keys.
 
 [docs-controlled]: https://react.dev/learn/sharing-state-between-components#controlled-and-uncontrolled-components
 [docs-state-hooks]: https://react.dev/reference/react/useState
