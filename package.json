@@ -88,7 +88,7 @@
     "react-dom": "^19.2.4",
     "sass": "^1.58.2",
     "sass-loader": "^17.0.0",
-    "stylelint": "^17.1.0",
+    "stylelint": "^18.0.0",
     "stylelint-config-takiyon": "^7.0.0",
     "webpack": "^5.3.2",
     "webpack-cli": "^7.0.2",
